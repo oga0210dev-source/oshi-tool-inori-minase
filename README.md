@@ -1,0 +1,1 @@
+# oshi-tool-inori-minase
