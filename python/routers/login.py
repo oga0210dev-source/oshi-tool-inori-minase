@@ -37,3 +37,11 @@ def login_exec(
     request.session["user_id"] = user["USER_ID"]
     request.session["user_name"] = user["USER_NAME"]
     request.session["role"] = user["ROLE"]
+
+    return templates.TemplateResponse(
+        request=request,
+        name="login.html",
+        context={
+            "message": "ログインできました。"
+        }
+    )
