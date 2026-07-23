@@ -3,4 +3,4 @@ __pycache__/
 *.pyc
 app.db
 .idea/
-.memo.txt
+memo.txt
