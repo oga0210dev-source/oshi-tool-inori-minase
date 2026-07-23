@@ -1,0 +1,50 @@
+@font-face {
+    font-family: "HachiMaruPop-Regular";
+    src: url("/static/fonts/HachiMaruPop-Regular.ttf");
+}
+
+body,
+button,
+input,
+textarea,
+select{
+    font-family: "HachiMaruPop-Regular", sans-serif;
+}
+
+html,
+body{
+    width:100%;
+    height:100%;
+    margin:0;
+    padding:0;
+    overflow:hidden;
+}
+
+body{
+    background-image:url("/static/img/background_phone.png");
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+    background-attachment:fixed;
+}
+
+.toast{
+    position:fixed;
+    top:-100px;
+    left:50%;
+    transform:translateX(-50%);
+    width:85%;
+    max-width:400px;
+    padding:15px 20px;
+    border-radius:12px;
+    background:#ff6b6b;
+    color:white;
+    text-align:center;
+    font-size:14px;
+    transition:0.4s;
+    z-index:9999;
+}
+
+.toast.show{
+    top:20px;
+}

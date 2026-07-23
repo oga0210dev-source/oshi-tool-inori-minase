@@ -1,0 +1,94 @@
+/*==========================
+    コンテナ
+==========================*/
+.container{
+    width:100%;
+    max-width:430px;
+    height:100dvh;
+    margin:0 auto;
+}
+
+/*==========================
+    中央レイアウト
+==========================*/
+.content{
+    height:100%;
+    display:grid;
+    justify-items:center;
+}
+
+/*==========================
+    タイトル
+==========================*/
+.logo-area{
+    width:100%;
+    display:flex;
+    justify-content:center;
+}
+
+.logo{
+    width:80%;
+    max-width:420px;
+    height:auto;
+    object-fit:contain;
+}
+
+/*==========================
+    ログインフォーム
+==========================*/
+.loginForm-area{
+    width:100%;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:20px;
+}
+
+.input-area{
+    width:85%;
+}
+
+.input-area input{
+    width:100%;
+    height:56px;
+    padding:0 20px;
+    box-sizing:border-box;
+}
+
+
+/*==========================
+    ボタン
+==========================*/
+.button-area{
+    width:90%;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:10px;
+}
+
+.button-area a{
+    width:75%;
+    display:block;
+}
+
+.button-image{
+    display:block;
+    width:100%;
+    height:auto;
+}
+
+.login-button{
+    padding:0;
+    margin:0;
+    border:none;
+    background:transparent;
+    cursor:pointer;
+    display:block;
+}
+
+.login-button img{
+    display:block;
+    width:100%;
+    height:auto;
+}

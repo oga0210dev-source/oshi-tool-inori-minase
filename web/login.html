@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/static/img/logo.png" type="image/png">
+    <title>推し活オールインワン</title>
+    <link rel="stylesheet" href="/static/css/common.css">
+    <link rel="stylesheet" href="/static/css/login.css">
+</head>
+    <body>
+        <div class="container">
+            <div class="content">
+                <!-- タイトル -->
+                <div class="logo-area">
+                    <img src="/static/img/title_logo.png" class="logo" alt="タイトルロゴ">
+                </div>
+
+                <!-- ログインフォーム -->
+                <form action="/login" method="post" class="loginForm-area">
+                    <div class="input-area">
+                        <input
+                                type="text"
+                                name="user_id"
+                                placeholder="ユーザIDを入力してください。"
+                                required>
+                    </div>
+                    <div class="input-area">
+                        <input
+                                type="password"
+                                name="password"
+                                placeholder="パスワードを入力してください。"
+                                required>
+                    </div>
+
+                    <!-- ボタン -->
+                    <div class="button-area">
+                        <button type="submit" class="login-button">
+                            <img src="/static/img/login_button.png"
+                                 class="button-image"
+                                 alt="ログイン">
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div id="toast" class="toast"></div>
+        <script src="/static/js/common.js"></script>
+        {% if message %}
+        <script>
+            showToast("{{ message }}");
+        </script>
+        {% endif %}
+        <script>
+        window.onload = function () {
+            showToast("テストです");
+        }
+        </script>
+    </body>
+</html>

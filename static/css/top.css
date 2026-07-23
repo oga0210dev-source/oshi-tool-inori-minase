@@ -1,0 +1,92 @@
+/*==========================
+    コンテナ
+==========================*/
+.container{
+    width:100%;
+    max-width:430px;
+    height:100dvh;
+    margin:0 auto;
+}
+
+/*==========================
+    中央レイアウト
+==========================*/
+.content{
+    height:100%;
+    display:grid;
+    justify-items:center;
+}
+
+/*==========================
+    タイトル
+==========================*/
+.logo-area{
+    width:100%;
+    display:flex;
+    justify-content:center;
+}
+
+.logo{
+    width:80%;
+    max-width:420px;
+    height:auto;
+    object-fit:contain;
+}
+
+/*==========================
+    注釈
+==========================*/
+.attention-area{
+    width:100%;
+    display:flex;
+    justify-content:center;
+}
+
+.attention{
+    width:100%;
+    max-width:550px;
+    text-align:center;
+    font-size:14px;
+    line-height:1.8;
+    color:#c71585;
+}
+
+/*==========================
+    ボタン
+==========================*/
+.button-area{
+    width:90%;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:10px;
+}
+
+.button-area a{
+    width:75%;
+    display:block;
+}
+
+.button-image{
+    display:block;
+    width:100%;
+    height:auto;
+}
+
+/*==========================
+    説明
+==========================*/
+.description-area{
+    width:100%;
+    display:flex;
+    justify-content:center;
+}
+
+.description{
+    width:100%;
+    max-width:550px;
+    text-align:center;
+    font-size:14px;
+    line-height:1.8;
+    color:#c71585;
+}
