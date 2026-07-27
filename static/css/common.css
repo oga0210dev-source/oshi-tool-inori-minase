@@ -11,6 +11,18 @@ select{
     font-family: "HachiMaruPop-Regular", sans-serif;
 }
 
+.header {
+    width: 100%;
+    text-align: center;
+    margin: 10px 0 0;
+}
+
+.title-logo{
+    width:50%;
+    display:block;
+    margin:0 auto;
+}
+
 html,
 body{
     width:100%;

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/static/img/logo.png" type="image/png">
+    <title>推し活オールインワン</title>
+    <link rel="stylesheet" href="/static/css/common.css">
+    <link rel="stylesheet" href="/static/css/home/home.css">
+</head>
+    <body>
+        {% include "templates/commons/header.html" %}
+        <div class="container">
+            <div class="profile-card">
+                <div class="profile-image">
+                    <img src="{{ user.profile_image or '/static/img/profile/default.png' }}">
+                </div>
+
+                <div class="profile-info">
+                    <div class="profile-name">
+                        {{ user.user_name }}
+                    </div>
+
+                    <div class="member-history">
+                        町民歴 {{ member_period }}
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="my-page">
+                <a href="/mypage" class="my-page-btn">
+                    <img src="/static/img/home/mypage.png" alt="マイページ">
+                </a>
+            </div>
+
+            <div class="menu-grid">
+
+                <a href="#" class="menu-btn">
+                    <img src="/static/img/home/live.png">
+                </a>
+
+                <a href="#" class="menu-btn">
+                    <img src="/static/img/home/live.png">
+                </a>
+
+                <a href="#" class="menu-btn">
+                    <img src="/static/img/home/live.png">
+                </a>
+
+                <a href="#" class="menu-btn">
+                    <img src="/static/img/home/live.png">
+                </a>
+
+                <a href="#" class="menu-btn">
+                    <img src="/static/img/home/live.png">
+                </a>
+
+                <a href="#" class="menu-btn">
+                    <img src="/static/img/home/live.png">
+                </a>
+
+                <a href="#" class="menu-btn">
+                    <img src="/static/img/home/live.png">
+                </a>
+
+                <a href="#" class="menu-btn">
+                    <img src="/static/img/home/live.png">
+                </a>
+
+            </div>
+
+        </div>
+        <a href="/logout" class="logout-btn">
+            ログアウト
+        </a>
+        <div id="toast" class="toast"></div>
+        <script src="/static/js/common.js"></script>
+        {% if message %}
+        <script>
+            showToast("{{ message }}");
+        </script>
+        {% endif %}
+    </body>
+</html>

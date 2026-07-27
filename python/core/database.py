@@ -1,12 +1,15 @@
-from pathlib import Path
-import sqlite3
+import os
+import psycopg2
+from psycopg2.extras import RealDictCursor
+from dotenv import load_dotenv
 
-BASE_DIR = Path(__file__).resolve().parent.parent.parent
+load_dotenv()
 
-DATABASE = BASE_DIR / "app.db"
+DATABASE_URL = os.getenv("DATABASE_URL")
 
 
 def get_connection():
-    conn = sqlite3.connect(DATABASE)
-    conn.row_factory = sqlite3.Row
-    return conn
+    return psycopg2.connect(
+        DATABASE_URL,
+        cursor_factory=RealDictCursor
+    )

@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Request, Form
-from fastapi.responses import HTMLResponse
+from fastapi.responses import RedirectResponse
 from python.models.user import UserModel
 from python.core.security import Security
 import re
@@ -9,11 +9,11 @@ from python.core import templates
 router = APIRouter()
 
 
-@router.get("/register", response_class=HTMLResponse)
+@router.get("/register", response_class=RedirectResponse)
 def register(request: Request):
     return templates.TemplateResponse(
         request=request,
-        name="register.html"
+        name="templates/register/register.html"
     )
 
 
@@ -29,7 +29,7 @@ def register_exec(
     if len(user_id) < 4 or len(user_id) > 20:
         return templates.TemplateResponse(
             request=request,
-            name="register.html",
+            name="templates/register/register.html",
             context={
                 "message": "ユーザIDは4～20文字で入力してください。"
             }
@@ -38,7 +38,7 @@ def register_exec(
     if not re.fullmatch(r"[a-zA-Z0-9_]+", user_id):
         return templates.TemplateResponse(
             request=request,
-            name="register.html",
+            name="templates/register/register.html",
             context={
                 "message": "ユーザIDは半角英数字と_のみ使用できます。"
             }
@@ -48,7 +48,7 @@ def register_exec(
     if len(user_name) > 20:
         return templates.TemplateResponse(
             request=request,
-            name="register.html",
+            name="templates/register/register.html",
             context={
                 "message": "表示名は20文字以内で入力してください。"
             }
@@ -58,7 +58,7 @@ def register_exec(
     if len(password) < 8 or len(password) > 32:
         return templates.TemplateResponse(
             request=request,
-            name="register.html",
+            name="templates/register/register.html",
             context={
                 "message": "パスワードは8～32文字で入力してください。"
             }
@@ -67,7 +67,7 @@ def register_exec(
     if not re.search(r"[a-z]", password):
         return templates.TemplateResponse(
             request=request,
-            name="register.html",
+            name="templates/register/register.html",
             context={
                 "message": "小文字を1文字以上含めてください。"
             }
@@ -76,7 +76,7 @@ def register_exec(
     if not re.search(r"[A-Z]", password):
         return templates.TemplateResponse(
             request=request,
-            name="register.html",
+            name="templates/register/register.html",
             context={
                 "message": "大文字を1文字以上含めてください。"
             }
@@ -85,18 +85,9 @@ def register_exec(
     if not re.search(r"\d", password):
         return templates.TemplateResponse(
             request=request,
-            name="register.html",
+            name="templates/register/register.html",
             context={
                 "message": "数字を1文字以上含めてください。"
-            }
-        )
-
-    if not re.search(r"[!@#$%^&*()_\-+=\[\]{};:'\",.<>?/\\|`~]", password):
-        return templates.TemplateResponse(
-            request=request,
-            name="register.html",
-            context={
-                "message": "記号を1文字以上含めてください。"
             }
         )
 
@@ -104,7 +95,7 @@ def register_exec(
     if password != password_confirm:
         return templates.TemplateResponse(
             request=request,
-            name="register.html",
+            name="templates/register/register.html",
             context={
                 "message": "パスワードが一致しません。"
             }
@@ -114,7 +105,7 @@ def register_exec(
     if UserModel.exists_user_id(user_id):
         return templates.TemplateResponse(
             request=request,
-            name="register.html",
+            name="templates/register/register.html",
             context={
                 "message": "このユーザーIDは既に使用されています。"
             }
@@ -126,10 +117,16 @@ def register_exec(
     UserModel.create_user(
         user_id,
         user_name,
-        hashed_password,
-        "USER"
+        hashed_password
     )
 
-    return {
-        "message": "登録が完了しました。"
-    }
+    # 登録したユーザー情報をセッション保存
+    request.session["user_id"] = user_id
+    request.session["user_name"] = user_name
+    request.session["role"] = "user"
+
+    # ホームへ移動
+    return RedirectResponse(
+        url="/home",
+        status_code=303
+    )

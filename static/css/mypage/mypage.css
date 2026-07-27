@@ -1,0 +1,101 @@
+.background{
+    width:100%;
+    height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+}
+
+h1{
+    margin:10px 0 20px;
+    text-align:center;
+}
+
+.page{
+    width:100%;
+    max-width:430px;
+    padding:20px;
+    box-sizing:border-box;
+}
+
+.info-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    border-bottom: 1px solid #ddd;
+}
+
+.profile-area {
+    background: transparent;
+}
+
+.profile-image {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    background-color: transparent;
+    display: block;
+    margin: 0 auto;
+}
+
+.label {
+    color: #666;
+    font-size: 16px;
+}
+
+.value {
+    width: 60%;
+    text-align: right;
+}
+
+.value input {
+    width: 100%;
+    box-sizing: border-box;
+    border: none;
+    background: transparent;
+    text-align: right;
+}
+
+.value input:read-only {
+    pointer-events: none;
+}
+
+.value input.editing {
+    border: 1px solid #ccc;
+    background: #fff;
+}
+
+.value select {
+    width:100%;
+    border:none;
+    background:transparent;
+    font-family:inherit;
+    text-align:right;
+}
+
+.hidden{
+    display:none;
+}
+
+.button-area{
+    display:flex;
+    justify-content:center;
+    gap:15px;
+    margin-top:30px;
+}
+
+.withdraw-area{
+    margin-top:60px;
+    text-align:left;
+}
+
+.withdraw-link{
+    color:#d9534f;
+    text-decoration:none;
+}
+
+.editing {
+    background-color: #fff;
+    border: 1px solid #66aaff;
+}
