@@ -1,2 +1,7 @@
+[project]
+name = "oshi-tool-inori-minase"
+version = "0.1.0"
+requires-python = ">=3.12.1"
+
 [tool.vercel]
 entrypoint = "python.main:app"
