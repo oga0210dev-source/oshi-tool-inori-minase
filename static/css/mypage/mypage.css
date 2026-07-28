@@ -1,9 +1,19 @@
+/*==========================
+    レイアウト
+==========================*/
 .background{
     width:100%;
-    height:100vh;
+    min-height:100dvh;
     display:flex;
     flex-direction:column;
     align-items:center;
+}
+
+.page{
+    width:100%;
+    max-width:430px;
+    padding:20px 20px 60px;
+    box-sizing:border-box;
 }
 
 h1{
@@ -11,83 +21,113 @@ h1{
     text-align:center;
 }
 
-.page{
+/*==========================
+    プロフィール
+==========================*/
+.profile-area{
+    text-align:center;
+}
+
+.profile-image{
+    display:block;
+    width:120px;
+    height:120px;
+    margin:0 auto;
+    object-fit:cover;
+    cursor:pointer;
+}
+
+/*==========================
+    情報一覧
+==========================*/
+.info-list{
+    margin-top:30px;
+}
+
+.info-item{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+    padding:12px 0;
+    border-bottom:1px solid #ddd;
+}
+
+.label{
+    color:#666;
+    font-size:14px;
+}
+
+/*==========================
+    表示モード
+==========================*/
+.display-value{
     width:100%;
-    max-width:430px;
-    padding:20px;
-    box-sizing:border-box;
-}
-
-.info-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 0;
-    border-bottom: 1px solid #ddd;
-}
-
-.profile-area {
-    background: transparent;
-}
-
-.profile-image {
-    width: 120px;
-    height: 120px;
-    object-fit: cover;
-    background-color: transparent;
-    display: block;
-    margin: 0 auto;
-}
-
-.label {
-    color: #666;
-    font-size: 16px;
-}
-
-.value {
-    width: 60%;
-    text-align: right;
-}
-
-.value input {
-    width: 100%;
-    box-sizing: border-box;
-    border: none;
-    background: transparent;
-    text-align: right;
-}
-
-.value input:read-only {
-    pointer-events: none;
-}
-
-.value input.editing {
-    border: 1px solid #ccc;
-    background: #fff;
-}
-
-.value select {
-    width:100%;
-    border:none;
-    background:transparent;
-    font-family:inherit;
     text-align:right;
+    font-size:16px;
+    color:#333;
+    word-break:break-word;
 }
 
-.hidden{
-    display:none;
+/*==========================
+    編集モード
+==========================*/
+.edit-item{
+    width:100%;
+    padding:8px 10px;
+    box-sizing:border-box;
+    border:1px solid #ccc;
+    border-radius:8px;
+    background:#fff;
+    font:inherit;
+    font-size:16px;
 }
 
+.edit-item:focus{
+    border-color:#66aaff;
+    outline:none;
+}
+
+/* 日付入力(iPhone対策) */
+input[type="date"].edit-item{
+    min-width:0;
+}
+
+/* Select */
+select.edit-item{
+    appearance:auto;
+}
+
+/*==========================
+    ボタン
+==========================*/
 .button-area{
     display:flex;
     justify-content:center;
+    flex-wrap:wrap;
     gap:15px;
     margin-top:30px;
 }
 
+.button-area button{
+    min-width:100px;
+    padding:10px 20px;
+}
+
+/*==========================
+    自己紹介
+==========================*/
+.char-count{
+    margin-top:6px;
+    text-align:right;
+    font-size:13px;
+    color:#888;
+}
+
+/*==========================
+    退会
+==========================*/
 .withdraw-area{
     margin-top:60px;
-    text-align:left;
 }
 
 .withdraw-link{
@@ -95,7 +135,9 @@ h1{
     text-decoration:none;
 }
 
-.editing {
-    background-color: #fff;
-    border: 1px solid #66aaff;
+/*==========================
+    共通
+==========================*/
+.hidden{
+    display:none !important;
 }
