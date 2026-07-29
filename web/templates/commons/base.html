@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}推し活オールインワン{% endblock %}</title>
+
+    <link rel="icon" href="/static/img/logo.png" type="image/png">
+    <link rel="stylesheet" href="/static/css/common.css">
+
+    {% block css %}{% endblock %}
+</head>
+
+<body>
+
+<div id="toast" class="toast"></div>
+
+{% include "templates/commons/header.html" %}
+
+{% block content %}
+{% endblock %}
+
+{% block script %}
+{% endblock %}
+
+</body>
+</html>

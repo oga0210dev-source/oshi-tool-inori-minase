@@ -64,3 +64,28 @@ body{
 .toast.show{
     top:20px;
 }
+
+.page {
+    max-width: 430px;
+    margin: 0 auto;
+    padding: 24px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.form-group input {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.primary-button {
+    width: 100%;
+}
