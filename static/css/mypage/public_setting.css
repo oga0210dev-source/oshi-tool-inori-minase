@@ -1,0 +1,92 @@
+/* 公開設定画面 */
+.mypage-container {
+    width: 100%;
+    max-width: 430px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.mypage-container h1 {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+/* 設定項目 */
+.setting-item {
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+.setting-item h3 {
+    font-size: 16px;
+    margin-bottom: 12px;
+}
+
+/* ラジオボタン */
+.setting-item label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 15px;
+}
+
+.setting-item input[type="radio"] {
+    margin-right: 8px;
+}
+
+/*==========================
+    ボタン
+==========================*/
+.button-area{
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+    margin-top:30px;
+}
+
+.button-area button,
+.cancel-button{
+    width:100%;
+    height:50px;
+    border-radius:25px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:16px;
+    font-weight:bold;
+    text-decoration:none;
+    box-sizing:border-box;
+}
+
+/* 保存 */
+.button-area button{
+    border:none;
+    background:#ff8fb1;
+    color:white;
+}
+
+/* キャンセル */
+.cancel-button{
+    background:#ffffff;
+    border:1px solid #ccc;
+    color:#555;
+}
+
+/* 保存ボタン */
+button[type="submit"] {
+    width: 100%;
+    height: 50px;
+    margin-top: 20px;
+    border: none;
+    border-radius: 25px;
+    background-color: #ff8fb1;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button[type="submit"]:hover {
+    opacity: 0.8;
+}

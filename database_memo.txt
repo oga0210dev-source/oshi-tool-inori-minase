@@ -1,0 +1,128 @@
+/////////////////////////////////
+マスターテーブル
+/////////////////////////////////
+create table m_user (
+  user_id text not null,
+  user_name text not null,
+  password text not null,
+  role text not null default 'user'::text,
+  profile_image text null,
+  member_since date null,
+  email text null,
+  gender text null,
+  birthday date null,
+  prefecture smallint null,
+  x_account text null,
+  instagram_account text null,
+  discord_account text null,
+  profile_message text null,
+  is_active boolean not null default true,
+  created_at timestamp with time zone not null default now(),
+  updated_at timestamp with time zone not null default now(),
+  constraint m_user_pkey1 primary key (user_id)
+)
+
+create table m_prefecture (
+  prefecture_code smallint not null,
+  prefecture_name character varying(20) not null,
+  area_name character varying(20) null,
+  display_order smallint not null,
+  is_overseas boolean not null default false,
+  is_active boolean not null default true,
+  constraint m_prefecture_pkey primary key (prefecture_code)
+)
+
+
+create table m_user_public_setting (
+  user_id character varying(50) not null,
+  gender_public smallint not null default 0,
+  birthday_public smallint not null default 0,
+  age_public smallint not null default 0,
+  member_since_public smallint not null default '0'::smallint,
+  prefecture_public smallint not null default '0'::smallint,
+  sns_public smallint not null default '0'::smallint,
+  live_public smallint not null default 0,
+  meeting_public smallint not null default 0,
+  created_at timestamp without time zone null default CURRENT_TIMESTAMP,
+  updated_at timestamp without time zone null default CURRENT_TIMESTAMP,
+  constraint m_user_public_setting_pkey primary key (user_id),
+  constraint m_user_public_setting_user_id_fkey foreign KEY (user_id) references m_user (user_id) on update CASCADE on delete CASCADE
+)
+
+
+
+
+
+/////////////////////////////////
+都道府県データ
+/////////////////////////////////
+
+INSERT INTO m_prefecture
+(
+    prefecture_code,
+    prefecture_name,
+    area_name,
+    display_order,
+    is_overseas,
+    is_active
+)
+VALUES
+(0,  '未設定', 未設定,     0,  FALSE, TRUE),
+
+(1,  '北海道', '北海道',  1,  FALSE, TRUE),
+
+(2,  '青森県', '東北',    2,  FALSE, TRUE),
+(3,  '岩手県', '東北',    3,  FALSE, TRUE),
+(4,  '宮城県', '東北',    4,  FALSE, TRUE),
+(5,  '秋田県', '東北',    5,  FALSE, TRUE),
+(6,  '山形県', '東北',    6,  FALSE, TRUE),
+(7,  '福島県', '東北',    7,  FALSE, TRUE),
+
+(8,  '茨城県', '関東',    8,  FALSE, TRUE),
+(9,  '栃木県', '関東',    9,  FALSE, TRUE),
+(10, '群馬県', '関東',   10,  FALSE, TRUE),
+(11, '埼玉県', '関東',   11,  FALSE, TRUE),
+(12, '千葉県', '関東',   12,  FALSE, TRUE),
+(13, '東京都', '関東',   13,  FALSE, TRUE),
+(14, '神奈川県', '関東', 14,  FALSE, TRUE),
+
+(15, '新潟県', '中部',   15,  FALSE, TRUE),
+(16, '富山県', '中部',   16,  FALSE, TRUE),
+(17, '石川県', '中部',   17,  FALSE, TRUE),
+(18, '福井県', '中部',   18,  FALSE, TRUE),
+(19, '山梨県', '中部',   19,  FALSE, TRUE),
+(20, '長野県', '中部',   20,  FALSE, TRUE),
+(21, '岐阜県', '中部',   21,  FALSE, TRUE),
+(22, '静岡県', '中部',   22,  FALSE, TRUE),
+(23, '愛知県', '中部',   23,  FALSE, TRUE),
+
+(24, '三重県', '関西',   24,  FALSE, TRUE),
+(25, '滋賀県', '関西',   25,  FALSE, TRUE),
+(26, '京都府', '関西',   26,  FALSE, TRUE),
+(27, '大阪府', '関西',   27,  FALSE, TRUE),
+(28, '兵庫県', '関西',   28,  FALSE, TRUE),
+(29, '奈良県', '関西',   29,  FALSE, TRUE),
+(30, '和歌山県', '関西', 30,  FALSE, TRUE),
+
+(31, '鳥取県', '中国',   31,  FALSE, TRUE),
+(32, '島根県', '中国',   32,  FALSE, TRUE),
+(33, '岡山県', '中国',   33,  FALSE, TRUE),
+(34, '広島県', '中国',   34,  FALSE, TRUE),
+(35, '山口県', '中国',   35,  FALSE, TRUE),
+
+(36, '徳島県', '四国',   36,  FALSE, TRUE),
+(37, '香川県', '四国',   37,  FALSE, TRUE),
+(38, '愛媛県', '四国',   38,  FALSE, TRUE),
+(39, '高知県', '四国',   39,  FALSE, TRUE),
+
+(40, '福岡県', '九州',   40,  FALSE, TRUE),
+(41, '佐賀県', '九州',   41,  FALSE, TRUE),
+(42, '長崎県', '九州',   42,  FALSE, TRUE),
+(43, '熊本県', '九州',   43,  FALSE, TRUE),
+(44, '大分県', '九州',   44,  FALSE, TRUE),
+(45, '宮崎県', '九州',   45,  FALSE, TRUE),
+(46, '鹿児島県', '九州', 46,  FALSE, TRUE),
+
+(47, '沖縄県', '沖縄',   47,  FALSE, TRUE),
+
+(99, '海外', '海外',     99,  TRUE, TRUE);

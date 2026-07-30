@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Request, Form
 from fastapi.responses import RedirectResponse
 from python.models.user import UserModel
+from python.models.public_setting import PublicSettingModel
 from python.core.security import Security
 import re
 
@@ -167,6 +168,8 @@ def register_exec(
         user_name,
         hashed_password
     )
+
+    PublicSettingModel.create(user_id)
 
     # 登録したユーザー情報をセッション保存
     request.session["user_id"] = user_id

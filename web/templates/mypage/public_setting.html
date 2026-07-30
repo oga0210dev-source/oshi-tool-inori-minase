@@ -1,0 +1,202 @@
+{% extends "templates/commons/base.html" %}
+
+{% block title %}
+公開設定
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="/static/css/mypage/public_setting.css">
+{% endblock %}
+
+{% block content %}
+
+<div class="mypage-container">
+    <h1>公開設定</h1>
+    <form method="post" action="/mypage/public-setting">
+        <div class="setting-item">
+            <h3>性別</h3>
+            <label>
+                <input type="radio"
+                       name="gender_public"
+                       value="1"
+                       {% if setting.gender_public == 1 %}checked{% endif %}>
+                公開
+            </label>
+            <label>
+                <input type="radio"
+                       name="gender_public"
+                       value="0"
+                       {% if setting.gender_public == 0 %}checked{% endif %}>
+                非公開
+            </label>
+        </div>
+
+        <div class="setting-item">
+            <h3>誕生日</h3>
+            <label>
+                <input type="radio"
+                       name="birthday_public"
+                       value="1"
+                       {% if setting.birthday_public == 1 %}checked{% endif %}>
+                年月日公開
+            </label>
+            <label>
+                <input type="radio"
+                       name="birthday_public"
+                       value="2"
+                       {% if setting.birthday_public == 2 %}checked{% endif %}>
+                月日のみ公開
+            </label>
+            <label>
+                <input type="radio"
+                       name="birthday_public"
+                       value="0"
+                       {% if setting.birthday_public == 0 %}checked{% endif %}>
+                非公開
+            </label>
+        </div>
+
+
+        <div class="setting-item">
+            <h3>年齢</h3>
+            <label>
+                <input type="radio"
+                       name="age_public"
+                       value="1"
+                       {% if setting.age_public == 1 %}checked{% endif %}>
+                実年齢
+            </label>
+            <label>
+                <input type="radio"
+                       name="age_public"
+                       value="2"
+                       {% if setting.age_public == 2 %}checked{% endif %}>
+                〇〇代
+            </label>
+            <label>
+                <input type="radio"
+                       name="age_public"
+                       value="0"
+                       {% if setting.age_public == 0 %}checked{% endif %}>
+                非公開
+            </label>
+        </div>
+
+        <div class="setting-item">
+            <h3>いのりまち入会日</h3>
+
+            <label>
+                <input type="radio"
+                       name="member_since_public"
+                       value="1"
+                       {% if setting.member_since_public == 1 %}checked{% endif %}>
+                公開
+            </label>
+            <label>
+                <input type="radio"
+                       name="member_since_public"
+                       value="0"
+                       {% if setting.member_since_public == 0 %}checked{% endif %}>
+                非公開
+            </label>
+        </div>
+
+        <div class="setting-item">
+            <h3>都道府県</h3>
+            <label>
+                <input type="radio"
+                       name="prefecture_public"
+                       value="1"
+                       {% if setting.prefecture_public == 1 %}checked{% endif %}>
+                公開
+            </label>
+            <label>
+                <input type="radio"
+                       name="prefecture_public"
+                       value="0"
+                       {% if setting.prefecture_public == 0 %}checked{% endif %}>
+                非公開
+            </label>
+        </div>
+
+        <div class="setting-item">
+            <h3>SNS</h3>
+            <label>
+                <input type="radio"
+                       name="sns_public"
+                       value="1"
+                       {% if setting.sns_public == 1 %}checked{% endif %}>
+                公開
+            </label>
+            <label>
+                <input type="radio"
+                       name="sns_public"
+                       value="0"
+                       {% if setting.sns_public == 0 %}checked{% endif %}>
+                非公開
+            </label>
+        </div>
+
+        <div class="setting-item">
+            <h3>ライブ</h3>
+            <label>
+                <input type="radio"
+                       name="live_public"
+                       value="2"
+                       {% if setting.live_public == 2 %}checked{% endif %}>
+                参加数＋詳細
+            </label>
+            <label>
+                <input type="radio"
+                       name="live_public"
+                       value="1"
+                       {% if setting.live_public == 1 %}checked{% endif %}>
+                参加数のみ
+            </label>
+            <label>
+                <input type="radio"
+                       name="live_public"
+                       value="0"
+                       {% if setting.live_public == 0 %}checked{% endif %}>
+                非公開
+            </label>
+        </div>
+
+        <div class="setting-item">
+            <h3>町民集会</h3>
+            <label>
+                <input type="radio"
+                       name="meeting_public"
+                       value="2"
+                       {% if setting.meeting_public == 2 %}checked{% endif %}>
+                参加数＋詳細
+            </label>
+            <label>
+                <input type="radio"
+                       name="meeting_public"
+                       value="1"
+                       {% if setting.meeting_public == 1 %}checked{% endif %}>
+                参加数のみ
+            </label>
+            <label>
+                <input type="radio"
+                       name="meeting_public"
+                       value="0"
+                       {% if setting.meeting_public == 0 %}checked{% endif %}>
+                非公開
+            </label>
+        </div>
+        <div class="button-area">
+
+            <button type="submit">
+                保存
+            </button>
+
+            <a href="/mypage" class="cancel-button">
+                キャンセル
+            </a>
+
+        </div>
+    </form>
+</div>
+{% endblock %}
