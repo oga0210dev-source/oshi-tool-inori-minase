@@ -3,7 +3,8 @@ from fastapi import (
     Request,
     Form,
     UploadFile,
-    File
+    File,
+    Query
 )
 from fastapi.responses import RedirectResponse
 
@@ -17,7 +18,10 @@ router = APIRouter()
 
 
 @router.get("/mypage")
-def mypage(request: Request):
+def mypage(
+        request: Request,
+        password_changed: bool = Query(False)
+):
     """マイページ表示"""
 
     user_id = request.session.get("user_id")
@@ -39,7 +43,8 @@ def mypage(request: Request):
         name="templates/mypage/mypage.html",
         context={
             "user": user,
-            "prefecture_groups": prefecture_groups
+            "prefecture_groups": prefecture_groups,
+            "password_changed": password_changed
         }
     )
 

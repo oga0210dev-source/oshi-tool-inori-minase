@@ -158,3 +158,23 @@ class UserModel:
 
         conn.commit()
         conn.close()
+
+    @staticmethod
+    def update_password(user_id, password):
+        conn = get_connection()
+        try:
+            cursor = conn.cursor()
+            cursor.execute(
+                """
+                UPDATE M_USER
+                SET password = %s
+                WHERE user_id = %s
+                """,
+                (
+                    password,
+                    user_id
+                )
+            )
+            conn.commit()
+        finally:
+            conn.close()

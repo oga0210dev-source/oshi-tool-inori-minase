@@ -124,15 +124,44 @@ select.edit-item{
 }
 
 /*==========================
+    設定メニュー
+==========================*/
+
+.public-setting-area,
+.security-area{
+    margin-top:20px;
+}
+
+.setting-button{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:100%;
+    height:50px;
+    box-sizing:border-box;
+    border-radius:25px;
+    background:#ffffff;
+    border:1px solid #ddd;
+    color:#333;
+    text-decoration:none;
+    font-size:16px;
+    font-weight:bold;
+}
+
+.setting-button:hover{
+    opacity:0.8;
+}
+
+/*==========================
     退会
 ==========================*/
 .withdraw-area{
-    margin-top:60px;
+    margin-top:40px;
 }
 
-.withdraw-link{
+.withdraw-button{
     color:#d9534f;
-    text-decoration:none;
+    border-color:#d9534f;
 }
 
 /*==========================
