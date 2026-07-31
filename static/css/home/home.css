@@ -132,6 +132,8 @@
 .setting-box{
     width:80%;
     max-width:350px;
+    max-height:80vh;
+    overflow-y:auto;
     background:white;
     border-radius:20px;
     padding:20px;
