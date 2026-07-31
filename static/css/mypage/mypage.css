@@ -98,22 +98,6 @@ select.edit-item{
 }
 
 /*==========================
-    ボタン
-==========================*/
-.button-area{
-    display:flex;
-    justify-content:center;
-    flex-wrap:wrap;
-    gap:15px;
-    margin-top:30px;
-}
-
-.button-area button{
-    min-width:100px;
-    padding:10px 20px;
-}
-
-/*==========================
     自己紹介
 ==========================*/
 .char-count{
@@ -126,10 +110,23 @@ select.edit-item{
 /*==========================
     設定メニュー
 ==========================*/
-
 .public-setting-area,
-.security-area{
+.security-area,
+.cansel-area{
     margin-top:20px;
+}
+
+.button-area{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:15px;
+    margin-top:30px;
+}
+
+.button-area button{
+    min-width:100px;
+    padding:10px 20px;
 }
 
 .setting-button{
