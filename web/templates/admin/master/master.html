@@ -1,18 +1,17 @@
 <!DOCTYPE html>
 <html lang="ja">
 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/static/img/logo.png" type="image/png">
+    <title>推し活オールインワン</title>
+
+    <link rel="stylesheet" href="/static/css/common.css">
+    <link rel="stylesheet" href="/static/css/admin/master/master.css">
 </head>
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="icon" href="/static/img/logo.png" type="image/png">
-        <title>推し活オールインワン</title>
 
-        <link rel="stylesheet" href="/static/css/common.css">
-        <link rel="stylesheet" href="/static/css/admin/master/master.css">
-    </head>
-
-<body>
+<body class="admin-page">
 {% include "templates/commons/header.html" %}
 
 <h1 class="page-title">
@@ -22,7 +21,7 @@
     <a href="/admin/master/song" class="master-btn">
         曲管理
     </a>
-    <a href="#" class="master-btn">
+    <a href="/admin/master/live" class="master-btn">
         ライブ管理
     </a>
     <a href="#" class="master-btn">

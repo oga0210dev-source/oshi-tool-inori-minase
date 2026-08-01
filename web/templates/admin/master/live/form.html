@@ -1,10 +1,96 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
+
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/static/img/logo.png" type="image/png">
+    <title>推し活オールインワン</title>
+    <link rel="stylesheet" href="/static/css/common.css">
+    <link rel="stylesheet" href="/static/css/admin/master/live/live.css">
 </head>
-<body>
 
+<body class="admin-page">
+    {% include "templates/commons/header.html" %}
+    <div class="container">
+        <h1 class="page-title">{% if live and live.live_id %}ライブ編集{% else %}ライブ登録{% endif %}</h1>
+
+        {% if error %}
+        <p class="error-message">{{ error }}</p>
+        {% endif %}
+
+        <form {% if live and live.live_id %}action="/admin/master/live/update/{{ live.live_id }}"{% else %}action="/admin/master/live/create"{% endif %} method="post" class="live-form">
+
+            <div class="form-group">
+                <h2 class="form-title">ツアー情報</h2>
+
+                <label>ツアー名</label>
+                <input type="text" name="tour_name" list="tour_list" value="{{ live.tour_name or '' }}">
+
+                <datalist id="tour_list">
+                {% for tour in tour_list %}
+                <option value="{{ tour.tour_name }}">
+                {% endfor %}
+                </datalist>
+
+                <label>ツアー公演順</label>
+                <input type="number" name="tour_order" min="1" value="{{ live.tour_order or '' }}">
+            </div>
+
+            <div class="form-group">
+                <h2 class="form-title">ライブ情報</h2>
+
+                <label>ライブ名</label>
+                <input type="text" name="live_name" value="{{ live.live_name or '' }}" required>
+
+                <label>開催日</label>
+                <input type="date" name="live_date" value="{{ live.live_date or '' }}" required>
+
+                <label>会場名</label>
+                <input type="text" name="venue_name" value="{{ live.venue_name or '' }}" required>
+                <label>都道府県</label>
+                <select name="prefecture_code">
+                    <option value="">未設定</option>
+                    {% for area, prefectures in prefecture_groups.items() %}
+                    <optgroup label="{{ area }}">
+                        {% for prefecture in prefectures %}
+                        <option value="{{ prefecture.prefecture_code }}" {% if live and live.prefecture_code == prefecture.prefecture_code %}selected{% endif %}>
+                            {{ prefecture.prefecture_name }}
+                        </option>
+                        {% endfor %}
+                    </optgroup>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <h2 class="form-title">関連情報</h2>
+
+                <label>Blu-ray URL</label>
+                <input type="url" name="blu_ray_url" value="{{ live.blu_ray_url or '' }}">
+
+                <label>公式サイト</label>
+                <input type="url" name="official_url" value="{{ live.official_url or '' }}">
+            </div>
+
+            <div class="form-group">
+                <h2 class="form-title">公開設定</h2>
+
+                <label class="checkbox">
+                <input type="checkbox" name="public_flag" value="true" {% if not live or live.public_flag %}checked{% endif %}>
+                公開する
+                </label>
+            </div>
+
+            <button type="submit" class="action-btn">
+            {% if live and live.live_id %}更新{% else %}登録{% endif %}
+            </button>
+        </form>
+
+        <a href="/admin/master/live" class="back-btn">
+        戻る
+        </a>
+
+    </div>
 </body>
 </html>

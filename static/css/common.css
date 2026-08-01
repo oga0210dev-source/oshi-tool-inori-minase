@@ -44,6 +44,11 @@ body{
     background-attachment:scroll;
 }
 
+body.admin-page {
+    background-image:none;
+    background: #fff5f8;
+}
+
 .toast{
     position:fixed;
     top:-100px;

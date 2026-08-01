@@ -2,7 +2,7 @@ from fastapi import FastAPI
 
 from python.routers import home, login, register
 from python.routers.mypage import mypage, password, public_setting
-from python.routers.admin.master import master, song
+from python.routers.admin.master import master, song, live
 
 
 def register_router(app: FastAPI):
@@ -17,3 +17,4 @@ def register_router(app: FastAPI):
 
     app.include_router(master.router)
     app.include_router(song.router)
+    app.include_router(live.router)
