@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Request, Form
 from fastapi.responses import RedirectResponse
 from python.models.user import UserModel
-from python.models.public_setting import PublicSettingModel
+from python.models.mypage.public_setting import PublicSettingModel
 from python.core.security import Security
 import re
 

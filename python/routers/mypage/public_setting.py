@@ -2,7 +2,7 @@ from python.core.database import get_connection
 from fastapi import APIRouter, Request, Form
 from fastapi.responses import RedirectResponse
 
-from python.core import templates
+from python.core import templates, auth
 
 router = APIRouter()
 
@@ -39,8 +39,9 @@ def update_public_setting(
 ):
     user_id = request.session.get("user_id")
 
-    if not user_id:
-        return RedirectResponse("/login")
+    # ログイン確認
+    if not auth.is_login(request):
+        return RedirectResponse("/login", status_code=303)
 
     PublicSettingModel.update(
         user_id,
