@@ -2,7 +2,6 @@
     width:55px;
     height:55px;
     object-fit:cover;
-    border-radius:50%;
 }
 
 .profile-card{
@@ -134,6 +133,10 @@
     max-width:350px;
     max-height:80vh;
     overflow-y:auto;
+    /* Firefox */
+    scrollbar-width: none;
+    /* IE・Edge（旧） */
+    -ms-overflow-style: none;
     background:white;
     border-radius:20px;
     padding:20px;
@@ -161,4 +164,9 @@
     border-bottom:1px solid #ddd;
     color:#333;
     text-decoration:none;
+}
+
+/* Chrome・Edge・Safari */
+.setting-box::-webkit-scrollbar {
+    display: none;
 }

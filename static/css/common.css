@@ -89,3 +89,22 @@ body{
 .primary-button {
     width: 100%;
 }
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    max-width:100%;
+    min-width:0;
+    box-sizing:border-box;
+}
+
+input[type="date"] {
+    width:100%;
+    max-width:100%;
+    min-width:0;
+    height:45px;
+    padding:0 8px;
+    box-sizing:border-box;
+    -webkit-appearance:none;
+    appearance:none;
+}

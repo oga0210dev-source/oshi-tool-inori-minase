@@ -3,23 +3,15 @@ from fastapi import FastAPI
 from starlette.staticfiles import StaticFiles
 from starlette.middleware.sessions import SessionMiddleware
 
-from python.routers import home, login, register, mypage, password, public_setting
+from python.router import register_router
 
 app = FastAPI()
-
 app.add_middleware(
     SessionMiddleware,
     secret_key="development-secret-key-change-before-production"
 )
-
 app.mount("/static", StaticFiles(directory="static"), name="static")
-
-app.include_router(home.router)
-app.include_router(login.router)
-app.include_router(register.router)
-app.include_router(mypage.router)
-app.include_router(password.router)
-app.include_router(public_setting.router)
+register_router(app)
 
 if __name__ == "__main__":
     uvicorn.run(

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/static/img/logo.png" type="image/png">
+<title>推し活オールインワン</title>
+<link rel="stylesheet" href="/static/css/common.css">
+<link rel="stylesheet" href="/static/css/admin/master/song/song.css">
+</head>
+<body>
+{% include "templates/commons/header.html" %}
+<div class="container">
+
+<h1 class="page-title">{% if song and song.song_id %}曲編集{% else %}曲登録{% endif %}</h1>
+
+{% if error %}
+<p class="error-message">{{ error }}</p>
+{% endif %}
+
+<form {% if song and song.song_id %}action="/admin/master/song/update/{{ song.song_id }}"{% else %}action="/admin/master/song/create"{% endif %} method="post" class="song-form">
+
+<div class="form-group">
+<h2 class="form-title">基本情報</h2>
+
+<label>曲名</label>
+<input type="text" name="song_name" value="{{ song.song_name or '' }}" required>
+
+<label>アルバム名</label>
+<input type="text" name="album_name" value="{{ song.album_name or '' }}">
+
+<label>リリース日</label>
+<input type="date" name="release_date" value="{{ song.release_date or '' }}">
+
+<label>表示順</label>
+<input type="number" name="display_order" min="1" value="{{ song.display_order or '' }}">
+</div>
+
+
+<div class="form-group">
+<h2 class="form-title">制作情報</h2>
+
+<label>作詞者</label>
+<input type="text" name="lyricist" value="{{ song.lyricist or '' }}">
+
+<label>作曲者</label>
+<input type="text" name="composer" value="{{ song.composer or '' }}">
+
+<label>編曲者</label>
+<input type="text" name="arranger" value="{{ song.arranger or '' }}">
+</div>
+
+
+<div class="form-group">
+<h2 class="form-title">関連情報</h2>
+
+<label>タイアップ</label>
+<input type="text" name="tie_up" value="{{ song.tie_up or '' }}">
+</div>
+
+
+<div class="form-group">
+<h2 class="form-title">配信情報</h2>
+
+<label>YouTube URL</label>
+<input type="url" name="youtube_url" value="{{ song.youtube_url or '' }}">
+
+<label>Apple Music URL</label>
+<input type="url" name="apple_music_url" value="{{ song.apple_music_url or '' }}">
+
+<label>Spotify URL</label>
+<input type="url" name="spotify_url" value="{{ song.spotify_url or '' }}">
+</div>
+
+
+<div class="form-group">
+<h2 class="form-title">公開設定</h2>
+
+<label class="checkbox">
+<input type="checkbox" name="is_public" value="true" {% if not song or song.is_public %}checked{% endif %}>
+公開する
+</label>
+
+</div>
+
+
+<button type="submit" class="action-btn">
+{% if song and song.song_id %}更新{% else %}登録{% endif %}
+</button>
+
+</form>
+
+
+<a href="/admin/master/song" class="back-btn">
+戻る
+</a>
+
+</div>
+</body>
+</html>

@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Request
 from fastapi.responses import RedirectResponse
 from python.models.user import UserModel
-from python.core import templates
+from python.core import templates, auth
 from python.core.security import Security
 from fastapi import Form
 import re
@@ -26,12 +26,9 @@ def password_change(
 ):
     # 現在のパスワード確認
     user_id = request.session.get("user_id")
-    # 未ログイン対策
-    if user_id is None:
-        return RedirectResponse(
-            url="/login",
-            status_code=303
-        )
+    # ログイン確認
+    if not auth.is_login(request):
+        return RedirectResponse("/login", status_code=303)
 
     if not old_password:
         return templates.TemplateResponse(

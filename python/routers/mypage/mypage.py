@@ -8,10 +8,10 @@ from fastapi import (
 )
 from fastapi.responses import RedirectResponse
 
-from python.core import templates
+from python.core import templates, auth
 from python.models.user import UserModel
 from python.models.image import ImageModel
-from python.models.master import get_prefecture_list
+from python.models.admin.master.master import get_prefecture_list
 from collections import OrderedDict
 
 router = APIRouter()
@@ -26,7 +26,8 @@ def mypage(
 
     user_id = request.session.get("user_id")
 
-    if user_id is None:
+    # ログイン確認
+    if not auth.is_login(request):
         return RedirectResponse("/login", status_code=303)
 
     user = UserModel.get_user(user_id)
@@ -73,7 +74,8 @@ async def update_mypage(
 
     user_id = request.session.get("user_id")
 
-    if user_id is None:
+    # ログイン確認
+    if not auth.is_login(request):
         return RedirectResponse("/login", status_code=303)
 
     # 空文字をNULLへ変換
