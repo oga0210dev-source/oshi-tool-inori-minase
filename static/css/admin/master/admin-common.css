@@ -1,0 +1,270 @@
+/* =========================
+   管理画面 共通CSS
+========================= */
+
+
+/* ヘッダー */
+.page-header{
+    flex:none;
+    padding-bottom:5px;
+}
+
+.page-title{
+    margin:5px 0;
+    text-align:center;
+    font-size:25px;
+}
+
+.master-link{
+    display:block;
+    width:max-content;
+    color:#888;
+    text-decoration:none;
+    font-size:14px;
+    margin-bottom:5px;
+}
+
+
+/* 全体 */
+.container{
+    width:100%;
+    max-width:430px;
+    height:100dvh;
+    margin:0 auto;
+    padding:10px 15px;
+    box-sizing:border-box;
+    display:flex;
+    flex-direction:column;
+}
+
+
+/* =========================
+   ボタン
+========================= */
+
+
+/* 新規登録・登録・更新 */
+.action-btn{
+    width:100%;
+    max-width:400px;
+    height:42px;
+    margin:8px auto 10px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-sizing:border-box;
+    border-radius:21px;
+    background:#ffb347;
+    color:#fff;
+    text-decoration:none;
+    font-size:15px;
+    font-weight:bold;
+    box-shadow:0 3px 8px rgba(0,0,0,.15);
+}
+
+.action-btn:hover{
+    opacity:.85;
+}
+
+
+/* 戻る */
+.back-btn{
+    width:100%;
+    max-width:400px;
+    height:50px;
+    margin:15px auto;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-sizing:border-box;
+    border-radius:25px;
+    background:#999;
+    color:#fff;
+    text-decoration:none;
+    font-size:17px;
+    font-weight:bold;
+}
+
+
+/* 編集・削除 */
+.edit-btn,
+.delete-btn{
+    width:55px;
+    height:32px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:16px;
+    text-decoration:none;
+    font-size:13px;
+    font-weight:bold;
+}
+
+.edit-btn{
+    background:#87cefa;
+    color:#fff;
+}
+
+.delete-btn{
+    background:#ff8b8b;
+    color:#fff;
+}
+
+.edit-btn:hover,
+.delete-btn:hover{
+    opacity:.85;
+}
+
+
+/* =========================
+   検索
+========================= */
+
+.search-area{
+    width:100%;
+    max-width:400px;
+    margin:0 auto 10px;
+}
+
+.search-area form{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+.search-area input,
+.search-area select{
+    width:100%;
+    height:50px;
+    padding:0 15px;
+    box-sizing:border-box;
+    border:1px solid #ddd;
+    border-radius:25px;
+    font-size:15px;
+    background:#fff;
+}
+
+
+.search-btn{
+    width:100%;
+    height:42px;
+    border:none;
+    border-radius:25px;
+    background:#ff8fb1;
+    color:#fff;
+    font-size:15px;
+    font-weight:bold;
+    cursor:pointer;
+    box-shadow:0 3px 8px rgba(0,0,0,.15);
+}
+
+.search-btn:hover{
+    opacity:.85;
+}
+
+
+/* =========================
+   フォーム
+========================= */
+
+
+/* 入力フォーム */
+.master-form{
+    width:100%;
+    max-width:400px;
+    margin:0 auto;
+}
+
+
+/* フォームスクロール */
+.form-scroll{
+    flex:1;
+    min-height:0;
+    overflow-y:auto;
+    padding-bottom:20px;
+    scrollbar-width:none;
+}
+
+.form-scroll::-webkit-scrollbar{
+    display:none;
+}
+
+
+/* 入力カード */
+.form-group{
+    width:100%;
+    margin:20px auto;
+    padding:18px;
+    box-sizing:border-box;
+    background:#fff;
+    border-radius:20px;
+    box-shadow:0 3px 8px rgba(0,0,0,.12);
+}
+
+
+.form-title{
+    margin:0 0 15px;
+    padding-bottom:8px;
+    border-bottom:2px solid #ff8fb1;
+    font-size:18px;
+}
+
+
+.master-form label{
+    display:block;
+    margin:12px 0 6px;
+    font-size:15px;
+    font-weight:bold;
+}
+
+
+.master-form input,
+.master-form select{
+    width:100%;
+    height:45px;
+    padding:0 12px;
+    box-sizing:border-box;
+    border:1px solid #ddd;
+    border-radius:12px;
+    font-size:15px;
+    background:#fff;
+}
+
+
+/* チェックボックス */
+.checkbox{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-size:15px;
+    font-weight:bold;
+    line-height:18px;
+}
+
+.checkbox input{
+    width:18px;
+    height:18px;
+    margin:0;
+    flex-shrink:0;
+}
+
+
+/* =========================
+   共通メッセージ
+========================= */
+
+.empty-message{
+    margin-top:30px;
+    text-align:center;
+    color:#777;
+}
+
+
+.error-message{
+    width:100%;
+    max-width:400px;
+    margin:0 auto 15px;
+    color:#e53935;
+    font-weight:bold;
+    text-align:center;
+}

@@ -1,97 +1,30 @@
-.page-title {
-    text-align:center;
+/* =========================
+   曲一覧
+========================= */
+
+.album-list{
+    flex:1;
+    min-height:0;
+    overflow-y:auto;
+    padding-bottom:20px;
+    scrollbar-width:none;
 }
 
-
-/* 新規登録ボタン */
-.action-btn {
-    width:100%;
-    max-width:400px;
-    height:50px;
-    margin:15px auto 20px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    box-sizing:border-box;
-    border-radius:25px;
-    background:#ffb347;
-    color:white;
-    text-decoration:none;
-    font-size:17px;
-    font-weight:bold;
-    box-shadow:0 3px 8px rgba(0,0,0,0.15);
-}
-
-.action-btn:hover {
-    opacity:0.85;
-}
-
-
-/* 検索エリア */
-.search-area {
-    width:100%;
-    max-width:400px;
-    margin:0 auto 20px;
-}
-
-.search-area form {
-    display:flex;
-    flex-direction:column;
-    gap:10px;
-}
-
-
-.search-area input,
-.search-area select {
-    width:100%;
-    height:50px;
-    padding:0 15px;
-    box-sizing:border-box;
-    border:1px solid #ddd;
-    border-radius:25px;
-    font-size:15px;
-    background:white;
-}
-
-
-/* 検索ボタン */
-.search-btn {
-    width:100%;
-    height:50px;
-    border:none;
-    border-radius:25px;
-    background:#ff8fb1;
-    color:white;
-    font-size:17px;
-    font-weight:bold;
-    cursor:pointer;
-    box-shadow:0 3px 8px rgba(0,0,0,0.15);
-}
-
-.search-btn:hover {
-    opacity:0.85;
-}
-
-
-/* 曲一覧 */
-.album-list {
-    width:100%;
-    max-width:400px;
-    margin:20px auto 0;
+.album-list::-webkit-scrollbar{
+    display:none;
 }
 
 
 /* アルバム */
-.album-block {
+.album-block{
     margin-bottom:20px;
     padding:15px;
-    background:white;
+    background:#fff;
     border-radius:20px;
-    box-shadow:0 3px 8px rgba(0,0,0,0.12);
+    box-shadow:0 3px 8px rgba(0,0,0,.12);
 }
 
-
-.album-title {
+.album-title{
     margin:0 0 10px;
     padding-bottom:8px;
     border-bottom:2px solid #ff8fb1;
@@ -101,7 +34,7 @@
 
 
 /* 曲行 */
-.song-row {
+.song-row{
     display:flex;
     align-items:center;
     justify-content:space-between;
@@ -109,88 +42,55 @@
     border-bottom:1px solid #eee;
 }
 
-.song-row:last-child {
+.song-row:last-child{
     border-bottom:none;
 }
 
-
-.song-name {
+.song-name{
+    flex:1;
     font-size:16px;
     color:#333;
 }
 
 
-/* 編集・削除 */
-.song-action {
+/* 編集削除エリア */
+.song-action{
     display:flex;
     gap:8px;
 }
 
 
-.edit-btn,
-.delete-btn {
-    width:55px;
-    height:32px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    border-radius:16px;
-    text-decoration:none;
-    font-size:13px;
+/* =========================
+   フォーム
+========================= */
+
+.song-form{
+    width:100%;
+    max-width:400px;
+    margin:0 auto;
+    flex:1;
+    min-height:0;
+    overflow-y:auto;
+    padding-bottom:20px;
+    scrollbar-width:none;
+}
+
+.song-form::-webkit-scrollbar{
+    display:none;
+}
+
+
+/* 入力項目 */
+.song-form label{
+    display:block;
+    margin:12px 0 6px;
+    font-size:15px;
     font-weight:bold;
 }
 
 
-.edit-btn {
-    background:#87cefa;
-    color:white;
-}
-
-
-.delete-btn {
-    background:#ff8b8b;
-    color:white;
-}
-
-
-.edit-btn:hover,
-.delete-btn:hover {
-    opacity:0.85;
-}
-
-
-/* データなし */
-.empty-message {
-    text-align:center;
-    margin-top:30px;
-    color:#777;
-}
-
-
-.song-form {
-    width:100%;
-    max-width:400px;
-    margin:0 auto;
-}
-
-.form-group {
-    width:100%;
-    margin:20px auto;
-    padding:18px;
-    box-sizing:border-box;
-    background:white;
-    border-radius:20px;
-    box-shadow:0 3px 8px rgba(0,0,0,0.12);
-}
-
-.form-title {
-    margin:0 0 15px;
-    padding-bottom:8px;
-    border-bottom:2px solid #ff8fb1;
-    font-size:18px;
-}
-
-.song-form input {
+.song-form input,
+.song-form select{
     width:100%;
     height:45px;
     padding:0 12px;
@@ -198,37 +98,5 @@
     border:1px solid #ddd;
     border-radius:12px;
     font-size:15px;
-}
-
-.back-btn {
-    width:100%;
-    max-width:400px;
-    height:50px;
-    margin:15px auto;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    box-sizing:border-box;
-    border-radius:25px;
-    background:#999;
-    color:white;
-    text-decoration:none;
-    font-size:17px;
-    font-weight:bold;
-}
-
-.checkbox {
-    display:flex;
-    align-items:center;
-    gap:10px;
-    font-size:15px;
-    font-weight:bold;
-    line-height:18px;
-}
-
-.checkbox input {
-    width:18px;
-    height:18px;
-    margin:0;
-    flex-shrink:0;
+    background:#fff;
 }

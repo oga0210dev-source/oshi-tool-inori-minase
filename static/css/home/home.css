@@ -1,9 +1,22 @@
-.profile-image img{
-    width:55px;
-    height:55px;
-    object-fit:cover;
+/* ==========================
+   スクロール領域
+========================== */
+.home-scroll{
+    width:100%;
+    flex:1;
+    min-height:0;
+    overflow-y:auto;
+    overflow-x:hidden;
+    padding-bottom:80px;
+    scrollbar-width:none;
 }
 
+.home-scroll::-webkit-scrollbar{
+    display:none;
+}
+/* ==========================
+   プロフィール
+========================== */
 .profile-card{
     width:80%;
     max-width:400px;
@@ -15,6 +28,12 @@
     border-radius:15px;
     background:rgba(255,255,255,.85);
     box-sizing:border-box;
+}
+
+.profile-image img{
+    width:55px;
+    height:55px;
+    object-fit:cover;
 }
 
 .profile-info{
@@ -31,27 +50,35 @@
     font-size:12px;
 }
 
+/* ==========================
+   ボタン共通
+========================== */
+.menu-btn,
+.wide-btn{
+    background:rgba(255,255,255,.88);
+    border-radius:15px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    text-decoration:none;
+    box-shadow:0 2px 6px rgba(0,0,0,.12);
+    transition:.2s;
+}
 
-/*==========================
-    横長ボタン
-==========================*/
+.menu-btn:hover,
+.wide-btn:hover{
+    transform:scale(1.03);
+}
 
+/* ==========================
+   横長ボタン
+========================== */
 .wide-btn{
     width:80%;
     max-width:400px;
     height:70px;
     margin:10px auto;
-    display:flex;
-    flex-direction:row;
-    justify-content:center;
-    align-items:center;
-    border-radius:15px;
-    background:rgba(255,255,255,.88);
-    text-decoration:none;
-    box-shadow:0 2px 6px rgba(0,0,0,.12);
-    box-sizing:border-box;
 }
-
 
 .wide-btn img{
     width:45px;
@@ -60,11 +87,9 @@
     margin-right:15px;
 }
 
-
-/*==========================
-    2列メニュー
-==========================*/
-
+/* ==========================
+   2列メニュー
+========================== */
 .menu-grid{
     width:80%;
     max-width:400px;
@@ -74,24 +99,9 @@
     gap:10px;
 }
 
-
-/*==========================
-    メニューボタン
-==========================*/
-
-.menu-btn{
-    display:flex;
-    flex-direction:row;
-    justify-content:center;
-    align-items:center;
+.menu-grid .menu-btn{
     height:70px;
-    border-radius:15px;
-    background:rgba(255,255,255,.88);
-    text-decoration:none;
-    box-shadow:0 2px 6px rgba(0,0,0,.12);
-    transition:.2s;
 }
-
 
 .menu-btn img{
     width:35px;
@@ -100,31 +110,20 @@
     margin-right:10px;
 }
 
-
 .menu-btn span{
     font-size:14px;
     font-weight:bold;
     color:#333;
 }
 
-
-.menu-btn:hover,
-.wide-btn:hover{
-    transform:scale(1.03);
-}
-
 /* ==========================
    設定モーダル
 ========================== */
-
 .setting-modal{
     display:none;
     position:fixed;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-    background:rgba(0,0,0,0.45);
+    inset:0;
+    background:rgba(0,0,0,.45);
     z-index:1000;
 }
 
@@ -133,10 +132,7 @@
     max-width:350px;
     max-height:80vh;
     overflow-y:auto;
-    /* Firefox */
-    scrollbar-width: none;
-    /* IE・Edge（旧） */
-    -ms-overflow-style: none;
+    scrollbar-width:none;
     background:white;
     border-radius:20px;
     padding:20px;
@@ -146,6 +142,10 @@
     transform:translate(-50%,-50%);
 }
 
+.setting-box::-webkit-scrollbar{
+    display:none;
+}
+
 .setting-box h2{
     text-align:center;
     margin-bottom:20px;
@@ -153,8 +153,7 @@
 
 .setting-box h3{
     font-size:14px;
-    margin-top:20px;
-    margin-bottom:5px;
+    margin:20px 0 5px;
     color:#888;
 }
 
@@ -164,9 +163,4 @@
     border-bottom:1px solid #ddd;
     color:#333;
     text-decoration:none;
-}
-
-/* Chrome・Edge・Safari */
-.setting-box::-webkit-scrollbar {
-    display: none;
 }

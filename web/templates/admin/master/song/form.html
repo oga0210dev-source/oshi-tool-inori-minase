@@ -7,14 +7,15 @@
     <link rel="icon" href="/static/img/logo.png" type="image/png">
     <title>推し活オールインワン</title>
     <link rel="stylesheet" href="/static/css/common.css">
+    <link rel="stylesheet" href="/static/css/admin/master/admin-common.css">
     <link rel="stylesheet" href="/static/css/admin/master/song/song.css">
 </head>
 
-<body class="admin-page">
-    {% include "templates/commons/header.html" %}
+<body>
     <div class="container">
-
-        <h1 class="page-title">{% if song and song.song_id %}曲編集{% else %}曲登録{% endif %}</h1>
+        <h1 class="page-title">
+            {% if song and song.song_id %}曲編集{% else %}曲登録{% endif %}
+        </h1>
 
         {% if error %}
         <p class="error-message">{{ error }}</p>
@@ -83,10 +84,10 @@
             <button type="submit" class="action-btn">
             {% if song and song.song_id %}更新{% else %}登録{% endif %}
             </button>
+            <a href="/admin/master/song" class="back-btn">
+            戻る
+            </a>
         </form>
-        <a href="/admin/master/song" class="back-btn">
-        戻る
-        </a>
     </div>
 </body>
 </html>
