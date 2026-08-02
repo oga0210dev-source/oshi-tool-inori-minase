@@ -109,6 +109,7 @@ create table public.m_setlist (
   event_id bigint not null,
   song_id bigint not null,
   song_order integer not null,
+  is_melody boolean not null default false,
   created_at timestamp without time zone null default CURRENT_TIMESTAMP,
   updated_at timestamp without time zone null default CURRENT_TIMESTAMP,
   constraint m_setlist_pkey primary key (event_type, event_id, song_id),

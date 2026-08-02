@@ -9,20 +9,25 @@
     <title>推し活オールインワン</title>
 
     <link rel="stylesheet" href="/static/css/common.css">
+    <link rel="stylesheet" href="/static/css/admin/master/admin-common.css">
     <link rel="stylesheet" href="/static/css/admin/master/live/live.css">
 </head>
 
-<body class="admin-page">
-
-{% include "templates/commons/header.html" %}
+<body>
 
 <div class="container">
+    <div class="page-header">
 
-    <h1 class="page-title">
-        ライブ管理
-    </h1>
+        <a href="/admin/master" class="master-link">
+            ← 管理マスタ
+        </a>
 
-    <!-- 新規登録 -->
+        <h1 class="page-title">
+            ライブ管理
+        </h1>
+
+    </div>
+
     <a href="/admin/master/live/create" class="action-btn">
         新規登録
     </a>
@@ -30,7 +35,6 @@
     <!-- 検索・ソート -->
     <div class="search-area">
         <form method="get">
-
             <input type="text"
                    name="keyword"
                    placeholder="ライブ名・ツアー名・会場名で検索"
@@ -38,23 +42,23 @@
 
             <select name="sort">
                 <option value="tour" {% if sort == "tour" %}selected{% endif %}>
-                    ツアー順
+                ツアー順
                 </option>
 
                 <option value="date_desc" {% if sort == "date_desc" %}selected{% endif %}>
-                    開催日（新しい順）
+                開催日（新しい順）
                 </option>
 
                 <option value="date_asc" {% if sort == "date_asc" %}selected{% endif %}>
-                    開催日（古い順）
+                開催日（古い順）
                 </option>
 
                 <option value="name" {% if sort == "name" %}selected{% endif %}>
-                    ライブ名順
+                ライブ名順
                 </option>
 
                 <option value="updated" {% if sort == "updated" %}selected{% endif %}>
-                    更新日順
+                更新日順
                 </option>
             </select>
             <button type="submit" class="search-btn">

@@ -10,6 +10,9 @@ const withdrawArea = document.getElementById("withdraw-area");
 const imageInput = document.getElementById("profile-image");
 const preview = document.getElementById("profile-preview");
 
+const profileMessage = document.getElementById("profile_message");
+const profileMessageCount = document.getElementById("profile_message_count");
+
 // 元の値を保存
 const originalValues = {};
 
@@ -69,6 +72,7 @@ cancelBtn.addEventListener("click", () => {
     editBtn.classList.remove("hidden");
     saveBtn.classList.add("hidden");
     cancelBtn.classList.add("hidden");
+    profileMessageCount.classList.add("hidden");
 });
 
 //==========================
@@ -87,8 +91,6 @@ imageInput.addEventListener("change", function () {
 //==========================
 // 自己紹介
 //==========================
-const profileMessage = document.getElementById("profile_message");
-const profileMessageCount = document.getElementById("profile_message_count");
 
 function updateProfileMessageCount() {
     profileMessageCount.textContent =

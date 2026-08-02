@@ -1,67 +1,119 @@
 /*==========================
     レイアウト
 ==========================*/
+body{
+    margin:0;
+    overflow:hidden;
+    width:100%;
+}
+
 .background{
     width:100%;
-    min-height:100dvh;
+    height:100dvh;
     display:flex;
     flex-direction:column;
     align-items:center;
 }
 
-.page{
+/* スクロール領域 */
+.mypage-scroll{
+    width:100%;
+    flex:1;
+    min-height:0;
+    overflow-y:auto;
+    overflow-x:hidden;
+    scrollbar-width:none;
+}
+
+.mypage-scroll::-webkit-scrollbar{
+    display:none;
+}
+
+/* 中身 */
+.mypage{
     width:100%;
     max-width:430px;
-    padding:20px 20px 60px;
+    margin:0 auto;
+    padding:10px 20px 80px;
     box-sizing:border-box;
 }
 
 h1{
     margin:10px 0 20px;
     text-align:center;
+    font-size:25px;
+    color:#333;
+}
+
+h2{
+    margin:25px 0 10px;
+    padding-left:5px;
+    font-size:20px;
+    color:#333;
 }
 
 /*==========================
-    プロフィール
+    プロフィール画像
 ==========================*/
 .profile-area{
+    width:100%;
+    margin:10px auto 20px;
+    padding:18px;
+    box-sizing:border-box;
+    background:#fff;
+    border-radius:20px;
+    box-shadow:0 3px 8px rgba(0,0,0,.12);
     text-align:center;
 }
 
 .profile-image{
-    display:block;
     width:120px;
     height:120px;
-    margin:0 auto;
     object-fit:cover;
     cursor:pointer;
 }
 
 /*==========================
-    情報一覧
+    情報カード
 ==========================*/
 .info-list{
-    margin-top:30px;
+    width:100%;
+    margin:20px auto;
+    padding:18px;
+    box-sizing:border-box;
+    background:#fff;
+    border-radius:20px;
+    box-shadow:0 3px 8px rgba(0,0,0,.12);
 }
 
 .info-item{
     display:flex;
-    flex-direction:column;
-    gap:6px;
+    flex-direction:row;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
     padding:12px 0;
-    border-bottom:1px solid #ddd;
+    border-bottom:1px solid #eee;
+    min-width:0;
 }
 
+.info-item:last-child{
+    border-bottom:none;
+}
+
+/* ラベル */
 .label{
-    color:#666;
+    flex-shrink:0;
+    width:120px;
     font-size:14px;
+    font-weight:bold;
+    color:#555;
 }
 
-/*==========================
-    表示モード
-==========================*/
+/* 表示値 */
 .display-value{
-    width:100%;
+    flex:1;
+    min-width:0;
     text-align:right;
     font-size:16px;
     color:#333;
@@ -69,16 +121,18 @@ h1{
 }
 
 /*==========================
-    編集モード
+    編集入力
 ==========================*/
 .edit-item{
+    flex:1;
+    min-width:0;
     width:100%;
-    padding:8px 10px;
+    height:45px;
+    padding:0 12px;
     box-sizing:border-box;
-    border:1px solid #ccc;
-    border-radius:8px;
+    border:1px solid #ddd;
+    border-radius:12px;
     background:#fff;
-    font:inherit;
     font-size:16px;
 }
 
@@ -87,46 +141,71 @@ h1{
     outline:none;
 }
 
-/* 日付入力(iPhone対策) */
+textarea.edit-item{
+    width:100%;
+    height:150px;
+    padding:10px;
+    box-sizing:border-box;
+    resize:none;
+}
+
 input[type="date"].edit-item{
     min-width:0;
 }
 
-/* Select */
 select.edit-item{
     appearance:auto;
 }
 
 /*==========================
-    自己紹介
-==========================*/
-.char-count{
-    margin-top:6px;
-    text-align:right;
-    font-size:13px;
-    color:#888;
+    自己紹介専用
+ ==========================*/
+.info-item.profile-message-area{
+    display:flex;
+    flex-direction:column;
+    align-items:stretch;
+    justify-content:flex-start;
+}
+
+.profile-message-area .edit-item{
+    flex:none;
+    width:100%;
+    height:150px;
 }
 
 /*==========================
-    設定メニュー
+    編集ボタン
 ==========================*/
-.public-setting-area,
-.security-area,
-.cansel-area{
-    margin-top:20px;
-}
-
 .button-area{
     display:flex;
     justify-content:center;
     flex-wrap:wrap;
     gap:15px;
-    margin-top:30px;
+    margin:30px 0;
 }
 
 .button-area button{
     min-width:100px;
-    padding:10px 20px;
+    height:42px;
+    padding:0 20px;
+    border:none;
+    border-radius:21px;
+    font-size:15px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+/*==========================
+    設定エリア
+==========================*/
+.withdraw-area{
+    margin-top:30px;
+}
+
+.public-setting-area,
+.security-area,
+.cansel-area{
+    margin-top:20px;
 }
 
 .setting-button{
@@ -137,7 +216,7 @@ select.edit-item{
     height:50px;
     box-sizing:border-box;
     border-radius:25px;
-    background:#ffffff;
+    background:#fff;
     border:1px solid #ddd;
     color:#333;
     text-decoration:none;
@@ -146,24 +225,20 @@ select.edit-item{
 }
 
 .setting-button:hover{
-    opacity:0.8;
+    opacity:.8;
 }
 
 /*==========================
     退会
 ==========================*/
-.withdraw-area{
-    margin-top:40px;
-}
-
 .withdraw-button{
     color:#d9534f;
     border-color:#d9534f;
 }
 
 /*==========================
-    共通
+    非表示
 ==========================*/
 .hidden{
-    display:none !important;
+    display:none!important;
 }

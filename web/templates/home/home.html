@@ -11,125 +11,125 @@
 </head>
 
 <body>
+    <div class="background">
+        {% include "templates/commons/header.html" %}
+        <div class="container">
 
-    {% include "templates/commons/header.html" %}
+            <!-- プロフィール -->
+            <div class="profile-card">
 
-    <div class="container">
-
-        <!-- プロフィール -->
-        <div class="profile-card">
-
-            <div class="profile-image">
-                <img src="{{ user.profile_image or '/static/img/profile/default.png' }}">
-            </div>
-
-            <div class="profile-info">
-
-                <div class="profile-name">
-                    {{ user.user_name }}
+                <div class="profile-image">
+                    <img src="{{ user.profile_image or '/static/img/profile/default.png' }}">
                 </div>
 
-                <div class="member-history">
-                    町民歴 {{ member_period }}
+                <div class="profile-info">
+
+                    <div class="profile-name">
+                        {{ user.user_name }}
+                    </div>
+
+                    <div class="member-history">
+                        町民歴 {{ member_period }}
+                    </div>
                 </div>
-
             </div>
-
         </div>
-    </div>
 
-    <!-- マイページ -->
-    <a href="/mypage" class="menu-btn wide-btn">
-        <img src="/static/img/home/mypage.svg" alt="マイページ">
-        <span>マイページ</span>
-    </a>
-
-    <!-- メニュー -->
-    <div class="menu-grid">
-
-        <a href="#" class="menu-btn">
-            <img src="/static/img/home/live.svg" alt="ライブ">
-            <span>ライブ</span>
-        </a>
-
-        <a href="#" class="menu-btn">
-            <img src="/static/img/home/meeting.svg" alt="町民集会">
-            <span>町民集会</span>
-        </a>
-
-        <a href="#" class="menu-btn">
-            <img src="/static/img/home/event.svg" alt="イベント">
-            <span>イベント</span>
-        </a>
-
-        <a href="#" class="menu-btn">
-            <img src="/static/img/home/goods.svg" alt="グッズ">
-            <span>グッズ</span>
-        </a>
-
-        <a href="#" class="menu-btn">
-            <img src="/static/img/home/encounter.svg" alt="エンカ">
-            <span>エンカ</span>
-        </a>
-
-        <a href="#" class="menu-btn">
-            <img src="/static/img/home/radio.svg" alt="メロフラ">
-            <span>メロフラ</span>
-        </a>
-
-    </div>
-
-
-    <!-- 推し情報 -->
-    <a href="#" class="menu-btn wide-btn">
-        <img src="/static/img/home/info.svg" alt="推し情報">
-        <span>推し情報</span>
-    </a>
-
-    <!-- 設定 -->
-    <a href="#" id="setting-button" class="menu-btn wide-btn">
-        <img src="/static/img/home/setting.svg" alt="設定">
-        <span>設定</span>
-    </a>
-
-    <!-- 設定モーダル -->
-    <div id="setting-modal" class="setting-modal">
-        <div class="setting-box">
-            <h2>設定</h2>
-            <h3>アカウント</h3>
-            <a href="/mypage">
-                マイページ
+        <!-- ボタンエリア -->
+        <div class="home-scroll">
+            <!-- マイページ -->
+            <a href="/mypage" class="menu-btn wide-btn">
+                <img src="/static/img/home/mypage.svg" alt="マイページ">
+                <span>マイページ</span>
             </a>
-            <a href="/mypage/public-setting">
-                公開設定
+
+            <!-- メニュー -->
+            <div class="menu-grid">
+
+                <a href="#" class="menu-btn">
+                    <img src="/static/img/home/live.svg" alt="ライブ">
+                    <span>ライブ</span>
+                </a>
+
+                <a href="#" class="menu-btn">
+                    <img src="/static/img/home/meeting.svg" alt="町民集会">
+                    <span>町民集会</span>
+                </a>
+
+                <a href="#" class="menu-btn">
+                    <img src="/static/img/home/event.svg" alt="イベント">
+                    <span>イベント</span>
+                </a>
+
+                <a href="#" class="menu-btn">
+                    <img src="/static/img/home/goods.svg" alt="グッズ">
+                    <span>グッズ</span>
+                </a>
+
+                <a href="#" class="menu-btn">
+                    <img src="/static/img/home/encounter.svg" alt="エンカ">
+                    <span>エンカ</span>
+                </a>
+
+                <a href="#" class="menu-btn">
+                    <img src="/static/img/home/radio.svg" alt="メロフラ">
+                    <span>メロフラ</span>
+                </a>
+
+            </div>
+
+            <!-- 推し情報 -->
+            <a href="#" class="menu-btn wide-btn">
+                <img src="/static/img/home/info.svg" alt="推し情報">
+                <span>推し情報</span>
             </a>
-            <a href="#">
-                メール変更
+
+            <!-- 設定 -->
+            <a href="#" id="setting-button" class="menu-btn wide-btn">
+                <img src="/static/img/home/setting.svg" alt="設定">
+                <span>設定</span>
             </a>
-            <a href="/password/change">
-                パスワード変更
-            </a>
-            <h3>サポート</h3>
-            <a href="#">
-                お問い合わせ
-            </a>
-            <a href="#">
-                利用規約
-            </a>
-            <a href="#">
-                プライバシー
-            </a>
-            {% if user.role == "admin" %}
-            <h3>管理</h3>
-            <a href="/admin/master">
-                マスタ管理
-            </a>
-            {% endif %}
-            <!-- その他 -->
-            <h3>その他</h3>
-            <a href="/logout">
-                ログアウト
-            </a>
+
+            <!-- 設定モーダル -->
+            <div id="setting-modal" class="setting-modal">
+                <div class="setting-box">
+                    <h2>設定</h2>
+                    <h3>アカウント</h3>
+                    <a href="/mypage">
+                        マイページ
+                    </a>
+                    <a href="/mypage/public-setting">
+                        公開設定
+                    </a>
+                    <a href="#">
+                        メール変更
+                    </a>
+                    <a href="/password/change">
+                        パスワード変更
+                    </a>
+                    <h3>サポート</h3>
+                    <a href="#">
+                        お問い合わせ
+                    </a>
+                    <a href="#">
+                        利用規約
+                    </a>
+                    <a href="#">
+                        プライバシー
+                    </a>
+                    {% if user.role == "admin" %}
+                    <h3>管理</h3>
+                    <a href="/admin/master">
+                        マスタ管理
+                    </a>
+                    {% endif %}
+                    <!-- その他 -->
+                    <h3>その他</h3>
+                    <a href="/logout">
+                        ログアウト
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -160,6 +160,5 @@
             }
         });
     </script>
-
 </body>
 </html>

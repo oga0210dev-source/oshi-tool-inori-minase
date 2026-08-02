@@ -1,31 +1,40 @@
-.page-title {
-    text-align:center;
-    margin:20px 0;
-}
+/* =========================
+   マスタメニュー
+========================= */
 
-.master-grid {
+.master-grid{
     display:grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns:repeat(2,1fr);
     gap:15px;
+    width:100%;
+    max-width:400px;
     margin:20px auto;
-    width:90%;
 }
 
-.master-menu {
+
+/* メニュー一覧 */
+.master-menu{
     display:flex;
     flex-direction:column;
     gap:15px;
 }
 
-.master-btn {
+
+/* マスタボタン */
+.master-btn{
     height:60px;
     display:flex;
     align-items:center;
     justify-content:center;
-    background:white;
+    background:#fff;
     border-radius:20px;
     text-decoration:none;
     color:#333;
-    box-shadow:0 3px 8px rgba(0,0,0,0.15);
     font-size:18px;
+    font-weight:bold;
+    box-shadow:0 3px 8px rgba(0,0,0,.15);
+}
+
+.master-btn:hover{
+    opacity:.85;
 }
