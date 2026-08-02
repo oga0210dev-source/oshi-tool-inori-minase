@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/static/img/logo.png" type="image/png">
+
+    <title>推し活オールインワン</title>
+
+    <link rel="stylesheet" href="/static/css/common.css">
+    <link rel="stylesheet" href="/static/css/admin/master/admin-common.css">
+    <link rel="stylesheet" href="/static/css/admin/master/setlist.css">
+</head>
+
+<body>
+
+<div class="container">
+    <div class="page-header">
+        <a href="/admin/master/live" class="master-link">
+            ← ライブ管理
+        </a>
+
+        <h1 class="page-title">
+            セットリスト
+        </h1>
+
+        <div class="live-info">
+            <div class="live-info-title">
+                ライブ情報
+            </div>
+
+            <div class="live-info-item">
+                <span>ライブ名</span>
+                {{ live.live_name }}
+            </div>
+
+            <div class="live-info-item">
+                <span>開催場所</span>
+                {{ live.prefecture_name }}
+            </div>
+        </div>
+    </div>
+    <div class="add-area">
+        <button class="add-btn" onclick="openSongModal()">
+            +追加
+        </button>
+    </div>
+
+    <!-- セットリスト -->
+    <div class="setlist-area" id="setlist-area">
+        {% if setlist_list %}
+            {% for song in setlist_list %}
+            <div class="setlist-item" data-song-id="{{ song.song_id }}">
+                <div class="song-order">
+                    {{ loop.index }}
+                </div>
+
+                <div class="song-name">
+                    {{ song.song_name }}
+                </div>
+
+                <div class="drag-handle">
+                    ☰
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="no-setlist">
+                セットリストが登録されていません
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- 曲追加モーダル -->
+<div id="song-modal" class="modal" onclick="closeSongModal()">
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <div class="modal-header">
+            曲マスタ
+        </div>
+
+        <!-- 検索エリア -->
+        <div class="search-area">
+            <input type="text"
+                   id="album-search"
+                   placeholder="アルバム名">
+
+            <input type="text"
+                   id="song-search"
+                   placeholder="曲名">
+
+            <button class="search-btn" onclick="searchSong()">
+                検索
+            </button>
+        </div>
+
+        <!-- 曲一覧 -->
+        <div class="song-list">
+            {% for album in album_list %}
+            <div class="album-name">
+                {{ album.album_name }}
+            </div>
+
+                {% for song in album.songs %}
+                <label class="song-select">
+                    <input type="checkbox"
+                           name="song"
+                           value="{{ song.song_id }}">
+                    {{ song.song_name }}
+                </label>
+                {% endfor %}
+
+            {% endfor %}
+        </div>
+
+        <button class="modal-add-btn" onclick="addSong()">
+            選択
+        </button>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.6/Sortable.min.js"></script>
+
+<script>
+function openSongModal(){
+    document.getElementById("song-modal").style.display = "block";
+}
+
+function closeSongModal(){
+    document.getElementById("song-modal").style.display = "none";
+}
+</script>
+
+<script src="/static/js/admin/master/setlist/setlist.js"></script>
+</body>
+</html>

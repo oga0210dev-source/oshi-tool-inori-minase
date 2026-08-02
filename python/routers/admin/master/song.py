@@ -5,35 +5,13 @@ from python.core import templates
 from python.core import auth
 
 from python.models.admin.master import song as song_model
-from python.utils.validator import is_valid_url
+from python.utils import validator, util
 
 
 router = APIRouter(
     prefix="/admin/master/song",
     tags=["admin_master_song"]
 )
-
-
-def group_by_album(songs):
-    """
-    アルバム単位にグループ化
-    """
-    albums = []
-
-    current_album = None
-
-    for song in songs:
-        album_name = song["album_name"] or "アルバム未設定"
-
-        if current_album != album_name:
-            current_album = album_name
-
-            albums.append({
-                "album_name": album_name,
-                "songs": []
-            })
-        albums[-1]["songs"].append(song)
-    return albums
 
 
 @router.get("")
@@ -55,7 +33,7 @@ async def song_list(
         sort
     )
 
-    albums = group_by_album(songs)
+    albums = util.group_by_album(songs)
 
     return templates.TemplateResponse(
         request=request,
@@ -165,7 +143,7 @@ async def song_create(
     ]
 
     for name, url in url_list:
-        if not is_valid_url(url):
+        if not validator.is_valid_url(url):
             return templates.TemplateResponse(
                 request=request,
                 name="templates/admin/master/song/form.html",
