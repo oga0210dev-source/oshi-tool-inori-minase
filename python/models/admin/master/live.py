@@ -101,7 +101,6 @@ def get_live(live_id):
                 SELECT
                     m_live.*,
                     m_prefecture.prefecture_name
-
                 FROM m_live
 
                 LEFT JOIN m_prefecture
