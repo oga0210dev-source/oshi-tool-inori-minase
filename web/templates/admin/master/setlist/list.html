@@ -41,28 +41,64 @@
             </div>
         </div>
     </div>
-    <div class="add-area">
-        <button class="add-btn" onclick="openSongModal()">
-            +追加
-        </button>
+    <div class="button-area">
+        <div class="cancel-area" id="cancel-area" style="display:none;">
+            <button class="cancel-btn" onclick="cancelEdit()">
+                キャンセル
+            </button>
+        </div>
+
+        <div class="edit-area">
+            <button id="edit-btn"
+                    class="edit-btn"
+                    onclick="editSetlist()">
+                編集
+            </button>
+        </div>
+
+        <div class="save-area" id="save-area" style="display:none;">
+            <button class="save-btn" onclick="saveSetlist()">
+                保存
+            </button>
+        </div>
+
+        <div class="add-area" id="add-area" style="display:none;">
+            <button class="add-btn" onclick="openSongModal()">
+                +追加
+            </button>
+        </div>
     </div>
 
     <!-- セットリスト -->
     <div class="setlist-area" id="setlist-area">
         {% if setlist_list %}
             {% for song in setlist_list %}
-            <div class="setlist-item" data-song-id="{{ song.song_id }}">
+            <div class="setlist-item"
+                 data-song-id="{{ song.song_id }}"
+                 data-is-medley="{{ song.is_medley }}">
+
                 <div class="song-order">
                     {{ loop.index }}
                 </div>
 
                 <div class="song-name">
                     {{ song.song_name }}
+
+                    {% if song.is_medley %}
+                    <span class="medley-badge">
+                        メドレー
+                    </span>
+                    {% endif %}
                 </div>
+
+                <button class="delete-btn" onclick="deleteSong(this)">
+                    ×
+                </button>
 
                 <div class="drag-handle">
                     ☰
                 </div>
+
             </div>
             {% endfor %}
         {% else %}
@@ -71,7 +107,6 @@
             </div>
         {% endif %}
     </div>
-</div>
 
 <!-- 曲追加モーダル -->
 <div id="song-modal" class="modal" onclick="closeSongModal()">
@@ -114,9 +149,15 @@
             {% endfor %}
         </div>
 
-        <button class="modal-add-btn" onclick="addSong()">
+        <div class="modal-footer">
+            <label class="medley-check">
+                <input type="checkbox" id="is-medley">
+                メドレー
+            </label>
+            <button class="modal-add-btn" onclick="addSong()">
             選択
         </button>
+        </div>
     </div>
 </div>
 
@@ -133,5 +174,9 @@ function closeSongModal(){
 </script>
 
 <script src="/static/js/admin/master/setlist/setlist.js"></script>
+
+<script>
+const liveId = {{ live.live_id }};
+</script>
 </body>
 </html>
