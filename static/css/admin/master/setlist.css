@@ -31,10 +31,6 @@
     font-weight:bold;
 }
 
-.live-info-item{
-    word-break:break-word;
-}
-
 .container{
     height:100dvh;
     display:flex;
@@ -46,22 +42,38 @@
     flex-shrink:0;
 }
 
-.add-area{
-    width:100%;
+.button-area{
+    width:90%;
     max-width:400px;
-    margin:0 auto 5px;
+    margin:5px auto;
     display:flex;
     justify-content:flex-end;
+    gap:10px;
 }
 
-.add-btn{
-    padding:8px 20px;
+.edit-btn,
+.cancel-btn,
+.add-btn,
+.save-btn{
+    width:100px;
+    height:38px;
+    padding:0;
     border:none;
     border-radius:10px;
-    background:#ffb347;
     color:#fff;
     font-size:16px;
     font-weight:bold;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.add-btn{
+    background:#ffb347;
+}
+
+.save-btn{
+    background:#ff8fb1;
 }
 
 .setlist-area{
@@ -121,7 +133,6 @@
     flex-direction:column;
 }
 
-
 .modal-header{
     flex-shrink:0;
     font-size:18px;
@@ -130,21 +141,13 @@
     padding-bottom:10px;
 }
 
-
 .search-area{
     flex-shrink:0;
 }
 
-
 .search-area input{
     width:100%;
     margin-bottom:5px;
-    padding:8px;
-}
-
-
-.search-area button{
-    width:100%;
     padding:8px;
 }
 
@@ -163,31 +166,58 @@
     flex:1;
     overflow-y:auto;
     margin-top:10px;
-
     scrollbar-width:none;
 }
-
 
 .song-list::-webkit-scrollbar{
     display:none;
 }
-
 
 .album-name{
     font-weight:bold;
     padding:8px 0;
 }
 
-
 .song-select{
     display:block;
     padding:8px;
 }
 
-
-.modal-add-btn{
+.modal-footer{
     flex-shrink:0;
     margin-top:10px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+}
+
+.medley-check{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    font-size:14px;
+    font-weight:bold;
+}
+
+.medley-check input{
+    width:18px;
+    height:18px;
+}
+
+.medley-badge{
+    display:inline-block;
+    margin-left:8px;
+    padding:2px 8px;
+    border-radius:20px;
+    background:#ff8fb1;
+    color:#fff;
+    font-size:11px;
+    font-weight:bold;
+}
+
+.modal-add-btn{
+    width:120px;
     padding:10px;
     border:none;
     border-radius:10px;
@@ -196,14 +226,31 @@
     font-weight:bold;
 }
 
+.delete-btn{
+    width:30px;
+    height:30px;
+    border:none;
+    border-radius:50%;
+    background:#eee;
+    color:#ff8b8b;
+    font-size:20px;
+    font-weight:bold;
+    margin-right:10px;
+    display:none;
+}
+
+.delete-btn:hover{
+    cursor:pointer;
+}
 
 .drag-handle{
+    display:none;
     margin-left:auto;
     cursor:grab;
     font-size:22px;
     color:#999;
-    font-family:
-        "Segoe UI Symbol",
-        "Noto Sans",
-        sans-serif;
+}
+
+.delete-btn{
+    display:none;
 }

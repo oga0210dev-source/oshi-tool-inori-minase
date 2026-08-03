@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Request, Form
+from fastapi import APIRouter, Request, Form, Body
 from fastapi.responses import RedirectResponse
 
 from python.core import templates
@@ -13,7 +13,6 @@ router = APIRouter(
 
 @router.get("")
 async def setlist_list(request: Request, live_id: int):
-
     live = live_model.get_live(live_id)
 
     setlist = setlist_model.get_setlist_list(
@@ -34,3 +33,30 @@ async def setlist_list(request: Request, live_id: int):
             "album_list": album_list
         }
     )
+
+
+@router.post("/save")
+async def save_setlist(
+    request: Request,
+    event_type: str,
+    live_id: int
+):
+    setlist = await request.json()
+
+    try:
+        setlist_model.save_setlist(
+            event_type,
+            live_id,
+            setlist
+        )
+
+        return {
+            "success": True,
+            "message": "セットリストを保存しました。"
+        }
+
+    except Exception as e:
+        return {
+            "success": False,
+            "message": "保存に失敗しました。"
+        }
