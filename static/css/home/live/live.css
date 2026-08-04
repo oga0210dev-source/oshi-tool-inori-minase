@@ -1,0 +1,147 @@
+.container{
+    width:100%;
+    max-width:430px;
+    margin:0 auto;
+    padding:15px 0 30px;
+}
+
+
+/* ライブ一覧 */
+.live-list{
+    width:100%;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+}
+
+
+/* ライブカード */
+.live-card{
+    width:85%;
+    max-width:390px;
+    min-height:150px;
+    margin:0 auto;
+    background:white;
+    border-radius:20px;
+    padding:15px;
+    box-shadow:0 3px 8px rgba(0,0,0,0.12);
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+}
+
+.live-name{
+    font-size:16px;
+    font-weight:bold;
+    margin-bottom:4px;
+}
+
+
+.tour-name{
+    font-size:13px;
+    color:#777;
+    margin-bottom:8px;
+}
+
+
+.live-info{
+    font-size:13px;
+    line-height:1.7;
+}
+
+
+.detail-btn{
+    width:100%;
+    margin-top:10px;
+    padding:8px;
+    border:none;
+    border-radius:10px;
+    background:#ff8fb1;
+    color:white;
+    font-size:14px;
+}
+
+
+.no-live{
+    width:90%;
+    max-width:400px;
+    margin:30px auto;
+    text-align:center;
+    color:#777;
+}
+
+
+/* スクロールバー非表示 */
+html{
+    scrollbar-width:none;
+}
+
+html::-webkit-scrollbar{
+    display:none;
+}
+
+/* ==========================
+   ボタン共通
+========================== */
+.menu-btn,
+.wide-btn{
+    background:rgba(255,255,255,.88);
+    border-radius:15px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    text-decoration:none;
+    box-shadow:0 2px 6px rgba(0,0,0,.12);
+    transition:.2s;
+}
+
+.menu-btn:hover,
+.wide-btn:hover{
+    transform:scale(1.03);
+}
+
+/* ==========================
+   横長ボタン
+========================== */
+.wide-btn{
+    width:80%;
+    max-width:400px;
+    height:70px;
+    margin:10px auto;
+}
+
+.wide-btn img{
+    width:45px;
+    height:45px;
+    object-fit:contain;
+    margin-right:15px;
+}
+
+/* ==========================
+   2列メニュー
+========================== */
+.menu-grid{
+    width:80%;
+    max-width:400px;
+    margin:10px auto;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+}
+
+.menu-grid .menu-btn{
+    height:70px;
+}
+
+.menu-btn img{
+    width:35px;
+    height:35px;
+    object-fit:contain;
+    margin-right:10px;
+}
+
+.menu-btn span{
+    font-size:14px;
+    font-weight:bold;
+    color:#333;
+}

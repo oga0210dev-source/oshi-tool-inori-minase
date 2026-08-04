@@ -20,7 +20,6 @@
         <a href="/admin/master/live" class="master-link">
             ← ライブ管理
         </a>
-
         <h1 class="page-title">
             セットリスト
         </h1>
@@ -41,6 +40,7 @@
             </div>
         </div>
     </div>
+
     <div class="button-area">
         <div class="cancel-area" id="cancel-area" style="display:none;">
             <button class="cancel-btn" onclick="cancelEdit()">
@@ -83,24 +83,21 @@
 
                 <div class="song-name">
                     {{ song.song_name }}
-
                     {% if song.is_medley %}
                     <span class="medley-badge">
                         メドレー
                     </span>
                     {% endif %}
                 </div>
-
                 <button class="delete-btn" onclick="deleteSong(this)">
                     ×
                 </button>
-
                 <div class="drag-handle">
                     ☰
                 </div>
-
             </div>
             {% endfor %}
+
         {% else %}
             <div class="no-setlist">
                 セットリストが登録されていません
@@ -108,61 +105,49 @@
         {% endif %}
     </div>
 
-<!-- 曲追加モーダル -->
-<div id="song-modal" class="modal" onclick="closeSongModal()">
-    <div class="modal-content" onclick="event.stopPropagation()">
-        <div class="modal-header">
-            曲マスタ
-        </div>
-
-        <!-- 検索エリア -->
-        <div class="search-area">
-            <input type="text"
-                   id="album-search"
-                   placeholder="アルバム名">
-
-            <input type="text"
-                   id="song-search"
-                   placeholder="曲名">
-
-            <button class="search-btn" onclick="searchSong()">
-                検索
-            </button>
-        </div>
-
-        <!-- 曲一覧 -->
-        <div class="song-list">
-            {% for album in album_list %}
-            <div class="album-name">
-                {{ album.album_name }}
+    <!-- 曲追加モーダル -->
+    <div id="song-modal" class="modal" onclick="closeSongModal()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                曲マスタ
             </div>
 
-                {% for song in album.songs %}
+            <!-- 検索 -->
+            <div class="search-area">
+                <input type="text"
+                       id="song-search"
+                       placeholder="曲名">
+                <button class="search-btn" onclick="searchSong()">
+                    検索
+                </button>
+            </div>
+
+            <!-- 曲一覧 -->
+            <div class="song-list">
+                {% for group in song_groups %}
                 <label class="song-select">
                     <input type="checkbox"
                            name="song"
-                           value="{{ song.song_id }}">
-                    {{ song.song_name }}
+                           value="{{ group.song_group_id }}">
+                    {{ group.song_name }}
                 </label>
                 {% endfor %}
+            </div>
 
-            {% endfor %}
-        </div>
+            <div class="modal-footer">
+                <label class="medley-check">
+                    <input type="checkbox" id="is-medley">
+                    メドレー
+                </label>
 
-        <div class="modal-footer">
-            <label class="medley-check">
-                <input type="checkbox" id="is-medley">
-                メドレー
-            </label>
-            <button class="modal-add-btn" onclick="addSong()">
-            選択
-        </button>
+                <button class="modal-add-btn" onclick="addSong()">
+                    選択
+                </button>
+            </div>
         </div>
     </div>
 </div>
-
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.6/Sortable.min.js"></script>
-
 <script>
 function openSongModal(){
     document.getElementById("song-modal").style.display = "block";
@@ -171,10 +156,9 @@ function openSongModal(){
 function closeSongModal(){
     document.getElementById("song-modal").style.display = "none";
 }
+
 </script>
-
 <script src="/static/js/admin/master/setlist/setlist.js"></script>
-
 <script>
 const liveId = {{ live.live_id }};
 </script>

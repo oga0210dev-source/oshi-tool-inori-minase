@@ -59,6 +59,7 @@ create table public.m_prefecture (
 
 create table public.m_song (
   song_id bigserial not null,
+  song_group_id bigserial not null,
   song_name character varying(100) not null,
   release_date date null,
   album_name character varying(100) null,
