@@ -11,17 +11,18 @@ def get_setlist_list(event_type=None, event_id=None):
             s.song_id,
             s.song_order,
             s.is_medley,
-            m.song_name,
-            m.album_name,
+            MIN(m.song_name) AS song_name,
+            MIN(m.album_name) AS album_name,
             s.created_at,
             s.updated_at
         FROM m_setlist s
         INNER JOIN m_song m
-        ON s.song_id = m.song_id
+        ON s.song_id = m.song_group_id
         WHERE 1=1
     """
 
     params = []
+
     if event_type:
         sql += " AND s.event_type=%s"
         params.append(event_type)
@@ -30,7 +31,18 @@ def get_setlist_list(event_type=None, event_id=None):
         sql += " AND s.event_id=%s"
         params.append(event_id)
 
-    sql += " ORDER BY s.song_order"
+    sql += """
+        GROUP BY
+            s.event_type,
+            s.event_id,
+            s.song_id,
+            s.song_order,
+            s.is_medley,
+            s.created_at,
+            s.updated_at
+        ORDER BY
+            s.song_order
+    """
 
     try:
         with conn.cursor() as cur:
@@ -60,6 +72,7 @@ def save_setlist(event_type, event_id, setlist):
 
             for item in setlist:
                 cur.execute(
+                    # m_setlist.song_idにはm_song.song_group_idを保存
                     """
                     INSERT INTO m_setlist
                     (

@@ -7,8 +7,6 @@ function closeSongModal(){
 }
 
 function resetSongModal(){
-
-    document.getElementById("album-search").value = "";
     document.getElementById("song-search").value = "";
 
     document.getElementById("is-medley").checked = false;
@@ -18,10 +16,6 @@ function resetSongModal(){
     });
 
     document.querySelectorAll(".song-select").forEach(item=>{
-        item.style.display = "";
-    });
-
-    document.querySelectorAll(".album-name").forEach(item=>{
         item.style.display = "";
     });
 
@@ -243,15 +237,32 @@ function deleteSong(button){
 
     document.getElementById("save-area")
         .style.display="block";
-
 }
 
 function cancelEdit(){
 
     if(confirm("変更内容を破棄しますか？")){
-
         location.reload();
-
     }
+}
 
+function searchSong(){
+
+    const keyword =
+        document.getElementById("song-search")
+        .value
+        .toLowerCase();
+
+    document.querySelectorAll(".song-select")
+    .forEach(item=>{
+        const name =
+            item.textContent
+            .toLowerCase();
+
+        if(name.includes(keyword)){
+            item.style.display="";
+        }else{
+            item.style.display="none";
+        }
+    });
 }

@@ -27,7 +27,45 @@
                 <h2 class="form-title">基本情報</h2>
 
                 <label>曲名</label>
-                <input type="text" name="song_name" value="{{ song.song_name or '' }}" required>
+                {% if song and song.song_group_id %}
+                <input
+                    id="song_name"
+                    type="text"
+                    name="song_name"
+                    value="{{ song.song_name or '' }}"
+                    readonly
+                >
+                {% else %}
+                <input
+                    id="song_name"
+                    type="text"
+                    name="song_name"
+                    value="{{ song.song_name or '' }}"
+                    required
+                >
+                {% endif %}
+
+                <label>同一曲グループ</label>
+
+                {% if song and song.song_id %}
+                <select id="song_group_id" disabled>
+                    <option value="{{ song.song_group_id }}">
+                        {{ song.song_name }}
+                    </option>
+                </select>
+                <input type="hidden" name="song_group_id" value="{{ song.song_group_id }}">
+                {% else %}
+                <select id="song_group_id" name="song_group_id">
+                    <option value="">新規作成</option>
+
+                    {% for group in song_groups %}
+                    <option value="{{ group.song_group_id }}"
+                        {% if song and song.song_group_id == group.song_group_id %}selected{% endif %}>
+                        {{ group.song_name }}
+                    </option>
+                    {% endfor %}
+                </select>
+                {% endif %}
 
                 <label>アルバム名</label>
                 <input type="text" name="album_name" value="{{ song.album_name or '' }}">
@@ -43,33 +81,33 @@
                 <h2 class="form-title">制作情報</h2>
 
                 <label>作詞者</label>
-                <input type="text" name="lyricist" value="{{ song.lyricist or '' }}">
+                <input id="lyricist" type="text" name="lyricist" value="{{ song.lyricist or '' }}">
 
                 <label>作曲者</label>
-                <input type="text" name="composer" value="{{ song.composer or '' }}">
+                <input id="composer" type="text" name="composer" value="{{ song.composer or '' }}">
 
                 <label>編曲者</label>
-                <input type="text" name="arranger" value="{{ song.arranger or '' }}">
+                <input id="arranger" type="text" name="arranger" value="{{ song.arranger or '' }}">
             </div>
 
             <div class="form-group">
                 <h2 class="form-title">関連情報</h2>
 
                 <label>タイアップ</label>
-                <input type="text" name="tie_up" value="{{ song.tie_up or '' }}">
+                <input id="tie_up" type="text" name="tie_up" value="{{ song.tie_up or '' }}">
             </div>
 
             <div class="form-group">
                 <h2 class="form-title">配信情報</h2>
 
                 <label>YouTube URL</label>
-                <input type="url" name="youtube_url" value="{{ song.youtube_url or '' }}">
+                <input id="youtube_url" type="url" name="youtube_url" value="{{ song.youtube_url or '' }}">
 
                 <label>Apple Music URL</label>
-                <input type="url" name="apple_music_url" value="{{ song.apple_music_url or '' }}">
+                <input id="apple_music_url" type="url" name="apple_music_url" value="{{ song.apple_music_url or '' }}">
 
                 <label>Spotify URL</label>
-                <input type="url" name="spotify_url" value="{{ song.spotify_url or '' }}">
+                <input id="spotify_url" type="url" name="spotify_url" value="{{ song.spotify_url or '' }}">
             </div>
 
             <div class="form-group">
@@ -89,5 +127,81 @@
             </a>
         </form>
     </div>
+<script>
+const groupSelect = document.getElementById("song_group_id");
+const songNameInput = document.getElementById("song_name");
+
+function clearSongInfo(){
+
+    document.getElementById("lyricist").value = "";
+    document.getElementById("composer").value = "";
+    document.getElementById("arranger").value = "";
+
+    document.getElementById("tie_up").value = "";
+
+    document.getElementById("youtube_url").value = "";
+    document.getElementById("apple_music_url").value = "";
+    document.getElementById("spotify_url").value = "";
+}
+
+
+async function loadSongGroup(groupId){
+
+    if(!groupId){
+
+        songNameInput.value = "";
+        songNameInput.readOnly = false;
+
+        clearSongInfo();
+
+        return;
+    }
+
+
+    const response = await fetch(
+        `/admin/master/song/group/${groupId}`
+    );
+
+    const song = await response.json();
+
+
+    // 曲名固定
+    songNameInput.value = song.song_name;
+    songNameInput.readOnly = true;
+
+
+    document.getElementById("lyricist").value = song.lyricist ?? "";
+    document.getElementById("composer").value = song.composer ?? "";
+    document.getElementById("arranger").value = song.arranger ?? "";
+
+    document.getElementById("tie_up").value = song.tie_up ?? "";
+
+    document.getElementById("youtube_url").value = song.youtube_url ?? "";
+    document.getElementById("apple_music_url").value = song.apple_music_url ?? "";
+    document.getElementById("spotify_url").value = song.spotify_url ?? "";
+
+}
+
+
+// 選択変更時
+if(groupSelect){
+
+    groupSelect.addEventListener(
+        "change",
+        function(){
+            loadSongGroup(this.value);
+        }
+    );
+
+
+    // 初期表示時
+    if(groupSelect.value){
+
+        loadSongGroup(groupSelect.value);
+
+    }
+}
+
+</script>
 </body>
 </html>

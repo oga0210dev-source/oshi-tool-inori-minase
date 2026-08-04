@@ -46,6 +46,22 @@ async def song_list(
     )
 
 
+@router.get("/group/{song_group_id}")
+async def song_group_get(
+        request: Request,
+        song_group_id: int
+):
+    if not auth.is_login(request):
+        return {"error": "login"}
+
+    if not auth.is_admin(request):
+        return {"error": "permission"}
+
+    song = song_model.get_song_by_group(song_group_id)
+
+    return song
+
+
 @router.get("/create")
 async def song_create_page(request: Request):
     # ログイン確認
@@ -56,11 +72,14 @@ async def song_create_page(request: Request):
     if not auth.is_admin(request):
         return RedirectResponse("/home", status_code=303)
 
+    song_groups = song_model.get_song_groups()
+
     return templates.TemplateResponse(
         request=request,
         name="templates/admin/master/song/form.html",
         context={
-            "song": None
+            "song": None,
+            "song_groups": song_groups
         }
     )
 
@@ -70,6 +89,7 @@ async def song_create(
         request: Request,
 
         song_name: str = Form(...),
+        song_group_id: int = Form(None),
         release_date: str = Form(None),
         album_name: str = Form(None),
         display_order: int = Form(None),
@@ -90,6 +110,7 @@ async def song_create(
 
     song_data = {
         "song_name": song_name,
+        "song_group_id": song_group_id,
         "release_date": release_date,
         "album_name": album_name,
         "display_order": display_order,
@@ -103,13 +124,16 @@ async def song_create(
         "is_public": is_public
     }
 
+    song_groups = song_model.get_song_groups()
+
     if not song_name.strip():
         return templates.TemplateResponse(
             request=request,
             name="templates/admin/master/song/form.html",
             context={
                 "error": "曲名を入力してください",
-                "song": song_data
+                "song": song_data,
+                "song_groups": song_groups
             }
         )
 
@@ -122,7 +146,8 @@ async def song_create(
             name="templates/admin/master/song/form.html",
             context={
                 "error": "同じアルバムに同じ曲名が登録されています",
-                "song": song_data
+                "song": song_data,
+                "song_groups": song_groups
             }
         )
 
@@ -132,7 +157,8 @@ async def song_create(
             name="templates/admin/master/song/form.html",
             context={
                 "error": "表示順は1以上で入力してください",
-                "song": song_data
+                "song": song_data,
+                "song_groups": song_groups
             }
         )
 
@@ -149,7 +175,8 @@ async def song_create(
                 name="templates/admin/master/song/form.html",
                 context={
                     "error": f"{name}の形式が正しくありません",
-                    "song": song_data
+                    "song": song_data,
+                    "song_groups": song_groups
                 }
             )
 
@@ -173,12 +200,14 @@ async def song_edit_page(
         return RedirectResponse("/home", status_code=303)
 
     song = song_model.get_song(song_id)
+    song_groups = song_model.get_song_groups()
 
     return templates.TemplateResponse(
         request=request,
         name="templates/admin/master/song/form.html",
         context={
-            "song": song
+            "song": song,
+            "song_groups": song_groups
         }
     )
 
@@ -189,6 +218,7 @@ async def song_update(
         song_id: int,
 
         song_name: str = Form(...),
+        song_group_id: int = Form(None),
         release_date: str = Form(None),
         album_name: str = Form(None),
         display_order: int = Form(None),
@@ -209,6 +239,7 @@ async def song_update(
 
     song_data = {
         "song_name": song_name,
+        "song_group_id": song_group_id,
         "release_date": release_date,
         "album_name": album_name,
         "display_order": display_order,
@@ -222,15 +253,22 @@ async def song_update(
         "is_public": is_public
     }
 
+    song_groups = song_model.get_song_groups()
+
     if not song_name.strip():
         return templates.TemplateResponse(
             request=request,
             name="templates/admin/master/song/form.html",
             context={
                 "error": "曲名を入力してください",
-                "song": song_data
+                "song": song_data,
+                "song_groups": song_groups
             }
         )
+
+    if not song_group_id:
+        song = song_model.get_song(song_id)
+        song_data["song_group_id"] = song["song_group_id"]
 
     if song_model.exists_song(
             song_name,
@@ -242,7 +280,8 @@ async def song_update(
             name="templates/admin/master/song/form.html",
             context={
                 "error": "同じアルバムに同じ曲名が登録されています",
-                "song": song_data
+                "song": song_data,
+                "song_groups": song_groups
             }
         )
 

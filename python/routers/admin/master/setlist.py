@@ -20,8 +20,7 @@ async def setlist_list(request: Request, live_id: int):
         event_id=live_id
     )
 
-    song_list = song_model.get_song_list()
-    album_list = util.group_by_album(song_list)
+    song_groups = song_model.get_song_groups()
 
     return templates.TemplateResponse(
         request,
@@ -30,7 +29,7 @@ async def setlist_list(request: Request, live_id: int):
             "request": request,
             "live": live,
             "setlist_list": setlist,
-            "album_list": album_list
+            "song_groups": song_groups
         }
     )
 

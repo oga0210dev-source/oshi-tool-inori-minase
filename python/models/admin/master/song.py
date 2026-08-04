@@ -39,6 +39,7 @@ def get_song_list(keyword=None, sort="album"):
     sql = """
         SELECT
             song_id,
+            song_group_id,
             song_name,
             album_name,
             release_date,
@@ -97,6 +98,61 @@ def get_song(song_id):
         conn.close()
 
 
+def get_song_groups():
+    conn = get_connection()
+    try:
+        with conn.cursor() as cur:
+            cur.execute(
+                """
+                SELECT
+                    song_group_id,
+                    song_name
+                FROM m_song
+                WHERE
+                    song_id = song_group_id
+                    AND is_deleted = FALSE
+                ORDER BY
+                    song_group_id
+                """
+            )
+            return cur.fetchall()
+    finally:
+        conn.close()
+
+
+def get_song_by_group(song_group_id):
+    conn = get_connection()
+
+    try:
+        with conn.cursor() as cur:
+            cur.execute(
+                """
+                SELECT
+                    song_name,
+                    lyricist,
+                    composer,
+                    arranger,
+                    tie_up,
+                    youtube_url,
+                    apple_music_url,
+                    spotify_url
+                FROM m_song
+                WHERE
+                    song_group_id = %s
+                    AND is_deleted = FALSE
+                ORDER BY
+                    song_id ASC
+                LIMIT 1
+                """,
+                (song_group_id,)
+            )
+
+            return cur.fetchone()
+
+    finally:
+        conn.close()
+
+
 def exists_song(song_name, album_name, song_id=None):
     conn = get_connection()
     sql = """
@@ -135,9 +191,28 @@ def create_song(song):
     conn = get_connection()
     try:
         with conn.cursor() as cur:
+
+            # song_idを先に取得
+            cur.execute(
+                """
+                SELECT nextval(
+                    pg_get_serial_sequence('m_song','song_id')
+                ) AS song_id
+                """
+            )
+            song_id = cur.fetchone()["song_id"]
+
+            # グループ未指定なら自分自身をグループIDにする
+            song_group_id = song["song_group_id"]
+
+            if not song_group_id:
+                song_group_id = song_id
+
             cur.execute(
                 """
                 INSERT INTO m_song(
+                    song_id,
+                    song_group_id,
                     song_name,
                     release_date,
                     album_name,
@@ -153,11 +228,12 @@ def create_song(song):
                 )
                 VALUES(
                     %s,%s,%s,%s,%s,%s,
-                    %s,%s,%s,%s,%s,%s
+                    %s,%s,%s,%s,%s,%s,%s,%s
                 )
-                RETURNING song_id
                 """,
                 (
+                    song_id,
+                    song_group_id,
                     song["song_name"],
                     song["release_date"],
                     song["album_name"],
@@ -172,9 +248,10 @@ def create_song(song):
                     song["is_public"]
                 )
             )
-            song_id = cur.fetchone()["song_id"]
+
         conn.commit()
         return song_id
+
     finally:
         conn.close()
 
@@ -190,6 +267,7 @@ def update_song(song_id, song):
                 """
                 UPDATE m_song
                 SET
+                    song_group_id = %s,
                     song_name = %s,
                     release_date = %s,
                     album_name = %s,
@@ -207,6 +285,7 @@ def update_song(song_id, song):
                     song_id = %s
                 """,
                 (
+                    song["song_group_id"],
                     song["song_name"],
                     song["release_date"],
                     song["album_name"],

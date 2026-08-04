@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ライブ一覧</title>
+
+    <link rel="stylesheet" href="/static/css/common.css">
+    <link rel="stylesheet" href="/static/css/home/live/live.css">
+</head>
+<body>
+
+<div class="background">
+    {% include "templates/commons/header.html" %}
+    <div class="page-scroll">
+        <div class="container">
+            {% if lives %}
+            <div class="live-list">
+                {% for live in lives %}
+                <div class="live-card">
+                    <div class="live-name">
+                        {{ live.live_name }}
+                    </div>
+
+                    <div class="tour-name">
+                        {{ live.tour_name }}
+                    </div>
+
+                    <div class="live-info">
+                        <div>
+                            📅 {{ live.live_date }}
+                        </div>
+
+                        <div>
+                            📍 {{ live.prefecture_name }}
+                            {{ live.venue_name }}
+                        </div>
+                    </div>
+
+                    <button class="detail-btn">
+                        詳細
+                    </button>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="no-live">
+                現在、開催予定のライブはありません
+            </div>
+            {% endif %}
+            <div class="menu-grid">
+                <a href="#" class="menu-btn not-implemented">
+                    <span>アーカイブ</span>
+                </a>
+                <a href="#" class="menu-btn not-implemented">
+                    <span>参加履歴</span>
+                </a>
+                <a href="#" class="menu-btn not-implemented">
+                    <span>回収済み</span>
+                </a>
+                <a href="#" class="menu-btn not-implemented">
+                    <span>セトリ予測</span>
+                </a>
+            </div>
+            <a href="#" class="menu-btn wide-btn not-implemented">
+                <span>忘れ物チェック</span>
+            </a>
+        </div>
+    </div>
+</div>
+<div id="toast" class="toast"></div>
+
+<script src="/static/js/common.js"></script>
+
+{% if message %}
+<script>
+    showToast("{{ message }}");
+</script>
+{% endif %}
+<script>
+    document.querySelectorAll(".not-implemented").forEach(button=>{
+        button.addEventListener("click",(e)=>{
+            e.preventDefault();
+            showToast("この機能は未実装です");
+        });
+    });
+</script>
+</body>
+</html>

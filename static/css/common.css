@@ -3,6 +3,24 @@
     src: url("/static/fonts/HachiMaruPop-Regular.ttf");
 }
 
+
+/*==========================
+    共通
+==========================*/
+
+*{
+    box-sizing:border-box;
+}
+
+
+html,
+body{
+    margin:0;
+    width:100%;
+    height:100%;
+}
+
+
 body,
 label,
 button,
@@ -11,29 +29,10 @@ textarea,
 select{
     font-size:16px;
     font-family:"HachiMaruPop-Regular", sans-serif;
-    box-sizing:border-box;
 }
 
-.header {
-    width: 100%;
-    text-align: center;
-    margin: 10px 0 0;
-}
 
-.title-logo{
-    width:50%;
-    display:block;
-    margin:0 auto;
-}
-
-html,
-body{
-    margin:0;
-    width:100%;
-    height:100%;
-    overflow:hidden;
-}
-
+/* 背景 */
 body{
     background-image:url("/static/img/background_phone.png");
     background-size:cover;
@@ -42,17 +41,109 @@ body{
     background-attachment:fixed;
 }
 
-body{
-    margin:0;
-    overflow:hidden;
-}
+
+/*==========================
+    画面共通
+==========================*/
 
 .background{
     width:100%;
     height:100dvh;
     display:flex;
     flex-direction:column;
+    align-items:center;
 }
+
+
+/*==========================
+    ヘッダー
+==========================*/
+
+.header{
+    width:100%;
+    text-align:center;
+    padding-top:10px;
+    flex-shrink:0;
+}
+
+
+.title-logo{
+    width:50%;
+    max-width:220px;
+    display:block;
+    margin:0 auto;
+}
+
+
+/*==========================
+    ページスクロール
+==========================*/
+
+.page-scroll{
+    width:100%;
+    flex:1;
+    min-height:0;
+    overflow-y:auto;
+    overflow-x:hidden;
+    scrollbar-width:none;
+}
+
+
+.page-scroll::-webkit-scrollbar{
+    display:none;
+}
+
+
+/*==========================
+    共通コンテナ
+==========================*/
+
+.container{
+    width:100%;
+    max-width:430px;
+    margin:0 auto;
+    padding:10px 20px 80px;
+}
+
+
+/* タイトル */
+
+.page-title{
+    margin:10px 0 20px;
+    text-align:center;
+    font-size:25px;
+    color:#333;
+}
+
+
+
+/*==========================
+    フォーム共通
+==========================*/
+
+.form-group {
+    margin-bottom:20px;
+}
+
+
+.form-group label {
+    display:block;
+    margin-bottom:8px;
+    font-weight:bold;
+}
+
+
+.form-group input,
+.form-group select,
+.form-group textarea{
+    width:100%;
+    max-width:100%;
+}
+
+
+/*==========================
+    通知
+==========================*/
 
 .toast{
     position:fixed;
@@ -67,54 +158,18 @@ body{
     color:white;
     text-align:center;
     font-size:14px;
-    transition:0.4s;
+    transition:.4s;
     z-index:9999;
 }
+
 
 .toast.show{
     top:20px;
 }
 
-.page {
-    max-width: 430px;
-    margin: 0 auto;
-    padding: 24px;
-}
 
-.form-group {
-    margin-bottom: 20px;
-}
+/* 非表示 */
 
-.form-group label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: bold;
-}
-
-.form-group input {
-    width: 100%;
-    box-sizing: border-box;
-}
-
-.primary-button {
-    width: 100%;
-}
-
-.form-group input,
-.form-group select,
-.form-group textarea {
-    max-width:100%;
-    min-width:0;
-    box-sizing:border-box;
-}
-
-input[type="date"] {
-    width:100%;
-    max-width:100%;
-    min-width:0;
-    height:45px;
-    padding:0 8px;
-    box-sizing:border-box;
-    -webkit-appearance:none;
-    appearance:none;
+.hidden{
+    display:none!important;
 }
