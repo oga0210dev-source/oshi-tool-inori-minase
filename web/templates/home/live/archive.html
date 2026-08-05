@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ライブ一覧</title>
+
+    <link rel="stylesheet" href="/static/css/common.css">
+    <link rel="stylesheet" href="/static/css/home/live/archive.css">
+</head>
+<body>
+
+<div class="background">
+    <a href="/home/live" class="live-link">
+        ← ライブ
+    </a>
+    <div class="search-area">
+        <form method="get" class="search-form">
+            <input
+                type="text"
+                name="keyword"
+                placeholder="ライブ名・ツアー名・会場で検索"
+                value="{{ request.query_params.get('keyword', '') }}"
+            >
+
+            <div class="search-bottom">
+                <select name="sort">
+                    <option value="new">
+                        開催日が新しい順
+                    </option>
+
+                    <option value="old">
+                        開催日が古い順
+                    </option>
+
+                    <option value="tour">
+                        ツアー名順
+                    </option>
+
+                    <option value="name">
+                        ライブ名順
+                    </option>
+                </select>
+
+                <button type="submit">
+                    検索
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <div class="page-scroll">
+        <div class="container">
+            {% if lives %}
+                <div class="live-list">
+                    {% for live in lives %}
+                        <div class="live-card">
+                            <div class="live-name">
+                                {{ live.live_name }}
+                            </div>
+
+                            <div class="tour-name">
+                                {{ live.tour_name }}
+                            </div>
+
+                            <div class="live-info">
+                                <div>
+                                    📅 {{ live.live_date }}
+                                </div>
+
+                                <div>
+                                    📍 {{ live.prefecture_name }}
+                                    {{ live.venue_name }}
+                                </div>
+                            </div>
+                            <div class="live-actions">
+                                {% if live.live_date >= today %}
+                                    {% if live.is_join %}
+                                        <form method="post" action="/home/live/archive/cancel">
+                                            <input
+                                                type="hidden"
+                                                name="live_id"
+                                                value="{{ live.live_id }}"
+                                            >
+                                            <button class="cancel-btn">
+                                                参加キャンセル
+                                            </button>
+                                        </form>
+
+                                    {% else %}
+                                        <form method="post" action="/home/live/archive/join">
+                                            <input
+                                                type="hidden"
+                                                name="live_id"
+                                                value="{{ live.live_id }}"
+                                            >
+                                            <button class="join-btn">
+                                                参加予定
+                                            </button>
+                                        </form>
+                                    {% endif %}
+
+                                {% else %}
+                                    {% if "公演中止" in live.live_name %}
+                                        <button class="disabled-btn" disabled>
+                                            公演中止
+                                        </button>
+
+                                    {% elif live.is_join %}
+                                        <form method="post" action="/home/live/archive/cancel">
+                                            <input
+                                                type="hidden"
+                                                name="live_id"
+                                                value="{{ live.live_id }}"
+                                            >
+                                            <button class="attend-cancel-btn">
+                                                参加取消
+                                            </button>
+                                        </form>
+
+                                    {% else %}
+                                        <form method="post" action="/home/live/archive/attend">
+                                            <input
+                                                type="hidden"
+                                                name="live_id"
+                                                value="{{ live.live_id }}"
+                                            >
+                                            <button class="attend-btn">
+                                                参加済み
+                                            </button>
+                                        </form>
+                                    {% endif %}
+
+                                {% endif %}
+
+                                <form>
+                                    <button class="detail-btn" type="button">
+                                        詳細
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="no-live">
+                    登録されているライブデータがありません。
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+<div id="toast" class="toast"></div>
+
+<script src="/static/js/common.js"></script>
+
+{% if message %}
+<script>
+    showToast("{{ message }}");
+</script>
+{% endif %}
+<script>
+    // スクロール位置保存
+    document.querySelectorAll(".live-actions form").forEach(form => {
+        form.addEventListener("submit", () => {
+            sessionStorage.setItem(
+                "archive_scroll",
+                document.querySelector(".page-scroll").scrollTop
+            );
+        });
+    });
+
+    // ページ再表示時に復元
+    window.addEventListener("load", () => {
+        const scroll = sessionStorage.getItem("archive_scroll");
+
+        if (scroll) {
+            document.querySelector(".page-scroll").scrollTop = scroll;
+            sessionStorage.removeItem("archive_scroll");
+        }
+    });
+</script>
+</body>
+</html>

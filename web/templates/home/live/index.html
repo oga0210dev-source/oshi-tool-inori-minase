@@ -31,6 +31,7 @@
                     <div class="live-info">
                         <div>
                             📅 {{ live.live_date }}
+                            (あと{{ live.remaining_days }}日！)
                         </div>
 
                         <div>
@@ -38,6 +39,12 @@
                             {{ live.venue_name }}
                         </div>
                     </div>
+
+                    {% if live.is_join %}
+                    <div class="join-status">
+                        参加予定
+                    </div>
+                    {% endif %}
 
                     <button class="detail-btn">
                         詳細
@@ -51,7 +58,7 @@
             </div>
             {% endif %}
             <div class="menu-grid">
-                <a href="#" class="menu-btn not-implemented">
+                <a href="/home/live/archive" class="menu-btn">
                     <span>アーカイブ</span>
                 </a>
                 <a href="#" class="menu-btn not-implemented">

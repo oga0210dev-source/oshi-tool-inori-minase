@@ -2,7 +2,7 @@ from fastapi import FastAPI
 
 from python.routers import login, register
 from python.routers.home import home
-from python.routers.home import live
+from python.routers.home.live import live, archive
 from python.routers.mypage import mypage, password, public_setting
 from python.routers.admin.master import master, song as song_master, live as live_master, setlist
 
@@ -23,3 +23,4 @@ def register_router(app: FastAPI):
     app.include_router(setlist.router)
 
     app.include_router(live.router)
+    app.include_router(archive.router)

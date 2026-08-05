@@ -145,3 +145,16 @@ html::-webkit-scrollbar{
     font-weight:bold;
     color:#333;
 }
+
+.join-status{
+    display:inline-flex;
+    width:max-content;
+    margin-top:10px;
+    padding:5px 12px;
+    border-radius:20px;
+    background:#8bc34a;
+    color:white;
+    font-size:13px;
+    font-weight:bold;
+    align-items:center;
+}

@@ -4,7 +4,7 @@ from fastapi.responses import RedirectResponse
 from python.core import templates
 from python.core import auth
 
-from python.models.home import live as live_model
+from python.models.home.live import live as live_model
 
 router = APIRouter(
     prefix="/home/live",
@@ -22,7 +22,8 @@ async def live_list(
             status_code=303
         )
 
-    lives = live_model.get_live_list()
+    user_id = request.session.get("user_id")
+    lives = live_model.get_live_list(user_id)
 
     return templates.TemplateResponse(
         request=request,

@@ -1,0 +1,218 @@
+.live-link{
+    display:block;
+    width:max-content;
+    color:#888;
+    text-decoration:none;
+    font-size:14px;
+    margin-bottom:5px;
+}
+
+
+.background .live-link{
+    align-self:flex-start;
+
+    margin-left:15px;
+    margin-top:10px;
+
+    width:auto;
+}
+
+
+/* コンテナ */
+.container{
+    width:100%;
+    max-width:430px;
+    margin:0 auto;
+    padding:15px 0 30px;
+}
+
+
+/* ライブ一覧 */
+.live-list{
+    width:100%;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+}
+
+
+/* ライブカード */
+.live-card{
+    width:85%;
+    max-width:390px;
+    min-height:150px;
+    margin:0 auto;
+    background:white;
+    border-radius:20px;
+    padding:15px;
+    box-shadow:0 3px 8px rgba(0,0,0,0.12);
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+}
+
+
+.live-name{
+    font-size:16px;
+    font-weight:bold;
+    margin-bottom:4px;
+}
+
+
+.tour-name{
+    font-size:13px;
+    color:#777;
+    margin-bottom:8px;
+}
+
+
+.live-info{
+    font-size:13px;
+    line-height:1.7;
+}
+
+
+/* ライブ操作ボタン */
+.live-actions{
+    display:flex;
+    gap:10px;
+    margin-top:15px;
+    width:100%;
+    align-items:stretch;
+}
+
+
+.live-actions form{
+    flex:1;
+    margin:0;
+    padding:0;
+}
+
+
+.live-actions button{
+    width:100%;
+    height:40px;
+    padding:0;
+    border:none;
+    border-radius:10px;
+    box-sizing:border-box;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:14px;
+    color:white;
+}
+
+
+/* 参加予定 */
+.join-btn{
+    background:#8bc34a;
+}
+
+
+/* 参加キャンセル */
+.cancel-btn{
+    background:#ff8a8a;
+}
+
+
+/* 過去ライブ 参加済み */
+.attend-btn{
+    background:#64b5f6;
+}
+
+
+/* 過去ライブ 参加取消 */
+.attend-cancel-btn{
+    background:#bdbdbd;
+}
+
+/* 公演中止 */
+.disabled-btn{
+    flex:1;
+    width:100%;
+    height:40px;
+    padding:0;
+    border:none;
+    border-radius:10px;
+    box-sizing:border-box;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:14px;
+    background:#cccccc;
+    color:white;
+}
+
+
+/* 詳細 */
+.detail-btn{
+    background:#ff8fb1;
+}
+
+
+/* 検索エリア */
+.search-area{
+    position:sticky;
+    top:0;
+    z-index:10;
+    padding:10px;
+}
+
+
+.search-form{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+
+.search-form input{
+    width:100%;
+    box-sizing:border-box;
+    padding:10px;
+    border-radius:10px;
+    border:1px solid #ccc;
+}
+
+
+.search-bottom{
+    display:flex;
+    gap:10px;
+}
+
+
+.search-bottom select{
+    flex:1;
+    padding:10px;
+    border-radius:10px;
+    border:1px solid #ccc;
+}
+
+
+.search-bottom button{
+    width:90px;
+    border-radius:10px;
+    border:none;
+}
+
+
+/* データなし */
+.no-live{
+    width:90%;
+    max-width:400px;
+    margin:30px auto;
+    text-align:center;
+    color:#777;
+}
+
+
+/* スクロールバー非表示 */
+html{
+    scrollbar-width:none;
+}
+
+
+html::-webkit-scrollbar{
+    display:none;
+}
