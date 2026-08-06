@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/static/img/logo.png" type="image/png">
+
+    <title>参加記録編集</title>
+
+    <link rel="stylesheet" href="/static/css/common.css">
+    <link rel="stylesheet" href="/static/css/home/live/history_edit.css">
+</head>
+
+<body>
+<div class="background">
+
+    <a href="/home/live/history/detail/{{ live_id }}" class="live-link">
+        ← 詳細へ戻る
+    </a>
+
+    <div class="page-scroll">
+        <div class="container">
+
+            <div class="edit-card">
+
+                <div class="group-title">
+                    参加記録編集
+                </div>
+
+                <form method="post"
+                      action="/home/live/history/edit/{{ live_id }}">
+
+                    <div class="form-group">
+                        <label>
+                            💺 座席情報
+                        </label>
+
+                        <input
+                            type="text"
+                            name="seat_info"
+                            value="{{ record.seat_info or '' }}"
+                            placeholder="例：1階A席 10列5番"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label>
+                            📝 感想・メモ
+                        </label>
+
+                        <textarea
+                            name="memo"
+                            rows="8"
+                            placeholder="ライブの感想や思い出を入力">{{ record.memo or '' }}</textarea>
+                    </div>
+
+                    <button type="submit"
+                            class="save-btn">
+                        保存
+                    </button>
+
+                </form>
+
+                <a href="/home/live/history/detail/{{ live_id }}"
+                   class="cancel-btn">
+                    キャンセル
+                </a>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

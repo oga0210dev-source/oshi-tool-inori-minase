@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/static/img/logo.png" type="image/png">
+
+    <title>参加履歴</title>
+
+    <link rel="stylesheet" href="/static/css/common.css">
+    <link rel="stylesheet" href="/static/css/home/live/history.css">
+</head>
+
+<body>
+<div class="background">
+
+    <a href="/home/live" class="live-link">
+        ← ライブ
+    </a>
+
+    <div class="page-scroll">
+        <div class="container">
+
+            <div class="page-title">
+                参加履歴
+            </div>
+
+            {% if lives %}
+
+            <div class="history-list">
+
+                {% for live in lives %}
+
+                <div class="history-card">
+
+                    <div class="live-name">
+                        {{ live.live_name }}
+                    </div>
+
+                    <div class="tour-name">
+                        {{ live.tour_name }}
+                    </div>
+
+                    <div class="history-info">
+
+                        <div>
+                            📅 {{ live.live_date }}
+                        </div>
+
+                        <div>
+                            📍 {{ live.prefecture_name }}
+                            {{ live.venue_name }}
+                        </div>
+
+                        {% if live.seat_info %}
+                        <div>
+                            💺 {{ live.seat_info }}
+                        </div>
+                        {% endif %}
+
+                        {% if live.memo %}
+                        <div class="memo">
+                            📝 {{ live.memo }}
+                        </div>
+                        {% endif %}
+
+                        <div class="expense">
+                            💰 {{ live.total_expense }}円
+                        </div>
+
+                    </div>
+
+                    <div class="history-actions">
+                        <a href="/home/live/history/detail/{{ live.live_id }}"
+                           class="detail-btn">
+                            記録を見る
+                        </a>
+
+                        <a href="/home/live/detail/{{ live.live_id }}?from=history"
+                           class="live-detail-btn">
+                            ライブ詳細
+                        </a>
+                    </div>
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+            {% else %}
+
+            <div class="no-history">
+                参加履歴がありません。
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+</body>
+</html>

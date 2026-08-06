@@ -134,11 +134,57 @@ create trigger update_m_setlist_updated_at BEFORE
 update on m_setlist for EACH row
 execute FUNCTION update_updated_at_column ();
 
+create table public.m_expense_type (
+  expense_type_id smallserial not null,
+  expense_type_code character varying(30) not null,
+  expense_type_name character varying(50) not null,
+  display_order integer not null default 0,
+  is_public boolean not null default true,
+  created_at timestamp without time zone not null default CURRENT_TIMESTAMP,
+  updated_at timestamp without time zone not null default CURRENT_TIMESTAMP,
+  constraint m_expense_type_pkey primary key (expense_type_id),
+  constraint m_expense_type_expense_type_code_key unique (expense_type_code)
+) TABLESPACE pg_default;
 
+create table public.t_live_record (
+  record_id bigserial not null,
+  user_id text not null,
+  live_id bigint not null,
+  seat_info character varying(200) null,
+  memo text null,
+  created_at timestamp without time zone not null default CURRENT_TIMESTAMP,
+  updated_at timestamp without time zone not null default CURRENT_TIMESTAMP,
+  constraint t_live_record_pkey primary key (record_id),
+  constraint unique_t_live_record unique (user_id, live_id),
+  constraint fk_t_live_record_live foreign KEY (live_id) references m_live (live_id),
+  constraint fk_t_live_record_user foreign KEY (user_id) references m_user (user_id)
+) TABLESPACE pg_default;
 
+create index IF not exists idx_t_live_record_user on public.t_live_record using btree (user_id) TABLESPACE pg_default;
 
+create index IF not exists idx_t_live_record_live on public.t_live_record using btree (live_id) TABLESPACE pg_default;
 
+create table public.t_live_expense (
+  expense_id bigserial not null,
+  user_id text not null,
+  live_id bigint not null,
+  expense_type_id smallint not null,
+  amount integer not null default 0,
+  memo character varying(200) null,
+  created_at timestamp without time zone not null default CURRENT_TIMESTAMP,
+  updated_at timestamp without time zone not null default CURRENT_TIMESTAMP,
+  constraint t_live_expense_pkey primary key (expense_id),
+  constraint fk_t_live_expense_live foreign KEY (live_id) references m_live (live_id),
+  constraint fk_t_live_expense_type foreign KEY (expense_type_id) references m_expense_type (expense_type_id),
+  constraint fk_t_live_expense_user foreign KEY (user_id) references m_user (user_id),
+  constraint check_expense_amount check ((amount >= 0))
+) TABLESPACE pg_default;
 
+create index IF not exists idx_t_live_expense_user on public.t_live_expense using btree (user_id) TABLESPACE pg_default;
+
+create index IF not exists idx_t_live_expense_live on public.t_live_expense using btree (live_id) TABLESPACE pg_default;
+
+create index IF not exists idx_t_live_expense_type on public.t_live_expense using btree (expense_type_id) TABLESPACE pg_default;
 
 
 
@@ -234,3 +280,22 @@ VALUES
 (47, '沖縄県', '沖縄',   47,  FALSE, TRUE),
 
 (99, '海外', '海外',     99,  TRUE, TRUE);
+
+
+
+/////////////////////////////////
+費用種類データ
+/////////////////////////////////
+INSERT INTO m_expense_type
+(
+    expense_type_code,
+    expense_type_name,
+    display_order
+)
+VALUES
+('ticket','チケット代',1),
+('transport','交通費',2),
+('hotel','宿泊費',3),
+('food','食費',4),
+('goods','グッズ',5),
+('other','その他',6);

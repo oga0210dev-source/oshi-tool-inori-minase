@@ -11,7 +11,7 @@ function showToast(message, type = "error") {
 }
 
 document.addEventListener("DOMContentLoaded",()=>{
-    document.querySelectorAll('a[href="#"], .not-implemented').forEach(item=>{
+    document.querySelectorAll('.not-implemented').forEach(item=>{
         item.addEventListener("click",(e)=>{
             e.preventDefault();
             showToast("この機能は未実装です");

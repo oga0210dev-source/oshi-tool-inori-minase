@@ -1,0 +1,101 @@
+.live-link{
+    display:block;
+    width:max-content;
+    color:#888;
+    text-decoration:none;
+    font-size:14px;
+}
+
+.background .live-link{
+    align-self:flex-start;
+    margin-left:15px;
+    margin-top:10px;
+}
+
+.container{
+    width:100%;
+    max-width:430px;
+    margin:0 auto;
+    padding:15px 0 30px;
+}
+
+.edit-card{
+    width:85%;
+    max-width:390px;
+    margin:0 auto;
+    padding:20px;
+    background:white;
+    border-radius:20px;
+    box-shadow:0 3px 8px rgba(0,0,0,.12);
+}
+
+.group-title{
+    font-size:15px;
+    font-weight:bold;
+    color:#555;
+    margin-bottom:15px;
+    padding-bottom:8px;
+    border-bottom:1px solid #eee;
+}
+
+.form-group{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    margin-bottom:20px;
+}
+
+.form-group label{
+    font-size:14px;
+    font-weight:bold;
+    color:#555;
+}
+
+.form-group input,
+.form-group textarea{
+    width:100%;
+    box-sizing:border-box;
+    padding:10px;
+    border-radius:10px;
+    border:1px solid #ddd;
+    font-size:14px;
+    font-family:inherit;
+}
+
+.form-group textarea{
+    resize:none;
+    line-height:1.6;
+}
+
+.save-btn,
+.cancel-btn{
+    width:100%;
+    height:40px;
+    border-radius:10px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-decoration:none;
+    border:none;
+    font-size:14px;
+    font-weight:bold;
+    color:white;
+}
+
+.save-btn{
+    background:#8bc34a;
+    margin-top:5px;
+}
+
+.cancel-btn{
+    background:#bdbdbd;
+    margin-top:10px;
+}
+
+html{
+    scrollbar-width:none;
+}
+
+html::-webkit-scrollbar{
+    display:none;
+}
