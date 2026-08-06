@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/static/img/logo.png" type="image/png">
+
+    <title>セットリスト</title>
+
+    <link rel="stylesheet" href="/static/css/common.css">
+    <link rel="stylesheet" href="/static/css/home/live/setlist.css">
+</head>
+
+<body>
+
+<div class="background">
+    <a href="/home/live/detail/{{ live.live_id }}" class="live-link">
+        ← ライブ詳細
+    </a>
+
+    <div class="page-scroll">
+        <div class="container">
+            <!-- ライブ情報 -->
+            <div class="detail-card">
+                <div class="group-title">
+                    ライブ情報
+                </div>
+
+                <div class="live-name">
+                    {{ live.live_name }}
+                </div>
+
+                <div class="tour-name">
+                    {{ live.tour_name }}
+                </div>
+
+                <div class="live-date">
+                    📅 {{ live.live_date }}
+                </div>
+            </div>
+
+            <!-- セットリスト -->
+            <div class="detail-card">
+                <div class="group-title">
+                    セットリスト
+                </div>
+
+                {% if songs %}
+                    <div class="song-list">
+                        {% for song in songs %}
+                        <div class="song-item">
+                            <div class="song-number">
+                                {% if song.is_medley %}
+                                    {{ song.song_order }}
+                                    <span class="medley-badge">
+                                        MEDLEY
+                                    </span>
+                                {% else %}
+                                    {{ "%02d"|format(song.song_order) }}
+                                {% endif %}
+                            </div>
+
+                            <div class="song-info">
+                                <div class="song-name">
+                                    {{ song.song_name }}
+                                </div>
+
+                                {% if song.album_name %}
+                                <div class="album-name">
+                                    {{ song.album_name }}
+                                </div>
+                                {% endif %}
+                            </div>
+
+                            <div class="music-links">
+                                {% if song.youtube_url %}
+                                <a
+                                    href="{{ song.youtube_url }}"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="music-btn youtube"
+                                >
+                                    YouTube
+                                </a>
+                                {% endif %}
+
+                                {% if song.apple_music_url %}
+                                <a
+                                    href="{{ song.apple_music_url }}"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="music-btn apple"
+                                >
+                                    AppleMusic
+                                </a>
+                                {% endif %}
+
+                                {% if song.spotify_url %}
+                                <a
+                                    href="{{ song.spotify_url }}"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="music-btn spotify"
+                                >
+                                    Spotify
+                                </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                {% else %}
+                    <div class="no-song">
+                        セットリストが登録されていません。
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="icon" href="/static/img/logo.png" type="image/png">
+
+    <title>ライブ詳細</title>
+
+    <link rel="stylesheet" href="/static/css/common.css">
+    <link rel="stylesheet" href="/static/css/home/live/detail.css">
+</head>
+
+
+<body>
+<div class="background">
+    {% if request.query_params.get('from') == 'history' %}
+    <a href="/home/live/history"
+       class="live-link">
+        ← 参加履歴
+    </a>
+
+    {% else %}
+    <a href="/home/live/archive"
+       class="live-link">
+        ← ライブ一覧
+    </a>
+    {% endif %}
+
+    <div class="page-scroll">
+        <div class="container">
+            <!-- 基本情報 -->
+            <div class="detail-card">
+                <div class="group-title">
+                    基本情報
+                </div>
+
+                <div class="live-name">
+                    {{ live.live_name }}
+                </div>
+
+                <div class="tour-name">
+                    {{ live.tour_name }}
+                </div>
+
+                <div class="live-info">
+                    <div>
+                        📅 {{ live.live_date }}
+                    </div>
+
+                    <div class="day-status">
+                        {{ day_status }}
+                    </div>
+
+                    <div>
+                        📍 {{ live.prefecture_name }}
+                        {{ live.venue_name }}
+                    </div>
+
+                    {% if live.live_date >= today %}
+                        {% if live.is_join %}
+                        <div class="join-status future">
+                            参加予定
+                        </div>
+
+                        {% else %}
+                        <div class="join-status none">
+                            未参加
+                        </div>
+                        {% endif %}
+                    {% else %}
+                        {% if live.is_join %}
+                        <div class="join-status past">
+                            参加済み
+                        </div>
+
+                        {% else %}
+                        <div class="join-status none">
+                            未参加
+                        </div>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- 関連リンク -->
+            <div class="detail-card">
+                <div class="group-title">
+                    関連リンク
+                </div>
+
+                {% if live.official_url %}
+                <a
+                    href="{{ live.official_url }}"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="link-btn"
+                >
+                    🌐 公式サイト
+                </a>
+                {% endif %}
+
+                {% if live.blu_ray_url %}
+                <a
+                    href="{{ live.blu_ray_url }}"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="link-btn"
+                >
+                    💿 Blu-ray
+                </a>
+                {% endif %}
+            </div>
+
+            <!-- セットリスト -->
+            <div class="detail-card">
+                <div class="group-title">
+                    セットリスト
+                </div>
+
+                <a
+                    href="/home/live/setlist/{{ live.live_id }}"
+                    class="link-btn"
+                >
+                    🎵 セットリストを見る
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+function backToArchive(){
+    const url =
+        sessionStorage.getItem(
+            "live_archive_url"
+        );
+    if(url){
+        location.href = url;
+    }else{
+        location.href =
+            "/home/live/archive";
+    }
+    return false;
+}
+
+function backToLiveList(){
+    const from =
+        new URLSearchParams(
+            window.location.search
+        ).get("from");
+
+    const link =
+        document.getElementById(
+            "back-link"
+        );
+
+    if(from === "history"){
+        link.href = "/home/live/history";
+        link.textContent = "← 参加履歴";
+    }else{
+        link.href = "/home/live/archive";
+        link.textContent = "← ライブ一覧";
+    }
+    return true;
+}
+</script>
+</body>
+</html>

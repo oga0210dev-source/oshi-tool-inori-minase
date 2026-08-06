@@ -1,7 +1,8 @@
 from python.core.database import get_connection
+from datetime import date
 
 
-def get_live_list():
+def get_live_list(user_id):
     conn = get_connection()
 
     try:
@@ -14,10 +15,14 @@ def get_live_list():
                     l.tour_name,
                     l.live_date,
                     l.venue_name,
-                    p.prefecture_name
+                    p.prefecture_name,
+                    COALESCE(u.is_join, FALSE) AS is_join
                 FROM m_live l
                 LEFT JOIN m_prefecture p
-                ON l.prefecture_code = p.prefecture_code
+                    ON l.prefecture_code = p.prefecture_code
+                LEFT JOIN t_live_user u
+                    ON l.live_id = u.live_id
+                   AND u.user_id = %s
                 WHERE
                     l.is_deleted = FALSE
                     AND l.public_flag = TRUE
@@ -25,10 +30,18 @@ def get_live_list():
                 ORDER BY
                     l.live_date ASC
                 LIMIT 1
-                """
+                """,
+                (user_id,)
             )
 
-            return cur.fetchall()
+            lives = cur.fetchall()
+
+            for live in lives:
+                live["remaining_days"] = (
+                    live["live_date"] - date.today()
+                ).days
+
+            return lives
 
     finally:
         conn.close()

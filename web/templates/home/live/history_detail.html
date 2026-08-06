@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/static/img/logo.png" type="image/png">
+
+    <title>参加履歴詳細</title>
+
+    <link rel="stylesheet" href="/static/css/common.css">
+    <link rel="stylesheet" href="/static/css/home/live/history_detail.css">
+</head>
+
+<body>
+<div class="background">
+    <a href="/home/live/history" class="live-link">
+        ← 参加履歴
+    </a>
+
+    <div class="page-scroll">
+        <div class="container">
+            <!-- 基本情報 -->
+            <div class="detail-card">
+                <div class="group-title">
+                    基本情報
+                </div>
+
+                <div class="live-name">
+                    {{ live.live_name }}
+                </div>
+
+                <div class="tour-name">
+                    {{ live.tour_name }}
+                </div>
+
+                <div class="info-list">
+                    <div>
+                        📅 {{ live.live_date }}
+                    </div>
+
+                    <div>
+                        📍 {{ live.prefecture_name }}
+                        {{ live.venue_name }}
+                    </div>
+                </div>
+            </div>
+
+            <!-- 参加記録 -->
+            <div class="detail-card">
+                <div class="group-title">
+                    参加記録
+                </div>
+
+                {% if live.seat_info %}
+                <div class="record-item">
+                    💺 {{ live.seat_info }}
+                </div>
+
+                {% else %}
+                <div class="empty-text">
+                    座席情報なし
+                </div>
+                {% endif %}
+
+                {% if live.memo %}
+                <div class="memo">
+                    <span class="memo-icon">📝</span>
+                    <span class="memo-text">{{ live.memo }}</span>
+                </div>
+                {% else %}
+                <div class="empty-text">
+                    感想メモなし
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- 費用 -->
+            <div class="detail-card">
+                <div class="group-title">
+                    費用
+                </div>
+
+                {% if expenses %}
+                <div class="expense-list">
+                    {% for expense in expenses %}
+                    <div class="expense-item">
+                        <div class="expense-name">
+                            {{ expense.expense_type_name }}
+                        </div>
+
+                        <div class="expense-amount">
+                            {{ expense.amount }}円
+                        </div>
+
+                        <div class="expense-actions">
+                            <div class="memo-area">
+                                {% if expense.memo %}
+                                <button class="icon-btn memo-btn"
+                                    onclick="openExpenseMemo('{{ expense.memo }}')">
+                                    📝
+                                </button>
+                                {% else %}
+                                <div class="icon-space"></div>
+                                {% endif %}
+                            </div>
+
+                            <a href="/home/live/history/expense/edit/{{ expense.expense_id }}"
+                               class="icon-btn">
+                                ✏️
+                            </a>
+
+                            <form method="post"
+                                  action="/home/live/history/expense/delete/{{ expense.expense_id }}"
+                                  onsubmit="return confirm('削除しますか？')">
+
+                                <button class="icon-btn">
+                                    🗑️
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="empty-text">
+                    費用登録なし
+                </div>
+                {% endif %}
+
+                <div class="total-expense">
+                    合計 {{ total_expense }}円
+                </div>
+            </div>
+
+            <div id="expenseMemoModal" class="memo-modal">
+                <div class="memo-modal-content">
+                    <div class="memo-title">
+                        費用メモ
+                    </div>
+
+                    <div id="expenseMemoText"
+                         class="memo-content">
+                    </div>
+
+                    <button class="close-btn"
+                            onclick="closeExpenseMemo()">
+                        閉じる
+                    </button>
+                </div>
+            </div>
+
+            <a href="/home/live/history/edit/{{ live.live_id }}"
+               class="edit-btn">
+                ✏️ 参加記録を編集
+            </a>
+
+            <a href="/home/live/history/expense/{{ live.live_id }}"
+               class="expense-btn">
+                💰 費用を追加
+            </a>
+        </div>
+    </div>
+</div>
+<script>
+function openExpenseMemo(memo){
+    const modal = document.getElementById(
+        "expenseMemoModal"
+    );
+
+    document.getElementById(
+        "expenseMemoText"
+    ).innerText = memo;
+
+    modal.style.display = "flex";
+}
+
+
+function closeExpenseMemo(){
+    document.getElementById(
+        "expenseMemoModal"
+    ).style.display = "none";
+}
+
+
+document.getElementById(
+    "expenseMemoModal"
+).addEventListener(
+    "click",
+    function(e){
+
+        if(e.target === this){
+            closeExpenseMemo();
+        }
+
+    }
+);
+</script>
+</body>
+</html>
