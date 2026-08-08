@@ -34,7 +34,7 @@ async def live_detail(
 
     if live is None:
         return RedirectResponse(
-            "/home/live/archive",
+            "/home/live",
             status_code=303
         )
 

@@ -29,7 +29,6 @@ def get_live_list(user_id):
                     AND l.live_date >= CURRENT_DATE
                 ORDER BY
                     l.live_date ASC
-                LIMIT 1
                 """,
                 (user_id,)
             )

@@ -72,7 +72,7 @@ async def live_list(
 
     return templates.TemplateResponse(
         request=request,
-        name="templates/admin/master/live/index.html",
+        name="templates/admin/master/live/collected_song.html",
         context={
             "tours": tours,
             "keyword": keyword,

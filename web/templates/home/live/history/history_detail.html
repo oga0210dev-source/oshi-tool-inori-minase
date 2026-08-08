@@ -13,9 +13,18 @@
 
 <body>
 <div class="background">
+
+    {% if request.query_params.get('from') == 'live' %}
+    <a href="/home/live"
+       class="live-link">
+        ← ライブ
+    </a>
+
+    {% else %}
     <a href="/home/live/history" class="live-link">
         ← 参加履歴
     </a>
+    {% endif %}
 
     <div class="page-scroll">
         <div class="container">
@@ -194,6 +203,28 @@ document.getElementById(
 
     }
 );
+
+
+function backToLiveList(){
+    const from =
+        new URLSearchParams(
+            window.location.search
+        ).get("from");
+
+    const link =
+        document.getElementById(
+            "back-link"
+        );
+
+    if(from == "live"){
+        link.href = "/home/live";
+        link.textContent = "← ライブ"
+    }else{
+        link.href = "/home/live/history";
+        link.textContent = "← 参加履歴";
+    }
+    return true;
+}
 </script>
 </body>
 </html>

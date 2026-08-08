@@ -18,7 +18,7 @@
     <div class="page-scroll">
         <div class="container">
             {% if lives %}
-            <div class="live-list">
+            <div class="live-slider">
                 {% for live in lives %}
                 <div class="live-card">
                     <div class="live-name">
@@ -47,6 +47,11 @@
                     </div>
                     {% endif %}
 
+                    {% if live.is_join %}
+                    <a href="/home/live/history/detail/{{ live.live_id }}?from=live" class="add-history">
+                        記録
+                    </a>
+                    {% endif %}
                     <a href="/home/live/detail/{{ live.live_id }}"
                         class="detail-btn">
                         詳細
@@ -66,7 +71,7 @@
                 <a href="/home/live/history" class="menu-btn">
                     <span>参加履歴</span>
                 </a>
-                <a href="#" class="menu-btn not-implemented">
+                <a href="/home/live/collected_song" class="menu-btn">
                     <span>回収済み</span>
                 </a>
                 <a href="#" class="menu-btn not-implemented">

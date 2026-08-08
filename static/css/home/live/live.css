@@ -6,14 +6,24 @@
 }
 
 
-/* ライブ一覧 */
-.live-list{
-    width:100%;
+.live-slider{
     display:flex;
-    flex-direction:column;
-    gap:12px;
+    gap:20px;
+    overflow-x:auto;
+    scroll-snap-type:x mandatory;
+    scrollbar-width:none;
+    -ms-overflow-style:none;
+    padding:0 20px;
 }
 
+.live-slider::-webkit-scrollbar{
+    display:none;
+}
+
+.live-card{
+    flex:0 0 100%;
+    scroll-snap-align:center;
+}
 
 /* ライブカード */
 .live-card{
@@ -49,6 +59,20 @@
     line-height:1.7;
 }
 
+
+.add-history{
+    background:#eee;
+    color:#666;
+    width:100%;
+    height:40px;
+    border-radius:10px;
+    border:none;
+    text-decoration:none;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:14px;
+}
 
 .detail-btn{
     background:#ff8fb1;

@@ -36,29 +36,31 @@
 
     <!-- 検索・ソート -->
     <div class="search-area">
-        <form method="get">
+        <form method="get"
+              class="search-form"
+              onsubmit="clearArchiveState()">
             <input type="text"
                    name="keyword"
                    placeholder="曲名・アルバム名で検索"
-                   value="{{ keyword or '' }}">
+                   value="{{ request.query_params.get('keyword', '') }}">
             <select name="sort">
-                <option value="album" {% if sort == "album" %}selected{% endif %}>
+                <option value="album" {% if request.query_params.get('sort') == "album" %}selected{% endif %}>
                     アルバム順
                 </option>
 
-                <option value="song" {% if sort == "song" %}selected{% endif %}>
+                <option value="song" {% if request.query_params.get('sort') == "song" %}selected{% endif %}>
                     曲名順
                 </option>
 
-                <option value="release_desc" {% if sort == "release_desc" %}selected{% endif %}>
+                <option value="release_desc" {% if request.query_params.get('sort') == "release_desc" %}selected{% endif %}>
                     リリース日（新しい順）
                 </option>
 
-                <option value="release_asc" {% if sort == "release_asc" %}selected{% endif %}>
+                <option value="release_asc" {% if request.query_params.get('sort') == "release_asc" %}selected{% endif %}>
                     リリース日（古い順）
                 </option>
 
-                <option value="updated" {% if sort == "updated" %}selected{% endif %}>
+                <option value="updated" {% if request.query_params.get('sort') == "updated" %}selected{% endif %}>
                     更新日順
                 </option>
             </select>
@@ -69,46 +71,126 @@
     </div>
 
     <!-- 曲一覧 -->
-    <div class="album-list">
-        {% for album in albums %}
-        <div class="album-block">
-            <h2 class="album-title">
-                {{ album.album_name }}
-            </h2>
+    <div class="page-scroll">
+        <div class="album-list">
+            {% for album in albums %}
+            <div class="album-block">
+                <h2 class="album-title">
+                    {{ album.album_name }}
+                </h2>
 
-            {% for song in album.songs %}
-            <div class="song-row">
-                <div class="song-name">
-                    {% if song.display_order %}
-                        {{ song.display_order }}.
-                    {% endif %}
-                    {{ song.song_name }}
+                {% for song in album.songs %}
+                <div class="song-row">
+                    <div class="song-name">
+                        {% if song.display_order %}
+                            {{ song.display_order }}.
+                        {% endif %}
+                        {{ song.song_name }}
+                    </div>
+
+                    <div class="song-action">
+                        <a href="/admin/master/song/edit/{{ song.song_id }}"
+                           class="edit-btn"
+                           onclick="saveArchiveState()">
+                            編集
+                        </a>
+
+
+                        <a href="/admin/master/song/delete/{{ song.song_id }}"
+                           class="delete-btn"
+                           onclick="return confirm('この曲を削除しますか？');">
+                            削除
+                        </a>
+                    </div>
                 </div>
-
-                <div class="song-action">
-                    <a href="/admin/master/song/edit/{{ song.song_id }}"
-                       class="edit-btn">
-                        編集
-                    </a>
-
-
-                    <a href="/admin/master/song/delete/{{ song.song_id }}"
-                       class="delete-btn"
-                       onclick="return confirm('この曲を削除しますか？');">
-                        削除
-                    </a>
-                </div>
+                {% endfor %}
             </div>
+
+            {% else %}
+            <p class="empty-message">
+                登録されている曲はありません。
+            </p>
             {% endfor %}
         </div>
-
-        {% else %}
-        <p class="empty-message">
-            登録されている曲はありません。
-        </p>
-        {% endfor %}
     </div>
 
 </div>
+<script>
+    // 詳細画面へ移動前
+    function saveArchiveState(){
+        const area =
+            document.querySelector(".page-scroll");
+
+        sessionStorage.setItem(
+            "master_song_url",
+            window.location.href
+        );
+
+        sessionStorage.setItem(
+            "master_song_scroll",
+            area.scrollTop
+        );
+    }
+
+    // 削除後の位置保持
+    document.querySelectorAll(".song-action form")
+    .forEach(form => {
+        form.addEventListener("submit",()=>{
+            const area =
+                document.querySelector(".page-scroll");
+
+            sessionStorage.setItem(
+                "master_song_scroll",
+                area.scrollTop
+            );
+        });
+    });
+
+    // 検索時
+    function clearArchiveState(){
+        sessionStorage.removeItem(
+            "master_song_scroll"
+        );
+
+        sessionStorage.removeItem(
+            "master_song_url"
+        );
+    }
+
+    // ページ復元
+    window.addEventListener("load", () => {
+        const params = new URLSearchParams(window.location.search);
+
+        if (params.has("first")) {
+            sessionStorage.removeItem("master_song_scroll");
+            sessionStorage.removeItem("master_song_url");
+
+            window.history.replaceState(
+                {},
+                "",
+                "/admin/master/song"
+            );
+
+            return;
+        }
+
+        const savedUrl = sessionStorage.getItem("master_song_url");
+        const currentUrl = window.location.href;
+
+        // 編集画面から一覧に戻ってきた場合
+        if (savedUrl && currentUrl !== savedUrl) {
+            window.location.replace(savedUrl);
+            return;
+        }
+
+        const scroll = sessionStorage.getItem("master_song_scroll");
+
+        const area = document.querySelector(".page-scroll");
+
+        if (area && scroll !== null) {
+            area.scrollTop = Number(scroll);
+        }
+    });
+</script>
 </body>
 </html>

@@ -2,8 +2,7 @@ from fastapi import APIRouter, Request
 from fastapi.responses import RedirectResponse
 
 from python.core import auth
-from python.models.home.live import history_expense_delete as history_expense_delete_model
-
+from python.models.home.live.history import history_expense_delete as history_expense_delete_model
 
 router = APIRouter(
     prefix="/home/live/history/expense/delete",

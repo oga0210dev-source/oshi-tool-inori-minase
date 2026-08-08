@@ -34,30 +34,32 @@
 
     <!-- 検索・ソート -->
     <div class="search-area">
-        <form method="get">
+        <form method="get"
+              class="search-form"
+              onsubmit="clearArchiveState()">
             <input type="text"
                    name="keyword"
                    placeholder="ライブ名・ツアー名・会場名で検索"
-                   value="{{ keyword or '' }}">
+                   value="{{ request.query_params.get('keyword', '') }}">
 
             <select name="sort">
-                <option value="tour" {% if sort == "tour" %}selected{% endif %}>
+                <option value="tour" {% if request.query_params.get('sort') == "tour" %}selected{% endif %}>
                 ツアー順
                 </option>
 
-                <option value="date_desc" {% if sort == "date_desc" %}selected{% endif %}>
+                <option value="date_desc" {% if request.query_params.get('sort') == "date_desc" %}selected{% endif %}>
                 開催日（新しい順）
                 </option>
 
-                <option value="date_asc" {% if sort == "date_asc" %}selected{% endif %}>
+                <option value="date_asc" {% if request.query_params.get('sort') == "date_asc" %}selected{% endif %}>
                 開催日（古い順）
                 </option>
 
-                <option value="name" {% if sort == "name" %}selected{% endif %}>
+                <option value="name" {% if request.query_params.get('sort') == "name" %}selected{% endif %}>
                 ライブ名順
                 </option>
 
-                <option value="updated" {% if sort == "updated" %}selected{% endif %}>
+                <option value="updated" {% if request.query_params.get('sort') == "updated" %}selected{% endif %}>
                 更新日順
                 </option>
             </select>
@@ -68,64 +70,145 @@
     </div>
 
     <!-- ライブ一覧 -->
-    <div class="tour-list">
-        {% for tour in tours %}
-        <div class="tour-block">
-            <h2 class="tour-title">
-                {{ tour.tour_name }}
-            </h2>
-            {% for live in tour.lives %}
-            <div class="live-row">
-                <div class="live-info">
-                    <div class="live-name">
-                        {% if live.tour_order %}
-                            {{ "%02d"|format(live.tour_order) }}.
-                        {% endif %}
+    <div class="page-scroll">
+        <div class="tour-list">
+            {% for tour in tours %}
+            <div class="tour-block">
+                <h2 class="tour-title">
+                    {{ tour.tour_name }}
+                </h2>
+                {% for live in tour.lives %}
+                <div class="live-row">
+                    <div class="live-info">
+                        <div class="live-name">
+                            {% if live.tour_order %}
+                                {{ "%02d"|format(live.tour_order) }}.
+                            {% endif %}
 
-                        {{ live.live_name }}
+                            {{ live.live_name }}
+                        </div>
+
+                        <div class="live-place">
+                            {{ live.venue_name }}
+
+                            {% if live.prefecture_name %}
+                                （{{ live.prefecture_name }}）
+                            {% endif %}
+                        </div>
+
+                        <div class="live-date">
+                            {{ live.live_date }}
+                        </div>
                     </div>
 
-                    <div class="live-place">
-                        {{ live.venue_name }}
+                    <div class="live-action">
+                        <div class="live-action-top">
+                            <a href="/admin/master/live/edit/{{ live.live_id }}"
+                               class="edit-btn"
+                               onclick="saveArchiveState()">
+                                編集
+                            </a>
+                            <a href="/admin/master/live/delete/{{ live.live_id }}"
+                               class="delete-btn"
+                               onclick="return confirm('このライブを削除しますか？');">
+                                削除
+                            </a>
+                        </div>
+                        <a href="/admin/master/setlist/LIVE/{{ live.live_id }}"
+                           class="setlist-btn"
+                           onclick="saveArchiveState()">
+                            セトリ
+                        </a>
 
-                        {% if live.prefecture_name %}
-                            （{{ live.prefecture_name }}）
-                        {% endif %}
-                    </div>
-
-                    <div class="live-date">
-                        {{ live.live_date }}
                     </div>
                 </div>
-
-                <div class="live-action">
-                    <div class="live-action-top">
-                        <a href="/admin/master/live/edit/{{ live.live_id }}"
-                           class="edit-btn">
-                            編集
-                        </a>
-                        <a href="/admin/master/live/delete/{{ live.live_id }}"
-                           class="delete-btn"
-                           onclick="return confirm('このライブを削除しますか？');">
-                            削除
-                        </a>
-                    </div>
-                    <a href="/admin/master/setlist/LIVE/{{ live.live_id }}"
-                       class="setlist-btn">
-                        セトリ
-                    </a>
-
-                </div>
+                {% endfor %}
             </div>
+
+            {% else %}
+            <p class="empty-message">
+                登録されているライブはありません。
+            </p>
             {% endfor %}
         </div>
-
-        {% else %}
-        <p class="empty-message">
-            登録されているライブはありません。
-        </p>
-        {% endfor %}
     </div>
 </div>
+<script>
+    // 詳細画面へ移動前
+    function saveArchiveState(){
+        const area =
+            document.querySelector(".page-scroll");
+
+        sessionStorage.setItem(
+            "master_live_url",
+            window.location.href
+        );
+
+        sessionStorage.setItem(
+            "master_live_scroll",
+            area.scrollTop
+        );
+    }
+
+    // 削除後の位置保持
+    document.querySelectorAll(".live-action form")
+    .forEach(form => {
+        form.addEventListener("submit",()=>{
+            const area =
+                document.querySelector(".page-scroll");
+
+            sessionStorage.setItem(
+                "master_live_scroll",
+                area.scrollTop
+            );
+        });
+    });
+
+    // 検索時
+    function clearArchiveState(){
+        sessionStorage.removeItem(
+            "master_live_scroll"
+        );
+
+        sessionStorage.removeItem(
+            "master_live_url"
+        );
+    }
+
+    // ページ復元
+    window.addEventListener("load", () => {
+        const params = new URLSearchParams(window.location.search);
+
+        if (params.has("first")) {
+            sessionStorage.removeItem("master_live_scroll");
+            sessionStorage.removeItem("master_live_url");
+
+            window.history.replaceState(
+                {},
+                "",
+                "/admin/master/live"
+            );
+
+            return;
+        }
+
+        const savedUrl = sessionStorage.getItem("master_live_url");
+        const currentUrl = window.location.href;
+
+        // 編集画面から一覧に戻ってきた場合
+        if (savedUrl && currentUrl !== savedUrl) {
+            window.location.replace(savedUrl);
+            return;
+        }
+
+        const scroll = sessionStorage.getItem("master_live_scroll");
+
+        const area = document.querySelector(".page-scroll");
+
+        if (area && scroll !== null) {
+            area.scrollTop = Number(scroll);
+        }
+    });
+</script>
 </body>
 </html>
