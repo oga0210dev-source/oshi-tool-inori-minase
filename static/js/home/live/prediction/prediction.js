@@ -1,3 +1,7 @@
+/* =========================================================
+ * 曲選択モーダル
+ * ========================================================= */
+
 function openSongModal(){
     document.getElementById("song-modal").style.display = "block";
 }
@@ -10,19 +14,26 @@ function resetSongModal(){
     document.getElementById("song-search").value = "";
     document.getElementById("is-medley").checked = false;
 
-    document.querySelectorAll('input[name="song"]').forEach(item=>{
+    document.querySelectorAll('input[name="song"]').forEach(item => {
         item.checked = false;
     });
 
-    document.querySelectorAll(".song-select").forEach(item=>{
+    document.querySelectorAll(".song-select").forEach(item => {
         item.style.display = "";
     });
 
-    document.querySelector(".song-list").scrollTop = 0;
+    const songList = document.querySelector(".song-list");
+
+    if(songList){
+        songList.scrollTop = 0;
+    }
 }
 
 
-/* Sortable初期化 */
+/* =========================================================
+ * Sortable
+ * ========================================================= */
+
 let sortable = null;
 
 function initSortable(){
@@ -52,7 +63,10 @@ function initSortable(){
 }
 
 
-/* 曲追加 */
+/* =========================================================
+ * 曲追加
+ * ========================================================= */
+
 function addSong(){
 
     const noSetlist =
@@ -86,7 +100,7 @@ function addSong(){
         let maxMedleyOrder = 0;
 
         document.querySelectorAll(".setlist-item")
-        .forEach(item=>{
+        .forEach(item => {
 
             const order =
                 Number(item.dataset.medleyOrder);
@@ -99,7 +113,7 @@ function addSong(){
         medleyOrder = maxMedleyOrder + 1;
     }
 
-    selectedSongs.forEach(song=>{
+    selectedSongs.forEach(song => {
 
         const order =
             document.querySelectorAll(
@@ -151,8 +165,6 @@ function addSong(){
     });
 
     updateOrder();
-
-    /* 追加後もSortableを確実に有効化 */
     initSortable();
 
     resetSongModal();
@@ -160,7 +172,10 @@ function addSong(){
 }
 
 
-/* 並び順更新 */
+/* =========================================================
+ * 並び順更新
+ * ========================================================= */
+
 function updateOrder(){
 
     const items =
@@ -168,7 +183,7 @@ function updateOrder(){
             ".setlist-item"
         );
 
-    items.forEach((item,index)=>{
+    items.forEach((item,index) => {
 
         item.querySelector(".song-order")
             .textContent = index + 1;
@@ -187,14 +202,17 @@ function updateOrder(){
 }
 
 
-/* 保存用データ取得 */
+/* =========================================================
+ * 保存用データ取得
+ * ========================================================= */
+
 function getSetlistOrder(){
 
     const order = [];
 
     document.querySelectorAll(
         ".setlist-item"
-    ).forEach((item,index)=>{
+    ).forEach((item,index) => {
 
         order.push({
             song_id: item.dataset.songId,
@@ -207,11 +225,15 @@ function getSetlistOrder(){
                     : null
         });
     });
+
     return order;
 }
 
 
-/* 曲削除 */
+/* =========================================================
+ * 曲削除
+ * ========================================================= */
+
 function deleteSong(button){
 
     const item =
@@ -222,12 +244,16 @@ function deleteSong(button){
     }
 
     item.remove();
+
     updateOrder();
     initSortable();
 }
 
 
-/* 曲検索 */
+/* =========================================================
+ * 曲検索
+ * ========================================================= */
+
 function searchSong(){
 
     const keyword =
@@ -236,29 +262,27 @@ function searchSong(){
         .toLowerCase();
 
     document.querySelectorAll(".song-select")
-    .forEach(item=>{
+    .forEach(item => {
 
         const name =
             item.textContent.toLowerCase();
 
-        if(name.includes(keyword)){
-            item.style.display = "";
-        }else{
-            item.style.display = "none";
-        }
+        item.style.display =
+            name.includes(keyword)
+                ? ""
+                : "none";
     });
 }
 
 
-/* ページ表示時にSortableを有効化 */
-document.addEventListener("DOMContentLoaded", function(){
-    initSortable();
-});
-
+/* =========================================================
+ * 予測セトリ保存
+ * ========================================================= */
 
 async function savePrediction(){
 
-    const songs = getSetlistOrder();
+    const songs =
+        getSetlistOrder();
 
     if(songs.length === 0){
         alert("予測する曲を追加してください。");
@@ -271,23 +295,27 @@ async function savePrediction(){
 
     try{
 
-        const response = await fetch(
-            `/home/live/prediction/new/${liveId}/save`,
-            {
-                method:"POST",
-                headers:{
-                    "Content-Type":"application/json"
-                },
-                body:JSON.stringify(songs)
-            }
-        );
+        const response =
+            await fetch(
+                `/home/live/prediction/new/${liveId}/save`,
+                {
+                    method:"POST",
+                    headers:{
+                        "Content-Type":"application/json"
+                    },
+                    body:JSON.stringify(songs)
+                }
+            );
 
-        const result = await response.json();
+        const result =
+            await response.json();
 
         if(result.success){
+
             alert(result.message);
 
         }else{
+
             alert(
                 result.message ||
                 "保存に失敗しました。"
@@ -295,36 +323,45 @@ async function savePrediction(){
         }
 
     }catch(error){
+
         console.error(error);
+
         alert(
             "保存中にエラーが発生しました。"
         );
     }
 }
 
+
+/* =========================================================
+ * 予測セトリ削除
+ * ========================================================= */
+
 async function deletePrediction(predictionId){
 
     if(!confirm(
-        "このライブの予測セトリを削除しますか？\n\n削除した予測は元に戻せません。"
+        "このライブの予測セトリを削除しますか？\n\n" +
+        "削除した予測は元に戻せません。"
     )){
         return;
     }
 
     try{
 
-        const response = await fetch(
-            `/home/live/prediction/${predictionId}/delete`,
-            {
-                method:"POST"
-            }
-        );
+        const response =
+            await fetch(
+                `/home/live/prediction/${predictionId}/delete`,
+                {
+                    method:"POST"
+                }
+            );
 
-        const result = await response.json();
+        const result =
+            await response.json();
 
         if(result.success){
 
             alert(result.message);
-
             window.location.reload();
 
         }else{
@@ -344,3 +381,302 @@ async function deletePrediction(predictionId){
         );
     }
 }
+
+
+/* =========================================================
+ * セトリ予測シェア
+ * ========================================================= */
+
+let shareText = "";
+
+
+/* シェアポップアップを閉じる */
+
+function closeShareModal(){
+
+    document.getElementById(
+        "share-modal"
+    ).style.display = "none";
+}
+
+
+/* シェア開始 */
+
+async function sharePrediction(
+    liveName,
+    predictionId
+){
+
+    const modal =
+        document.getElementById("share-modal");
+
+    const image =
+        document.getElementById("share-image");
+
+    const text =
+        document.getElementById("share-text");
+
+    /* 投稿文 */
+    shareText =
+        `水瀬いのり「${liveName}」のセトリを予測中！\n\n` +
+        `#水瀬いのり #いのりまち`;
+
+    text.value = shareText;
+
+    /* ポップアップ表示 */
+    modal.style.display = "block";
+
+    /* 画像を初期化 */
+    image.removeAttribute("src");
+    image.alt = "セトリ画像を生成しています";
+
+    shareImageBlob = null;
+
+    try{
+
+        /* セトリ情報取得 */
+        const response =
+            await fetch(
+                `/home/live/prediction/${predictionId}/share`
+            );
+
+        if(!response.ok){
+            throw new Error(
+                `APIエラー: HTTP ${response.status}`
+            );
+        }
+
+        const result =
+            await response.json();
+
+        if(!result.success){
+            throw new Error(
+                result.message ||
+                "セトリ情報の取得に失敗しました。"
+            );
+        }
+
+        /* 画像生成 */
+        const imageData =
+            createPredictionImage(
+                result.prediction,
+                result.songs
+            );
+
+        if(!imageData){
+            throw new Error(
+                "画像データを生成できませんでした。"
+            );
+        }
+
+        /* 画面に表示 */
+        image.src = imageData;
+        image.alt = "セトリ予測";
+
+    }catch(error){
+
+        console.error(
+            "シェア画像生成エラー:",
+            error
+        );
+
+        alert(
+            "セトリ画像の生成に失敗しました。\n\n" +
+            error.message
+        );
+
+        closeShareModal();
+    }
+}
+
+
+/* =========================================================
+ * セトリ画像生成
+ * ========================================================= */
+
+function createPredictionImage(
+    prediction,
+    songs
+){
+
+    const canvas =
+        document.createElement("canvas");
+
+    const ctx =
+        canvas.getContext("2d");
+
+    if(!ctx){
+        throw new Error(
+            "Canvasを取得できませんでした。"
+        );
+    }
+
+    const width = 800;
+    const padding = 50;
+    const rowHeight = 58;
+    const titleHeight = 130;
+    const footerHeight = 60;
+
+    const height =
+        titleHeight +
+        songs.length * rowHeight +
+        footerHeight;
+
+    canvas.width = width;
+    canvas.height = height;
+
+    /* 背景 */
+    ctx.fillStyle = "#ffffff";
+
+    ctx.fillRect(
+        0,
+        0,
+        width,
+        height
+    );
+
+    /* ライブ名 */
+    ctx.fillStyle = "#333333";
+    ctx.font = "bold 32px sans-serif";
+
+    ctx.fillText(
+        prediction.live_name || "",
+        padding,
+        55
+    );
+
+    /* ツアー名 */
+    ctx.fillStyle = "#777777";
+    ctx.font = "20px sans-serif";
+
+    ctx.fillText(
+        prediction.tour_name || "",
+        padding,
+        90
+    );
+
+    /* セトリ */
+    let y = titleHeight;
+
+    songs.forEach((song,index) => {
+
+        /* 曲番号 */
+        ctx.fillStyle = "#888888";
+        ctx.font = "20px sans-serif";
+
+        ctx.fillText(
+            `${index + 1}.`,
+            padding,
+            y
+        );
+
+        /* 曲名 */
+        ctx.fillStyle = "#333333";
+        ctx.font = "bold 20px sans-serif";
+
+        let songName =
+            song.song_name || "";
+
+        if(song.is_medley){
+
+            songName +=
+                `  メドレー${song.medley_order}`;
+        }
+
+        ctx.fillText(
+            songName,
+            padding + 50,
+            y
+        );
+
+        /* 区切り線 */
+        ctx.strokeStyle = "#eeeeee";
+
+        ctx.beginPath();
+
+        ctx.moveTo(
+            padding,
+            y + 18
+        );
+
+        ctx.lineTo(
+            width - padding,
+            y + 18
+        );
+
+        ctx.stroke();
+
+        y += rowHeight;
+    });
+
+    /* フッター */
+    ctx.fillStyle = "#999999";
+    ctx.font = "16px sans-serif";
+
+    ctx.fillText(
+        "セトリ予測",
+        padding,
+        height - 20
+    );
+
+    return canvas.toDataURL(
+        "image/png"
+    );
+}
+
+
+/* =========================================================
+ * 投稿文コピー
+ * ========================================================= */
+
+async function copyShareText(){
+
+    try{
+
+        await navigator.clipboard.writeText(
+            shareText
+        );
+
+        alert(
+            "投稿文をコピーしました。"
+        );
+
+    }catch(error){
+
+        console.error(error);
+
+        const textarea =
+            document.getElementById(
+                "share-text"
+            );
+
+        textarea.removeAttribute(
+            "readonly"
+        );
+
+        textarea.select();
+
+        document.execCommand("copy");
+
+        textarea.setAttribute(
+            "readonly",
+            ""
+        );
+
+        alert(
+            "投稿文をコピーしました。"
+        );
+    }
+}
+
+
+/* =========================================================
+ * ページ表示時
+ * ========================================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function(){
+        initSortable();
+    }
+);

@@ -26,25 +26,28 @@
 
 /* セトリ予測カード */
 .prediction-card{
+    position:relative;
     width:85%;
     max-width:390px;
     min-height:150px;
     margin:0 auto;
+    padding:15px;
+    box-sizing:border-box;
     background:white;
     border-radius:20px;
-    padding:15px;
     box-shadow:0 3px 8px rgba(0,0,0,0.12);
     display:flex;
     flex-direction:column;
     justify-content:space-between;
-    position:relative;
 }
+
 
 /* 削除ボタン */
 .delete-btn{
     position:absolute;
     top:8px;
     right:8px;
+    z-index:2;
     width:28px;
     height:28px;
     padding:0;
@@ -56,28 +59,30 @@
     line-height:28px;
     text-align:center;
     cursor:pointer;
-    z-index:2;
 }
-
 
 .delete-btn:hover{
     opacity:0.8;
 }
 
+
+/* ライブ名 */
 .live-name{
+    margin-bottom:4px;
     font-size:16px;
     font-weight:bold;
-    margin-bottom:4px;
 }
 
 
+/* ツアー名 */
 .tour-name{
+    margin-bottom:8px;
     font-size:13px;
     color:#777;
-    margin-bottom:8px;
 }
 
 
+/* ライブ情報 */
 .live-info{
     font-size:13px;
     line-height:1.7;
@@ -86,11 +91,11 @@
 
 /* セトリ予測操作 */
 .prediction-actions{
-    display:flex;
-    gap:10px;
-    margin-top:15px;
     width:100%;
+    margin-top:15px;
+    display:flex;
     align-items:stretch;
+    gap:10px;
 }
 
 
@@ -105,20 +110,20 @@
 }
 
 
-/* 詳細・編集 */
+/* 詳細・編集ボタン */
 .detail-btn,
 .edit-btn{
     width:90px;
     height:40px;
     padding:0;
-    border-radius:10px;
-    border:none;
     box-sizing:border-box;
-    color:white;
-    text-decoration:none;
+    border:none;
+    border-radius:10px;
     display:flex;
     align-items:center;
     justify-content:center;
+    color:white;
+    text-decoration:none;
     font-size:14px;
 }
 
@@ -153,10 +158,10 @@
 
 .search-form input{
     width:100%;
-    box-sizing:border-box;
     padding:10px;
-    border-radius:10px;
+    box-sizing:border-box;
     border:1px solid #ccc;
+    border-radius:10px;
 }
 
 
@@ -172,9 +177,9 @@
     flex:1;
     height:40px;
     padding:0;
-    border-radius:10px;
-    border:none;
     box-sizing:border-box;
+    border:none;
+    border-radius:10px;
     display:flex;
     align-items:center;
     justify-content:center;
@@ -206,11 +211,235 @@
 }
 
 
+/* シェア用画像生成エリア */
+.share-image-area{
+    width:100%;
+    padding:15px;
+    box-sizing:border-box;
+    background:#f8f8f8;
+    text-align:center;
+}
+
+
+/* シェア画像 */
+
+.share-image-area{
+    width:100%;
+    height:300px;
+    padding:15px;
+    box-sizing:border-box;
+    overflow:hidden;
+    text-align:center;
+    background:#f8f8f8;
+}
+
+.share-image-area img{
+    display:block;
+    width:100%;
+    height:auto;
+    margin:0 auto;
+    border-radius:10px;
+}
+
+
+/* シェア画像生成用コンテンツ */
+.share-live-name{
+    margin-bottom:5px;
+    font-size:20px;
+    font-weight:bold;
+}
+
+
+.share-tour-name{
+    margin-bottom:12px;
+    font-size:14px;
+    color:#777;
+}
+
+
+.share-live-info{
+    margin-bottom:20px;
+    font-size:13px;
+    line-height:1.8;
+}
+
+
+.share-setlist{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+}
+
+
+.share-song{
+    min-height:42px;
+    padding:6px 10px;
+    box-sizing:border-box;
+    display:flex;
+    align-items:center;
+    background:#fff;
+    border:1px solid #eee;
+    border-radius:10px;
+}
+
+
+.share-order{
+    width:30px;
+    min-width:30px;
+    text-align:center;
+    font-size:13px;
+    color:#777;
+}
+
+
+.share-song-name{
+    flex:1;
+    font-size:13px;
+    font-weight:bold;
+}
+
+
+.share-medley{
+    display:inline-block;
+    margin-left:5px;
+    padding:2px 5px;
+    border-radius:7px;
+    background:#ffb6c8;
+    color:white;
+    font-size:10px;
+    font-weight:normal;
+}
+
+
+/* シェアポップアップ */
+.share-modal{
+    position:fixed;
+    top:0;
+    left:0;
+    z-index:2000;
+    width:100%;
+    height:100%;
+    display:none;
+    background:rgba(0,0,0,0.45);
+}
+
+
+/* ポップアップ本体 */
+.share-modal-content{
+    position:absolute;
+    top:50%;
+    left:50%;
+    width:90%;
+    max-width:400px;
+    max-height:85vh;
+    transform:translate(-50%,-50%);
+    box-sizing:border-box;
+    overflow-y:auto;
+    background:white;
+    border-radius:20px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.2);
+}
+
+
+/* ポップアップヘッダー */
+.share-modal-header{
+    padding:15px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    border-bottom:1px solid #eee;
+    font-size:17px;
+    font-weight:bold;
+}
+
+
+.share-modal-close{
+    width:32px;
+    height:32px;
+    padding:0;
+    border:none;
+    border-radius:50%;
+    background:#eee;
+    color:#777;
+    font-size:22px;
+    line-height:32px;
+}
+
+
+/* シェア画像表示 */
+.share-modal .share-image-area{
+    padding:15px;
+    background:#f8f8f8;
+    text-align:center;
+}
+
+
+.share-modal .share-image-area img{
+    display:block;
+    width:100%;
+    max-width:400px;
+    max-height:50vh;
+    height:auto;
+    margin:0 auto;
+    object-fit:contain;
+    border-radius:10px;
+}
+
+
+/* 投稿文 */
+.share-text-area{
+    padding:0 15px 15px;
+}
+
+
+.share-text-title{
+    margin-bottom:6px;
+    font-size:14px;
+    font-weight:bold;
+}
+
+
+.share-text-area textarea{
+    width:100%;
+    min-height:90px;
+    padding:10px;
+    box-sizing:border-box;
+    border:1px solid #ddd;
+    border-radius:10px;
+    resize:none;
+    background:#f8f8f8;
+    font-size:13px;
+    line-height:1.6;
+}
+
+
+/* シェアボタン */
+.share-button-area{
+    padding:0 15px 15px;
+    display:flex;
+    gap:10px;
+}
+
+
+.copy-share-text-btn{
+    flex:1;
+    height:42px;
+    border:none;
+    border-radius:10px;
+    color:white;
+    font-size:14px;
+}
+
+
+.copy-share-text-btn{
+    background:#64b5f6;
+}
+
+
 /* スクロールバー非表示 */
 html{
     scrollbar-width:none;
 }
-
 
 html::-webkit-scrollbar{
     display:none;

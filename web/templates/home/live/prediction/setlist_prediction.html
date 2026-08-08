@@ -48,78 +48,122 @@
 
                 {% if predictions %}
 
-                <div class="prediction-list">
+                    <div class="prediction-list">
 
-                {% for prediction in predictions %}
-                    <div class="prediction-card">
-                        <button type="button"
-                                class="delete-btn"
-                                onclick="deletePrediction({{ prediction.prediction_id }})"
-                                aria-label="予測を削除">
-                                ×
-                        </button>
-                        <div class="live-name">
-                            {{ prediction.live_name }}
-                        </div>
-
-                        <div class="tour-name">
-                            {{ prediction.tour_name }}
-                        </div>
-
-                        <div class="live-info">
-                            <div>
-                                📅 {{ prediction.live_date }}
+                    {% for prediction in predictions %}
+                        <div class="prediction-card">
+                            <button type="button"
+                                    class="delete-btn"
+                                    onclick="deletePrediction({{ prediction.prediction_id }})"
+                                    aria-label="予測を削除">
+                                    ×
+                            </button>
+                            <div class="live-name">
+                                {{ prediction.live_name }}
                             </div>
 
-                            <div>
-                                📍 {{ prediction.prefecture_name }}
-                                {{ prediction.venue_name }}
+                            <div class="tour-name">
+                                {{ prediction.tour_name }}
                             </div>
-                        </div>
 
-                        <div class="prediction-actions">
+                            <div class="live-info">
+                                <div>
+                                    📅 {{ prediction.live_date }}
+                                </div>
 
-                            <div class="match-rate">
-                                {% if prediction.is_finished %}
-                                    {% if prediction.match_rate is not none %}
-                                        一致率：{{ prediction.match_rate }}%
+                                <div>
+                                    📍 {{ prediction.prefecture_name }}
+                                    {{ prediction.venue_name }}
+                                </div>
+                            </div>
+
+                            <div class="prediction-actions">
+
+                                <div class="match-rate">
+                                    {% if prediction.is_finished %}
+                                        {% if prediction.match_rate is not none %}
+                                            一致率：{{ prediction.match_rate }}%
+                                        {% endif %}
                                     {% endif %}
+                                </div>
+
+                                <a href="/home/live/prediction/detail/{{ prediction.prediction_id }}"
+                                   class="detail-btn">
+                                    詳細
+                                </a>
+
+                                {% if not prediction.is_finished %}
+                                    <a href="/home/live/prediction/edit/{{ prediction.prediction_id }}"
+                                       class="edit-btn">
+                                        編集
+                                    </a>
+                                    <button type="button"
+                                        class="share-btn"
+                                        onclick="sharePrediction(
+                                            '{{ prediction.live_name }}',
+                                            '{{ prediction.prediction_id }}'
+                                        )"
+                                        aria-label="Xでシェア">
+                                        𝕏
+                                    </button>
                                 {% endif %}
                             </div>
-
-                            <a href="/home/live/prediction/detail/{{ prediction.prediction_id }}"
-                               class="detail-btn">
-                                詳細
-                            </a>
-
-                            {% if not prediction.is_finished %}
-                            <a href="/home/live/prediction/edit/{{ prediction.prediction_id }}"
-                               class="edit-btn">
-                                編集
-                            </a>
-                            {% endif %}
-
                         </div>
-
+                    {% endfor %}
                     </div>
-                {% endfor %}
-
-                </div>
-
                 {% else %}
+                    <div class="no-prediction">
+                        登録されている予測セトリがありません。
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
 
-                <div class="no-prediction">
-                    登録されている予測セトリがありません。
+    <!-- シェアポップアップ -->
+    <div id="share-modal" class="share-modal">
+        <div class="share-modal-content">
+
+            <div class="share-modal-header">
+                <span>セトリ予測をシェア</span>
+                <button type="button"
+                        class="share-modal-close"
+                        onclick="closeShareModal()">
+                    ×
+                </button>
+            </div>
+
+            <div class="share-image-area">
+                <img id="share-image"
+                     src=""
+                     alt="セトリ予測">
+            </div>
+
+            <div class="share-text-area">
+                <div class="share-text-title">
+                    投稿文
                 </div>
 
-                {% endif %}
+                <textarea id="share-text"
+                          readonly></textarea>
+            </div>
+
+            <div class="share-button-area">
+
+                <button type="button"
+                        class="copy-share-text-btn"
+                        onclick="copyShareText()">
+                    投稿文をコピー
+                </button>
 
             </div>
+
         </div>
     </div>
 
     <div id="toast" class="toast"></div>
 
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
     <script src="/static/js/common.js"></script>
     <script src="/static/js/home/live/prediction/prediction.js"></script>
 
