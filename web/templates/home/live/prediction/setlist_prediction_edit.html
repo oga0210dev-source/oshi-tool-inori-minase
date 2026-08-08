@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/static/img/logo.png" type="image/png">
+
+    <title>セトリ予測</title>
+
+    <link rel="stylesheet" href="/static/css/common.css">
+    <link rel="stylesheet" href="/static/css/home/live/setlist_prediction_edit.css">
+</head>
+
+<body>
+
+<div class="background">
+
+    <a href="/home/live/prediction" class="back-link">
+        ← ライブ一覧
+    </a>
+
+    <div class="page-scroll">
+        <div class="container">
+
+            <div class="page-title">
+                <h1>セトリ予測</h1>
+            </div>
+
+            <div class="live-card">
+
+                <div class="live-name">
+                    {{ live.live_name }}
+                </div>
+
+                <div class="tour-name">
+                    {{ live.tour_name }}
+                </div>
+
+                <div class="live-info">
+                    <div>
+                        📅 {{ live.live_date }}
+                    </div>
+
+                    <div>
+                        📍 {{ live.prefecture_name }}
+                        {{ live.venue_name }}
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="section-title">
+                <h2>予測セトリ</h2>
+            </div>
+
+            <div class="button-area">
+
+                <div class="add-area">
+                    <button
+                        type="button"
+                        class="add-btn"
+                        onclick="openSongModal()">
+                        +追加
+                    </button>
+                </div>
+
+                <div class="save-area">
+                    <button
+                        type="button"
+                        class="save-btn"
+                        onclick="savePrediction()">
+                        保存
+                    </button>
+                </div>
+
+            </div>
+
+            <div class="setlist-area" id="setlist-area">
+                {% if songs %}
+                    {% for song in songs %}
+                    <div class="setlist-item"
+                         data-song-id="{{ song.song_id }}"
+                         data-is-medley="{{ song.is_medley }}"
+                         data-medley-order="{{ song.medley_order or '' }}">
+
+                        <div class="song-order">
+                            {{ loop.index }}
+                        </div>
+
+                        <div class="song-name">
+                            {{ song.song_name }}
+
+                            {% if song.is_medley %}
+                            <span class="medley-badge">
+                                メドレー{{ song.medley_order }}
+                            </span>
+                            {% endif %}
+                        </div>
+
+                        <button
+                            class="delete-btn"
+                            onclick="deleteSong(this)">
+                            ×
+                        </button>
+
+                        <div class="drag-handle">
+                            ☰
+                        </div>
+                    </div>
+                    {% endfor %}
+
+                {% else %}
+                    <div class="no-setlist">
+                        セットリストが登録されていません
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- 曲追加モーダル -->
+
+<div id="song-modal"
+     class="modal"
+     onclick="closeSongModal()">
+
+    <div class="modal-content"
+         onclick="event.stopPropagation()">
+
+        <div class="modal-header">
+            曲マスタ
+        </div>
+
+        <div class="search-area">
+            <input
+                type="text"
+                id="song-search"
+                placeholder="曲名">
+
+            <button
+                type="button"
+                class="search-btn"
+                onclick="searchSong()">
+                検索
+            </button>
+        </div>
+
+        <div class="song-list">
+            {% for group in song_groups %}
+            <label class="song-select"
+                   data-song-name="{{ group.song_name }}">
+                <input type="checkbox"
+                       name="song"
+                       value="{{ group.song_group_id }}">
+                {{ group.song_name }}
+            </label>
+            {% endfor %}
+        </div>
+
+        <div class="modal-footer">
+            <label class="medley-check">
+                <input
+                    type="checkbox"
+                    id="is-medley">
+                メドレー
+            </label>
+
+            <button
+                type="button"
+                class="modal-add-btn"
+                onclick="addSong()">
+                選択
+            </button>
+        </div>
+    </div>
+</div>
+
+
+<div id="toast" class="toast"></div>
+
+<script src="/static/js/common.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.6/Sortable.min.js"></script>
+<script src="/static/js/home/live/prediction/prediction.js"></script>
+
+<script>
+const liveId = {{ live.live_id }};
+</script>
+
+{% if message %}
+<script>
+    showToast("{{ message }}");
+</script>
+{% endif %}
+
+</body>
+</html>

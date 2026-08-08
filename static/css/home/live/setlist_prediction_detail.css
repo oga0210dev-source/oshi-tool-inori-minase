@@ -1,0 +1,162 @@
+/* セトリ予測一覧へ戻る */
+.back-link{
+    display:block;
+    width:max-content;
+    color:#888;
+    text-decoration:none;
+    font-size:14px;
+    margin-bottom:5px;
+}
+
+.background .back-link{
+    align-self:flex-start;
+    margin-left:15px;
+    margin-top:10px;
+    width:auto;
+}
+
+
+/* コンテナ */
+.container{
+    width:100%;
+    max-width:430px;
+    margin:0 auto;
+    padding:15px 0 30px;
+}
+
+
+/* ページタイトル */
+.page-title{
+    width:90%;
+    max-width:400px;
+    margin:5px auto 15px;
+}
+
+.page-title h1{
+    margin:0;
+    font-size:20px;
+}
+
+
+/* ライブ情報 */
+.live-card{
+    width:85%;
+    max-width:390px;
+    margin:0 auto 20px;
+    background:white;
+    border-radius:20px;
+    padding:15px;
+    box-shadow:0 3px 8px rgba(0,0,0,0.12);
+    box-sizing:border-box;
+}
+
+.live-name{
+    font-size:16px;
+    font-weight:bold;
+    margin-bottom:4px;
+}
+
+.tour-name{
+    font-size:13px;
+    color:#777;
+    margin-bottom:8px;
+}
+
+.live-info{
+    font-size:13px;
+    line-height:1.7;
+}
+
+
+/* セクションタイトル */
+.section-title{
+    width:90%;
+    max-width:400px;
+    margin:0 auto 12px;
+}
+
+.section-title h2{
+    margin:0;
+    font-size:18px;
+}
+
+
+/* セットリスト */
+.setlist-area{
+    width:90%;
+    max-width:400px;
+    margin:0 auto;
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+}
+
+
+/* セットリスト項目 */
+.setlist-item{
+    width:100%;
+    min-height:50px;
+    background:white;
+    border-radius:12px;
+    padding:8px 10px;
+    box-sizing:border-box;
+    box-shadow:0 2px 6px rgba(0,0,0,0.10);
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+
+/* 曲順 */
+.song-order{
+    width:28px;
+    min-width:28px;
+    text-align:center;
+    font-size:13px;
+    color:#777;
+}
+
+
+/* 曲名 */
+.song-name{
+    flex:1;
+    font-size:14px;
+    font-weight:bold;
+}
+
+
+/* メドレーバッジ */
+.medley-badge{
+    display:inline-block;
+    margin-left:6px;
+    padding:2px 6px;
+    border-radius:8px;
+    background:#ffb6c8;
+    color:white;
+    font-size:11px;
+    font-weight:normal;
+}
+
+
+/* データなし */
+.no-setlist{
+    width:100%;
+    padding:25px 10px;
+    box-sizing:border-box;
+    text-align:center;
+    color:#888;
+    font-size:13px;
+    background:white;
+    border-radius:15px;
+    box-shadow:0 3px 8px rgba(0,0,0,0.08);
+}
+
+
+/* スクロールバー非表示 */
+html{
+    scrollbar-width:none;
+}
+
+html::-webkit-scrollbar{
+    display:none;
+}

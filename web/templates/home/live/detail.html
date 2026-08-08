@@ -18,13 +18,13 @@
 <div class="background">
     {% if request.query_params.get('from') == 'history' %}
     <a href="/home/live/history"
-       class="live-link">
+       class="back-link">
         ← 参加履歴
     </a>
 
     {% else %}
     <a href="/home/live/archive"
-       class="live-link">
+       class="back-link">
         ← ライブ一覧
     </a>
     {% endif %}

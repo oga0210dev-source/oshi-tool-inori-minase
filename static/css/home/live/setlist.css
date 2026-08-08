@@ -1,13 +1,4 @@
-.live-link{
-    display:block;
-    width:max-content;
-    color:#888;
-    text-decoration:none;
-    font-size:14px;
-}
-
-
-.background .live-link{
+.background .back-link{
     align-self:flex-start;
     margin-left:15px;
     margin-top:10px;

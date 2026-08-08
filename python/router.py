@@ -6,6 +6,7 @@ from python.routers.home.live import setlist as live_setlist, live, detail as li
 from python.routers.home.live.archive import archive
 from python.routers.home.live.history import (history, history_detail, history_edit, history_expense_add,
                                               history_expense_edit,history_expense_delete)
+from python.routers.home.live.prediction import (setlist_prediction)
 from python.routers.home.live.collected_song import collected_song
 from python.routers.mypage import mypage, password, public_setting
 from python.routers.admin.master import master, song as song_master, live as live_master, setlist as setlist_master
@@ -37,3 +38,4 @@ def register_router(app: FastAPI):
     app.include_router(history_expense_delete.router)
     app.include_router(history_expense_edit.router)
     app.include_router(collected_song.router)
+    app.include_router(setlist_prediction.router)
