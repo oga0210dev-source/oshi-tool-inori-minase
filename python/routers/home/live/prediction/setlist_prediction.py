@@ -281,3 +281,34 @@ async def delete_prediction(
         "success": True,
         "message": "予測セトリを削除しました。"
     }
+
+
+@router.get("/{prediction_id}/share")
+async def share_setlist_prediction(
+    request: Request,
+    prediction_id: int
+):
+    if not auth.is_login(request):
+        return {
+            "success": False,
+            "message": "ログインしてください。"
+        }
+
+    user_id = request.session.get("user_id")
+
+    prediction, songs = get_setlist_prediction(
+        prediction_id,
+        user_id
+    )
+
+    if not prediction:
+        return {
+            "success": False,
+            "message": "予測セトリが見つかりません。"
+        }
+
+    return {
+        "success": True,
+        "prediction": prediction,
+        "songs": songs
+    }
