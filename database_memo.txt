@@ -186,8 +186,53 @@ create index IF not exists idx_t_live_expense_live on public.t_live_expense usin
 
 create index IF not exists idx_t_live_expense_type on public.t_live_expense using btree (expense_type_id) TABLESPACE pg_default;
 
+create table public.t_setlist_prediction (
+  prediction_id bigserial not null,
+  user_id text not null,
+  live_id bigint not null,
+  created_at timestamp without time zone not null default CURRENT_TIMESTAMP,
+  updated_at timestamp without time zone not null default CURRENT_TIMESTAMP,
+  constraint t_setlist_prediction_pkey primary key (prediction_id),
+  constraint uq_prediction_user_live unique (user_id, live_id),
+  constraint fk_prediction_live foreign KEY (live_id) references m_live (live_id),
+  constraint fk_prediction_user foreign KEY (user_id) references m_user (user_id)
+) TABLESPACE pg_default;
 
+create trigger trigger_update_t_setlist_prediction_updated_at BEFORE
+update on t_setlist_prediction for EACH row
+execute FUNCTION update_updated_at_column ();
 
+create table public.t_setlist_prediction_song (
+  prediction_id bigint not null,
+  song_id bigint not null,
+  song_order integer not null,
+  is_medley boolean not null default false,
+  medley_order integer null,
+  created_at timestamp without time zone not null default CURRENT_TIMESTAMP,
+  updated_at timestamp without time zone not null default CURRENT_TIMESTAMP,
+  constraint t_setlist_prediction_song_pkey primary key (prediction_id, song_id),
+  constraint uq_prediction_song_order unique (prediction_id, song_order),
+  constraint fk_prediction_song_prediction foreign KEY (prediction_id) references t_setlist_prediction (prediction_id) on delete CASCADE,
+  constraint fk_prediction_song_song foreign KEY (song_id) references m_song (song_id),
+  constraint chk_prediction_medley_order check (
+    (
+      (
+        (is_medley = false)
+        and (medley_order is null)
+      )
+      or (
+        (is_medley = true)
+        and (medley_order is not null)
+        and (medley_order > 0)
+      )
+    )
+  ),
+  constraint chk_prediction_song_order check ((song_order > 0))
+) TABLESPACE pg_default;
+
+create trigger trigger_update_t_setlist_prediction_song_updated_at BEFORE
+update on t_setlist_prediction_song for EACH row
+execute FUNCTION update_updated_at_column ();
 
 /////////////////////////////////
 ライブデータ　トランザクション

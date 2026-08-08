@@ -16,12 +16,12 @@
 
     {% if request.query_params.get('from') == 'live' %}
     <a href="/home/live"
-       class="live-link">
+       class="back-link">
         ← ライブ
     </a>
 
     {% else %}
-    <a href="/home/live/history" class="live-link">
+    <a href="/home/live/history" class="back-link">
         ← 参加履歴
     </a>
     {% endif %}

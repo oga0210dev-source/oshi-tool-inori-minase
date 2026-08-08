@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/static/img/logo.png" type="image/png">
+
+    <title>セトリ予測 新規追加</title>
+
+    <link rel="stylesheet" href="/static/css/common.css">
+    <link rel="stylesheet" href="/static/css/home/live/setlist_prediction_new.css">
+</head>
+
+<body>
+
+<div class="background">
+
+    <a href="/home/live/prediction" class="back-link">
+        ← セトリ予測一覧
+    </a>
+
+    <div class="page-scroll">
+        <div class="container">
+
+            <div class="page-title">
+                <h1>セトリ予測 新規追加</h1>
+            </div>
+
+            <div class="section-title">
+                <h2>ライブを選択</h2>
+            </div>
+
+            {% if lives %}
+
+            <div class="live-list">
+
+            {% for live in lives %}
+
+                <div class="live-card">
+
+                    <div class="live-name">
+                        {{ live.live_name }}
+                    </div>
+
+                    <div class="tour-name">
+                        {{ live.tour_name }}
+                    </div>
+
+                    <div class="live-info">
+                        <div>
+                            📅 {{ live.live_date }}
+                        </div>
+
+                        <div>
+                            📍 {{ live.prefecture_name }}
+                            {{ live.venue_name }}
+                        </div>
+                    </div>
+
+                    <div class="live-actions">
+                        <a href="/home/live/prediction/new/{{ live.live_id }}"
+                           class="select-btn">
+                            このライブで予測する
+                        </a>
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+            </div>
+
+            {% else %}
+
+            <div class="no-live">
+                予測を作成できるライブがありません。
+            </div>
+
+            {% endif %}
+
+        </div>
+    </div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script src="/static/js/common.js"></script>
+
+{% if message %}
+<script>
+    showToast("{{ message }}");
+</script>
+{% endif %}
+
+</body>
+</html>

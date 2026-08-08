@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/static/img/logo.png" type="image/png">
+
+    <title>セトリ予測詳細</title>
+
+    <link rel="stylesheet" href="/static/css/common.css">
+    <link rel="stylesheet" href="/static/css/home/live/setlist_prediction_detail.css">
+</head>
+
+<body>
+
+<div class="background">
+    <a href="/home/live/prediction" class="back-link">
+        ← 予測一覧
+    </a>
+
+    <div class="page-scroll">
+        <div class="container">
+
+            <div class="page-title">
+                <h1>セトリ予測詳細</h1>
+            </div>
+
+            <!-- ライブ情報 -->
+            <div class="live-card">
+
+                <div class="live-name">
+                    {{ prediction.live_name }}
+                </div>
+
+                <div class="tour-name">
+                    {{ prediction.tour_name }}
+                </div>
+
+                <div class="live-info">
+
+                    <div>
+                        📅 {{ prediction.live_date }}
+                    </div>
+
+                    <div>
+                        📍 {{ prediction.prefecture_name }}
+                        {{ prediction.venue_name }}
+                    </div>
+                </div>
+            </div>
+
+            <!-- 予測セトリ -->
+            <div class="section-title">
+                <h2>予測セトリ</h2>
+            </div>
+
+            <div class="setlist-area">
+                {% if songs %}
+                    {% for song in songs %}
+                    <div class="setlist-item">
+                        <div class="song-order">
+                            {{ loop.index }}
+                        </div>
+
+                        <div class="song-name">
+                            {{ song.song_name }}
+
+                            {% if song.is_medley %}
+                            <span class="medley-badge">
+                                メドレー{{ song.medley_order }}
+                            </span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="no-setlist">
+                        予測セトリが登録されていません
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/static/img/logo.png" type="image/png">
+
+    <title>セトリ予測一覧</title>
+
+    <link rel="stylesheet" href="/static/css/common.css">
+    <link rel="stylesheet" href="/static/css/home/live/setlist_prediction.css">
+</head>
+
+<body>
+    <div class="background">
+        <a href="/home/live" class="back-link">
+            ← ライブ
+        </a>
+
+        <div class="search-area">
+            <form method="get"
+                  class="search-form"
+                  onsubmit="clearArchiveState()">
+                <input
+                    type="text"
+                    name="keyword"
+                    placeholder="ライブ名で検索"
+                    value="{{ request.query_params.get('keyword', '') }}"
+                >
+                <div class="search-bottom">
+                    <button type="submit">
+                        検索
+                    </button>
+                    <a href="/home/live/prediction/new" class="add-btn">
+                        新規追加
+                    </a>
+                </div>
+            </form>
+        </div>
+
+        <div class="page-scroll">
+            <div class="container">
+
+                <div class="section-title">
+                    <h2>予測一覧</h2>
+                </div>
+
+                {% if predictions %}
+
+                <div class="prediction-list">
+
+                {% for prediction in predictions %}
+                    <div class="prediction-card">
+                        <button type="button"
+                                class="delete-btn"
+                                onclick="deletePrediction({{ prediction.prediction_id }})"
+                                aria-label="予測を削除">
+                                ×
+                        </button>
+                        <div class="live-name">
+                            {{ prediction.live_name }}
+                        </div>
+
+                        <div class="tour-name">
+                            {{ prediction.tour_name }}
+                        </div>
+
+                        <div class="live-info">
+                            <div>
+                                📅 {{ prediction.live_date }}
+                            </div>
+
+                            <div>
+                                📍 {{ prediction.prefecture_name }}
+                                {{ prediction.venue_name }}
+                            </div>
+                        </div>
+
+                        <div class="prediction-actions">
+
+                            <div class="match-rate">
+                                {% if prediction.is_finished %}
+                                    {% if prediction.match_rate is not none %}
+                                        一致率：{{ prediction.match_rate }}%
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+
+                            <a href="/home/live/prediction/detail/{{ prediction.prediction_id }}"
+                               class="detail-btn">
+                                詳細
+                            </a>
+
+                            {% if not prediction.is_finished %}
+                            <a href="/home/live/prediction/edit/{{ prediction.prediction_id }}"
+                               class="edit-btn">
+                                編集
+                            </a>
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+                {% endfor %}
+
+                </div>
+
+                {% else %}
+
+                <div class="no-prediction">
+                    登録されている予測セトリがありません。
+                </div>
+
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <script src="/static/js/common.js"></script>
+    <script src="/static/js/home/live/prediction/prediction.js"></script>
+
+    {% if message %}
+    <script>
+        showToast("{{ message }}");
+    </script>
+    {% endif %}
+
+</body>
+</html>
