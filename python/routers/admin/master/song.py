@@ -37,7 +37,7 @@ async def song_list(
 
     return templates.TemplateResponse(
         request=request,
-        name="templates/admin/master/song/index.html",
+        name="templates/admin/master/song/collected_song.html",
         context={
             "albums": albums,
             "keyword": keyword,

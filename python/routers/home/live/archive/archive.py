@@ -5,7 +5,7 @@ from datetime import date
 from python.core import templates
 from python.core import auth
 
-from python.models.home.live import archive as archive_model
+from python.models.home.live.archive import archive as archive_model
 
 router = APIRouter(
     prefix="/home/live/archive",
@@ -36,7 +36,7 @@ async def live_list(
 
     return templates.TemplateResponse(
         request=request,
-        name="templates/home/live/archive.html",
+        name="templates/home/live/archive/archive.html",
         context={
             "lives": lives,
             "today": date.today()

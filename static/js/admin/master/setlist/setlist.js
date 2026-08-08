@@ -22,23 +22,46 @@ function resetSongModal(){
     document.querySelector(".song-list").scrollTop = 0;
 }
 
-function addSong(){
+function addSong() {
 
     const noSetlist = document.querySelector(".no-setlist");
 
-    if(noSetlist){
+    if (noSetlist) {
         noSetlist.remove();
     }
 
-    const isMedley = document.getElementById("is-medley").checked;
+    const isMedley =
+        document.getElementById("is-medley").checked;
 
-    const selectedSongs = document.querySelectorAll(
-        'input[name="song"]:checked'
-    );
+    const selectedSongs =
+        document.querySelectorAll(
+            'input[name="song"]:checked'
+        );
 
-    const setlistArea = document.getElementById("setlist-area");
+    const setlistArea =
+        document.getElementById("setlist-area");
 
-    selectedSongs.forEach(song=>{
+    // 今回追加するメドレーの番号を取得
+    let medleyOrder = null;
+
+    if (isMedley) {
+        let maxMedleyOrder = 0;
+
+        document.querySelectorAll(".setlist-item")
+            .forEach(item => {
+
+                const order =
+                    Number(item.dataset.medleyOrder);
+
+                if (order > maxMedleyOrder) {
+                    maxMedleyOrder = order;
+                }
+            });
+
+        medleyOrder = maxMedleyOrder + 1;
+    }
+
+    selectedSongs.forEach(song => {
 
         const order =
             document.querySelectorAll(".setlist-item").length + 1;
@@ -48,14 +71,19 @@ function addSong(){
 
         const medleyBadge =
             isMedley
-                ? '<span class="medley-badge">メドレー</span>'
-                : '';
+                ? `<span class="medley-badge">
+                       メドレー${medleyOrder}
+                   </span>`
+                : "";
 
-        const item = document.createElement("div");
+        const item =
+            document.createElement("div");
 
         item.className = "setlist-item";
         item.dataset.songId = song.value;
         item.dataset.isMedley = isMedley;
+        item.dataset.medleyOrder =
+            isMedley ? medleyOrder : "";
 
         item.innerHTML = `
             <div class="song-order">
@@ -67,11 +95,14 @@ function addSong(){
                 ${medleyBadge}
             </div>
 
-            <button class="delete-btn" onclick="deleteSong(this)" style="display:none;">
+            <button class="delete-btn"
+                    onclick="deleteSong(this)"
+                    style="display:none;">
                 ×
             </button>
 
-            <div class="drag-handle" style="display:none;">
+            <div class="drag-handle"
+                 style="display:none;">
                 ☰
             </div>
         `;
@@ -79,22 +110,20 @@ function addSong(){
         setlistArea.appendChild(item);
 
         const editMode =
-            document.getElementById("save-area").style.display === "block";
+            document.getElementById("save-area")
+                .style.display === "block";
 
-        if(editMode){
-
+        if (editMode) {
             item.querySelector(".delete-btn")
-                .style.display="block";
+                .style.display = "block";
 
             item.querySelector(".drag-handle")
-                .style.display="block";
+                .style.display = "block";
         }
     });
 
     resetSongModal();
-
     closeSongModal();
-
 }
 
 let sortable = null;
@@ -141,16 +170,19 @@ function editSetlist(){
     );
 }
 
-function updateOrder(){
+function updateOrder() {
 
-    const items=document.querySelectorAll(".setlist-item");
+    const items =
+        document.querySelectorAll(".setlist-item");
 
-    items.forEach((item,index)=>{
-        item.querySelector(".song-order").textContent=index+1;
+    items.forEach((item, index) => {
+
+        item.querySelector(".song-order")
+            .textContent = index + 1;
     });
 
-    if(items.length===0){
-        document.getElementById("setlist-area").innerHTML=
+    if (items.length === 0) {
+        document.getElementById("setlist-area").innerHTML =
         `
         <div class="no-setlist">
             セットリストが登録されていません
@@ -166,9 +198,12 @@ function getSetlistOrder(){
     document.querySelectorAll(".setlist-item").forEach((item,index)=>{
 
         order.push({
-            song_id:item.dataset.songId,
-            song_order:index + 1,
-            is_medley:item.dataset.isMedley === "true"
+            song_id: item.dataset.songId,
+            song_order: index + 1,
+            is_medley: item.dataset.isMedley === "true",
+            medley_order: item.dataset.isMedley === "true"
+                ? Number(item.dataset.medleyOrder)
+                : null
         });
 
     });

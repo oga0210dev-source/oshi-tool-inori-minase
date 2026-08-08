@@ -4,9 +4,8 @@ from fastapi.responses import RedirectResponse
 from python.core import auth
 from python.core import templates
 
-from python.models.home.live import history_expense_edit as history_expense_edit_model
-from python.models.home.live import history_expense_add as history_expense_add_model
-
+from python.models.home.live.history import history_expense_add as history_expense_add_model, \
+    history_expense_edit as history_expense_edit_model
 
 router = APIRouter(
     prefix="/home/live/history/expense/edit",
@@ -42,7 +41,7 @@ async def history_expense_edit(
 
     return templates.TemplateResponse(
         request=request,
-        name="templates/home/live/history_expense_edit.html",
+        name="templates/home/live/history/history_expense_edit.html",
         context={
             "expense": expense,
             "expense_types": expense_types

@@ -75,7 +75,8 @@
             {% for song in setlist_list %}
             <div class="setlist-item"
                  data-song-id="{{ song.song_id }}"
-                 data-is-medley="{{ song.is_medley }}">
+                 data-is-medley="{{ song.is_medley }}"
+                 data-medley-order="{{ song.medley_order or '' }}">
 
                 <div class="song-order">
                     {{ loop.index }}
@@ -84,9 +85,11 @@
                 <div class="song-name">
                     {{ song.song_name }}
                     {% if song.is_medley %}
-                    <span class="medley-badge">
-                        メドレー
-                    </span>
+                        {% if song.is_medley %}
+                        <span class="medley-badge">
+                            メドレー{{ song.medley_order }}
+                        </span>
+                        {% endif %}
                     {% endif %}
                 </div>
                 <button class="delete-btn" onclick="deleteSong(this)">

@@ -11,6 +11,7 @@ def get_setlist_list(event_type=None, event_id=None):
             s.song_id,
             s.song_order,
             s.is_medley,
+            s.medley_order,
             MIN(m.song_name) AS song_name,
             MIN(m.album_name) AS album_name,
             s.created_at,
@@ -38,6 +39,7 @@ def get_setlist_list(event_type=None, event_id=None):
             s.song_id,
             s.song_order,
             s.is_medley,
+            s.medley_order,
             s.created_at,
             s.updated_at
         ORDER BY
@@ -80,11 +82,12 @@ def save_setlist(event_type, event_id, setlist):
                         event_id,
                         song_id,
                         song_order,
-                        is_medley
+                        is_medley,
+                        medley_order
                     )
                     VALUES
                     (
-                        %s,%s,%s,%s,%s
+                        %s,%s,%s,%s,%s,%s
                     )
                     """,
                     (
@@ -92,7 +95,8 @@ def save_setlist(event_type, event_id, setlist):
                         event_id,
                         item["song_id"],
                         item["song_order"],
-                        item["is_medley"]
+                        item["is_medley"],
+                        item.get("medley_order")
                     )
                 )
 
