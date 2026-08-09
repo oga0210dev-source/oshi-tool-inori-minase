@@ -47,6 +47,21 @@
     padding-bottom:40px;
 }
 
+.register-closed{
+    width:90%;
+    max-width:400px;
+    margin:20px auto;
+    padding:20px;
+    box-sizing:border-box;
+    background:#fff;
+    border-radius:15px;
+    box-shadow:0 3px 8px rgba(0,0,0,0.12);
+    text-align:center;
+    color:#777;
+    font-size:14px;
+    line-height:1.7;
+}
+
 .input-area{
     width:85%;
 }

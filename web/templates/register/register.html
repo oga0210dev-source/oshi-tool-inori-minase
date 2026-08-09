@@ -17,51 +17,77 @@
                     <img src="/static/img/title_logo.png" class="logo" alt="タイトルロゴ">
                 </div>
 
-                <!-- 新規登録フォーム -->
-                <form action="/register" method="post" class="registerForm-area" autocomplete="off">
-                    <div class="input-area">
-                        <input
+                {% if registration_mode == "0" %}
+                    <div class="register-closed">
+                        現在、新規ユーザー登録を停止しています。
+                    </div>
+
+                {% else %}
+                    <!-- 新規登録フォーム -->
+                    <form action="/register"
+                          method="post"
+                          class="registerForm-area"
+                          autocomplete="off">
+
+                        {% if registration_mode == "2" %}
+                        <div class="input-area">
+                            <input
                                 type="text"
-                                name="display_name"
+                                name="invitation_code"
+                                autocomplete="off"
+                                placeholder="招待コードを入力してください。"
+                                required>
+                        </div>
+                        {% endif %}
+
+                        <div class="input-area">
+                            <input
+                                type="text"
+                                name="user_name"
                                 autocomplete="nickname"
                                 placeholder="表示名を入力してください。"
+                                value="{{ user_name | default('') }}"
                                 required>
-                    </div>
-                    <div class="input-area">
-                        <input
+                        </div>
+
+                        <div class="input-area">
+                            <input
                                 type="text"
-                                name="username"
+                                name="user_id"
                                 autocomplete="username"
                                 placeholder="ユーザIDを入力してください。"
+                                value="{{ user_id | default('') }}"
                                 required>
-                    </div>
-                    <div class="input-area">
-                        <input
+                        </div>
+
+                        <div class="input-area">
+                            <input
                                 type="password"
                                 name="password"
                                 autocomplete="new-password"
                                 placeholder="パスワードを入力してください。"
                                 required>
-                    </div>
-                    <div class="input-area">
-                        <input
+                        </div>
+
+                        <div class="input-area">
+                            <input
                                 type="password"
                                 name="password_confirm"
                                 autocomplete="new-password"
                                 placeholder="パスワード（確認）を入力してください。"
                                 required>
-                    </div>
+                        </div>
 
-                    <!-- ボタン -->
-                    <div class="button-area">
-                        <button type="submit" class="register-button">
-                            <img src="/static/img/register_button.png"
-                                 class="button-image"
-                                 alt="新規登録">
-                        </button>
-                    </div>
-                </form>
-
+                        <!-- ボタン -->
+                        <div class="button-area">
+                            <button type="submit" class="register-button">
+                                <img src="/static/img/register_button.png"
+                                     class="button-image"
+                                     alt="新規登録">
+                            </button>
+                        </div>
+                    </form>
+                {% endif %}
             </div>
         </div>
         <div id="toast" class="toast"></div>
