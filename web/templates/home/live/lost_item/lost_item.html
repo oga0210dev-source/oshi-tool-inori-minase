@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/static/img/logo.png" type="image/png">
+
+    <title>忘れ物チェック</title>
+
+    <link rel="stylesheet" href="/static/css/common.css">
+    <link rel="stylesheet" href="/static/css/home/live/lost_item.css">
+</head>
+
+<body>
+<div class="background">
+    <a href="/home/live" class="back-link">
+        ← ライブ
+    </a>
+    <div class="page-scroll">
+        <div class="container">
+            <div class="page-title">
+                <h1>忘れ物チェック</h1>
+            </div>
+
+            <div class="lost-item-card">
+                <div class="card-header">
+                    <div class="card-title">
+                        持ち物チェック
+                    </div>
+
+                    <button type="button"
+                            class="reset-btn"
+                            onclick="resetLostItems()">
+                        リセット
+                    </button>
+                </div>
+
+                <div class="lost-item-list">
+                    {% for item in items %}
+                    <div class="lost-item">
+                        <label class="check-area">
+                            <input
+                                type="checkbox"
+                                {% if item.is_checked %}checked{% endif %}
+                                onchange="updateLostItem( {{ item.user_lost_item_id }}, this.checked )">
+                            <span class="check-mark"></span>
+                            <span class="item-name">
+                                {{ item.item_name }}
+                            </span>
+                        </label>
+
+                        {% if item.lost_item_id is none %}
+                        <div class="item-actions">
+                            <button
+                                type="button"
+                                class="edit-btn"
+                                onclick="editLostItem( {{ item.user_lost_item_id }}, '{{ item.item_name | replace("'", "\\'") }}' )">
+                                編集
+                            </button>
+
+                            <button
+                                type="button"
+                                class="delete-btn"
+                                onclick="deleteLostItem( {{ item.user_lost_item_id }} )">
+                                削除
+                            </button>
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    {% else %}
+                    <div class="no-item">
+                        忘れ物チェック項目がありません。
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- 個人項目追加 -->
+
+            <div class="lost-item-card">
+                <div class="card-title">
+                    項目を追加
+                </div>
+
+                <div class="add-area">
+                    <input type="text"
+                        id="item-name"
+                        maxlength="100"
+                        placeholder="例：くらりチャーム">
+                    <button
+                        type="button"
+                        class="add-btn"
+                        onclick="addLostItem()">
+                        追加
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="toast" class="toast"></div>
+<script src="/static/js/common.js"></script>
+
+<script>
+async function updateLostItem(
+    userLostItemId,
+    isChecked
+){
+    try{
+        const response = await fetch(
+            "/home/live/lost-item/check",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    user_lost_item_id: userLostItemId,
+                    is_checked: isChecked
+                })
+            }
+        );
+
+        const result = await response.json();
+
+        if(!result.success){
+            showToast(result.message);
+            location.reload();
+        }
+
+    }catch(error){
+        console.error(error);
+        showToast("チェック状態の保存に失敗しました。");
+        location.reload();
+    }
+}
+
+
+async function addLostItem(){
+    const input =
+        document.getElementById("item-name");
+
+    const itemName =
+        input.value.trim();
+
+    if(!itemName){
+        showToast("項目名を入力してください。");
+        return;
+    }
+
+    const response = await fetch(
+        "/home/live/lost-item/add",
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                item_name: itemName
+            })
+        }
+    );
+
+    const result = await response.json();
+
+    if(result.success){
+        location.reload();
+    }else{
+        showToast(result.message);
+    }
+}
+
+
+async function editLostItem(
+    userLostItemId,
+    currentName
+){
+    const itemName =
+        prompt(
+            "項目名を入力してください。",
+            currentName
+        );
+
+    if(itemName === null){
+        return;
+    }
+
+    const trimmedName =
+        itemName.trim();
+
+    if(!trimmedName){
+        showToast("項目名を入力してください。");
+        return;
+    }
+
+    if(trimmedName.length > 100){
+        showToast("項目名は100文字以内で入力してください。");
+        return;
+    }
+
+    const response = await fetch(
+        "/home/live/lost-item/update",
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                user_lost_item_id: userLostItemId,
+                item_name: trimmedName
+            })
+        }
+    );
+
+    const result = await response.json();
+
+    if(result.success){
+        location.reload();
+    }else{
+        showToast(result.message);
+    }
+}
+
+
+async function deleteLostItem(
+    userLostItemId
+){
+    if(!confirm("この項目を削除しますか？")){
+        return;
+    }
+
+    const response = await fetch(
+        "/home/live/lost-item/delete",
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                user_lost_item_id: userLostItemId
+            })
+        }
+    );
+
+    const result = await response.json();
+
+    if(result.success){
+        location.reload();
+    }else{
+        showToast(result.message);
+    }
+}
+
+
+async function resetLostItems(){
+    if(!confirm(
+        "チェック状態をすべて未チェックに戻しますか？"
+    )){
+        return;
+    }
+
+    const response = await fetch(
+        "/home/live/lost-item/reset",
+        {
+            method: "POST"
+        }
+    );
+
+    const result = await response.json();
+
+    if(result.success){
+        location.reload();
+    }else{
+        showToast(result.message);
+    }
+}
+</script>
+
+{% if message %}
+<script>
+    showToast("{{ message }}");
+</script>
+{% endif %}
+
+</body>
+</html>

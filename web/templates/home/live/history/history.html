@@ -72,13 +72,14 @@
 
                     <div class="history-actions">
                         <a href="/home/live/history/detail/{{ live.live_id }}"
-                           class="detail-btn">
+                           class="detail-btn"
+                           onclick="saveHistoryState()">
                             記録を見る
                         </a>
 
                         <a href="/home/live/detail/{{ live.live_id }}?from=history"
                            class="live-detail-btn"
-                           onclick="saveArchiveState()">
+                           onclick="saveHistoryState()">
                             ライブ詳細
                         </a>
                     </div>
@@ -98,39 +99,106 @@
     </div>
 </div>
 <script>
-    // 詳細画面へ移動前
-    function saveArchiveState(){
-        const area =
-            document.querySelector(".page-scroll");
+function saveHistoryState(){
 
-        sessionStorage.setItem(
-            "live_history_url",
-            window.location.href
-        );
+    const pageScroll =
+        document.querySelector(".page-scroll");
 
+    if(pageScroll){
         sessionStorage.setItem(
-            "live_history_scroll",
-            area.scrollTop
+            "historyScrollY",
+            pageScroll.scrollTop
         );
     }
+}
 
-    // ページ復元
-    window.addEventListener("load",()=>{
-        const scroll =
-            sessionStorage.getItem(
-                "live_history_scroll"
-            );
 
-        const area =
-            document.querySelector(
-                ".page-scroll"
-            );
+function clearHistoryState(){
 
-        if(area && scroll !== null){
-            area.scrollTop =
-                Number(scroll);
+    sessionStorage.removeItem("historyScrollY");
+}
+
+
+function restoreHistoryState(){
+
+    const params =
+        new URLSearchParams(window.location.search);
+
+    const pageScroll =
+        document.querySelector(".page-scroll");
+
+
+    /* =========================================================
+       first の場合
+       ========================================================= */
+
+    if(params.has("first")){
+
+        clearHistoryState();
+
+        if(pageScroll){
+            pageScroll.scrollTop = 0;
         }
-    });
+
+        params.delete("first");
+
+        const newUrl =
+            window.location.pathname +
+            (params.toString()
+                ? "?" + params.toString()
+                : "");
+
+        window.history.replaceState(
+            {},
+            "",
+            newUrl
+        );
+
+        return;
+    }
+
+
+    /* =========================================================
+       スクロール位置を復元
+       ========================================================= */
+
+    const savedScrollY =
+        sessionStorage.getItem("historyScrollY");
+
+    if(pageScroll && savedScrollY !== null){
+
+        requestAnimationFrame(function(){
+
+            pageScroll.scrollTop =
+                Number(savedScrollY);
+
+        });
+    }
+}
+
+
+/* =========================================================
+   初回表示
+   ========================================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    restoreHistoryState
+);
+
+
+/* =========================================================
+   ブラウザの戻る操作
+   ========================================================= */
+
+window.addEventListener(
+    "pageshow",
+    function(){
+
+        restoreHistoryState();
+
+    }
+);
 </script>
 </body>
 </html>

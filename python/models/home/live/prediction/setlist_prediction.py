@@ -101,6 +101,7 @@ def get_setlist_prediction_live(live_id):
                     l.live_date,
                     l.venue_name,
                     l.prefecture_code,
+                    l.official_url,
                     pref.prefecture_name
                 FROM m_live l
                 LEFT JOIN m_prefecture pref
@@ -240,6 +241,7 @@ def get_setlist_prediction(prediction_id, user_id):
                     l.live_date,
                     l.venue_name,
                     l.prefecture_code,
+                    l.official_url,
                     pref.prefecture_name
                 FROM t_setlist_prediction p
                 INNER JOIN m_live l
@@ -265,7 +267,11 @@ def get_setlist_prediction(prediction_id, user_id):
                     ps.song_order,
                     ps.is_medley,
                     ps.medley_order,
-                    s.song_name
+                    s.song_name,
+                    s.album_name,
+                    s.youtube_url,
+                    s.apple_music_url,
+                    s.spotify_url
                 FROM t_setlist_prediction_song ps
                 INNER JOIN m_song s
                     ON ps.song_id = s.song_id
@@ -348,7 +354,6 @@ def delete_setlist_prediction(prediction_id, user_id):
 
     try:
         with conn.cursor() as cur:
-            # 本人の予測か確認
             cur.execute(
                 """
                 SELECT prediction_id
@@ -364,7 +369,6 @@ def delete_setlist_prediction(prediction_id, user_id):
             if not prediction:
                 return False
 
-            # 予測曲を削除
             cur.execute(
                 """
                 DELETE FROM t_setlist_prediction_song
@@ -373,7 +377,6 @@ def delete_setlist_prediction(prediction_id, user_id):
                 (prediction_id,)
             )
 
-            # 予測本体を削除
             cur.execute(
                 """
                 DELETE FROM t_setlist_prediction
@@ -383,12 +386,85 @@ def delete_setlist_prediction(prediction_id, user_id):
             )
 
         conn.commit()
-
         return True
 
     except Exception:
         conn.rollback()
         raise
+
+    finally:
+        conn.close()
+
+
+def get_public_setlist_prediction(prediction_id):
+    """
+    共有ページ用の予測セトリ取得。
+
+    ログインユーザーのチェックは行わず、
+    prediction_id が存在し、ライブが削除されていなければ
+    誰でも閲覧できるデータとして取得する。
+    """
+
+    conn = get_connection()
+
+    try:
+        with conn.cursor() as cur:
+            cur.execute(
+                """
+                SELECT
+                    p.prediction_id,
+                    p.user_id,
+                    p.live_id,
+                    l.live_name,
+                    l.tour_name,
+                    l.tour_order,
+                    l.live_date,
+                    l.venue_name,
+                    l.prefecture_code,
+                    l.official_url,
+                    pref.prefecture_name
+                FROM t_setlist_prediction p
+                INNER JOIN m_live l
+                    ON p.live_id = l.live_id
+                LEFT JOIN m_prefecture pref
+                    ON l.prefecture_code = pref.prefecture_code
+                WHERE p.prediction_id = %s
+                  AND l.is_deleted = FALSE
+                """,
+                (prediction_id,)
+            )
+
+            prediction = cur.fetchone()
+
+            if not prediction:
+                return None, []
+
+            cur.execute(
+                """
+                SELECT
+                    ps.song_id,
+                    ps.song_order,
+                    ps.is_medley,
+                    ps.medley_order,
+                    s.song_name,
+                    s.album_name,
+                    s.youtube_url,
+                    s.apple_music_url,
+                    s.spotify_url
+                FROM t_setlist_prediction_song ps
+                INNER JOIN m_song s
+                    ON ps.song_id = s.song_id
+                WHERE ps.prediction_id = %s
+                  AND s.is_deleted = FALSE
+                  AND s.is_public = TRUE
+                ORDER BY ps.song_order ASC
+                """,
+                (prediction_id,)
+            )
+
+            songs = cur.fetchall()
+
+            return prediction, songs
 
     finally:
         conn.close()

@@ -1,0 +1,309 @@
+/* =========================================================
+戻るリンク
+========================================================= */
+
+.background .back-link{
+align-self:flex-start;
+margin-left:15px;
+margin-top:10px;
+width:auto;
+}
+
+/* =========================================================
+コンテナ
+========================================================= */
+
+.container{
+width:100%;
+max-width:430px;
+margin:0 auto;
+padding:15px 0 30px;
+}
+
+/* =========================================================
+ページタイトル
+========================================================= */
+
+.page-title{
+width:90%;
+max-width:400px;
+margin:5px auto 15px;
+}
+
+.page-title h1{
+margin:0;
+font-size:20px;
+}
+
+/* =========================================================
+カード
+========================================================= */
+
+.lost-item-card{
+width:90%;
+max-width:400px;
+margin:0 auto 15px;
+padding:18px;
+box-sizing:border-box;
+background:white;
+border-radius:20px;
+box-shadow:0 3px 8px rgba(0,0,0,0.12);
+}
+
+/* =========================================================
+カードヘッダー
+========================================================= */
+
+.card-header{
+display:flex;
+align-items:center;
+justify-content:space-between;
+margin-bottom:12px;
+}
+
+.card-title{
+font-size:16px;
+font-weight:bold;
+}
+
+/* =========================================================
+リセット
+========================================================= */
+
+.reset-btn{
+padding:5px 10px;
+border:none;
+border-radius:8px;
+background:#ffb6c8;
+color:white;
+font-size:11px;
+font-weight:bold;
+cursor:pointer;
+}
+
+.reset-btn:hover{
+opacity:0.8;
+}
+
+/* =========================================================
+忘れ物一覧
+========================================================= */
+
+.lost-item-list{
+display:flex;
+flex-direction:column;
+}
+
+/* =========================================================
+忘れ物項目
+========================================================= */
+
+.lost-item{
+min-height:46px;
+padding:8px 0;
+box-sizing:border-box;
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:8px;
+border-bottom:1px solid #eee;
+}
+
+.lost-item:last-child{
+border-bottom:none;
+}
+
+/* =========================================================
+チェックエリア
+========================================================= */
+
+.check-area{
+flex:1;
+min-width:0;
+display:flex;
+align-items:center;
+gap:10px;
+cursor:pointer;
+}
+
+/* =========================================================
+チェックボックス
+========================================================= */
+
+.check-area input{
+position:absolute;
+opacity:0;
+pointer-events:none;
+}
+
+.check-mark{
+width:22px;
+height:22px;
+flex-shrink:0;
+box-sizing:border-box;
+border:2px solid #ddd;
+border-radius:7px;
+background:white;
+position:relative;
+transition:0.15s;
+}
+
+.check-area input:checked + .check-mark{
+background:#ff9fba;
+border-color:#ff9fba;
+}
+
+.check-area input:checked + .check-mark::after{
+content:"";
+position:absolute;
+left:6px;
+top:2px;
+width:6px;
+height:11px;
+border:solid white;
+border-width:0 2px 2px 0;
+transform:rotate(45deg);
+}
+
+/* =========================================================
+項目名
+========================================================= */
+
+.item-name{
+min-width:0;
+font-size:14px;
+line-height:1.5;
+word-break:break-word;
+}
+
+.check-area input:checked ~ .item-name{
+color:#aaa;
+text-decoration:line-through;
+}
+
+/* =========================================================
+個人項目操作
+========================================================= */
+
+.item-actions{
+display:flex;
+align-items:center;
+gap:5px;
+flex-shrink:0;
+}
+
+.edit-btn,
+.delete-btn{
+padding:4px 7px;
+border:none;
+border-radius:7px;
+color:white;
+font-size:10px;
+cursor:pointer;
+}
+
+.edit-btn{
+background:#aaa;
+}
+
+.delete-btn{
+background:#e99;
+}
+
+.edit-btn:hover,
+.delete-btn:hover{
+opacity:0.8;
+}
+
+/* =========================================================
+データなし
+========================================================= */
+
+.no-item{
+padding:20px 0;
+text-align:center;
+color:#888;
+font-size:13px;
+}
+
+/* =========================================================
+   項目追加
+========================================================= */
+
+.add-area{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin-top:12px;
+}
+
+.add-area input{
+    flex:1;
+    min-width:0;
+    height:36px;
+    padding:0 10px;
+    box-sizing:border-box;
+    border:1px solid #ddd;
+    border-radius:9px;
+    outline:none;
+    font-size:13px;
+}
+
+.add-area input:focus{
+    border-color:#ffb6c8;
+}
+
+
+/* =========================================================
+   項目追加ボタン
+========================================================= */
+
+.add-btn{
+    width:70px;
+    height:36px;
+    flex-shrink:0;
+    border:none;
+    border-radius:18px;
+    background:linear-gradient(
+        135deg,
+        #ff9fba,
+        #ff7fa3
+    );
+    color:white;
+    font-size:12px;
+    font-weight:bold;
+    cursor:pointer;
+    box-shadow:0 3px 7px rgba(255,143,177,0.35);
+    transition:transform 0.15s, box-shadow 0.15s, opacity 0.15s;
+}
+
+.add-btn::before{
+    content:"+";
+    margin-right:4px;
+    font-size:15px;
+    font-weight:normal;
+    vertical-align:-1px;
+}
+
+.add-btn:hover{
+    opacity:0.9;
+    transform:translateY(-1px);
+    box-shadow:0 4px 9px rgba(255,143,177,0.45);
+}
+
+.add-btn:active{
+    transform:translateY(1px);
+    box-shadow:0 2px 4px rgba(255,143,177,0.25);
+}
+
+/* =========================================================
+スクロールバー非表示
+========================================================= */
+
+html{
+scrollbar-width:none;
+}
+
+html::-webkit-scrollbar{
+display:none;
+}

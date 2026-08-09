@@ -51,25 +51,24 @@
                         {% for song in songs %}
                         <div class="song-item">
                             <div class="song-number">
-                                {% if song.is_medley %}
-                                    {{ song.song_order }}
-                                    <span class="medley-badge">
-                                        MEDLEY
-                                    </span>
-                                {% else %}
-                                    {{ "%02d"|format(song.song_order) }}
-                                {% endif %}
+                                {{ loop.index }}
                             </div>
 
                             <div class="song-info">
                                 <div class="song-name">
                                     {{ song.song_name }}
+
+                                    {% if song.is_medley %}
+                                        <span class="medley-badge">
+                                            メドレー{{ song.medley_order }}
+                                        </span>
+                                    {% endif %}
                                 </div>
 
                                 {% if song.album_name %}
-                                <div class="album-name">
-                                    {{ song.album_name }}
-                                </div>
+                                    <div class="album-name">
+                                        {{ song.album_name }}
+                                    </div>
                                 {% endif %}
                             </div>
 

@@ -10,6 +10,7 @@ from python.models.home.live.prediction.setlist_prediction import (
     get_setlist_prediction_live,
     get_setlist_prediction_song_groups,
     get_setlist_prediction,
+    get_public_setlist_prediction,
     update_setlist_prediction,
     save_setlist_prediction,
     delete_setlist_prediction
@@ -32,10 +33,14 @@ def login_redirect(request: Request):
     return None
 
 
+# =========================================================
+# セトリ予測一覧
+# =========================================================
+
 @router.get("")
 async def setlist_prediction(
     request: Request,
-    tour_name: str = ""
+    keyword: str = ""
 ):
     redirect = login_redirect(request)
 
@@ -46,7 +51,7 @@ async def setlist_prediction(
 
     predictions = get_setlist_prediction_list(
         user_id,
-        tour_name if tour_name else None
+        keyword if keyword else None
     )
 
     return templates.TemplateResponse(
@@ -54,13 +59,19 @@ async def setlist_prediction(
         name="templates/home/live/prediction/setlist_prediction.html",
         context={
             "predictions": predictions,
-            "tour_name": tour_name
+            "keyword": keyword
         }
     )
 
 
+# =========================================================
+# 新規追加：ライブ選択
+# =========================================================
+
 @router.get("/new")
-async def new_setlist_prediction(request: Request):
+async def new_setlist_prediction(
+    request: Request
+):
     redirect = login_redirect(request)
 
     if redirect:
@@ -68,7 +79,9 @@ async def new_setlist_prediction(request: Request):
 
     user_id = request.session.get("user_id")
 
-    lives = get_setlist_prediction_live_list(user_id)
+    lives = get_setlist_prediction_live_list(
+        user_id
+    )
 
     return templates.TemplateResponse(
         request=request,
@@ -78,6 +91,10 @@ async def new_setlist_prediction(request: Request):
         }
     )
 
+
+# =========================================================
+# 新規追加：セトリ予測登録
+# =========================================================
 
 @router.get("/new/{live_id}")
 async def new_setlist_prediction_live(
@@ -89,7 +106,9 @@ async def new_setlist_prediction_live(
     if redirect:
         return redirect
 
-    live = get_setlist_prediction_live(live_id)
+    live = get_setlist_prediction_live(
+        live_id
+    )
 
     if not live:
         return RedirectResponse(
@@ -110,6 +129,10 @@ async def new_setlist_prediction_live(
         }
     )
 
+
+# =========================================================
+# 新規追加：セトリ予測保存
+# =========================================================
 
 @router.post("/new/{live_id}/save")
 async def save_prediction(
@@ -144,6 +167,10 @@ async def save_prediction(
     }
 
 
+# =========================================================
+# セトリ予測詳細
+# =========================================================
+
 @router.get("/detail/{prediction_id}")
 async def setlist_prediction_detail(
     request: Request,
@@ -176,6 +203,10 @@ async def setlist_prediction_detail(
         }
     )
 
+
+# =========================================================
+# セトリ予測編集
+# =========================================================
 
 @router.get("/edit/{prediction_id}")
 async def edit_setlist_prediction(
@@ -215,6 +246,10 @@ async def edit_setlist_prediction(
     )
 
 
+# =========================================================
+# セトリ予測更新
+# =========================================================
+
 @router.post("/{prediction_id}/save")
 async def save_edited_prediction(
     request: Request,
@@ -253,6 +288,10 @@ async def save_edited_prediction(
     }
 
 
+# =========================================================
+# セトリ予測削除
+# =========================================================
+
 @router.post("/{prediction_id}/delete")
 async def delete_prediction(
     request: Request,
@@ -283,32 +322,38 @@ async def delete_prediction(
     }
 
 
-@router.get("/{prediction_id}/share")
+# =========================================================
+# セトリ予測共有ページ
+# ※ ログイン不要
+# =========================================================
+
+@router.get("/share/{prediction_id}")
 async def share_setlist_prediction(
     request: Request,
     prediction_id: int
 ):
-    if not auth.is_login(request):
-        return {
-            "success": False,
-            "message": "ログインしてください。"
-        }
-
-    user_id = request.session.get("user_id")
-
-    prediction, songs = get_setlist_prediction(
-        prediction_id,
-        user_id
+    prediction, songs = get_public_setlist_prediction(
+        prediction_id
     )
 
     if not prediction:
-        return {
-            "success": False,
-            "message": "予測セトリが見つかりません。"
-        }
+        return templates.TemplateResponse(
+            request=request,
+            name="templates/home/live/prediction/setlist_prediction_share.html",
+            context={
+                "prediction": None,
+                "songs": [],
+                "not_found": True
+            },
+            status_code=404
+        )
 
-    return {
-        "success": True,
-        "prediction": prediction,
-        "songs": songs
-    }
+    return templates.TemplateResponse(
+        request=request,
+        name="templates/home/live/prediction/setlist_prediction_share.html",
+        context={
+            "prediction": prediction,
+            "songs": songs,
+            "not_found": False
+        }
+    )

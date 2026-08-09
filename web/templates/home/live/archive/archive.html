@@ -195,63 +195,202 @@
 {% endif %}
 
 <script>
-// 詳細画面へ移動前
 function saveArchiveState(){
-    const area =
+
+    const pageScroll =
         document.querySelector(".page-scroll");
 
-    sessionStorage.setItem(
-        "live_archive_url",
-        window.location.href
-    );
+    const keywordInput =
+        document.querySelector('input[name="keyword"]');
 
-    sessionStorage.setItem(
-        "live_archive_scroll",
-        area.scrollTop
-    );
-}
+    const sortSelect =
+        document.querySelector('select[name="sort"]');
 
-// 検索時
-function clearArchiveState(){
-    sessionStorage.removeItem(
-        "live_archive_scroll"
-    );
 
-    sessionStorage.removeItem(
-        "live_archive_url"
-    );
-}
-// 参加変更後の位置保持
-document.querySelectorAll(".live-actions form")
-.forEach(form => {
-    form.addEventListener("submit",()=>{
-        const area =
-            document.querySelector(".page-scroll");
-
+    if(pageScroll){
         sessionStorage.setItem(
-            "live_archive_scroll",
-            area.scrollTop
+            "archiveScrollY",
+            pageScroll.scrollTop
         );
-    });
-});
-
-// ページ復元
-window.addEventListener("load",()=>{
-    const scroll =
-        sessionStorage.getItem(
-            "live_archive_scroll"
-        );
-
-    const area =
-        document.querySelector(
-            ".page-scroll"
-        );
-
-    if(area && scroll !== null){
-        area.scrollTop =
-            Number(scroll);
     }
-});
+
+    if(keywordInput){
+        sessionStorage.setItem(
+            "archiveKeyword",
+            keywordInput.value
+        );
+    }
+
+    if(sortSelect){
+        sessionStorage.setItem(
+            "archiveSort",
+            sortSelect.value
+        );
+    }
+}
+
+
+function clearArchiveState(){
+
+    sessionStorage.removeItem("archiveScrollY");
+    sessionStorage.removeItem("archiveKeyword");
+    sessionStorage.removeItem("archiveSort");
+}
+
+
+function restoreArchiveState(){
+
+    const params =
+        new URLSearchParams(window.location.search);
+
+    const pageScroll =
+        document.querySelector(".page-scroll");
+
+    const keywordInput =
+        document.querySelector('input[name="keyword"]');
+
+    const sortSelect =
+        document.querySelector('select[name="sort"]');
+
+
+    /* =========================================================
+       first の場合
+       ========================================================= */
+
+    if(params.has("first")){
+
+        clearArchiveState();
+
+        if(keywordInput){
+            keywordInput.value = "";
+        }
+
+        if(sortSelect){
+            sortSelect.value = "new";
+        }
+
+        if(pageScroll){
+            pageScroll.scrollTop = 0;
+        }
+
+        params.delete("first");
+
+        const newUrl =
+            window.location.pathname +
+            (params.toString()
+                ? "?" + params.toString()
+                : "");
+
+        window.history.replaceState(
+            {},
+            "",
+            newUrl
+        );
+
+        return;
+    }
+
+
+    /* =========================================================
+       保存されている検索条件
+       ========================================================= */
+
+    const savedKeyword =
+        sessionStorage.getItem("archiveKeyword");
+
+    const savedSort =
+        sessionStorage.getItem("archiveSort");
+
+    const savedScrollY =
+        sessionStorage.getItem("archiveScrollY");
+
+
+    /*
+     * URLに検索条件がない場合だけ
+     * 保存していた検索条件をURLへ反映
+     */
+    if(
+        !params.has("keyword") &&
+        !params.has("sort") &&
+        (
+            savedKeyword !== null ||
+            savedSort !== null
+        )
+    ){
+
+        if(savedKeyword !== null){
+            params.set("keyword", savedKeyword);
+        }
+
+        if(savedSort !== null){
+            params.set("sort", savedSort);
+        }
+
+        /*
+         * first を付けずに一覧を再読み込み
+         *
+         * これによってサーバー側でも
+         * 保存していた検索条件で lives を取得する
+         */
+        const newUrl =
+            window.location.pathname +
+            "?" + params.toString();
+
+        window.location.replace(newUrl);
+
+        return;
+    }
+
+
+    /* =========================================================
+       検索条件を画面に反映
+       ========================================================= */
+
+    if(keywordInput && savedKeyword !== null){
+        keywordInput.value = savedKeyword;
+    }
+
+    if(sortSelect && savedSort !== null){
+        sortSelect.value = savedSort;
+    }
+
+
+    /* =========================================================
+       スクロール位置を復元
+       ========================================================= */
+
+    if(pageScroll && savedScrollY !== null){
+
+        requestAnimationFrame(function(){
+
+            pageScroll.scrollTop =
+                Number(savedScrollY);
+
+        });
+    }
+}
+
+
+/* 初回表示 */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    restoreArchiveState
+);
+
+
+/* ブラウザの戻る操作 */
+
+window.addEventListener(
+    "pageshow",
+    function(event){
+
+        if(event.persisted){
+            restoreArchiveState();
+        }
+
+    }
+);
 </script>
 </body>
 </html>
