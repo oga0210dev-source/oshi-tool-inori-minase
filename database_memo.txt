@@ -146,6 +146,20 @@ create table public.m_expense_type (
   constraint m_expense_type_expense_type_code_key unique (expense_type_code)
 ) TABLESPACE pg_default;
 
+create table public.m_lost_item (
+  lost_item_id bigserial not null,
+  item_name character varying(100) not null,
+  display_order integer not null default 0,
+  is_deleted boolean not null default false,
+  created_at timestamp without time zone not null default CURRENT_TIMESTAMP,
+  updated_at timestamp without time zone not null default CURRENT_TIMESTAMP,
+  constraint m_lost_item_pkey primary key (lost_item_id)
+) TABLESPACE pg_default;
+
+//////////////
+トランザクション
+//////////////
+
 create table public.t_live_record (
   record_id bigserial not null,
   user_id text not null,
@@ -234,9 +248,6 @@ create trigger trigger_update_t_setlist_prediction_song_updated_at BEFORE
 update on t_setlist_prediction_song for EACH row
 execute FUNCTION update_updated_at_column ();
 
-/////////////////////////////////
-ライブデータ　トランザクション
-/////////////////////////////////
 create table public.t_live_user (
   user_id text not null,
   live_id bigint not null,
@@ -251,6 +262,23 @@ create table public.t_live_user (
 create trigger update_t_live_user_updated_at BEFORE
 update on t_live_user for EACH row
 execute FUNCTION update_updated_at_column ();
+
+create table public.t_user_lost_item (
+  user_lost_item_id bigserial not null,
+  user_id text not null,
+  lost_item_id bigint null,
+  item_name character varying(100) not null,
+  is_checked boolean not null default false,
+  created_at timestamp without time zone not null default CURRENT_TIMESTAMP,
+  updated_at timestamp without time zone not null default CURRENT_TIMESTAMP,
+  constraint t_user_lost_item_pkey primary key (user_lost_item_id),
+  constraint fk_t_user_lost_item_master foreign KEY (lost_item_id) references m_lost_item (lost_item_id),
+  constraint fk_t_user_lost_item_user foreign KEY (user_id) references m_user (user_id)
+) TABLESPACE pg_default;
+
+create index IF not exists idx_t_user_lost_item_user_id on public.t_user_lost_item using btree (user_id) TABLESPACE pg_default;
+
+create index IF not exists idx_t_user_lost_item_lost_item_id on public.t_user_lost_item using btree (lost_item_id) TABLESPACE pg_default;
 
 /////////////////////////////////
 都道府県データ
@@ -344,3 +372,22 @@ VALUES
 ('food','食費',4),
 ('goods','グッズ',5),
 ('other','その他',6);
+
+
+///////////////////////////
+忘れ物チェックリスト（マスタ）
+///////////////////////////
+INSERT INTO m_lost_item (
+    item_name,
+    display_order
+)
+VALUES
+    ('チケット', 1),
+    ('スマートフォン', 2),
+    ('財布', 3),
+    ('身分証', 4),
+    ('ペンライト', 5),
+    ('タオル', 6),
+    ('飲み物', 7),
+    ('双眼鏡', 8),
+    ('会員証', 9)

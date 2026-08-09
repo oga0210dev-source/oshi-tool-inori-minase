@@ -21,7 +21,7 @@
         <div class="search-area">
             <form method="get"
                   class="search-form"
-                  onsubmit="clearArchiveState()">
+                  onsubmit="clearPredictionState()">
                 <input
                     type="text"
                     name="keyword"
@@ -88,82 +88,40 @@
                                 </div>
 
                                 <a href="/home/live/prediction/detail/{{ prediction.prediction_id }}"
-                                   class="detail-btn">
+                                   class="detail-btn"
+                                   onclick="savePredictionState()">
                                     詳細
                                 </a>
 
                                 {% if not prediction.is_finished %}
-                                    <a href="/home/live/prediction/edit/{{ prediction.prediction_id }}"
-                                       class="edit-btn">
-                                        編集
-                                    </a>
-                                    <button type="button"
+                                <a href="/home/live/prediction/edit/{{ prediction.prediction_id }}"
+                                   class="edit-btn"
+                                   onclick="savePredictionState()">
+                                    編集
+                                </a>
+
+                                <button type="button"
                                         class="share-btn"
-                                        onclick="sharePrediction(
-                                            '{{ prediction.live_name }}',
-                                            '{{ prediction.prediction_id }}'
-                                        )"
+                                        onclick="sharePrediction({{ prediction.prediction_id }})"
                                         aria-label="Xでシェア">
-                                        𝕏
-                                    </button>
+                                    𝕏
+                                </button>
                                 {% endif %}
                             </div>
                         </div>
-                    {% endfor %}
+                        {% endfor %}
                     </div>
                 {% else %}
-                    <div class="no-prediction">
-                        登録されている予測セトリがありません。
-                    </div>
+                <div class="no-prediction">
+                    登録されている予測セトリがありません。
+                </div>
                 {% endif %}
             </div>
         </div>
     </div>
 
-    <!-- シェアポップアップ -->
-    <div id="share-modal" class="share-modal">
-        <div class="share-modal-content">
-
-            <div class="share-modal-header">
-                <span>セトリ予測をシェア</span>
-                <button type="button"
-                        class="share-modal-close"
-                        onclick="closeShareModal()">
-                    ×
-                </button>
-            </div>
-
-            <div class="share-image-area">
-                <img id="share-image"
-                     src=""
-                     alt="セトリ予測">
-            </div>
-
-            <div class="share-text-area">
-                <div class="share-text-title">
-                    投稿文
-                </div>
-
-                <textarea id="share-text"
-                          readonly></textarea>
-            </div>
-
-            <div class="share-button-area">
-
-                <button type="button"
-                        class="copy-share-text-btn"
-                        onclick="copyShareText()">
-                    投稿文をコピー
-                </button>
-
-            </div>
-
-        </div>
-    </div>
-
     <div id="toast" class="toast"></div>
 
-    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
     <script src="/static/js/common.js"></script>
     <script src="/static/js/home/live/prediction/prediction.js"></script>
 
@@ -173,5 +131,195 @@
     </script>
     {% endif %}
 
+    <script>
+        function savePredictionState(){
+
+            const pageScroll =
+                document.querySelector(".page-scroll");
+
+            const keywordInput =
+                document.querySelector('input[name="keyword"]');
+
+
+            /* スクロール位置 */
+
+            if(pageScroll){
+
+                sessionStorage.setItem(
+                    "predictionScrollY",
+                    pageScroll.scrollTop
+                );
+            }
+
+
+            /* 検索条件 */
+
+            if(keywordInput){
+
+                sessionStorage.setItem(
+                    "predictionKeyword",
+                    keywordInput.value
+                );
+            }
+        }
+
+
+        function clearPredictionState(){
+
+            sessionStorage.removeItem(
+                "predictionScrollY"
+            );
+
+            sessionStorage.removeItem(
+                "predictionKeyword"
+            );
+        }
+
+
+        function restorePredictionState(){
+
+            const params =
+                new URLSearchParams(window.location.search);
+
+            const pageScroll =
+                document.querySelector(".page-scroll");
+
+            const keywordInput =
+                document.querySelector('input[name="keyword"]');
+
+
+            /* =========================================================
+               first の場合
+               ========================================================= */
+
+            if(params.has("first")){
+
+                clearPredictionState();
+
+                if(keywordInput){
+                    keywordInput.value = "";
+                }
+
+                if(pageScroll){
+                    pageScroll.scrollTop = 0;
+                }
+
+                params.delete("first");
+
+                const newUrl =
+                    window.location.pathname +
+                    (params.toString()
+                        ? "?" + params.toString()
+                        : "");
+
+                window.history.replaceState(
+                    {},
+                    "",
+                    newUrl
+                );
+
+                return;
+            }
+
+
+            /* =========================================================
+               保存されている検索条件
+               ========================================================= */
+
+            const savedKeyword =
+                sessionStorage.getItem(
+                    "predictionKeyword"
+                );
+
+
+            /*
+             * URLにkeywordがない場合だけ
+             * 保存した検索条件をURLへ反映する
+             *
+             * これによりFastAPI側でも
+             * 同じ検索結果を取得できる
+             */
+
+            if(
+                !params.has("keyword") &&
+                savedKeyword !== null
+            ){
+
+                params.set(
+                    "keyword",
+                    savedKeyword
+                );
+
+                const newUrl =
+                    window.location.pathname +
+                    "?" + params.toString();
+
+                window.location.replace(newUrl);
+
+                return;
+            }
+
+
+            /* =========================================================
+               検索条件を画面に反映
+               ========================================================= */
+
+            if(
+                keywordInput &&
+                savedKeyword !== null
+            ){
+
+                keywordInput.value =
+                    savedKeyword;
+            }
+
+
+            /* =========================================================
+               スクロール位置を復元
+               ========================================================= */
+
+            const savedScrollY =
+                sessionStorage.getItem(
+                    "predictionScrollY"
+                );
+
+            if(
+                pageScroll &&
+                savedScrollY !== null
+            ){
+
+                requestAnimationFrame(function(){
+
+                    pageScroll.scrollTop =
+                        Number(savedScrollY);
+
+                });
+            }
+        }
+
+
+        /* =========================================================
+           初回表示
+           ========================================================= */
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            restorePredictionState
+        );
+
+
+        /* =========================================================
+           ブラウザの戻る操作
+           ========================================================= */
+
+        window.addEventListener(
+            "pageshow",
+            function(){
+
+                restorePredictionState();
+
+            }
+        );
+</script>
 </body>
 </html>

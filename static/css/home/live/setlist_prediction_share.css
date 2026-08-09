@@ -1,61 +1,24 @@
 /* =========================================================
- * 戻るリンク
- * ========================================================= */
-
-.back-link{
-    display:block;
-    width:max-content;
-    color:#888;
-    text-decoration:none;
-    font-size:14px;
-    margin-bottom:5px;
-}
-
-.background .back-link{
-    align-self:flex-start;
-    margin-left:15px;
-    margin-top:10px;
-    width:auto;
-}
-
-
-/* =========================================================
- * コンテナ
+ * セトリ予測共有ページ
  * ========================================================= */
 
 .container{
     width:100%;
     max-width:430px;
     margin:0 auto;
-    padding:15px 0 30px;
+    padding:20px 0 30px;
 }
 
 
 /* =========================================================
- * ページタイトル
+ * カード
  * ========================================================= */
 
-.page-title{
+.prediction-card{
     width:90%;
-    max-width:400px;
-    margin:5px auto 15px;
-}
-
-.page-title h1{
-    margin:0;
-    font-size:20px;
-}
-
-
-/* =========================================================
- * ライブ情報
- * ========================================================= */
-
-.live-card{
-    width:85%;
     max-width:390px;
-    margin:0 auto 20px;
-    padding:15px;
+    margin:0 auto 15px;
+    padding:18px;
     box-sizing:border-box;
     background:white;
     border-radius:20px;
@@ -63,23 +26,27 @@
 }
 
 
-.live-name{
-    margin-bottom:4px;
-    font-size:16px;
-    font-weight:bold;
-}
+/* =========================================================
+ * ライブ情報
+ * ========================================================= */
 
+.live-name{
+    margin-bottom:6px;
+    font-size:18px;
+    font-weight:bold;
+    line-height:1.5;
+}
 
 .tour-name{
-    margin-bottom:8px;
+    margin-bottom:12px;
     font-size:13px;
     color:#777;
+    line-height:1.5;
 }
-
 
 .live-info{
     font-size:13px;
-    line-height:1.7;
+    line-height:1.8;
 }
 
 
@@ -102,29 +69,21 @@
 
 
 /* =========================================================
- * セクションタイトル
+ * カードタイトル
  * ========================================================= */
 
-.section-title{
-    width:90%;
-    max-width:400px;
-    margin:0 auto 12px;
-}
-
-.section-title h2{
-    margin:0;
-    font-size:18px;
+.card-title{
+    margin-bottom:12px;
+    font-size:16px;
+    font-weight:bold;
 }
 
 
 /* =========================================================
- * セットリスト
+ * セトリ
  * ========================================================= */
 
-.setlist-area{
-    width:90%;
-    max-width:400px;
-    margin:0 auto;
+.setlist{
     display:flex;
     flex-direction:column;
     gap:8px;
@@ -143,9 +102,9 @@
     display:flex;
     align-items:center;
     gap:10px;
-    background:white;
+    background:#fff;
+    border:1px solid #eee;
     border-radius:12px;
-    box-shadow:0 2px 6px rgba(0,0,0,0.10);
 }
 
 
@@ -190,19 +149,21 @@
 
 
 /* =========================================================
- * メドレーバッジ
+ * メドレー
  * ========================================================= */
 
 .medley-badge{
-    display:inline-block;
-    margin-left:6px;
+    display:block;
+    width:max-content;
+    margin-top:4px;
+    margin-left:0;
     padding:2px 6px;
-    border-radius:8px;
-    background:#ffb6c8;
+    box-sizing:border-box;
+    border-radius:10px;
+    background:#ff8fb1;
     color:white;
     font-size:10px;
     font-weight:normal;
-    vertical-align:middle;
 }
 
 
@@ -216,27 +177,36 @@
     flex-direction:column;
     gap:5px;
     flex-shrink:0;
+    margin-top:0;
 }
 
 
 .music-btn{
-    display:block;
+    display:flex;
+    align-items:center;
+    justify-content:center;
     width:85px;
-    padding:4px 0;
+    height:24px;
+    padding:0;
     box-sizing:border-box;
     border-radius:8px;
-    text-align:center;
     color:white;
     text-decoration:none;
-    font-size:10px;
+    font-size:9px;
     font-weight:bold;
+    line-height:1;
+}
+
+
+.music-btn:hover{
+    opacity:0.8;
 }
 
 
 /* YouTube */
 
 .music-btn.youtube{
-    background:#ff4b4b;
+    background:#ff0000;
 }
 
 
@@ -255,19 +225,43 @@
 
 
 /* =========================================================
+ * 一致率
+ * ========================================================= */
+
+.match-card{
+    text-align:center;
+}
+
+
+.match-rate{
+    font-size:28px;
+    font-weight:bold;
+    color:#ff8fb1;
+}
+
+
+/* =========================================================
  * データなし
  * ========================================================= */
 
-.no-setlist{
-    width:100%;
-    padding:25px 10px;
-    box-sizing:border-box;
+.no-setlist,
+.no-prediction{
+    padding:20px 10px;
     text-align:center;
-    color:#888;
+    color:#777;
     font-size:13px;
-    background:white;
-    border-radius:15px;
-    box-shadow:0 3px 8px rgba(0,0,0,0.08);
+}
+
+
+/* =========================================================
+ * フッター
+ * ========================================================= */
+
+.share-footer{
+    padding:15px 0 5px;
+    text-align:center;
+    color:#999;
+    font-size:11px;
 }
 
 

@@ -314,6 +314,9 @@ async function savePrediction(){
 
             alert(result.message);
 
+            window.location.href =
+                "/home/live/prediction";
+
         }else{
 
             alert(
@@ -362,6 +365,7 @@ async function deletePrediction(predictionId){
         if(result.success){
 
             alert(result.message);
+
             window.location.reload();
 
         }else{
@@ -384,293 +388,6 @@ async function deletePrediction(predictionId){
 
 
 /* =========================================================
- * セトリ予測シェア
- * ========================================================= */
-
-let shareText = "";
-
-
-/* シェアポップアップを閉じる */
-
-function closeShareModal(){
-
-    document.getElementById(
-        "share-modal"
-    ).style.display = "none";
-}
-
-
-/* シェア開始 */
-
-async function sharePrediction(
-    liveName,
-    predictionId
-){
-
-    const modal =
-        document.getElementById("share-modal");
-
-    const image =
-        document.getElementById("share-image");
-
-    const text =
-        document.getElementById("share-text");
-
-    /* 投稿文 */
-    shareText =
-        `水瀬いのり「${liveName}」のセトリを予測中！\n\n` +
-        `#水瀬いのり #いのりまち`;
-
-    text.value = shareText;
-
-    /* ポップアップ表示 */
-    modal.style.display = "block";
-
-    /* 画像を初期化 */
-    image.removeAttribute("src");
-    image.alt = "セトリ画像を生成しています";
-
-    shareImageBlob = null;
-
-    try{
-
-        /* セトリ情報取得 */
-        const response =
-            await fetch(
-                `/home/live/prediction/${predictionId}/share`
-            );
-
-        if(!response.ok){
-            throw new Error(
-                `APIエラー: HTTP ${response.status}`
-            );
-        }
-
-        const result =
-            await response.json();
-
-        if(!result.success){
-            throw new Error(
-                result.message ||
-                "セトリ情報の取得に失敗しました。"
-            );
-        }
-
-        /* 画像生成 */
-        const imageData =
-            createPredictionImage(
-                result.prediction,
-                result.songs
-            );
-
-        if(!imageData){
-            throw new Error(
-                "画像データを生成できませんでした。"
-            );
-        }
-
-        /* 画面に表示 */
-        image.src = imageData;
-        image.alt = "セトリ予測";
-
-    }catch(error){
-
-        console.error(
-            "シェア画像生成エラー:",
-            error
-        );
-
-        alert(
-            "セトリ画像の生成に失敗しました。\n\n" +
-            error.message
-        );
-
-        closeShareModal();
-    }
-}
-
-
-/* =========================================================
- * セトリ画像生成
- * ========================================================= */
-
-function createPredictionImage(
-    prediction,
-    songs
-){
-
-    const canvas =
-        document.createElement("canvas");
-
-    const ctx =
-        canvas.getContext("2d");
-
-    if(!ctx){
-        throw new Error(
-            "Canvasを取得できませんでした。"
-        );
-    }
-
-    const width = 800;
-    const padding = 50;
-    const rowHeight = 58;
-    const titleHeight = 130;
-    const footerHeight = 60;
-
-    const height =
-        titleHeight +
-        songs.length * rowHeight +
-        footerHeight;
-
-    canvas.width = width;
-    canvas.height = height;
-
-    /* 背景 */
-    ctx.fillStyle = "#ffffff";
-
-    ctx.fillRect(
-        0,
-        0,
-        width,
-        height
-    );
-
-    /* ライブ名 */
-    ctx.fillStyle = "#333333";
-    ctx.font = "bold 32px sans-serif";
-
-    ctx.fillText(
-        prediction.live_name || "",
-        padding,
-        55
-    );
-
-    /* ツアー名 */
-    ctx.fillStyle = "#777777";
-    ctx.font = "20px sans-serif";
-
-    ctx.fillText(
-        prediction.tour_name || "",
-        padding,
-        90
-    );
-
-    /* セトリ */
-    let y = titleHeight;
-
-    songs.forEach((song,index) => {
-
-        /* 曲番号 */
-        ctx.fillStyle = "#888888";
-        ctx.font = "20px sans-serif";
-
-        ctx.fillText(
-            `${index + 1}.`,
-            padding,
-            y
-        );
-
-        /* 曲名 */
-        ctx.fillStyle = "#333333";
-        ctx.font = "bold 20px sans-serif";
-
-        let songName =
-            song.song_name || "";
-
-        if(song.is_medley){
-
-            songName +=
-                `  メドレー${song.medley_order}`;
-        }
-
-        ctx.fillText(
-            songName,
-            padding + 50,
-            y
-        );
-
-        /* 区切り線 */
-        ctx.strokeStyle = "#eeeeee";
-
-        ctx.beginPath();
-
-        ctx.moveTo(
-            padding,
-            y + 18
-        );
-
-        ctx.lineTo(
-            width - padding,
-            y + 18
-        );
-
-        ctx.stroke();
-
-        y += rowHeight;
-    });
-
-    /* フッター */
-    ctx.fillStyle = "#999999";
-    ctx.font = "16px sans-serif";
-
-    ctx.fillText(
-        "セトリ予測",
-        padding,
-        height - 20
-    );
-
-    return canvas.toDataURL(
-        "image/png"
-    );
-}
-
-
-/* =========================================================
- * 投稿文コピー
- * ========================================================= */
-
-async function copyShareText(){
-
-    try{
-
-        await navigator.clipboard.writeText(
-            shareText
-        );
-
-        alert(
-            "投稿文をコピーしました。"
-        );
-
-    }catch(error){
-
-        console.error(error);
-
-        const textarea =
-            document.getElementById(
-                "share-text"
-            );
-
-        textarea.removeAttribute(
-            "readonly"
-        );
-
-        textarea.select();
-
-        document.execCommand("copy");
-
-        textarea.setAttribute(
-            "readonly",
-            ""
-        );
-
-        alert(
-            "投稿文をコピーしました。"
-        );
-    }
-}
-
-
-/* =========================================================
  * ページ表示時
  * ========================================================= */
 
@@ -680,3 +397,26 @@ document.addEventListener(
         initSortable();
     }
 );
+
+
+/* =========================================================
+ * Xでシェア
+ * ========================================================= */
+
+async function sharePrediction(predictionId){
+    const shareUrl =
+        `${window.location.origin}/home/live/prediction/share/${predictionId}`;
+
+    const responseText =
+        `水瀬いのり「セトリ予測」のセトリを予測中！\n\n` +
+        `${shareUrl}\n\n` +
+        `#水瀬いのり #いのりまち`;
+
+    const xUrl =
+        `https://x.com/intent/post?text=${encodeURIComponent(responseText)}`;
+
+    window.open(
+        xUrl,
+        "_blank"
+    );
+}

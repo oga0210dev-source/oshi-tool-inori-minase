@@ -35,6 +35,15 @@
 
                 <div class="tour-name">
                     {{ prediction.tour_name }}
+
+                    {% if prediction.official_url %}
+                        <a href="{{ prediction.official_url }}"
+                           target="_blank"
+                           rel="noopener noreferrer"
+                           class="official-link">
+                            公式サイト
+                        </a>
+                    {% endif %}
                 </div>
 
                 <div class="live-info">
@@ -47,8 +56,10 @@
                         📍 {{ prediction.prefecture_name }}
                         {{ prediction.venue_name }}
                     </div>
+
                 </div>
             </div>
+
 
             <!-- 予測セトリ -->
             <div class="section-title">
@@ -56,30 +67,75 @@
             </div>
 
             <div class="setlist-area">
+
                 {% if songs %}
+
                     {% for song in songs %}
+
                     <div class="setlist-item">
                         <div class="song-order">
                             {{ loop.index }}
                         </div>
 
-                        <div class="song-name">
-                            {{ song.song_name }}
+                        <div class="song-info">
+                            <div class="song-name">
+                                {{ song.song_name }}
 
-                            {% if song.is_medley %}
-                            <span class="medley-badge">
-                                メドレー{{ song.medley_order }}
-                            </span>
+                                {% if song.is_medley %}
+                                    <span class="medley-badge">
+                                        メドレー{{ song.medley_order }}
+                                    </span>
+                                {% endif %}
+                            </div>
+
+                            {% if song.album_name %}
+                                <div class="album-name">
+                                    {{ song.album_name }}
+                                </div>
                             {% endif %}
                         </div>
+
+                        <!-- 音楽リンク -->
+                        {% if song.youtube_url or song.apple_music_url or song.spotify_url %}
+                        <div class="music-links">
+                            {% if song.youtube_url %}
+                                <a href="{{ song.youtube_url }}"
+                                   target="_blank"
+                                   rel="noopener noreferrer"
+                                   class="music-btn youtube" >
+                                    YouTube
+                                </a>
+                            {% endif %}
+
+                            {% if song.apple_music_url %}
+                                <a href="{{ song.apple_music_url }}"
+                                   target="_blank"
+                                   rel="noopener noreferrer"
+                                   class="music-btn apple" >
+                                    AppleMusic
+                                </a>
+                            {% endif %}
+
+                            {% if song.spotify_url %}
+                                <a href="{{ song.spotify_url }}"
+                                   target="_blank"
+                                   rel="noopener noreferrer"
+                                   class="music-btn spotify" >
+                                    Spotify
+                                </a>
+                            {% endif %}
+                        </div>
+                        {% endif %}
                     </div>
-                    {% endfor %}
+                {% endfor %}
+
                 {% else %}
                     <div class="no-setlist">
                         予測セトリが登録されていません
                     </div>
                 {% endif %}
             </div>
+
         </div>
     </div>
 </div>
