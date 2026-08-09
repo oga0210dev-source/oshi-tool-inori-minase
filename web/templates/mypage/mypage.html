@@ -219,9 +219,14 @@
                                 公開設定
                             ==========================-->
                             <div class="public-setting-area">
+                                <a href="#" class="setting-button not-implemented">
+                                    公開設定
+                                </a>
+                                <!--
                                 <a href="/mypage/public-setting" class="setting-button">
                                     公開設定
                                 </a>
+                                -->
                             </div>
 
                             <!--==========================
@@ -237,7 +242,7 @@
                                 退会
                             ==========================-->
                             <div class="cansel-area">
-                                <a href="/withdraw" class="setting-button withdraw-button">
+                                <a href="#" class="setting-button withdraw-button not-implemented">
                                     退会する
                                 </a>
                             </div>
@@ -246,6 +251,13 @@
                 </div>
             </div>
         </div>
+        <div id="toast" class="toast"></div>
         <script src="/static/js/mypage/mypage.js"></script>
+        <script src="/static/js/common.js"></script>
+        {% if message %}
+        <script>
+            showToast("{{ message }}");
+        </script>
+        {% endif %}
     </body>
 </html>
