@@ -6,6 +6,97 @@
 
 {% block css %}
 <link rel="stylesheet" href="/static/css/register/register.css">
+
+<style>
+    /* =========================================================
+       利用規約・プライバシーポリシー
+       ========================================================= */
+
+    .legal-links {
+        margin-top: 15px;
+        text-align: center;
+        font-size: 13px;
+    }
+
+    .legal-links a {
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    .legal-links span {
+        margin: 0 5px;
+    }
+
+
+    /* =========================================================
+       モーダル
+       ========================================================= */
+
+    .legal-modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.5);
+
+        align-items: center;
+        justify-content: center;
+    }
+
+    .legal-modal-content {
+        width: calc(100% - 30px);
+        max-width: 430px;
+        max-height: 80vh;
+
+        background: #fff;
+        border-radius: 12px;
+
+        display: flex;
+        flex-direction: column;
+
+        overflow: hidden;
+    }
+
+    .legal-modal-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        padding: 15px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .legal-modal-title {
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    .legal-modal-close {
+        border: none;
+        background: none;
+        font-size: 24px;
+        cursor: pointer;
+    }
+
+    .legal-modal-body {
+        padding: 15px;
+        overflow-y: auto;
+
+        font-size: 13px;
+        line-height: 1.8;
+        text-align: left;
+    }
+
+    .legal-modal-body h3 {
+        margin-top: 20px;
+        margin-bottom: 8px;
+        font-size: 15px;
+    }
+
+    .legal-modal-body h3:first-child {
+        margin-top: 0;
+    }
+</style>
 {% endblock %}
 
 {% block content %}
@@ -14,15 +105,19 @@
 
         <!-- タイトル -->
         <div class="logo-area">
-            <img src="/static/img/title_logo.png" class="logo" alt="タイトルロゴ">
+            <img src="/static/img/title_logo.png"
+                 class="logo"
+                 alt="タイトルロゴ">
         </div>
 
         {% if registration_mode == "0" %}
+
             <div class="register-closed">
                 現在、新規ユーザー登録を停止しています。
             </div>
 
         {% else %}
+
             <!-- 新規登録フォーム -->
             <form action="/register"
                   method="post"
@@ -80,25 +175,251 @@
 
                 <!-- ボタン -->
                 <div class="button-area">
-                    <button type="submit" class="register-button">
+                    <button type="submit"
+                            class="register-button">
                         <img src="/static/img/register_button.png"
                              class="button-image"
                              alt="新規登録">
                     </button>
                 </div>
+
+                <!-- 利用規約・プライバシーポリシー -->
+                <div class="legal-links">
+                    <a href="#"
+                       onclick="openLegalModal('terms'); return false;">
+                        利用規約
+                    </a>
+
+                    <span>｜</span>
+
+                    <a href="#"
+                       onclick="openLegalModal('privacy'); return false;">
+                        プライバシーポリシー
+                    </a>
+                </div>
+
             </form>
+
         {% endif %}
 
     </div>
 </div>
+
+
+<!-- =========================================================
+     法的情報モーダル
+     ========================================================= -->
+
+<div id="legalModal"
+     class="legal-modal"
+     onclick="closeLegalModal(event)">
+
+    <div class="legal-modal-content"
+         onclick="event.stopPropagation()">
+
+        <div class="legal-modal-header">
+
+            <div id="legalModalTitle"
+                 class="legal-modal-title">
+            </div>
+
+            <button type="button"
+                    class="legal-modal-close"
+                    onclick="closeLegalModal()">
+                ×
+            </button>
+
+        </div>
+
+        <div id="legalModalBody"
+             class="legal-modal-body">
+        </div>
+
+    </div>
+</div>
+
 {% endblock %}
 
+
 {% block script %}
+
 <script src="/static/js/common.js"></script>
+
+<script>
+const legalContents = {
+
+    terms: {
+        title: "利用規約",
+
+        body: `
+            <h3>第1条（適用）</h3>
+            <p>
+                本規約は、「推し活オールインワン」
+                （以下「本サービス」といいます。）の
+                利用条件を定めるものです。
+                登録ユーザーは、本規約に同意したうえで
+                本サービスを利用するものとします。
+            </p>
+
+            <h3>第2条（アカウント）</h3>
+            <p>
+                ユーザーは、自らの責任において
+                アカウント情報を管理するものとします。
+                アカウントを第三者に貸与、譲渡、
+                または共有してはなりません。
+            </p>
+
+            <h3>第3条（禁止事項）</h3>
+            <p>
+                ユーザーは、法令または公序良俗に反する行為、
+                本サービスの運営を妨害する行為、
+                他のユーザーに迷惑をかける行為、
+                その他運営者が不適切と判断する行為を
+                行ってはなりません。
+            </p>
+
+            <h3>第4条（サービスの変更・停止）</h3>
+            <p>
+                運営者は、必要に応じて本サービスの内容を
+                変更、追加、停止または終了することがあります。
+            </p>
+
+            <h3>第5条（免責事項）</h3>
+            <p>
+                本サービスは、ユーザーの利用によって
+                生じた損害について、運営者に故意または
+                重大な過失がある場合を除き、
+                責任を負わないものとします。
+            </p>
+
+            <h3>第6条（規約の変更）</h3>
+            <p>
+                運営者は、必要に応じて本規約を変更する
+                ことがあります。
+                変更後の規約は、本サービス上に掲載した時点で
+                効力を生じるものとします。
+            </p>
+
+            <h3>第7条（準拠法）</h3>
+            <p>
+                本規約は日本法を準拠法とします。
+            </p>
+        `
+    },
+
+    privacy: {
+        title: "プライバシーポリシー",
+
+        body: `
+            <h3>1. 取得する情報</h3>
+            <p>
+                本サービスでは、ユーザー登録および
+                本サービスの提供に必要な範囲で、
+                ユーザーID、表示名、メールアドレス、
+                プロフィール情報、利用履歴などの情報を
+                取得する場合があります。
+            </p>
+
+            <h3>2. 利用目的</h3>
+            <p>
+                取得した情報は、本サービスの提供、
+                ユーザー認証、サービス改善、
+                不正利用の防止、お問い合わせへの対応などの
+                目的で利用します。
+            </p>
+
+            <h3>3. 情報の管理</h3>
+            <p>
+                取得した情報について、適切な安全管理措置を
+                講じ、不正アクセス、紛失、漏えい等の防止に
+                努めます。
+            </p>
+
+            <h3>4. 第三者提供</h3>
+            <p>
+                法令に基づく場合を除き、
+                ユーザーの同意なく個人情報を第三者へ
+                提供することはありません。
+            </p>
+
+            <h3>5. Cookie等について</h3>
+            <p>
+                本サービスでは、ログイン状態の維持や
+                サービス提供のためにCookie等を使用する場合があります。
+            </p>
+
+            <h3>6. 広告について</h3>
+            <p>
+                本サービスでは、第三者配信の広告サービスを
+                利用する場合があります。
+                広告配信事業者は、ユーザーに適切な広告を
+                表示するため、Cookie等を使用する場合があります。
+            </p>
+
+            <h3>7. プライバシーポリシーの変更</h3>
+            <p>
+                本ポリシーは、必要に応じて変更することがあります。
+                変更後の内容は、本サービス上に掲載した時点から
+                適用されます。
+            </p>
+        `
+    }
+};
+
+
+function openLegalModal(type){
+
+    const content =
+        legalContents[type];
+
+    if(!content){
+        return;
+    }
+
+    document.getElementById(
+        "legalModalTitle"
+    ).textContent = content.title;
+
+    document.getElementById(
+        "legalModalBody"
+    ).innerHTML = content.body;
+
+    document.getElementById(
+        "legalModal"
+    ).style.display = "flex";
+}
+
+
+function closeLegalModal(event){
+
+    if(
+        event &&
+        event.target !== event.currentTarget
+    ){
+        return;
+    }
+
+    document.getElementById(
+        "legalModal"
+    ).style.display = "none";
+}
+
+
+document.addEventListener(
+    "keydown",
+    function(event){
+
+        if(event.key === "Escape"){
+            closeLegalModal();
+        }
+    }
+);
+</script>
 
 {% if message %}
 <script>
     showToast("{{ message }}");
 </script>
 {% endif %}
+
 {% endblock %}
