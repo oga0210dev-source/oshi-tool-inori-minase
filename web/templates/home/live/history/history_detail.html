@@ -1,17 +1,12 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="/static/img/logo.png" type="image/png">
+{% extends "templates/commons/base.html" %}
 
-    <title>参加履歴詳細</title>
+{% block title %}参加履歴詳細 - 推し活オールインワン{% endblock %}
 
-    <link rel="stylesheet" href="/static/css/common.css">
-    <link rel="stylesheet" href="/static/css/home/live/history_detail.css">
-</head>
+{% block css %}
+<link rel="stylesheet" href="/static/css/home/live/history_detail.css">
+{% endblock %}
 
-<body>
+{% block content %}
 <div class="background">
 
     {% if request.query_params.get('from') == 'live' %}
@@ -28,6 +23,7 @@
 
     <div class="page-scroll">
         <div class="container">
+
             <!-- 基本情報 -->
             <div class="detail-card">
                 <div class="group-title">
@@ -64,7 +60,6 @@
                 <div class="record-item">
                     💺 {{ live.seat_info }}
                 </div>
-
                 {% else %}
                 <div class="empty-text">
                     座席情報なし
@@ -105,7 +100,7 @@
                             <div class="memo-area">
                                 {% if expense.memo %}
                                 <button class="icon-btn memo-btn"
-                                    onclick="openExpenseMemo('{{ expense.memo }}')">
+                                        onclick="openExpenseMemo('{{ expense.memo }}')">
                                     📝
                                 </button>
                                 {% else %}
@@ -167,9 +162,13 @@
                class="expense-btn">
                 💰 費用を追加
             </a>
+
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block script %}
 <script>
 function openExpenseMemo(memo){
     const modal = document.getElementById(
@@ -218,13 +217,13 @@ function backToLiveList(){
 
     if(from == "live"){
         link.href = "/home/live";
-        link.textContent = "← ライブ"
+        link.textContent = "← ライブ";
     }else{
         link.href = "/home/live/history";
         link.textContent = "← 参加履歴";
     }
+
     return true;
 }
 </script>
-</body>
-</html>
+{% endblock %}

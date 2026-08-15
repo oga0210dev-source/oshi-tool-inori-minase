@@ -1,32 +1,37 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="/static/img/logo.png" type="image/png">
+{% extends "templates/commons/base.html" %}
 
-    <title>費用編集</title>
+{% block title %}
+費用編集
+{% endblock %}
 
-    <link rel="stylesheet" href="/static/css/common.css">
-    <link rel="stylesheet" href="/static/css/home/live/history_expense_edit.css">
-</head>
+{% block css %}
+<link rel="stylesheet" href="/static/css/home/live/history_expense_edit.css">
+{% endblock %}
 
-<body>
+{% block content %}
+
 <div class="background">
+
     <a href="/home/live/history/detail/{{ expense.live_id }}" class="back-link">
         ← 参加履歴詳細
     </a>
+
     <div class="page-scroll">
         <div class="container">
+
             <div class="detail-card">
+
                 <div class="group-title">
                     費用編集
                 </div>
-                <form method="post">
+
+                <form method="post" data-unsaved-check="true">
+
                     <div class="form-group">
                         <label>
                             費用種類
                         </label>
+
                         <select name="expense_type_id">
                             {% for expense_type in expense_types %}
                             <option value="{{ expense_type.expense_type_id }}"
@@ -55,7 +60,6 @@
                     </div>
 
                     <div class="form-group">
-
                         <label>
                             メモ
                         </label>
@@ -65,16 +69,19 @@
                             rows="4"
                             placeholder="内容を入力してください"
                         >{{ expense.memo or "" }}</textarea>
-
                     </div>
 
                     <button class="save-btn">
                         保存
                     </button>
+
                 </form>
+
             </div>
+
         </div>
     </div>
+
 </div>
-</body>
-</html>
+
+{% endblock %}

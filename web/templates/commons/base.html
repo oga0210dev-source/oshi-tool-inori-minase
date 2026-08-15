@@ -3,25 +3,104 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="{% block description %}推し活をもっと便利に楽しむためのWebツール{% endblock %}">
     <title>{% block title %}推し活オールインワン{% endblock %}</title>
 
     <link rel="icon" href="/static/img/logo.png" type="image/png">
     <link rel="stylesheet" href="/static/css/common.css">
+
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1768053707270113" crossorigin="anonymous"></script>
 
     {% block css %}{% endblock %}
 </head>
 
 <body>
 
+{% block header %}
+{% include "templates/commons/header.html" %}
+{% endblock %}
+
 <div id="toast" class="toast"></div>
 
-{% include "templates/commons/header.html" %}
+{% block content %}{% endblock %}
 
-{% block content %}
-{% endblock %}
+{% block script %}{% endblock %}
 
-{% block script %}
-{% endblock %}
+<script>
+    let isFormChanged = false;
+    let isFormSaved = false;
 
+    function markFormChanged(){
+        isFormChanged = true;
+    }
+
+    function markFormSaved(){
+        isFormSaved = true;
+        isFormChanged = false;
+    }
+
+
+    document.addEventListener("DOMContentLoaded", function(){
+        const forms = document.querySelectorAll(
+            'form[data-unsaved-check="true"]'
+        );
+
+        forms.forEach(function(form){
+            form.addEventListener("input", function(){
+                isFormChanged = true;
+            });
+
+            form.addEventListener("change", function(){
+                isFormChanged = true;
+            });
+
+            form.addEventListener("submit", function(){
+                isFormSaved = true;
+            });
+        });
+
+
+        document.addEventListener("click", function(event){
+            const link =
+                event.target.closest("a");
+
+            if(!link){
+                return;
+            }
+
+            if(!isFormChanged || isFormSaved){
+                return;
+            }
+
+            const href =
+                link.getAttribute("href");
+
+            if(!href || href === "#"){
+                return;
+            }
+
+            const result =
+                confirm(
+                    "変更内容が保存されていません。\n" +
+                    "このまま移動すると変更内容が失われます。\n\n" +
+                    "移動しますか？"
+                );
+
+            if(!result){
+                event.preventDefault();
+            }
+        });
+    });
+
+
+    window.addEventListener("beforeunload", function(event){
+        if(!isFormChanged || isFormSaved){
+            return;
+        }
+
+        event.preventDefault();
+        event.returnValue = "";
+    });
+</script>
 </body>
 </html>

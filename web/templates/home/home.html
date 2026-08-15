@@ -1,163 +1,162 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" href="/static/img/logo.png" type="image/png">
-    <title>推し活オールインワン</title>
+{% extends "templates/commons/base.html" %}
 
-    <link rel="stylesheet" href="/static/css/common.css">
-    <link rel="stylesheet" href="/static/css/home/home.css">
-</head>
+{% block title %}ホーム - 推し活オールインワン{% endblock %}
 
-<body>
-    <div class="background">
-        {% include "templates/commons/header.html" %}
-        <div class="page-scroll">
+{% block css %}
+<link rel="stylesheet" href="/static/css/home/home.css">
+{% endblock %}
 
-            <div class="container">
+{% block content %}
+<div class="background">
+    <div class="page-scroll">
 
-                <!-- プロフィール -->
-                <div class="profile-card">
-                    <div class="profile-image">
-                        <img src="{{ user.profile_image or '/static/img/profile/default.png' }}">
-                    </div>
+        <div class="container">
 
-                    <div class="profile-info">
-                        <div class="profile-name">
-                            {{ user.user_name }}
-                        </div>
-
-                        <div class="member-history">
-                            町民歴 {{ member_period }}
-                        </div>
-                    </div>
+            <!-- プロフィール -->
+            <div class="profile-card">
+                <div class="profile-image">
+                    <img src="{{ user.profile_image or '/static/img/profile/default.png' }}">
                 </div>
 
-                <!-- ボタンエリア -->
-                <div class="home-scroll">
-                    <!-- マイページ -->
-                    <a href="/mypage" class="menu-btn wide-btn">
-                        <img src="/static/img/home/mypage.svg" alt="マイページ">
-                        <span>マイページ</span>
-                    </a>
-
-                    <!-- メニュー -->
-                    <div class="menu-grid">
-
-                        <a href="/home/live" class="menu-btn">
-                            <img src="/static/img/home/live.svg" alt="ライブ">
-                            <span>ライブ</span>
-                        </a>
-
-                        <a href="#" class="menu-btn not-implemented">
-                            <img src="/static/img/home/meeting.svg" alt="町民集会">
-                            <span>町民集会</span>
-                        </a>
-
-                        <a href="#" class="menu-btn not-implemented">
-                            <img src="/static/img/home/event.svg" alt="イベント">
-                            <span>イベント</span>
-                        </a>
-
-                        <a href="#" class="menu-btn not-implemented">
-                            <img src="/static/img/home/goods.svg" alt="グッズ">
-                            <span>グッズ</span>
-                        </a>
-
-                        <a href="#" class="menu-btn not-implemented">
-                            <img src="/static/img/home/encounter.svg" alt="エンカ">
-                            <span>エンカ</span>
-                        </a>
-
-                        <a href="#" class="menu-btn not-implemented">
-                            <img src="/static/img/home/radio.svg" alt="メロフラ">
-                            <span>メロフラ</span>
-                        </a>
+                <div class="profile-info">
+                    <div class="profile-name">
+                        {{ user.user_name }}
                     </div>
 
-                    <!-- 推し情報 -->
-                    <a href="#" class="menu-btn wide-btn not-implemented">
-                        <img src="/static/img/home/info.svg" alt="推し情報">
-                        <span>推し情報</span>
-                    </a>
-
-                    <!-- 設定 -->
-                    <a href="#" id="setting-button" class="menu-btn wide-btn">
-                        <img src="/static/img/home/setting.svg" alt="設定">
-                        <span>設定</span>
-                    </a>
-
-                    <!-- 設定モーダル -->
-                    <div id="setting-modal" class="setting-modal">
-                        <div class="setting-box">
-                            <h2>設定</h2>
-                            <h3>アカウント</h3>
-                            <a href="/mypage">
-                                マイページ
-                            </a>
-                            <a href="/mypage/public-setting" class="not-implemented">
-                                公開設定
-                            </a>
-                            <a href="#" class="not-implemented">
-                                メール変更
-                            </a>
-                            <a href="/password/change">
-                                パスワード変更
-                            </a>
-                            <h3>サポート</h3>
-                            <a href="#" class="not-implemented">
-                                お問い合わせ
-                            </a>
-                            <a href="#" class="not-implemented">
-                                利用規約
-                            </a>
-                            <a href="#" class="not-implemented">
-                                プライバシー
-                            </a>
-                            {% if user.role == "admin" %}
-                            <h3>管理</h3>
-                            <a href="/admin/master">
-                                マスタ管理
-                            </a>
-                            {% endif %}
-                            <!-- その他 -->
-                            <h3>その他</h3>
-                            <a href="/logout">
-                                ログアウト
-                            </a>
-                        </div>
+                    <div class="member-history">
+                        町民歴 {{ member_period }}
                     </div>
                 </div>
             </div>
+
+            <!-- ボタンエリア -->
+            <div class="home-scroll">
+
+                <!-- マイページ -->
+                <a href="/mypage" class="menu-btn wide-btn">
+                    <img src="/static/img/home/mypage.svg" alt="マイページ">
+                    <span>マイページ</span>
+                </a>
+
+                <!-- メニュー -->
+                <div class="menu-grid">
+
+                    <a href="/home/live" class="menu-btn">
+                        <img src="/static/img/home/live.svg" alt="ライブ">
+                        <span>ライブ</span>
+                    </a>
+
+                    <a href="#" class="menu-btn not-implemented">
+                        <img src="/static/img/home/meeting.svg" alt="町民集会">
+                        <span>町民集会</span>
+                    </a>
+
+                    <a href="#" class="menu-btn not-implemented">
+                        <img src="/static/img/home/event.svg" alt="イベント">
+                        <span>イベント</span>
+                    </a>
+
+                    <a href="#" class="menu-btn not-implemented">
+                        <img src="/static/img/home/goods.svg" alt="グッズ">
+                        <span>グッズ</span>
+                    </a>
+
+                    <a href="#" class="menu-btn not-implemented">
+                        <img src="/static/img/home/encounter.svg" alt="エンカ">
+                        <span>エンカ</span>
+                    </a>
+
+                    <a href="#" class="menu-btn not-implemented">
+                        <img src="/static/img/home/radio.svg" alt="メロフラ">
+                        <span>メロフラ</span>
+                    </a>
+
+                </div>
+
+                <!-- 推し情報 -->
+                <a href="#" class="menu-btn wide-btn not-implemented">
+                    <img src="/static/img/home/info.svg" alt="推し情報">
+                    <span>推し情報</span>
+                </a>
+
+                <!-- 設定 -->
+                <a href="#" id="setting-button" class="menu-btn wide-btn">
+                    <img src="/static/img/home/setting.svg" alt="設定">
+                    <span>設定</span>
+                </a>
+
+                <!-- 設定モーダル -->
+                <div id="setting-modal" class="setting-modal">
+                    <div class="setting-box">
+                        <h2>設定</h2>
+
+                        <h3>アカウント</h3>
+                        <a href="/mypage">
+                            マイページ
+                        </a>
+                        <a href="/mypage/public-setting" class="not-implemented">
+                            公開設定
+                        </a>
+                        <a href="#" class="not-implemented">
+                            メール変更
+                        </a>
+                        <a href="/password/change">
+                            パスワード変更
+                        </a>
+
+                        <h3>サポート</h3>
+                        <a href="#" class="not-implemented">
+                            お問い合わせ
+                        </a>
+                        <a href="#" class="not-implemented">
+                            利用規約
+                        </a>
+                        <a href="#" class="not-implemented">
+                            プライバシー
+                        </a>
+
+                        {% if user.role == "admin" %}
+                        <h3>管理</h3>
+                        <a href="/admin/master">
+                            マスタ管理
+                        </a>
+                        {% endif %}
+
+                        <h3>その他</h3>
+                        <a href="/logout">
+                            ログアウト
+                        </a>
+                    </div>
+                </div>
+
+            </div>
         </div>
+    </div>
+</div>
+{% endblock %}
 
-    <div id="toast" class="toast"></div>
+{% block script %}
+<script src="/static/js/common.js"></script>
 
-    <script src="/static/js/common.js"></script>
+{% if message %}
+<script>
+    showToast("{{ message }}");
+</script>
+{% endif %}
 
-    {% if message %}
-    <script>
-        showToast("{{ message }}");
-    </script>
-    {% endif %}
+<script>
+    const settingButton = document.getElementById("setting-button");
+    const settingModal = document.getElementById("setting-modal");
 
-    <script>
-        const settingButton = document.getElementById("setting-button");
+    settingButton.addEventListener("click", (e) => {
+        e.preventDefault();
+        settingModal.style.display = "block";
+    });
 
-        const settingModal = document.getElementById("setting-modal");
-
-        settingButton.addEventListener("click",(e)=>{
-            e.preventDefault();
-            settingModal.style.display="block";
-        });
-
-        // モーダル外クリックで閉じる
-        settingModal.addEventListener("click",(e)=>{
-            if(e.target === settingModal){
-                settingModal.style.display="none";
-            }
-        });
-    </script>
-</body>
-</html>
+    settingModal.addEventListener("click", (e) => {
+        if (e.target === settingModal) {
+            settingModal.style.display = "none";
+        }
+    });
+</script>
+{% endblock %}

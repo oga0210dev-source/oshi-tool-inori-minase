@@ -1,18 +1,14 @@
-<!DOCTYPE html>
-<html lang="ja">
+{% extends "templates/commons/base.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="/static/img/logo.png" type="image/png">
+{% block title %}
+セトリ予測詳細
+{% endblock %}
 
-    <title>セトリ予測詳細</title>
+{% block css %}
+<link rel="stylesheet" href="/static/css/home/live/setlist_prediction_detail.css">
+{% endblock %}
 
-    <link rel="stylesheet" href="/static/css/common.css">
-    <link rel="stylesheet" href="/static/css/home/live/setlist_prediction_detail.css">
-</head>
-
-<body>
+{% block content %}
 
 <div class="background">
     <a href="/home/live/prediction" class="back-link">
@@ -47,7 +43,6 @@
                 </div>
 
                 <div class="live-info">
-
                     <div>
                         📅 {{ prediction.live_date }}
                     </div>
@@ -56,10 +51,8 @@
                         📍 {{ prediction.prefecture_name }}
                         {{ prediction.venue_name }}
                     </div>
-
                 </div>
             </div>
-
 
             <!-- 予測セトリ -->
             <div class="section-title">
@@ -102,7 +95,7 @@
                                 <a href="{{ song.youtube_url }}"
                                    target="_blank"
                                    rel="noopener noreferrer"
-                                   class="music-btn youtube" >
+                                   class="music-btn youtube">
                                     YouTube
                                 </a>
                             {% endif %}
@@ -111,7 +104,7 @@
                                 <a href="{{ song.apple_music_url }}"
                                    target="_blank"
                                    rel="noopener noreferrer"
-                                   class="music-btn apple" >
+                                   class="music-btn apple">
                                     AppleMusic
                                 </a>
                             {% endif %}
@@ -120,25 +113,26 @@
                                 <a href="{{ song.spotify_url }}"
                                    target="_blank"
                                    rel="noopener noreferrer"
-                                   class="music-btn spotify" >
+                                   class="music-btn spotify">
                                     Spotify
                                 </a>
                             {% endif %}
                         </div>
                         {% endif %}
                     </div>
-                {% endfor %}
+
+                    {% endfor %}
 
                 {% else %}
                     <div class="no-setlist">
                         予測セトリが登録されていません
                     </div>
                 {% endif %}
+
             </div>
 
         </div>
     </div>
 </div>
 
-</body>
-</html>
+{% endblock %}

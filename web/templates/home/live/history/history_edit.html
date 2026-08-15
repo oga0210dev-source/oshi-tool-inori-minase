@@ -1,17 +1,15 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="/static/img/logo.png" type="image/png">
+{% extends "templates/commons/base.html" %}
 
-    <title>参加記録編集</title>
+{% block title %}
+参加記録編集
+{% endblock %}
 
-    <link rel="stylesheet" href="/static/css/common.css">
-    <link rel="stylesheet" href="/static/css/home/live/history_edit.css">
-</head>
+{% block css %}
+<link rel="stylesheet" href="/static/css/home/live/history_edit.css">
+{% endblock %}
 
-<body>
+{% block content %}
+
 <div class="background">
 
     <a href="/home/live/history/detail/{{ live_id }}" class="back-link">
@@ -28,7 +26,8 @@
                 </div>
 
                 <form method="post"
-                      action="/home/live/history/edit/{{ live_id }}">
+                      action="/home/live/history/edit/{{ live_id }}"
+                      data-unsaved-check="true">
 
                     <div class="form-group">
                         <label>
@@ -72,5 +71,5 @@
     </div>
 
 </div>
-</body>
-</html>
+
+{% endblock %}
