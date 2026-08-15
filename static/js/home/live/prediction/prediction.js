@@ -55,8 +55,12 @@ function initSortable(){
             animation:150,
             handle:".drag-handle",
             draggable:".setlist-item",
+
             onEnd:function(){
                 updateOrder();
+
+                /* 並び順を変更した */
+                markFormChanged();
             }
         }
     );
@@ -167,6 +171,9 @@ function addSong(){
     updateOrder();
     initSortable();
 
+    /* 曲を追加した */
+    markFormChanged();
+
     resetSongModal();
     closeSongModal();
 }
@@ -247,6 +254,9 @@ function deleteSong(button){
 
     updateOrder();
     initSortable();
+
+    /* 曲を削除した */
+    markFormChanged();
 }
 
 
@@ -311,6 +321,12 @@ async function savePrediction(){
             await response.json();
 
         if(result.success){
+
+            /*
+             * 保存成功したので
+             * 未保存変更を解除
+             */
+            markFormSaved();
 
             alert(result.message);
 

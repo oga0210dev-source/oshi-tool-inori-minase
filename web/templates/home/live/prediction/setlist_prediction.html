@@ -1,325 +1,349 @@
-<!DOCTYPE html>
-<html lang="ja">
+{% extends "templates/commons/base.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" href="/static/img/logo.png" type="image/png">
+{% block title %}
+セトリ予測一覧
+{% endblock %}
 
-    <title>セトリ予測一覧</title>
+{% block css %}
+<link rel="stylesheet" href="/static/css/home/live/setlist_prediction.css">
+{% endblock %}
 
-    <link rel="stylesheet" href="/static/css/common.css">
-    <link rel="stylesheet" href="/static/css/home/live/setlist_prediction.css">
-</head>
+{% block content %}
 
-<body>
-    <div class="background">
-        <a href="/home/live" class="back-link">
-            ← ライブ
-        </a>
+<div class="background">
 
-        <div class="search-area">
-            <form method="get"
-                  class="search-form"
-                  onsubmit="clearPredictionState()">
-                <input
-                    type="text"
-                    name="keyword"
-                    placeholder="ライブ名で検索"
-                    value="{{ request.query_params.get('keyword', '') }}"
-                >
-                <div class="search-bottom">
-                    <button type="submit">
-                        検索
-                    </button>
-                    <a href="/home/live/prediction/new" class="add-btn">
-                        新規追加
-                    </a>
-                </div>
-            </form>
-        </div>
+    <a href="/home/live" class="back-link">
+        ← ライブ
+    </a>
 
-        <div class="page-scroll">
-            <div class="container">
+    <div class="search-area">
+        <form method="get"
+              class="search-form"
+              onsubmit="clearPredictionState()">
 
-                <div class="section-title">
-                    <h2>予測一覧</h2>
-                </div>
+            <input
+                type="text"
+                name="keyword"
+                placeholder="ライブ名で検索"
+                value="{{ request.query_params.get('keyword', '') }}"
+            >
 
-                {% if predictions %}
+            <div class="search-bottom">
 
-                    <div class="prediction-list">
+                <button type="submit">
+                    検索
+                </button>
 
-                    {% for prediction in predictions %}
-                        <div class="prediction-card">
-                            <button type="button"
-                                    class="delete-btn"
-                                    onclick="deletePrediction({{ prediction.prediction_id }})"
-                                    aria-label="予測を削除">
-                                    ×
-                            </button>
-                            <div class="live-name">
-                                {{ prediction.live_name }}
-                            </div>
+                <a href="/home/live/prediction/new" class="add-btn">
+                    新規追加
+                </a>
 
-                            <div class="tour-name">
-                                {{ prediction.tour_name }}
-                            </div>
-
-                            <div class="live-info">
-                                <div>
-                                    📅 {{ prediction.live_date }}
-                                </div>
-
-                                <div>
-                                    📍 {{ prediction.prefecture_name }}
-                                    {{ prediction.venue_name }}
-                                </div>
-                            </div>
-
-                            <div class="prediction-actions">
-
-                                <div class="match-rate">
-                                    {% if prediction.is_finished %}
-                                        {% if prediction.match_rate is not none %}
-                                            一致率：{{ prediction.match_rate }}%
-                                        {% endif %}
-                                    {% endif %}
-                                </div>
-
-                                <a href="/home/live/prediction/detail/{{ prediction.prediction_id }}"
-                                   class="detail-btn"
-                                   onclick="savePredictionState()">
-                                    詳細
-                                </a>
-
-                                {% if not prediction.is_finished %}
-                                <a href="/home/live/prediction/edit/{{ prediction.prediction_id }}"
-                                   class="edit-btn"
-                                   onclick="savePredictionState()">
-                                    編集
-                                </a>
-
-                                <button type="button"
-                                        class="share-btn"
-                                        onclick="sharePrediction({{ prediction.prediction_id }})"
-                                        aria-label="Xでシェア">
-                                    𝕏
-                                </button>
-                                {% endif %}
-                            </div>
-                        </div>
-                        {% endfor %}
-                    </div>
-                {% else %}
-                <div class="no-prediction">
-                    登録されている予測セトリがありません。
-                </div>
-                {% endif %}
             </div>
+        </form>
+    </div>
+
+    <div class="page-scroll">
+        <div class="container">
+
+            <div class="section-title">
+                <h2>予測一覧</h2>
+            </div>
+
+            {% if predictions %}
+
+            <div class="prediction-list">
+
+                {% for prediction in predictions %}
+
+                <div class="prediction-card">
+
+                    <button
+                        type="button"
+                        class="delete-btn"
+                        onclick="deletePrediction({{ prediction.prediction_id }})"
+                        aria-label="予測を削除">
+                        ×
+                    </button>
+
+                    <div class="live-name">
+                        {{ prediction.live_name }}
+                    </div>
+
+                    <div class="tour-name">
+                        {{ prediction.tour_name }}
+                    </div>
+
+                    <div class="live-info">
+
+                        <div>
+                            📅 {{ prediction.live_date }}
+                        </div>
+
+                        <div>
+                            📍 {{ prediction.prefecture_name }}
+                            {{ prediction.venue_name }}
+                        </div>
+
+                    </div>
+
+                    <div class="prediction-actions">
+
+                        <div class="match-rate">
+
+                            {% if prediction.is_finished %}
+
+                                {% if prediction.match_rate is not none %}
+                                    一致率：{{ prediction.match_rate }}%
+                                {% endif %}
+
+                            {% endif %}
+
+                        </div>
+
+                        <a
+                            href="/home/live/prediction/detail/{{ prediction.prediction_id }}"
+                            class="detail-btn"
+                            onclick="savePredictionState()">
+                            詳細
+                        </a>
+
+                        {% if not prediction.is_finished %}
+
+                        <a
+                            href="/home/live/prediction/edit/{{ prediction.prediction_id }}"
+                            class="edit-btn"
+                            onclick="savePredictionState()">
+                            編集
+                        </a>
+
+                        <button
+                            type="button"
+                            class="share-btn"
+                            onclick="sharePrediction({{ prediction.prediction_id }})"
+                            aria-label="Xでシェア">
+                            𝕏
+                        </button>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+            {% else %}
+
+            <div class="no-prediction">
+                登録されている予測セトリがありません。
+            </div>
+
+            {% endif %}
+
         </div>
     </div>
 
-    <div id="toast" class="toast"></div>
+</div>
 
-    <script src="/static/js/common.js"></script>
-    <script src="/static/js/home/live/prediction/prediction.js"></script>
+<script src="/static/js/home/live/prediction/prediction.js"></script>
 
-    {% if message %}
-    <script>
-        showToast("{{ message }}");
-    </script>
-    {% endif %}
-
-    <script>
-        function savePredictionState(){
-
-            const pageScroll =
-                document.querySelector(".page-scroll");
-
-            const keywordInput =
-                document.querySelector('input[name="keyword"]');
-
-
-            /* スクロール位置 */
-
-            if(pageScroll){
-
-                sessionStorage.setItem(
-                    "predictionScrollY",
-                    pageScroll.scrollTop
-                );
-            }
-
-
-            /* 検索条件 */
-
-            if(keywordInput){
-
-                sessionStorage.setItem(
-                    "predictionKeyword",
-                    keywordInput.value
-                );
-            }
-        }
-
-
-        function clearPredictionState(){
-
-            sessionStorage.removeItem(
-                "predictionScrollY"
-            );
-
-            sessionStorage.removeItem(
-                "predictionKeyword"
-            );
-        }
-
-
-        function restorePredictionState(){
-
-            const params =
-                new URLSearchParams(window.location.search);
-
-            const pageScroll =
-                document.querySelector(".page-scroll");
-
-            const keywordInput =
-                document.querySelector('input[name="keyword"]');
-
-
-            /* =========================================================
-               first の場合
-               ========================================================= */
-
-            if(params.has("first")){
-
-                clearPredictionState();
-
-                if(keywordInput){
-                    keywordInput.value = "";
-                }
-
-                if(pageScroll){
-                    pageScroll.scrollTop = 0;
-                }
-
-                params.delete("first");
-
-                const newUrl =
-                    window.location.pathname +
-                    (params.toString()
-                        ? "?" + params.toString()
-                        : "");
-
-                window.history.replaceState(
-                    {},
-                    "",
-                    newUrl
-                );
-
-                return;
-            }
-
-
-            /* =========================================================
-               保存されている検索条件
-               ========================================================= */
-
-            const savedKeyword =
-                sessionStorage.getItem(
-                    "predictionKeyword"
-                );
-
-
-            /*
-             * URLにkeywordがない場合だけ
-             * 保存した検索条件をURLへ反映する
-             *
-             * これによりFastAPI側でも
-             * 同じ検索結果を取得できる
-             */
-
-            if(
-                !params.has("keyword") &&
-                savedKeyword !== null
-            ){
-
-                params.set(
-                    "keyword",
-                    savedKeyword
-                );
-
-                const newUrl =
-                    window.location.pathname +
-                    "?" + params.toString();
-
-                window.location.replace(newUrl);
-
-                return;
-            }
-
-
-            /* =========================================================
-               検索条件を画面に反映
-               ========================================================= */
-
-            if(
-                keywordInput &&
-                savedKeyword !== null
-            ){
-
-                keywordInput.value =
-                    savedKeyword;
-            }
-
-
-            /* =========================================================
-               スクロール位置を復元
-               ========================================================= */
-
-            const savedScrollY =
-                sessionStorage.getItem(
-                    "predictionScrollY"
-                );
-
-            if(
-                pageScroll &&
-                savedScrollY !== null
-            ){
-
-                requestAnimationFrame(function(){
-
-                    pageScroll.scrollTop =
-                        Number(savedScrollY);
-
-                });
-            }
-        }
-
-
-        /* =========================================================
-           初回表示
-           ========================================================= */
-
-        document.addEventListener(
-            "DOMContentLoaded",
-            restorePredictionState
-        );
-
-
-        /* =========================================================
-           ブラウザの戻る操作
-           ========================================================= */
-
-        window.addEventListener(
-            "pageshow",
-            function(){
-
-                restorePredictionState();
-
-            }
-        );
+{% if message %}
+<script>
+    showToast("{{ message }}");
 </script>
-</body>
-</html>
+{% endif %}
+
+<script>
+function savePredictionState(){
+
+    const pageScroll =
+        document.querySelector(".page-scroll");
+
+    const keywordInput =
+        document.querySelector('input[name="keyword"]');
+
+
+    /* スクロール位置 */
+
+    if(pageScroll){
+
+        sessionStorage.setItem(
+            "predictionScrollY",
+            pageScroll.scrollTop
+        );
+    }
+
+
+    /* 検索条件 */
+
+    if(keywordInput){
+
+        sessionStorage.setItem(
+            "predictionKeyword",
+            keywordInput.value
+        );
+    }
+}
+
+
+function clearPredictionState(){
+
+    sessionStorage.removeItem(
+        "predictionScrollY"
+    );
+
+    sessionStorage.removeItem(
+        "predictionKeyword"
+    );
+}
+
+
+function restorePredictionState(){
+
+    const params =
+        new URLSearchParams(window.location.search);
+
+    const pageScroll =
+        document.querySelector(".page-scroll");
+
+    const keywordInput =
+        document.querySelector('input[name="keyword"]');
+
+
+    /* =========================================================
+       first の場合
+       ========================================================= */
+
+    if(params.has("first")){
+
+        clearPredictionState();
+
+        if(keywordInput){
+            keywordInput.value = "";
+        }
+
+        if(pageScroll){
+            pageScroll.scrollTop = 0;
+        }
+
+        params.delete("first");
+
+        const newUrl =
+            window.location.pathname +
+            (params.toString()
+                ? "?" + params.toString()
+                : "");
+
+        window.history.replaceState(
+            {},
+            "",
+            newUrl
+        );
+
+        return;
+    }
+
+
+    /* =========================================================
+       保存されている検索条件
+       ========================================================= */
+
+    const savedKeyword =
+        sessionStorage.getItem(
+            "predictionKeyword"
+        );
+
+
+    /*
+     * URLにkeywordがない場合だけ
+     * 保存した検索条件をURLへ反映する
+     *
+     * これによりFastAPI側でも
+     * 同じ検索結果を取得できる
+     */
+
+    if(
+        !params.has("keyword") &&
+        savedKeyword !== null
+    ){
+
+        params.set(
+            "keyword",
+            savedKeyword
+        );
+
+        const newUrl =
+            window.location.pathname +
+            "?" + params.toString();
+
+        window.location.replace(newUrl);
+
+        return;
+    }
+
+
+    /* =========================================================
+       検索条件を画面に反映
+       ========================================================= */
+
+    if(
+        keywordInput &&
+        savedKeyword !== null
+    ){
+
+        keywordInput.value =
+            savedKeyword;
+    }
+
+
+    /* =========================================================
+       スクロール位置を復元
+       ========================================================= */
+
+    const savedScrollY =
+        sessionStorage.getItem(
+            "predictionScrollY"
+        );
+
+    if(
+        pageScroll &&
+        savedScrollY !== null
+    ){
+
+        requestAnimationFrame(function(){
+
+            pageScroll.scrollTop =
+                Number(savedScrollY);
+
+        });
+    }
+}
+
+
+/* =========================================================
+   初回表示
+   ========================================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    restorePredictionState
+);
+
+
+/* =========================================================
+   ブラウザの戻る操作
+   ========================================================= */
+
+window.addEventListener(
+    "pageshow",
+    function(){
+
+        restorePredictionState();
+
+    }
+);
+</script>
+
+{% endblock %}

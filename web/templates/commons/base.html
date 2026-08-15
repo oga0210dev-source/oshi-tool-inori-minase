@@ -3,25 +3,192 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="{% block description %}推し活をもっと便利に楽しむためのWebツール{% endblock %}">
     <title>{% block title %}推し活オールインワン{% endblock %}</title>
 
     <link rel="icon" href="/static/img/logo.png" type="image/png">
     <link rel="stylesheet" href="/static/css/common.css">
+
+    <!-- Google AdSense -->
+    <script async
+            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1768053707270113"
+            crossorigin="anonymous"></script>
 
     {% block css %}{% endblock %}
 </head>
 
 <body>
 
+{% block header %}
+{% include "templates/commons/header.html" %}
+{% endblock %}
+
 <div id="toast" class="toast"></div>
 
-{% include "templates/commons/header.html" %}
+{% block content %}{% endblock %}
 
-{% block content %}
+<!-- 広告 -->
+{% block ads %}
+<div class="ad-area">
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-1768053707270113"
+         data-ad-slot="YOUR_AD_SLOT_ID"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
 {% endblock %}
 
-{% block script %}
-{% endblock %}
+{% block script %}{% endblock %}
+
+<script>
+    let isFormChanged = false;
+    let isFormSaved = false;
+
+
+    /* =========================================================
+       未保存変更状態
+       ========================================================= */
+
+    function markFormChanged(){
+        isFormChanged = true;
+        isFormSaved = false;
+    }
+
+
+    function markFormSaved(){
+        isFormSaved = true;
+        isFormChanged = false;
+    }
+
+
+    /* =========================================================
+       初期化
+       ========================================================= */
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        function(){
+
+            const forms =
+                document.querySelectorAll(
+                    'form[data-unsaved-check="true"]'
+                );
+
+
+            /* =====================================================
+               formの変更検知
+               ===================================================== */
+
+            forms.forEach(function(form){
+
+                form.addEventListener(
+                    "input",
+                    function(){
+                        markFormChanged();
+                    }
+                );
+
+
+                form.addEventListener(
+                    "change",
+                    function(){
+                        markFormChanged();
+                    }
+                );
+
+
+                form.addEventListener(
+                    "submit",
+                    function(){
+                        markFormSaved();
+                    }
+                );
+
+            });
+
+
+            /* =====================================================
+               ページ遷移時の未保存チェック
+               ===================================================== */
+
+            document.addEventListener(
+                "click",
+                function(event){
+
+                    const link =
+                        event.target.closest("a");
+
+
+                    if(!link){
+                        return;
+                    }
+
+
+                    if(
+                        !isFormChanged ||
+                        isFormSaved
+                    ){
+                        return;
+                    }
+
+
+                    const href =
+                        link.getAttribute("href");
+
+
+                    if(
+                        !href ||
+                        href === "#"
+                    ){
+                        return;
+                    }
+
+
+                    const result =
+                        confirm(
+                            "変更内容が保存されていません。\n" +
+                            "このまま移動すると変更内容が失われます。\n\n" +
+                            "移動しますか？"
+                        );
+
+
+                    if(!result){
+                        event.preventDefault();
+                    }
+
+                }
+            );
+
+        }
+    );
+
+
+    /* =========================================================
+       ブラウザ更新・閉じる・URL移動
+       ========================================================= */
+
+    window.addEventListener(
+        "beforeunload",
+        function(event){
+
+            if(
+                !isFormChanged ||
+                isFormSaved
+            ){
+                return;
+            }
+
+            event.preventDefault();
+            event.returnValue = "";
+
+        }
+    );
+</script>
 
 </body>
 </html>

@@ -1,18 +1,14 @@
-<!DOCTYPE html>
-<html lang="ja">
+{% extends "templates/commons/base.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" href="/static/img/logo.png" type="image/png">
+{% block title %}
+セトリ予測 新規追加
+{% endblock %}
 
-    <title>セトリ予測 新規追加</title>
+{% block css %}
+<link rel="stylesheet" href="/static/css/home/live/setlist_prediction_new.css">
+{% endblock %}
 
-    <link rel="stylesheet" href="/static/css/common.css">
-    <link rel="stylesheet" href="/static/css/home/live/setlist_prediction_new.css">
-</head>
-
-<body>
+{% block content %}
 
 <div class="background">
 
@@ -35,7 +31,7 @@
 
             <div class="live-list">
 
-            {% for live in lives %}
+                {% for live in lives %}
 
                 <div class="live-card">
 
@@ -67,7 +63,7 @@
 
                 </div>
 
-            {% endfor %}
+                {% endfor %}
 
             </div>
 
@@ -85,13 +81,10 @@
 
 <div id="toast" class="toast"></div>
 
-<script src="/static/js/common.js"></script>
-
 {% if message %}
 <script>
     showToast("{{ message }}");
 </script>
 {% endif %}
 
-</body>
-</html>
+{% endblock %}

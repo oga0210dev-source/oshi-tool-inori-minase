@@ -1,77 +1,70 @@
-<!DOCTYPE html>
-<html lang="ja">
+{% extends "templates/commons/base.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" href="/static/img/logo.png" type="image/png">
+{% block title %}ライブ登場曲 - 推し活オールインワン{% endblock %}
 
-    <title>ライブ登場曲</title>
+{% block css %}
+<link rel="stylesheet" href="/static/css/home/live/collected.css">
+{% endblock %}
 
-    <link rel="stylesheet" href="/static/css/common.css">
-    <link rel="stylesheet" href="/static/css/home/live/collected.css">
-</head>
+{% block content %}
+<div class="background">
+    <a href="/home/live/collected_song"
+       class="back-link">
+        ← 回収済み楽曲
+    </a>
 
-<body>
-    <div class="background">
-        <a href="/home/live/collected_song"
-           class="back-link">
-            ← 回収済み楽曲
-        </a>
+    <div class="page-scroll">
+        <div class="container">
+            <h1 class="page-title">
+                ライブ登場曲
+            </h1>
 
-        <div class="page-scroll">
-            <div class="container">
-                <h1 class="page-title">
-                    ライブ登場曲
-                </h1>
-
-                {% if songs %}
-                <div class="song-list">
-                    {% for song in songs %}
-                    <div class="song-card">
-                        <div class="song-name">
-                            {{ song.song_name }}
-                        </div>
-
-                        <div class="appearance-count">
-                            {{ song.appearance_count }}回
-                        </div>
-
-                        <div class="song-links">
-                            {% if song.youtube_url %}
-                            <a href="{{ song.youtube_url }}"
-                               target="_blank"
-                               rel="noopener noreferrer">
-                                YouTube
-                            </a>
-                            {% endif %}
-
-                            {% if song.apple_music_url %}
-                            <a href="{{ song.apple_music_url }}"
-                               target="_blank"
-                               rel="noopener noreferrer">
-                                Apple Music
-                            </a>
-                            {% endif %}
-
-                            {% if song.spotify_url %}
-                            <a href="{{ song.spotify_url }}"
-                               target="_blank"
-                               rel="noopener noreferrer">
-                                Spotify
-                            </a>
-                            {% endif %}
-                        </div>
+            {% if songs %}
+            <div class="song-list">
+                {% for song in songs %}
+                <div class="song-card">
+                    <div class="song-name">
+                        {{ song.song_name }}
                     </div>
-                    {% endfor %}
+
+                    <div class="appearance-count">
+                        {{ song.appearance_count }}回
+                    </div>
+
+                    <div class="song-links">
+                        {% if song.youtube_url %}
+                        <a href="{{ song.youtube_url }}"
+                           target="_blank"
+                           rel="noopener noreferrer">
+                            YouTube
+                        </a>
+                        {% endif %}
+
+                        {% if song.apple_music_url %}
+                        <a href="{{ song.apple_music_url }}"
+                           target="_blank"
+                           rel="noopener noreferrer">
+                            Apple Music
+                        </a>
+                        {% endif %}
+
+                        {% if song.spotify_url %}
+                        <a href="{{ song.spotify_url }}"
+                           target="_blank"
+                           rel="noopener noreferrer">
+                            Spotify
+                        </a>
+                        {% endif %}
+                    </div>
                 </div>
-                {% else %}
-                <div class="no-song">
-                    ライブ登場曲がありません。
-                </div>
-                {% endif %}
+                {% endfor %}
             </div>
+            {% else %}
+            <div class="no-song">
+                ライブ登場曲がありません。
+            </div>
+            {% endif %}
         </div>
     </div>
-</body>
-</html>
+</div>
+{% endblock %}

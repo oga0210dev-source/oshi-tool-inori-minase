@@ -1,55 +1,49 @@
-<!DOCTYPE html>
-<html lang="ja">
+{% extends "templates/commons/base.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" href="/static/img/logo.png" type="image/png">
+{% block title %}回収済み楽曲 - 推し活オールインワン{% endblock %}
 
-    <title>回収済み楽曲</title>
+{% block css %}
+<link rel="stylesheet" href="/static/css/home/live/collected_song.css">
+{% endblock %}
 
-    <link rel="stylesheet" href="/static/css/common.css">
-    <link rel="stylesheet" href="/static/css/home/live/collected_song.css">
-</head>
+{% block content %}
+<div class="background">
+    <a href="/home/live" class="back-link">
+        ← ライブ
+    </a>
 
-<body>
-    <div class="background">
-        <a href="/home/live" class="back-link">
-            ← ライブ
-        </a>
-        <h1>
-            回収済み楽曲
-        </h1>
+    <h1>
+        回収済み楽曲
+    </h1>
 
-        <div>
-            🎵 回収済み：{{ summary.collected_count }}曲
-        </div>
-
-        <div>
-            ❌ 未回収：{{ summary.uncollected_count }}曲
-        </div>
-
-        <div>
-            📈 回収率：{{ summary.collection_rate }}%
-        </div>
-
-        <div class="collection-menu">
-
-            <a href="/home/live/collected_song/collected"
-               class="menu-btn">
-                回収済み
-            </a>
-
-            <a href="/home/live/collected_song/uncollected"
-               class="menu-btn">
-                未回収
-            </a>
-
-            <a href="/home/live/collected_song/appearance"
-               class="menu-btn">
-                ライブ登場曲
-            </a>
-        </div>
+    <div>
+        🎵 回収済み：{{ summary.collected_count }}曲
     </div>
-</body>
-</html>
+
+    <div>
+        ❌ 未回収：{{ summary.uncollected_count }}曲
+    </div>
+
+    <div>
+        📈 回収率：{{ summary.collection_rate }}%
+    </div>
+
+    <div class="collection-menu">
+
+        <a href="/home/live/collected_song/collected"
+           class="menu-btn">
+            回収済み
+        </a>
+
+        <a href="/home/live/collected_song/uncollected"
+           class="menu-btn">
+            未回収
+        </a>
+
+        <a href="/home/live/collected_song/appearance"
+           class="menu-btn">
+            ライブ登場曲
+        </a>
+    </div>
+</div>
+{% endblock %}

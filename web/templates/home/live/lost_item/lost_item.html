@@ -1,31 +1,32 @@
-<!DOCTYPE html>
+{% extends "templates/commons/base.html" %}
 
-<html lang="ja">
+{% block title %}
+忘れ物チェック
+{% endblock %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" href="/static/img/logo.png" type="image/png">
+{% block css %}
+<link rel="stylesheet" href="/static/css/home/live/lost_item.css">
+{% endblock %}
 
-    <title>忘れ物チェック</title>
+{% block content %}
 
-    <link rel="stylesheet" href="/static/css/common.css">
-    <link rel="stylesheet" href="/static/css/home/live/lost_item.css">
-</head>
-
-<body>
 <div class="background">
+
     <a href="/home/live" class="back-link">
         ← ライブ
     </a>
+
     <div class="page-scroll">
         <div class="container">
+
             <div class="page-title">
                 <h1>忘れ物チェック</h1>
             </div>
 
             <div class="lost-item-card">
+
                 <div class="card-header">
+
                     <div class="card-title">
                         持ち物チェック
                     </div>
@@ -35,75 +36,97 @@
                             onclick="resetLostItems()">
                         リセット
                     </button>
+
                 </div>
 
                 <div class="lost-item-list">
+
                     {% for item in items %}
+
                     <div class="lost-item">
+
                         <label class="check-area">
+
                             <input
                                 type="checkbox"
                                 {% if item.is_checked %}checked{% endif %}
-                                onchange="updateLostItem( {{ item.user_lost_item_id }}, this.checked )">
+                                onchange="updateLostItem({{ item.user_lost_item_id }}, this.checked)">
+
                             <span class="check-mark"></span>
+
                             <span class="item-name">
                                 {{ item.item_name }}
                             </span>
+
                         </label>
 
                         {% if item.lost_item_id is none %}
+
                         <div class="item-actions">
+
                             <button
                                 type="button"
                                 class="edit-btn"
-                                onclick="editLostItem( {{ item.user_lost_item_id }}, '{{ item.item_name | replace("'", "\\'") }}' )">
+                                onclick="editLostItem({{ item.user_lost_item_id }}, '{{ item.item_name | replace("'", "\\'") }}')">
                                 編集
                             </button>
 
                             <button
                                 type="button"
                                 class="delete-btn"
-                                onclick="deleteLostItem( {{ item.user_lost_item_id }} )">
+                                onclick="deleteLostItem({{ item.user_lost_item_id }})">
                                 削除
                             </button>
+
                         </div>
+
                         {% endif %}
+
                     </div>
 
                     {% else %}
+
                     <div class="no-item">
                         忘れ物チェック項目がありません。
                     </div>
+
                     {% endfor %}
+
                 </div>
+
             </div>
 
             <!-- 個人項目追加 -->
 
             <div class="lost-item-card">
+
                 <div class="card-title">
                     項目を追加
                 </div>
 
                 <div class="add-area">
-                    <input type="text"
+
+                    <input
+                        type="text"
                         id="item-name"
                         maxlength="100"
                         placeholder="例：くらりチャーム">
+
                     <button
                         type="button"
                         class="add-btn"
                         onclick="addLostItem()">
                         追加
                     </button>
+
                 </div>
+
             </div>
+
         </div>
     </div>
-</div>
 
-<div id="toast" class="toast"></div>
-<script src="/static/js/common.js"></script>
+</div>
 
 <script>
 async function updateLostItem(
@@ -286,5 +309,4 @@ async function resetLostItems(){
 </script>
 {% endif %}
 
-</body>
-</html>
+{% endblock %}

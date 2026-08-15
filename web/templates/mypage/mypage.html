@@ -1,263 +1,261 @@
-<!DOCTYPE html>
-<html lang="ja">
+{% extends "templates/commons/base.html" %}
 
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="icon" href="/static/img/logo.png" type="image/png">
-        <title>推し活オールインワン</title>
+{% block title %}マイページ - 推し活オールインワン{% endblock %}
 
-        <link rel="stylesheet" href="/static/css/common.css">
-        <link rel="stylesheet" href="/static/css/mypage/mypage.css">
-    </head>
+{% block css %}
+<link rel="stylesheet" href="/static/css/mypage/mypage.css">
+{% endblock %}
 
-    <body>
-        <div class="background">
-            {% include "templates/commons/header.html" %}
-            <div class="mypage-scroll">
-                <div class="mypage">
-                    <h1>マイページ</h1>
-                    <form action="/mypage/update" method="post" enctype="multipart/form-data">
+{% block content %}
+<div class="background">
+    <div class="mypage-scroll">
+        <div class="mypage">
+            <h1>マイページ</h1>
 
-                        <!--==========================
-                            プロフィール
-                        ==========================-->
-                        <div class="profile-area">
-                            <img
-                                id="profile-preview"
-                                class="profile-image"
-                                src="{{ user.profile_image or '/static/img/profile/default.png' }}">
-                            <input
-                                id="profile-image"
-                                name="profile_image"
-                                type="file"
-                                accept="image/*"
-                                class="hidden">
-                        </div>
+            <form action="/mypage/update" method="post" enctype="multipart/form-data" data-unsaved-check="true">
 
-                        <div class="info-list">
-                            <div class="info-item">
-                                <div class="label">ユーザーID</div>
-                                <div class="display-value">{{ user.user_id }}</div>
-                            </div>
-                            <div class="info-item">
-                                <div class="label">表示名</div>
-                                <div id="user_name_text" class="display-value">
-                                    {{ user.user_name }}
-                                </div>
-                                <input
-                                    id="user_name"
-                                    class="edit-item hidden"
-                                    name="user_name"
-                                    value="{{ user.user_name }}">
-                            </div>
-                        </div>
-
-                        <!--==========================
-                            基本情報
-                        ==========================-->
-                        <h2>基本情報</h2>
-                        <div class="info-list">
-                            <div class="info-item">
-                                <div class="label">メールアドレス</div>
-                                <div id="email_text" class="display-value">
-                                    {{ user.email or "未設定" }}
-                                </div>
-                                <input
-                                    id="email"
-                                    class="edit-item hidden"
-                                    type="email"
-                                    name="email"
-                                    value="{{ user.email or '' }}">
-                            </div>
-
-                            <div class="info-item">
-                                <div class="label">性別</div>
-                                <div id="gender_text" class="display-value">
-                                    {{ user.gender or "未設定" }}
-                                </div>
-                                <select
-                                    id="gender"
-                                    class="edit-item hidden"
-                                    name="gender">
-                                    <option value="">未設定</option>
-                                    <option value="男性" {% if user.gender=="男性" %}selected{% endif %}>男性</option>
-                                    <option value="女性" {% if user.gender=="女性" %}selected{% endif %}>女性</option>
-                                </select>
-                            </div>
-
-                            <div class="info-item">
-                                <div class="label">誕生日</div>
-                                <div id="birthday_text" class="display-value">
-                                    {{ user.birthday or "未設定" }}
-                                </div>
-                                <input
-                                    id="birthday"
-                                    class="edit-item hidden"
-                                    type="date"
-                                    name="birthday"
-                                    value="{{ user.birthday or '' }}">
-                            </div>
-
-                            <div class="info-item">
-                                <div class="label">いのりまち入会日</div>
-                                <div id="member_since_text" class="display-value">
-                                    {{ user.member_since or "未設定" }}
-                                </div>
-                                <input
-                                    id="member_since"
-                                    class="edit-item hidden"
-                                    type="date"
-                                    name="member_since"
-                                    value="{{ user.member_since or '' }}">
-                            </div>
-
-                            <div class="info-item">
-                                <div class="label">都道府県</div>
-                                <div id="prefecture_text" class="display-value">
-                                    {{ user.prefecture_name or "未設定" }}
-                                </div>
-                                <select
-                                    id="prefecture"
-                                    class="edit-item hidden"
-                                    name="prefecture">
-                                    {% for area, prefectures in prefecture_groups.items() %}
-                                        <optgroup label="{{ area }}">
-                                            {% for prefecture in prefectures %}
-                                                <option
-                                                    value="{{ prefecture.prefecture_code  }}"
-                                                    {% if user.prefecture == prefecture.prefecture_code  %}selected{% endif %}>
-                                                    {{ prefecture.prefecture_name }}
-                                                </option>
-                                            {% endfor %}
-                                        </optgroup>
-                                    {% endfor %}
-                                </select>
-                            </div>
-                        </div>
-
-                        <!--==========================
-                            SNS
-                        ==========================-->
-                        <h2>SNS</h2>
-                        <div class="info-list">
-                            <div class="info-item">
-                                <div class="label">X</div>
-                                <div id="x_account_text" class="display-value">
-                                    {{ user.x_account or "未設定" }}
-                                </div>
-                                <input
-                                    id="x_account"
-                                    class="edit-item hidden"
-                                    name="x_account"
-                                    value="{{ user.x_account or '' }}">
-                            </div>
-
-                            <div class="info-item">
-                                <div class="label">Instagram</div>
-                                <div id="instagram_account_text" class="display-value">
-                                    {{ user.instagram_account or "未設定" }}
-                                </div>
-                                <input
-                                    id="instagram_account"
-                                    class="edit-item hidden"
-                                    name="instagram_account"
-                                    value="{{ user.instagram_account or '' }}">
-
-                            </div>
-                            <div class="info-item">
-                                <div class="label">Discord</div>
-                                <div id="discord_account_text" class="display-value">
-                                    {{ user.discord_account or "未設定" }}
-                                </div>
-                                <input
-                                    id="discord_account"
-                                    class="edit-item hidden"
-                                    name="discord_account"
-                                    value="{{ user.discord_account or '' }}">
-                            </div>
-                        </div>
-
-                        <!--==========================
-                            自己紹介
-                        ==========================-->
-                        <h2>自己紹介</h2>
-                        <div class="info-list">
-                            <div class="info-item profile-message-area">
-                                <div id="profile_message_text" class="display-value">
-                                    {{ user.profile_message or "未設定" }}
-                                </div>
-                                <textarea
-                                    id="profile_message"
-                                    class="edit-item hidden"
-                                    name="profile_message"
-                                    rows="6"
-                                    maxlength="300">{{ user.profile_message or "" }}</textarea>
-                                <div id="profile_message_count" class="char-count hidden">
-                                    0 / 300
-                                </div>
-                            </div>
-                        </div>
-
-                        <!--==========================
-                            ボタン
-                        ==========================-->
-                        <div class="button-area">
-                            <button type="button" id="edit-btn">
-                                編集
-                            </button>
-                            <button type="submit" id="save-btn" class="hidden">
-                                保存
-                            </button>
-                            <button type="button" id="cancel-btn" class="hidden">
-                                キャンセル
-                            </button>
-                        </div>
-
-                        <div id="withdraw-area" class="withdraw-area">
-                            <!--==========================
-                                公開設定
-                            ==========================-->
-                            <div class="public-setting-area">
-                                <a href="#" class="setting-button not-implemented">
-                                    公開設定
-                                </a>
-                                <!--
-                                <a href="/mypage/public-setting" class="setting-button">
-                                    公開設定
-                                </a>
-                                -->
-                            </div>
-
-                            <!--==========================
-                                セキュリティ
-                            ==========================-->
-                            <div class="security-area">
-                                <a href="/password/change" class="setting-button">
-                                    パスワード変更
-                                </a>
-                            </div>
-
-                            <!--==========================
-                                退会
-                            ==========================-->
-                            <div class="cansel-area">
-                                <a href="#" class="setting-button withdraw-button not-implemented">
-                                    退会する
-                                </a>
-                            </div>
-                        </div>
-                    </form>
+                <!--==========================
+                    プロフィール
+                ==========================-->
+                <div class="profile-area">
+                    <img
+                        id="profile-preview"
+                        class="profile-image"
+                        src="{{ user.profile_image or '/static/img/profile/default.png' }}">
+                    <input
+                        id="profile-image"
+                        name="profile_image"
+                        type="file"
+                        accept="image/*"
+                        class="hidden">
                 </div>
-            </div>
+
+                <div class="info-list">
+                    <div class="info-item">
+                        <div class="label">ユーザーID</div>
+                        <div class="display-value">{{ user.user_id }}</div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="label">表示名</div>
+                        <div id="user_name_text" class="display-value">
+                            {{ user.user_name }}
+                        </div>
+                        <input
+                            id="user_name"
+                            class="edit-item hidden"
+                            name="user_name"
+                            value="{{ user.user_name }}">
+                    </div>
+                </div>
+
+                <!--==========================
+                    基本情報
+                ==========================-->
+                <h2>基本情報</h2>
+
+                <div class="info-list">
+                    <div class="info-item">
+                        <div class="label">メールアドレス</div>
+                        <div id="email_text" class="display-value">
+                            {{ user.email or "未設定" }}
+                        </div>
+                        <input
+                            id="email"
+                            class="edit-item hidden"
+                            type="email"
+                            name="email"
+                            value="{{ user.email or '' }}">
+                    </div>
+
+                    <div class="info-item">
+                        <div class="label">性別</div>
+                        <div id="gender_text" class="display-value">
+                            {{ user.gender or "未設定" }}
+                        </div>
+                        <select
+                            id="gender"
+                            class="edit-item hidden"
+                            name="gender">
+                            <option value="">未設定</option>
+                            <option value="男性" {% if user.gender=="男性" %}selected{% endif %}>男性</option>
+                            <option value="女性" {% if user.gender=="女性" %}selected{% endif %}>女性</option>
+                        </select>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="label">誕生日</div>
+                        <div id="birthday_text" class="display-value">
+                            {{ user.birthday or "未設定" }}
+                        </div>
+                        <input
+                            id="birthday"
+                            class="edit-item hidden"
+                            type="date"
+                            name="birthday"
+                            value="{{ user.birthday or '' }}">
+                    </div>
+
+                    <div class="info-item">
+                        <div class="label">いのりまち入会日</div>
+                        <div id="member_since_text" class="display-value">
+                            {{ user.member_since or "未設定" }}
+                        </div>
+                        <input
+                            id="member_since"
+                            class="edit-item hidden"
+                            type="date"
+                            name="member_since"
+                            value="{{ user.member_since or '' }}">
+                    </div>
+
+                    <div class="info-item">
+                        <div class="label">都道府県</div>
+                        <div id="prefecture_text" class="display-value">
+                            {{ user.prefecture_name or "未設定" }}
+                        </div>
+                        <select
+                            id="prefecture"
+                            class="edit-item hidden"
+                            name="prefecture">
+                            {% for area, prefectures in prefecture_groups.items() %}
+                                <optgroup label="{{ area }}">
+                                    {% for prefecture in prefectures %}
+                                        <option
+                                            value="{{ prefecture.prefecture_code }}"
+                                            {% if user.prefecture == prefecture.prefecture_code %}selected{% endif %}>
+                                            {{ prefecture.prefecture_name }}
+                                        </option>
+                                    {% endfor %}
+                                </optgroup>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <!--==========================
+                    SNS
+                ==========================-->
+                <h2>SNS</h2>
+
+                <div class="info-list">
+                    <div class="info-item">
+                        <div class="label">X</div>
+                        <div id="x_account_text" class="display-value">
+                            {{ user.x_account or "未設定" }}
+                        </div>
+                        <input
+                            id="x_account"
+                            class="edit-item hidden"
+                            name="x_account"
+                            value="{{ user.x_account or '' }}">
+                    </div>
+
+                    <div class="info-item">
+                        <div class="label">Instagram</div>
+                        <div id="instagram_account_text" class="display-value">
+                            {{ user.instagram_account or "未設定" }}
+                        </div>
+                        <input
+                            id="instagram_account"
+                            class="edit-item hidden"
+                            name="instagram_account"
+                            value="{{ user.instagram_account or '' }}">
+                    </div>
+
+                    <div class="info-item">
+                        <div class="label">Discord</div>
+                        <div id="discord_account_text" class="display-value">
+                            {{ user.discord_account or "未設定" }}
+                        </div>
+                        <input
+                            id="discord_account"
+                            class="edit-item hidden"
+                            name="discord_account"
+                            value="{{ user.discord_account or '' }}">
+                    </div>
+                </div>
+
+                <!--==========================
+                    自己紹介
+                ==========================-->
+                <h2>自己紹介</h2>
+
+                <div class="info-list">
+                    <div class="info-item profile-message-area">
+                        <div id="profile_message_text" class="display-value">
+                            {{ user.profile_message or "未設定" }}
+                        </div>
+                        <textarea
+                            id="profile_message"
+                            class="edit-item hidden"
+                            name="profile_message"
+                            rows="6"
+                            maxlength="300">{{ user.profile_message or "" }}</textarea>
+                        <div id="profile_message_count" class="char-count hidden">
+                            0 / 300
+                        </div>
+                    </div>
+                </div>
+
+                <!--==========================
+                    ボタン
+                ==========================-->
+                <div class="button-area">
+                    <button type="button" id="edit-btn">
+                        編集
+                    </button>
+                    <button type="submit" id="save-btn" class="hidden">
+                        保存
+                    </button>
+                    <button type="button" id="cancel-btn" class="hidden">
+                        キャンセル
+                    </button>
+                </div>
+
+                <div id="withdraw-area" class="withdraw-area">
+
+                    <!--==========================
+                        公開設定
+                    ==========================-->
+                    <div class="public-setting-area">
+                        <a href="#" class="setting-button not-implemented">
+                            公開設定
+                        </a>
+                    </div>
+
+                    <!--==========================
+                        セキュリティ
+                    ==========================-->
+                    <div class="security-area">
+                        <a href="/password/change" class="setting-button">
+                            パスワード変更
+                        </a>
+                    </div>
+
+                    <!--==========================
+                        退会
+                    ==========================-->
+                    <div class="cansel-area">
+                        <a href="#" class="setting-button withdraw-button not-implemented">
+                            退会する
+                        </a>
+                    </div>
+
+                </div>
+            </form>
         </div>
-        <div id="toast" class="toast"></div>
-        <script src="/static/js/mypage/mypage.js"></script>
-        <script src="/static/js/common.js"></script>
-        {% if message %}
-        <script>
-            showToast("{{ message }}");
-        </script>
-        {% endif %}
-    </body>
-</html>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script src="/static/js/mypage/mypage.js"></script>
+<script src="/static/js/common.js"></script>
+
+{% if message %}
+<script>
+    showToast("{{ message }}");
+</script>
+{% endif %}
+{% endblock %}

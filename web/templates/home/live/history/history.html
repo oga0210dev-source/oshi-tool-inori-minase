@@ -1,17 +1,12 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="/static/img/logo.png" type="image/png">
+{% extends "templates/commons/base.html" %}
 
-    <title>参加履歴</title>
+{% block title %}参加履歴 - 推し活オールインワン{% endblock %}
 
-    <link rel="stylesheet" href="/static/css/common.css">
-    <link rel="stylesheet" href="/static/css/home/live/history.css">
-</head>
+{% block css %}
+<link rel="stylesheet" href="/static/css/home/live/history.css">
+{% endblock %}
 
-<body>
+{% block content %}
 <div class="background">
 
     <a href="/home/live" class="back-link">
@@ -94,10 +89,14 @@
             <div class="no-history">
                 参加履歴がありません。
             </div>
+
             {% endif %}
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block script %}
 <script>
 function saveHistoryState(){
 
@@ -128,10 +127,6 @@ function restoreHistoryState(){
         document.querySelector(".page-scroll");
 
 
-    /* =========================================================
-       first の場合
-       ========================================================= */
-
     if(params.has("first")){
 
         clearHistoryState();
@@ -158,10 +153,6 @@ function restoreHistoryState(){
     }
 
 
-    /* =========================================================
-       スクロール位置を復元
-       ========================================================= */
-
     const savedScrollY =
         sessionStorage.getItem("historyScrollY");
 
@@ -177,19 +168,11 @@ function restoreHistoryState(){
 }
 
 
-/* =========================================================
-   初回表示
-   ========================================================= */
-
 document.addEventListener(
     "DOMContentLoaded",
     restoreHistoryState
 );
 
-
-/* =========================================================
-   ブラウザの戻る操作
-   ========================================================= */
 
 window.addEventListener(
     "pageshow",
@@ -200,5 +183,4 @@ window.addEventListener(
     }
 );
 </script>
-</body>
-</html>
+{% endblock %}
