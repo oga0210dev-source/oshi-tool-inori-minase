@@ -1,0 +1,193 @@
+{% extends "templates/commons/base.html" %}
+
+{% block title %}お問い合わせ管理 - 推し活オールインワン{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="/static/css/admin/inquiry/inquiry.css">
+{% endblock %}
+
+{% block content %}
+
+<div class="container inquiry-container">
+
+    <div class="page-header">
+        <h1 class="page-title">
+            お問い合わせ管理
+        </h1>
+    </div>
+
+    <!-- 検索 -->
+    <div class="search-area">
+        <form method="get"
+              class="search-form"
+              onsubmit="clearInquiryState()">
+
+            <select name="status">
+                <option value="" {% if status == "" %}selected{% endif %}>
+                    すべてのステータス
+                </option>
+                <option value="UNRESOLVED" {% if status == "UNRESOLVED" %}selected{% endif %}>
+                    未対応
+                </option>
+                <option value="IN_PROGRESS" {% if status == "IN_PROGRESS" %}selected{% endif %}>
+                    対応中
+                </option>
+                <option value="RESOLVED" {% if status == "RESOLVED" %}selected{% endif %}>
+                    対応済み
+                </option>
+            </select>
+
+            <select name="inquiry_type">
+                <option value="" {% if inquiry_type == "" %}selected{% endif %}>
+                    すべての種別
+                </option>
+                <option value="INQUIRY" {% if inquiry_type == "INQUIRY" %}selected{% endif %}>
+                    問い合わせ
+                </option>
+                <option value="REQUEST" {% if inquiry_type == "REQUEST" %}selected{% endif %}>
+                    要望
+                </option>
+                <option value="BUG" {% if inquiry_type == "BUG" %}selected{% endif %}>
+                    バグ報告
+                </option>
+            </select>
+
+            <button type="submit" class="search-btn">
+                検索
+            </button>
+
+        </form>
+    </div>
+
+    <!-- 一覧のみスクロール -->
+    <div class="page-scroll">
+
+        {% if inquiries %}
+
+        <div class="inquiry-list">
+
+            {% for inquiry in inquiries %}
+
+            <a href="/admin/inquiry/{{ inquiry.inquiry_id }}"
+               class="inquiry-card"
+               onclick="saveInquiryState()">
+
+                <div class="inquiry-header">
+
+                    <span class="inquiry-id">
+                        #{{ inquiry.inquiry_id }}
+                    </span>
+
+                    <span class="inquiry-status status-{{ inquiry.status }}">
+                        {% if inquiry.status == "UNRESOLVED" %}
+                            未対応
+                        {% elif inquiry.status == "IN_PROGRESS" %}
+                            対応中
+                        {% elif inquiry.status == "RESOLVED" %}
+                            対応済み
+                        {% else %}
+                            {{ inquiry.status }}
+                        {% endif %}
+                    </span>
+
+                </div>
+
+                <div class="inquiry-type">
+                    {% if inquiry.inquiry_type == "INQUIRY" %}
+                        問い合わせ
+                    {% elif inquiry.inquiry_type == "REQUEST" %}
+                        要望
+                    {% elif inquiry.inquiry_type == "BUG" %}
+                        バグ報告
+                    {% elif inquiry.inquiry_type == "TODO" %}
+                        ToDo
+                    {% endif %}
+                </div>
+
+                <div class="inquiry-subject">
+                    {{ inquiry.subject }}
+                </div>
+
+                <div class="inquiry-user">
+                    {{ inquiry.user_name or inquiry.user_id }}
+                </div>
+
+                <div class="inquiry-date">
+                    {{ inquiry.created_at }}
+                </div>
+
+            </a>
+
+            {% endfor %}
+
+        </div>
+
+        {% else %}
+
+        <p class="empty-message">
+            該当するお問い合わせはありません。
+        </p>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block ads %}{% endblock %}
+
+{% block script %}
+<script>
+    function saveInquiryState() {
+        const area = document.querySelector(".page-scroll");
+
+        sessionStorage.setItem(
+            "admin_inquiry_url",
+            window.location.href
+        );
+
+        sessionStorage.setItem(
+            "admin_inquiry_scroll",
+            area.scrollTop
+        );
+    }
+
+    function clearInquiryState() {
+        sessionStorage.removeItem("admin_inquiry_url");
+        sessionStorage.removeItem("admin_inquiry_scroll");
+    }
+
+    window.addEventListener("load", () => {
+        const params = new URLSearchParams(window.location.search);
+
+        if (params.has("first")) {
+            clearInquiryState();
+
+            window.history.replaceState(
+                {},
+                "",
+                "/admin/inquiry"
+            );
+
+            return;
+        }
+
+        const savedUrl = sessionStorage.getItem("admin_inquiry_url");
+        const currentUrl = window.location.href;
+
+        if (savedUrl && currentUrl !== savedUrl) {
+            window.location.replace(savedUrl);
+            return;
+        }
+
+        const scroll = sessionStorage.getItem("admin_inquiry_scroll");
+        const area = document.querySelector(".page-scroll");
+
+        if (area && scroll !== null) {
+            area.scrollTop = Number(scroll);
+        }
+    });
+</script>
+{% endblock %}

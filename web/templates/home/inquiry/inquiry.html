@@ -1,0 +1,102 @@
+{% extends "templates/commons/base.html" %}
+
+{% block title %}お問い合わせ{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="/static/css/home/inquiry/inquiry.css">
+{% endblock %}
+
+{% block content %}
+<div class="inquiry-page">
+    <h1>お問い合わせ</h1>
+
+    <p class="inquiry-description">
+        ご意見・ご要望・不具合報告などをお送りいただけます。
+    </p>
+
+    {% if error %}
+    <div class="inquiry-error">
+        {{ error }}
+    </div>
+    {% endif %}
+
+    <form method="post" action="/home/inquiry" class="inquiry-form">
+        <div class="form-group">
+            <label for="inquiry_type">種別 <span class="required">必須</span></label>
+            <select id="inquiry_type" name="inquiry_type" required>
+                <option value="">選択してください</option>
+                <option value="INQUIRY" {% if inquiry_type == "INQUIRY" %}selected{% endif %}>問い合わせ</option>
+                <option value="REQUEST" {% if inquiry_type == "REQUEST" %}selected{% endif %}>要望</option>
+                <option value="BUG" {% if inquiry_type == "BUG" %}selected{% endif %}>バグ報告</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="subject">件名 <span class="required">必須</span></label>
+            <input
+                type="text"
+                id="subject"
+                name="subject"
+                value="{{ subject or '' }}"
+                maxlength="100"
+                placeholder="件名を入力してください"
+                required
+            >
+        </div>
+
+        <div class="form-group" id="email-group">
+            <label for="email">メールアドレス <span class="required" id="email-required">必須</span></label>
+            <input
+                type="email"
+                id="email"
+                name="email"
+                value="{{ email or '' }}"
+                maxlength="255"
+                placeholder="回答を受け取るメールアドレス"
+            >
+            <p class="form-note">
+                問い合わせの場合のみ、回答のためメールアドレスが必要です。
+            </p>
+        </div>
+
+        <div class="form-group">
+            <label for="message">内容 <span class="required">必須</span></label>
+            <textarea
+                id="message"
+                name="message"
+                rows="8"
+                maxlength="5000"
+                placeholder="お問い合わせ内容を入力してください"
+                required
+            >{{ message or '' }}</textarea>
+        </div>
+
+        <button type="submit" class="submit-button">
+            送信する
+        </button>
+    </form>
+</div>
+
+<script>
+    const inquiryType = document.getElementById("inquiry_type");
+    const emailGroup = document.getElementById("email-group");
+    const emailInput = document.getElementById("email");
+    const emailRequired = document.getElementById("email-required");
+
+    function updateEmailField() {
+        if (inquiryType.value === "INQUIRY") {
+            emailGroup.style.display = "";
+            emailInput.required = true;
+            emailRequired.style.display = "";
+        } else {
+            emailGroup.style.display = "none";
+            emailInput.required = false;
+            emailInput.value = "";
+        }
+    }
+
+    inquiryType.addEventListener("change", updateEmailField);
+
+    updateEmailField();
+</script>
+{% endblock %}

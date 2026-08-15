@@ -1,0 +1,75 @@
+.inquiry-complete-page {
+    min-height: 70vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.inquiry-complete-card {
+    width: 100%;
+    max-width: 430px;
+    padding: 30px 20px;
+    text-align: center;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.complete-icon {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    background: #e8f7ed;
+    color: #45a765;
+    font-size: 32px;
+    font-weight: bold;
+}
+
+.inquiry-complete-card h1 {
+    margin: 0 0 16px;
+    font-size: 24px;
+}
+
+.complete-message {
+    margin-bottom: 24px;
+    line-height: 1.8;
+}
+
+.inquiry-number {
+    margin-bottom: 20px;
+    padding: 12px;
+    background: #f7f7f7;
+    border-radius: 8px;
+}
+
+.inquiry-number span {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 12px;
+    color: #777;
+}
+
+.inquiry-number strong {
+    font-size: 20px;
+}
+
+.complete-note {
+    margin-bottom: 24px;
+    font-size: 13px;
+    line-height: 1.7;
+    color: #666;
+}
+
+.back-button {
+    display: block;
+    padding: 12px;
+    border-radius: 8px;
+    background: #333;
+    color: #fff;
+    text-decoration: none;
+}

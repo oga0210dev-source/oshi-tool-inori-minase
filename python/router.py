@@ -1,30 +1,46 @@
 from fastapi import FastAPI
 
-from python.routers import login, register
-from python.routers.home import home, legal
+from python.routers import login, register, batch
+from python.routers.home import home, legal, inquiry as home_inquiry
 from python.routers.home.live import setlist as live_setlist, live, detail as live_detail
 from python.routers.home.live.archive import archive
-from python.routers.home.live.history import (history, history_detail, history_edit, history_expense_add,
-                                              history_expense_edit,history_expense_delete)
+from python.routers.home.live.history import (
+    history,
+    history_detail,
+    history_edit,
+    history_expense_add,
+    history_expense_edit,
+    history_expense_delete
+)
 from python.routers.home.live.lost_item import lost_item
-from python.routers.home.live.prediction import (setlist_prediction)
+from python.routers.home.live.prediction import setlist_prediction
 from python.routers.home.live.collected_song import collected_song
 from python.routers.mypage import mypage, password, public_setting
-from python.routers.admin.master import master, song as song_master, live as live_master, setlist as setlist_master
+from python.routers.admin.master import (
+    master,
+    song as song_master,
+    live as live_master,
+    setlist as setlist_master
+)
+from python.routers.admin import inquiry as admin_inquiry
 
 
 def register_router(app: FastAPI):
 
     app.include_router(home.router)
     app.include_router(legal.router)
+    app.include_router(home_inquiry.router)
     app.include_router(login.router)
     app.include_router(register.router)
+
+    app.include_router(batch.router)
 
     app.include_router(mypage.router)
     app.include_router(password.router)
     app.include_router(public_setting.router)
 
     app.include_router(master.router)
+    app.include_router(admin_inquiry.router)
     app.include_router(song_master.router)
     app.include_router(live_master.router)
     app.include_router(setlist_master.router)

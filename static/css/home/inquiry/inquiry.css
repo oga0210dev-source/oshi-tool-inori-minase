@@ -1,0 +1,95 @@
+.inquiry-page {
+    width: 100%;
+    max-width: 430px;
+    margin: 0 auto;
+    padding: 24px 16px 40px;
+    box-sizing: border-box;
+}
+
+.inquiry-page h1 {
+    margin: 0 0 12px;
+    text-align: center;
+    font-size: 24px;
+}
+
+.inquiry-description {
+    margin: 0 0 24px;
+    font-size: 14px;
+    line-height: 1.7;
+    text-align: center;
+}
+
+.inquiry-error {
+    margin-bottom: 20px;
+    padding: 12px;
+    border-radius: 8px;
+    background: #ffe8e8;
+    color: #d33;
+    font-size: 14px;
+}
+
+.inquiry-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group label {
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.required {
+    margin-left: 4px;
+    font-size: 11px;
+    font-weight: normal;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 11px 12px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background: #fff;
+    font-family: inherit;
+    font-size: 14px;
+}
+
+.form-group textarea {
+    min-height: 180px;
+    resize: vertical;
+    line-height: 1.6;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #888;
+}
+
+.form-note {
+    margin: 0;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.submit-button {
+    width: 100%;
+    padding: 13px;
+    border: none;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+}

@@ -1,0 +1,45 @@
+{% extends "templates/commons/base.html" %}
+
+{% block title %}お問い合わせ完了{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="/static/css/home/inquiry/complete.css">
+{% endblock %}
+
+{% block content %}
+<div class="inquiry-complete-page">
+
+    <div class="inquiry-complete-card">
+
+        <div class="complete-icon">
+            ✓
+        </div>
+
+        <h1>送信完了</h1>
+
+        <p class="complete-message">
+            お問い合わせを受け付けました。
+        </p>
+
+        <div class="inquiry-number">
+            <span>お問い合わせ番号</span>
+            <strong>#{{ inquiry_id }}</strong>
+        </div>
+
+        <p class="complete-note">
+            {% if email %}
+            ご入力いただいたメールアドレスへ、
+            回答をお送りいたします。
+            {% else %}
+            内容を確認のうえ、必要に応じて対応いたします。
+            {% endif %}
+        </p>
+
+        <a href="/home" class="back-button">
+            ホームへ戻る
+        </a>
+
+    </div>
+
+</div>
+{% endblock %}

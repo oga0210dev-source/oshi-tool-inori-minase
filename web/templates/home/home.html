@@ -105,7 +105,7 @@
                         </a>
 
                         <h3>サポート</h3>
-                        <a href="#" class="not-implemented">
+                        <a href="/home/inquiry">
                             お問い合わせ
                         </a>
                         <a href="/home/legal/terms">
@@ -116,10 +116,13 @@
                         </a>
 
                         {% if user.role == "admin" %}
-                        <h3>管理</h3>
-                        <a href="/admin/master">
-                            マスタ管理
-                        </a>
+                            <h3>管理</h3>
+                            <a href="/admin/master">
+                                マスタ管理
+                            </a>
+                            <a href="/admin/inquiry">
+                                お問い合わせ管理
+                            </a>
                         {% endif %}
 
                         <h3>その他</h3>
