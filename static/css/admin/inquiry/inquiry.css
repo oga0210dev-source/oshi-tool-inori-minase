@@ -1,0 +1,237 @@
+.inquiry-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.inquiry-card {
+    display: block;
+    padding: 16px;
+    background: #fff;
+    border-radius: 12px;
+    text-decoration: none;
+    color: inherit;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.inquiry-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.inquiry-id {
+    font-size: 13px;
+    color: #777;
+}
+
+.inquiry-status {
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 12px;
+}
+
+.status-UNRESOLVED {
+    background: #ffe5e5;
+    color: #d33;
+}
+
+.status-IN_PROGRESS {
+    background: #fff1cc;
+    color: #b27600;
+}
+
+.status-RESOLVED {
+    background: #e3f5e8;
+    color: #34834a;
+}
+
+.inquiry-type {
+    margin-bottom: 6px;
+    font-size: 13px;
+    color: #666;
+}
+
+.inquiry-subject {
+    margin-bottom: 8px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.inquiry-user {
+    font-size: 13px;
+    color: #666;
+}
+
+.inquiry-date {
+    margin-top: 4px;
+    font-size: 12px;
+    color: #999;
+}
+
+.empty-message {
+    padding: 40px 20px;
+    text-align: center;
+    color: #777;
+}
+
+
+/* ==============================
+   お問い合わせ詳細
+   ============================== */
+
+.inquiry-detail-page {
+    max-width: 430px;
+    margin: 0 auto;
+    padding: 20px 16px 40px;
+}
+
+.inquiry-detail-page .page-header {
+    margin-bottom: 20px;
+}
+
+.inquiry-detail-page .page-title {
+    margin: 10px 0 0;
+}
+
+.back-link {
+    display: inline-block;
+    color: inherit;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.inquiry-detail {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.detail-item {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.detail-label {
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.detail-value {
+    padding: 10px 12px;
+    background: #fff;
+    border-radius: 8px;
+    word-break: break-word;
+}
+
+.detail-message {
+    padding: 12px;
+    background: #fff;
+    border-radius: 8px;
+    min-height: 120px;
+    white-space: pre-wrap;
+    word-break: break-word;
+    text-align: left;
+    line-height: 1.6;
+}
+
+.detail-select,
+.detail-textarea {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-family: inherit;
+    font-size: 14px;
+    background: #fff;
+}
+
+.detail-textarea {
+    resize: vertical;
+    min-height: 150px;
+}
+
+.inquiry-update-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 8px;
+}
+
+.update-button {
+    width: 100%;
+    border: none;
+    border-radius: 8px;
+    padding: 12px;
+    font-family: inherit;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.inquiry-filter {
+    margin-bottom: 16px;
+}
+
+.inquiry-filter form {
+    display: flex;
+    gap: 8px;
+}
+
+.inquiry-filter select {
+    flex: 1;
+    min-width: 0;
+    padding: 10px 8px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background: #fff;
+    font-family: inherit;
+    font-size: 14px;
+}
+
+.inquiry-filter button {
+    padding: 10px 16px;
+    border: none;
+    border-radius: 8px;
+    background: #666;
+    color: #fff;
+    font-family: inherit;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+
+/* ==============================
+   お問い合わせ一覧
+   ============================== */
+
+.inquiry-container {
+    height: calc(100dvh - 70px);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.inquiry-container .page-header {
+    flex-shrink: 0;
+}
+
+.inquiry-container .search-area {
+    flex-shrink: 0;
+    margin-bottom: 12px;
+}
+
+.inquiry-container .page-scroll {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-bottom: 100px;
+    scrollbar-width: none;
+}
+
+.inquiry-container .page-scroll::-webkit-scrollbar {
+    display: none;
+}

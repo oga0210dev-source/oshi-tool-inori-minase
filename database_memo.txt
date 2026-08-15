@@ -300,6 +300,63 @@ create index IF not exists idx_t_user_lost_item_user_id on public.t_user_lost_it
 
 create index IF not exists idx_t_user_lost_item_lost_item_id on public.t_user_lost_item using btree (lost_item_id) TABLESPACE pg_default;
 
+create table public.t_inquiry (
+  inquiry_id bigserial not null,
+  user_id text not null,
+  inquiry_type character varying(20) not null,
+  subject character varying(100) not null,
+  email character varying(255) null,
+  message text not null,
+  status character varying(20) not null default 'UNRESOLVED'::character varying,
+  admin_memo text null,
+  created_at timestamp without time zone not null default CURRENT_TIMESTAMP,
+  updated_at timestamp without time zone not null default CURRENT_TIMESTAMP,
+  constraint t_inquiry_pkey primary key (inquiry_id),
+  constraint fk_t_inquiry_user foreign KEY (user_id) references m_user (user_id),
+  constraint chk_t_inquiry_email check (
+    (
+      (
+        ((inquiry_type)::text = 'INQUIRY'::text)
+        and (email is not null)
+        and ((email)::text <> ''::text)
+      )
+      or ((inquiry_type)::text <> 'INQUIRY'::text)
+    )
+  ),
+  constraint chk_t_inquiry_status check (
+    (
+      (status)::text = any (
+        (
+          array[
+            'UNRESOLVED'::character varying,
+            'IN_PROGRESS'::character varying,
+            'RESOLVED'::character varying
+          ]
+        )::text[]
+      )
+    )
+  ),
+  constraint chk_t_inquiry_type check (
+    (
+      (inquiry_type)::text = any (
+        (
+          array[
+            'INQUIRY'::character varying,
+            'REQUEST'::character varying,
+            'BUG'::character varying
+          ]
+        )::text[]
+      )
+    )
+  )
+) TABLESPACE pg_default;
+
+create index IF not exists idx_t_inquiry_user_id on public.t_inquiry using btree (user_id) TABLESPACE pg_default;
+
+create index IF not exists idx_t_inquiry_status on public.t_inquiry using btree (status) TABLESPACE pg_default;
+
+create index IF not exists idx_t_inquiry_type_status on public.t_inquiry using btree (inquiry_type, status) TABLESPACE pg_default;
+
 /////////////////////////////////
 都道府県データ
 /////////////////////////////////

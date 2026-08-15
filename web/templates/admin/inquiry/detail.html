@@ -1,0 +1,147 @@
+{% extends "templates/commons/base.html" %}
+
+{% block title %}お問い合わせ詳細{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="/static/css/admin/inquiry/inquiry.css">
+{% endblock %}
+
+{% block content %}
+<div class="inquiry-detail-page">
+
+    <div class="page-header">
+        <a href="/admin/inquiry" class="back-link">
+            ← お問い合わせ管理
+        </a>
+
+        <h1 class="page-title">
+            お問い合わせ詳細
+        </h1>
+    </div>
+
+    <div class="inquiry-detail">
+
+        <div class="detail-item">
+            <div class="detail-label">問い合わせ番号</div>
+            <div class="detail-value">
+                #{{ inquiry.inquiry_id }}
+            </div>
+        </div>
+
+        <div class="detail-item">
+            <div class="detail-label">種別</div>
+            <div class="detail-value">
+                {% if inquiry.inquiry_type == "INQUIRY" %}
+                    問い合わせ
+                {% elif inquiry.inquiry_type == "REQUEST" %}
+                    要望
+                {% elif inquiry.inquiry_type == "BUG" %}
+                    バグ報告
+                {% elif inquiry.inquiry_type == "TODO" %}
+                    ToDo
+                {% else %}
+                    {{ inquiry.inquiry_type }}
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="detail-item">
+            <div class="detail-label">ユーザー</div>
+            <div class="detail-value">
+                {{ inquiry.user_name or inquiry.user_id }}
+            </div>
+        </div>
+
+        {% if inquiry.email %}
+        <div class="detail-item">
+            <div class="detail-label">メールアドレス</div>
+            <div class="detail-value">
+                <a href="mailto:{{ inquiry.email }}">
+                    {{ inquiry.email }}
+                </a>
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="detail-item">
+            <div class="detail-label">件名</div>
+            <div class="detail-value">
+                {{ inquiry.subject }}
+            </div>
+        </div>
+
+        <div class="detail-item">
+            <div class="detail-label">内容</div>
+            <div class="detail-message">{{ inquiry.message }}</div>
+        </div>
+
+        <div class="detail-item">
+            <div class="detail-label">受付日時</div>
+            <div class="detail-value">
+                {{ inquiry.created_at }}
+            </div>
+        </div>
+
+        <div class="detail-item">
+            <div class="detail-label">最終更新日時</div>
+            <div class="detail-value">
+                {{ inquiry.updated_at }}
+            </div>
+        </div>
+
+        <form method="post"
+              action="/admin/inquiry/{{ inquiry.inquiry_id }}"
+              class="inquiry-update-form">
+
+            <div class="detail-item">
+                <label for="status" class="detail-label">
+                    ステータス
+                </label>
+
+                <select id="status"
+                        name="status"
+                        class="detail-select"
+                        required>
+
+                    <option value="UNRESOLVED"
+                        {% if inquiry.status == "UNRESOLVED" %}selected{% endif %}>
+                        未対応
+                    </option>
+
+                    <option value="IN_PROGRESS"
+                        {% if inquiry.status == "IN_PROGRESS" %}selected{% endif %}>
+                        対応中
+                    </option>
+
+                    <option value="RESOLVED"
+                        {% if inquiry.status == "RESOLVED" %}selected{% endif %}>
+                        対応済み
+                    </option>
+
+                </select>
+            </div>
+
+            <div class="detail-item">
+                <label for="admin_memo" class="detail-label">
+                    管理者メモ
+                </label>
+
+                <textarea
+                    id="admin_memo"
+                    name="admin_memo"
+                    class="detail-textarea"
+                    rows="8"
+                    maxlength="5000"
+                    placeholder="対応内容や確認事項などを入力してください">{{ inquiry.admin_memo or '' }}</textarea>
+            </div>
+
+            <button type="submit" class="update-button">
+                更新する
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+{% endblock %}
