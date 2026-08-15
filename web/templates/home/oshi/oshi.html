@@ -1,0 +1,119 @@
+{% extends "templates/commons/base.html" %}
+
+{% block title %}推し情報{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="/static/css/home/oshi/oshi.css">
+{% endblock %}
+
+{% block content %}
+<main class="oshi-page">
+
+    {% if oshi_basic %}
+
+    <section class="oshi-profile">
+
+        {% if oshi_basic.profile_image %}
+        <div class="oshi-profile-image">
+            <img
+                src="{{ oshi_basic.profile_image }}"
+                alt="{{ oshi_basic.oshi_name }}"
+            >
+        </div>
+        {% endif %}
+
+        <h1>{{ oshi_basic.oshi_name }}</h1>
+
+        {% if oshi_basic.profile_message %}
+        <p class="oshi-profile-message">{{ oshi_basic.profile_message }}</p>
+        {% endif %}
+
+    </section>
+
+
+    <section class="oshi-info-card">
+
+        <h2>🎂 誕生日</h2>
+
+        <p class="oshi-date">
+            {{ oshi_basic.birthday.strftime("%Y年%m月%d日") }}
+        </p>
+
+        <p class="oshi-age">
+            {{ oshi_basic.age }}歳
+        </p>
+
+        <p class="oshi-countdown">
+            次の誕生日まで
+            <strong>
+                あと{{ oshi_basic.birthday_remaining_days }}日
+            </strong>
+        </p>
+
+    </section>
+
+
+    <section class="oshi-info-card">
+
+        <h2>🎤 声優デビュー</h2>
+
+        <p class="oshi-date">
+            {{ oshi_basic.voice_actor_debut_date.strftime("%Y年%m月%d日") }}
+        </p>
+
+        <p class="oshi-elapsed">
+            デビューから
+            <strong>
+                {{ oshi_basic.voice_actor_debut_elapsed_years }}年
+                {{ oshi_basic.voice_actor_debut_elapsed_months }}ヶ月
+                {{ oshi_basic.voice_actor_debut_elapsed_days }}日
+            </strong>
+        </p>
+
+        <p class="oshi-total-days">
+            {{ oshi_basic.voice_actor_debut_elapsed_total_days }}日
+            経過
+        </p>
+
+    </section>
+
+
+    {% if oshi_basic.singer_debut_date %}
+
+    <section class="oshi-info-card">
+
+        <h2>🎵 歌手デビュー</h2>
+
+        <p class="oshi-date">
+            {{ oshi_basic.singer_debut_date.strftime("%Y年%m月%d日") }}
+        </p>
+
+        <p class="oshi-elapsed">
+            デビューから
+            <strong>
+                {{ oshi_basic.singer_debut_elapsed_years }}年
+                {{ oshi_basic.singer_debut_elapsed_months }}ヶ月
+                {{ oshi_basic.singer_debut_elapsed_days }}日
+            </strong>
+        </p>
+
+        <p class="oshi-total-days">
+            {{ oshi_basic.singer_debut_elapsed_total_days }}日
+            経過
+        </p>
+
+    </section>
+
+    {% endif %}
+
+
+    {% else %}
+
+    <p class="oshi-empty">
+        推し情報が登録されていません。
+    </p>
+
+    {% endif %}
+
+</main>
+{% endblock %}
