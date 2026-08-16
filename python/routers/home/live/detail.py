@@ -9,6 +9,7 @@ from python.core import templates
 
 from python.models.home.live import detail as detail_model
 
+
 router = APIRouter(
     prefix="/home/live/detail",
     tags=["home_live_detail"]
@@ -20,13 +21,8 @@ async def live_detail(
         request: Request,
         live_id: int
 ):
-    if not auth.is_login(request):
-        return RedirectResponse(
-            "/login",
-            status_code=303
-        )
-
     user_id = request.session.get("user_id")
+
     live = detail_model.get_live_detail(
         user_id,
         live_id
@@ -51,7 +47,7 @@ async def live_detail(
         )
 
         total_days = (
-                today - live["live_date"]
+            today - live["live_date"]
         ).days
 
         day_status = (
@@ -69,7 +65,8 @@ async def live_detail(
         name="templates/home/live/detail.html",
         context={
             "live": live,
-            "today": date.today(),
-            "day_status": day_status
+            "today": today,
+            "day_status": day_status,
+            "is_login": auth.is_login(request)
         }
     )

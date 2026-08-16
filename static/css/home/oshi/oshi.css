@@ -1,0 +1,126 @@
+.oshi-page{
+    width:100%;
+    max-width:430px;
+    margin:0 auto;
+    padding:15px 0 30px;
+    box-sizing:border-box;
+}
+
+
+/* ==========================
+   推しプロフィール
+========================== */
+
+.oshi-profile{
+    margin:0 15px 20px;
+    text-align:center;
+}
+
+.oshi-profile-image{
+    width:140px;
+    height:140px;
+    margin:0 auto 15px;
+    overflow:hidden;
+    border-radius:50%;
+    box-shadow:0 3px 8px rgba(0,0,0,.12);
+}
+
+.oshi-profile-image img{
+    display:block;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.oshi-profile h1{
+    margin:0;
+    font-size:24px;
+    line-height:1.4;
+}
+
+.oshi-profile-message{
+    margin:16px 0 0;
+    padding:14px 16px;
+    box-sizing:border-box;
+    background:#fff;
+    border-radius:12px;
+    box-shadow:0 2px 6px rgba(0,0,0,.08);
+    font-size:14px;
+    line-height:1.8;
+    text-align:left;
+    white-space:pre-wrap;
+}
+
+
+/* ==========================
+   情報カード
+========================== */
+
+.oshi-info-card{
+    margin:0 15px 16px;
+    padding:16px;
+    box-sizing:border-box;
+    background:white;
+    border-radius:15px;
+    box-shadow:0 3px 8px rgba(0,0,0,.12);
+}
+
+.oshi-info-card h2{
+    margin:0 0 12px;
+    font-size:18px;
+    line-height:1.4;
+}
+
+
+/* ==========================
+   日付・年齢
+========================== */
+
+.oshi-date{
+    margin:0 0 8px;
+    font-size:16px;
+    font-weight:bold;
+}
+
+.oshi-age{
+    margin:0 0 8px;
+    font-size:24px;
+    font-weight:bold;
+}
+
+.oshi-countdown{
+    margin:0;
+    font-size:14px;
+    line-height:1.5;
+}
+
+.oshi-countdown strong{
+    font-size:20px;
+}
+
+.oshi-elapsed{
+    margin:0 0 8px;
+    font-size:14px;
+    line-height:1.5;
+}
+
+.oshi-elapsed strong{
+    font-size:20px;
+}
+
+.oshi-total-days{
+    margin:0;
+    font-size:13px;
+    color:#777;
+}
+
+
+/* ==========================
+   データ未登録
+========================== */
+
+.oshi-empty{
+    margin:30px 15px;
+    text-align:center;
+    color:#777;
+}

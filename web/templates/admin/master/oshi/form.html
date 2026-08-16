@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/static/img/logo.png" type="image/png">
+
+    <title>推し活オールインワン</title>
+
+    <link rel="stylesheet" href="/static/css/common.css">
+    <link rel="stylesheet" href="/static/css/admin/master/admin-common.css">
+    <link rel="stylesheet" href="/static/css/admin/master/oshi/oshi.css">
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="page-header">
+
+        <a href="/admin/master/oshi" class="master-link">
+            ← 推し情報管理
+        </a>
+
+        <h1 class="page-title">
+            {% if oshi %}
+                推し情報編集
+            {% else %}
+                推し情報登録
+            {% endif %}
+        </h1>
+
+    </div>
+
+
+    <form
+        method="post"
+        action="/admin/master/oshi/save"
+        class="master-form"
+        data-unsaved-check="true"
+    >
+
+        <div class="form-group">
+            <label for="oshi_name">
+                推し名
+            </label>
+
+            <input
+                type="text"
+                id="oshi_name"
+                name="oshi_name"
+                value="{{ oshi.oshi_name if oshi else '' }}"
+                maxlength="100"
+                required
+            >
+        </div>
+
+
+        <div class="form-group">
+            <label for="birthday">
+                誕生日
+            </label>
+
+            <input
+                type="date"
+                id="birthday"
+                name="birthday"
+                value="{{ oshi.birthday if oshi else '' }}"
+                required
+            >
+        </div>
+
+
+        <div class="form-group">
+            <label for="voice_actor_debut_date">
+                声優デビュー日
+            </label>
+
+            <input
+                type="date"
+                id="voice_actor_debut_date"
+                name="voice_actor_debut_date"
+                value="{{ oshi.voice_actor_debut_date if oshi else '' }}"
+                required
+            >
+        </div>
+
+
+        <div class="form-group">
+            <label for="singer_debut_date">
+                歌手デビュー日
+            </label>
+
+            <input
+                type="date"
+                id="singer_debut_date"
+                name="singer_debut_date"
+                value="{{ oshi.singer_debut_date if oshi else '' }}"
+            >
+        </div>
+
+
+        <div class="form-group">
+            <label for="profile_image">
+                プロフィール画像
+            </label>
+
+            <input
+                type="text"
+                id="profile_image"
+                name="profile_image"
+                value="{{ oshi.profile_image if oshi else '' }}"
+                maxlength="255"
+                placeholder="画像URL"
+            >
+        </div>
+
+
+        <div class="form-group">
+            <label for="profile_message">
+                プロフィール
+            </label>
+
+            <textarea
+                id="profile_message"
+                name="profile_message"
+                rows="5"
+            >{{ oshi.profile_message if oshi else '' }}</textarea>
+        </div>
+
+
+        <div class="form-actions">
+
+            <a
+                href="/admin/master/oshi"
+                class="cancel-btn"
+            >
+                キャンセル
+            </a>
+
+            <button
+                type="submit"
+                class="save-btn"
+            >
+                保存
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+</body>
+</html>

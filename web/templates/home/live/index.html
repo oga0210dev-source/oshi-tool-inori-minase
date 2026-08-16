@@ -10,10 +10,13 @@
 <div class="background">
     <div class="page-scroll">
         <div class="container">
+
             {% if lives %}
             <div class="live-slider">
+
                 {% for live in lives %}
                 <div class="live-card">
+
                     <div class="live-name">
                         {{ live.live_name }}
                     </div>
@@ -34,14 +37,15 @@
                         </div>
                     </div>
 
-                    {% if live.is_join %}
+                    {% if is_login and live.is_join %}
                     <div class="join-status">
                         参加予定
                     </div>
                     {% endif %}
 
-                    {% if live.is_join %}
-                    <a href="/home/live/history/detail/{{ live.live_id }}?from=live" class="add-history">
+                    {% if is_login and live.is_join %}
+                    <a href="/home/live/history/detail/{{ live.live_id }}?from=live"
+                       class="add-history">
                         記録
                     </a>
                     {% endif %}
@@ -50,36 +54,63 @@
                        class="detail-btn">
                         詳細
                     </a>
+
                 </div>
                 {% endfor %}
+
             </div>
+
             {% else %}
             <div class="no-live">
                 現在、開催予定のライブはありません
             </div>
             {% endif %}
 
+
+            <!-- メニュー -->
             <div class="menu-grid">
-                <a href="/home/live/archive?first" class="menu-btn">
+
+                <!-- アーカイブ -->
+                <a href="/home/live/archive?first"
+                   class="menu-btn">
                     <span>アーカイブ</span>
                 </a>
 
-                <a href="/home/live/history?first" class="menu-btn">
+                {% if is_login %}
+
+                <!-- 参加履歴 -->
+                <a href="/home/live/history?first"
+                   class="menu-btn">
                     <span>参加履歴</span>
                 </a>
 
-                <a href="/home/live/collected_song" class="menu-btn">
+                <!-- 回収済み -->
+                <a href="/home/live/collected_song"
+                   class="menu-btn">
                     <span>回収済み</span>
                 </a>
 
-                <a href="/home/live/prediction?first" class="menu-btn">
+                <!-- セトリ予測 -->
+                <a href="/home/live/prediction?first"
+                   class="menu-btn">
                     <span>セトリ予測</span>
                 </a>
+
+                {% endif %}
+
             </div>
 
-            <a href="/home/live/lost-item" class="menu-btn wide-btn">
+
+            {% if is_login %}
+
+            <!-- 忘れ物チェック -->
+            <a href="/home/live/lost-item"
+               class="menu-btn wide-btn">
                 <span>忘れ物チェック</span>
             </a>
+
+            {% endif %}
+
         </div>
     </div>
 </div>

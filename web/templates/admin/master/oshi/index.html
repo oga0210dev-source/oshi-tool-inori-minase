@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/static/img/logo.png" type="image/png">
+
+    <title>推し活オールインワン</title>
+
+    <link rel="stylesheet" href="/static/css/common.css">
+    <link rel="stylesheet" href="/static/css/admin/master/admin-common.css">
+    <link rel="stylesheet" href="/static/css/admin/master/oshi/oshi.css">
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="page-header">
+
+        <a href="/admin/master" class="master-link">
+            ← 管理マスタ
+        </a>
+
+        <h1 class="page-title">
+            推し情報管理
+        </h1>
+
+    </div>
+
+
+    {% if oshi %}
+
+    <div class="oshi-card">
+
+        {% if oshi.profile_image %}
+        <div class="oshi-image">
+            <img
+                src="{{ oshi.profile_image }}"
+                alt="{{ oshi.oshi_name }}"
+            >
+        </div>
+        {% endif %}
+
+        <div class="oshi-info">
+
+            <h2>
+                {{ oshi.oshi_name }}
+            </h2>
+
+            <div class="oshi-info-row">
+                <span class="label">誕生日</span>
+                <span>
+                    {{ oshi.birthday.strftime("%Y年%m月%d日") }}
+                </span>
+            </div>
+
+            <div class="oshi-info-row">
+                <span class="label">声優デビュー日</span>
+                <span>
+                    {{ oshi.voice_actor_debut_date.strftime("%Y年%m月%d日") }}
+                </span>
+            </div>
+
+            <div class="oshi-info-row">
+                <span class="label">歌手デビュー日</span>
+                <span>
+                    {% if oshi.singer_debut_date %}
+                        {{ oshi.singer_debut_date.strftime("%Y年%m月%d日") }}
+                    {% else %}
+                        未登録
+                    {% endif %}
+                </span>
+            </div>
+
+            {% if oshi.profile_message %}
+            <div class="oshi-message">
+                <span class="label">プロフィール</span>
+                <p>{{ oshi.profile_message }}</p>
+            </div>
+            {% endif %}
+
+        </div>
+
+        <div class="oshi-action">
+            <a
+                href="/admin/master/oshi/form"
+                class="edit-btn">
+                編集
+            </a>
+        </div>
+
+    </div>
+
+    {% else %}
+
+    <div class="empty-message">
+        登録されている推し情報はありません。
+    </div>
+
+    <a
+        href="/admin/master/oshi/form"
+        class="action-btn">
+        新規登録
+    </a>
+
+    {% endif %}
+
+</div>
+
+</body>
+</html>

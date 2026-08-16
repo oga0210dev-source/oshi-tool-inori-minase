@@ -8,6 +8,7 @@
 
 {% block content %}
 <div class="background">
+
     {% if request.query_params.get('from') == 'history' %}
     <a href="/home/live/history"
        class="back-link">
@@ -25,6 +26,7 @@
 
             <!-- 基本情報 -->
             <div class="detail-card">
+
                 <div class="group-title">
                     基本情報
                 </div>
@@ -38,6 +40,7 @@
                 </div>
 
                 <div class="live-info">
+
                     <div>
                         📅 {{ live.live_date }}
                     </div>
@@ -51,32 +54,43 @@
                         {{ live.venue_name }}
                     </div>
 
-                    {% if live.live_date >= today %}
-                        {% if live.is_join %}
-                        <div class="join-status future">
-                            参加予定
-                        </div>
+                    {% if is_login %}
+
+                        {% if live.live_date >= today %}
+
+                            {% if live.is_join %}
+                            <div class="join-status future">
+                                参加予定
+                            </div>
+                            {% else %}
+                            <div class="join-status none">
+                                未参加
+                            </div>
+                            {% endif %}
+
                         {% else %}
-                        <div class="join-status none">
-                            未参加
-                        </div>
+
+                            {% if live.is_join %}
+                            <div class="join-status past">
+                                参加済み
+                            </div>
+                            {% else %}
+                            <div class="join-status none">
+                                未参加
+                            </div>
+                            {% endif %}
+
                         {% endif %}
-                    {% else %}
-                        {% if live.is_join %}
-                        <div class="join-status past">
-                            参加済み
-                        </div>
-                        {% else %}
-                        <div class="join-status none">
-                            未参加
-                        </div>
-                        {% endif %}
+
                     {% endif %}
+
                 </div>
             </div>
 
+
             <!-- 関連リンク -->
             <div class="detail-card">
+
                 <div class="group-title">
                     関連リンク
                 </div>
@@ -102,10 +116,13 @@
                     💿 Blu-ray
                 </a>
                 {% endif %}
+
             </div>
+
 
             <!-- セットリスト -->
             <div class="detail-card">
+
                 <div class="group-title">
                     セットリスト
                 </div>
@@ -116,6 +133,7 @@
                 >
                     🎵 セットリストを見る
                 </a>
+
             </div>
 
         </div>

@@ -17,12 +17,6 @@ router = APIRouter(
 async def live_list(
         request: Request
 ):
-    if not auth.is_login(request):
-        return RedirectResponse(
-            "/login",
-            status_code=303
-        )
-
     user_id = request.session.get("user_id")
 
     keyword = request.query_params.get("keyword")
@@ -39,7 +33,8 @@ async def live_list(
         name="templates/home/live/archive/archive.html",
         context={
             "lives": lives,
-            "today": date.today()
+            "today": date.today(),
+            "is_login": auth.is_login(request)
         }
     )
 

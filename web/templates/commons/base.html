@@ -9,11 +9,6 @@
     <link rel="icon" href="/static/img/logo.png" type="image/png">
     <link rel="stylesheet" href="/static/css/common.css">
 
-    <!-- Google AdSense -->
-    <script async
-            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1768053707270113"
-            crossorigin="anonymous"></script>
-
     {% block css %}{% endblock %}
 </head>
 
@@ -28,20 +23,7 @@
 {% block content %}{% endblock %}
 
 <!-- 広告 -->
-{% block ads %}
-<div class="ad-area">
-    <ins class="adsbygoogle"
-         style="display:block"
-         data-ad-client="ca-pub-1768053707270113"
-         data-ad-slot="YOUR_AD_SLOT_ID"
-         data-ad-format="auto"
-         data-full-width-responsive="true"></ins>
-
-    <script>
-        (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
-</div>
-{% endblock %}
+{% block ads %}{% endblock %}
 
 {% block script %}{% endblock %}
 

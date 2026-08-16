@@ -176,6 +176,147 @@ create table public.m_lost_item (
   constraint m_lost_item_pkey primary key (lost_item_id)
 ) TABLESPACE pg_default;
 
+create table public.m_oshi_basic (
+  created_at timestamp without time zone not null default CURRENT_TIMESTAMP,
+  updated_at timestamp without time zone not null default CURRENT_TIMESTAMP,
+  oshi_id smallint not null default 1,
+  oshi_name character varying(100) not null,
+  birthday date not null,
+  voice_actor_debut_date date not null,
+  profile_image character varying(255) null,
+  profile_message text null,
+  singer_debut_date date null,
+  constraint m_oshi_basic_pkey primary key (oshi_id),
+  constraint chk_m_oshi_basic_single check ((oshi_id = 1))
+) TABLESPACE pg_default;
+
+create trigger update_m_oshi_basic_updated_at BEFORE
+update on m_oshi_basic for EACH row
+execute FUNCTION update_updated_at_column ();
+
+create table public.m_oshi_anniversary (
+  created_at timestamp without time zone not null default CURRENT_TIMESTAMP,
+  updated_at timestamp without time zone not null default CURRENT_TIMESTAMP,
+  anniversary_id bigserial not null,
+  anniversary_name character varying(100) not null,
+  anniversary_date date not null,
+  description text null,
+  display_order integer not null default 0,
+  public_flag boolean not null default true,
+  is_deleted boolean not null default false,
+  constraint m_oshi_anniversary_pkey primary key (anniversary_id)
+) TABLESPACE pg_default;
+
+create trigger update_m_oshi_anniversary_updated_at BEFORE
+update on m_oshi_anniversary for EACH row
+execute FUNCTION update_updated_at_column ();
+
+create table public.m_oshi_program (
+  created_at timestamp without time zone not null default CURRENT_TIMESTAMP,
+  updated_at timestamp without time zone not null default CURRENT_TIMESTAMP,
+  program_id bigserial not null,
+  program_name character varying(255) not null,
+  program_type character varying(20) not null,
+  start_date date null,
+  end_date date null,
+  official_url character varying(500) null,
+  description text null,
+  display_order integer not null default 0,
+  public_flag boolean not null default true,
+  is_deleted boolean not null default false,
+  constraint m_oshi_program_pkey primary key (program_id),
+  constraint chk_m_oshi_program_program_type check (
+    (
+      (program_type)::text = any (
+        (
+          array[
+            'RADIO'::character varying,
+            'TV'::character varying,
+            'WEB'::character varying,
+            'OTHER'::character varying
+          ]
+        )::text[]
+      )
+    )
+  )
+) TABLESPACE pg_default;
+
+create trigger update_m_oshi_program_updated_at BEFORE
+update on m_oshi_program for EACH row
+execute FUNCTION update_updated_at_column ();
+
+create table public.m_oshi_history (
+  created_at timestamp without time zone not null default CURRENT_TIMESTAMP,
+  updated_at timestamp without time zone not null default CURRENT_TIMESTAMP,
+  history_id bigserial not null,
+  history_date date not null,
+  title character varying(255) not null,
+  description text null,
+  official_url character varying(500) null,
+  display_order integer not null default 0,
+  public_flag boolean not null default true,
+  is_deleted boolean not null default false,
+  constraint m_oshi_history_pkey primary key (history_id)
+) TABLESPACE pg_default;
+
+create trigger update_m_oshi_history_updated_at BEFORE
+update on m_oshi_history for EACH row
+execute FUNCTION update_updated_at_column ();
+
+create table public.m_oshi_work (
+  created_at timestamp without time zone not null default CURRENT_TIMESTAMP,
+  updated_at timestamp without time zone not null default CURRENT_TIMESTAMP,
+  work_id bigserial not null,
+  work_name character varying(255) not null,
+  work_type character varying(20) not null,
+  character_name character varying(100) null,
+  release_date date null,
+  official_url character varying(500) null,
+  description text null,
+  display_order integer not null default 0,
+  public_flag boolean not null default true,
+  is_deleted boolean not null default false,
+  constraint m_oshi_work_pkey primary key (work_id),
+  constraint chk_m_oshi_work_work_type check (
+    (
+      (work_type)::text = any (
+        (
+          array[
+            'ANIME'::character varying,
+            'MOVIE'::character varying,
+            'GAME'::character varying,
+            'DRAMA'::character varying,
+            'OTHER'::character varying
+          ]
+        )::text[]
+      )
+    )
+  )
+) TABLESPACE pg_default;
+
+create trigger update_m_oshi_work_updated_at BEFORE
+update on m_oshi_work for EACH row
+execute FUNCTION update_updated_at_column ();
+
+create table public.m_oshi_official_link (
+  created_at timestamp without time zone not null default CURRENT_TIMESTAMP,
+  updated_at timestamp without time zone not null default CURRENT_TIMESTAMP,
+  link_id bigserial not null,
+  link_name character varying(100) not null,
+  url character varying(500) not null,
+  icon character varying(100) null,
+  description text null,
+  display_order integer not null default 0,
+  public_flag boolean not null default true,
+  is_deleted boolean not null default false,
+  constraint m_oshi_official_link_pkey primary key (link_id)
+) TABLESPACE pg_default;
+
+create trigger update_m_oshi_official_link_updated_at BEFORE
+update on m_oshi_official_link for EACH row
+execute FUNCTION update_updated_at_column ();
+
+
 //////////////
 トランザクション
 //////////////

@@ -92,77 +92,76 @@
                     </div>
 
                     <div class="live-actions">
-                        {% if live.live_date >= today %}
+                        {% if is_login %}
+                            {% if live.live_date >= today %}
+                                {% if live.is_join %}
+                                <form method="post"
+                                      action="/home/live/archive/cancel"
+                                      onsubmit="return confirm('参加予定を取り消しますか？')">
+                                    <input
+                                        type="hidden"
+                                        name="live_id"
+                                        value="{{ live.live_id }}"
+                                    >
 
-                            {% if live.is_join %}
-                            <form method="post"
-                                  action="/home/live/archive/cancel"
-                                  onsubmit="return confirm('参加予定を取り消しますか？')">
-                                <input
-                                    type="hidden"
-                                    name="live_id"
-                                    value="{{ live.live_id }}"
-                                >
+                                    <button class="cancel-btn">
+                                        参加キャンセル
+                                    </button>
+                                </form>
 
-                                <button class="cancel-btn">
-                                    参加キャンセル
-                                </button>
-                            </form>
+                                {% else %}
+                                <form method="post"
+                                      action="/home/live/archive/join"
+                                      onsubmit="return confirm('このライブを参加予定に登録しますか？')">
+                                    <input
+                                        type="hidden"
+                                        name="live_id"
+                                        value="{{ live.live_id }}"
+                                    >
 
-                            {% else %}
-                            <form method="post"
-                                  action="/home/live/archive/join"
-                                  onsubmit="return confirm('このライブを参加予定に登録しますか？')">
-                                <input
-                                    type="hidden"
-                                    name="live_id"
-                                    value="{{ live.live_id }}"
-                                >
-
-                                <button class="join-btn">
-                                    参加予定
-                                </button>
-                            </form>
-                            {% endif %}
-
-                        {% else %}
-
-                            {% if "公演中止" in live.live_name %}
-                            <button class="disabled-btn" disabled>
-                                公演中止
-                            </button>
-
-                            {% elif live.is_join %}
-                            <form method="post"
-                                  action="/home/live/archive/cancel"
-                                  onsubmit="return confirm('参加済みを取り消しますか？')">
-                                <input
-                                    type="hidden"
-                                    name="live_id"
-                                    value="{{ live.live_id }}"
-                                >
-
-                                <button class="attend-cancel-btn">
-                                    参加取消
-                                </button>
-                            </form>
+                                    <button class="join-btn">
+                                        参加予定
+                                    </button>
+                                </form>
+                                {% endif %}
 
                             {% else %}
-                            <form method="post"
-                                  action="/home/live/archive/attend"
-                                  onsubmit="return confirm('このライブを参加済みにしますか？')">
-                                <input
-                                    type="hidden"
-                                    name="live_id"
-                                    value="{{ live.live_id }}"
-                                >
-
-                                <button class="attend-btn">
-                                    参加済み
+                                {% if "公演中止" in live.live_name %}
+                                <button class="disabled-btn" disabled>
+                                    公演中止
                                 </button>
-                            </form>
-                            {% endif %}
 
+                                {% elif live.is_join %}
+                                <form method="post"
+                                      action="/home/live/archive/cancel"
+                                      onsubmit="return confirm('参加済みを取り消しますか？')">
+                                    <input
+                                        type="hidden"
+                                        name="live_id"
+                                        value="{{ live.live_id }}"
+                                    >
+
+                                    <button class="attend-cancel-btn">
+                                        参加取消
+                                    </button>
+                                </form>
+
+                                {% else %}
+                                <form method="post"
+                                      action="/home/live/archive/attend"
+                                      onsubmit="return confirm('このライブを参加済みにしますか？')">
+                                    <input
+                                        type="hidden"
+                                        name="live_id"
+                                        value="{{ live.live_id }}"
+                                    >
+
+                                    <button class="attend-btn">
+                                        参加済み
+                                    </button>
+                                </form>
+                                {% endif %}
+                            {% endif %}
                         {% endif %}
 
                         <a href="/home/live/detail/{{ live.live_id }}"
