@@ -19,11 +19,6 @@ async def program_list(
         program_type: str = None,
         sort: str = "display"
 ):
-    if not auth.is_login(request):
-        return RedirectResponse(
-            "/login",
-            status_code=303
-        )
 
     programs = program_model.get_program_list(
         keyword,
