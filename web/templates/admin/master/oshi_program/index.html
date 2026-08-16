@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/static/img/logo.png" type="image/png">
+
+    <title>推し活オールインワン</title>
+
+    <link rel="stylesheet" href="/static/css/common.css">
+    <link rel="stylesheet" href="/static/css/admin/master/admin-common.css">
+    <link rel="stylesheet" href="/static/css/admin/master/oshi/oshi_program.css">
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="page-header">
+
+        <a href="/admin/master" class="master-link">
+            ← 管理マスタ
+        </a>
+
+        <h1 class="page-title">
+            ラジオ・番組管理
+        </h1>
+
+    </div>
+
+    <a href="/admin/master/oshi_program/create"
+       class="action-btn">
+        新規登録
+    </a>
+
+
+    <!-- ==========================
+         検索・ソート
+    ========================== -->
+
+    <div class="search-area">
+
+        <form method="get"
+              class="search-form"
+              onsubmit="clearProgramState()">
+
+            <input type="text"
+                   name="keyword"
+                   placeholder="番組名・説明で検索"
+                   value="{{ request.query_params.get('keyword', '') }}">
+
+            <select name="program_type">
+
+                <option value=""
+                        {% if not request.query_params.get('program_type') %}selected{% endif %}>
+                    すべての種別
+                </option>
+
+                <option value="RADIO"
+                        {% if request.query_params.get('program_type') == "RADIO" %}selected{% endif %}>
+                    ラジオ
+                </option>
+
+                <option value="TV"
+                        {% if request.query_params.get('program_type') == "TV" %}selected{% endif %}>
+                    テレビ
+                </option>
+
+                <option value="WEB"
+                        {% if request.query_params.get('program_type') == "WEB" %}selected{% endif %}>
+                    Web
+                </option>
+
+                <option value="OTHER"
+                        {% if request.query_params.get('program_type') == "OTHER" %}selected{% endif %}>
+                    その他
+                </option>
+
+            </select>
+
+            <select name="sort">
+
+                <option value="display"
+                        {% if request.query_params.get('sort', 'display') == "display" %}selected{% endif %}>
+                    表示順
+                </option>
+
+                <option value="name"
+                        {% if request.query_params.get('sort') == "name" %}selected{% endif %}>
+                    番組名順
+                </option>
+
+                <option value="start_date_desc"
+                        {% if request.query_params.get('sort') == "start_date_desc" %}selected{% endif %}>
+                    開始日（新しい順）
+                </option>
+
+                <option value="start_date_asc"
+                        {% if request.query_params.get('sort') == "start_date_asc" %}selected{% endif %}>
+                    開始日（古い順）
+                </option>
+
+                <option value="updated"
+                        {% if request.query_params.get('sort') == "updated" %}selected{% endif %}>
+                    更新日順
+                </option>
+
+            </select>
+
+            <button type="submit"
+                    class="search-btn">
+                検索
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <!-- ==========================
+         番組一覧
+    ========================== -->
+
+    <div class="page-scroll">
+
+        <div class="program-list">
+
+            {% for program in programs %}
+
+            <div class="program-row">
+
+                <div class="program-info">
+
+                    <div class="program-name">
+
+                        {% if program.program_type == "RADIO" %}
+                            <span class="program-type radio">
+                                ラジオ
+                            </span>
+
+                        {% elif program.program_type == "TV" %}
+                            <span class="program-type tv">
+                                TV
+                            </span>
+
+                        {% elif program.program_type == "WEB" %}
+                            <span class="program-type web">
+                                Web
+                            </span>
+
+                        {% else %}
+                            <span class="program-type other">
+                                その他
+                            </span>
+                        {% endif %}
+
+                        {{ program.program_name }}
+
+                    </div>
+
+
+                    {% if program.start_date or program.end_date %}
+
+                    <div class="program-period">
+
+                        {% if program.start_date %}
+                            {{ program.start_date }}
+                        {% else %}
+                            開始日未設定
+                        {% endif %}
+
+                        ～
+
+                        {% if program.end_date %}
+                            {{ program.end_date }}
+                        {% else %}
+                            放送中
+                        {% endif %}
+
+                    </div>
+
+                    {% endif %}
+
+
+                    {% if program.description %}
+
+                    <div class="program-description">{{ program.description or ''}}</div>
+
+                    {% endif %}
+
+
+                    <div class="program-meta">
+
+                        {% if program.public_flag %}
+                            公開
+                        {% else %}
+                            非公開
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+
+                <!-- ==========================
+                     操作
+                ========================== -->
+
+                <div class="program-action">
+
+                    <div class="program-action-top">
+
+                        <a href="/admin/master/oshi_program/edit/{{ program.program_id }}"
+                           class="edit-btn"
+                           onclick="saveProgramState()">
+                            編集
+                        </a>
+
+                        <a href="/admin/master/oshi_program/delete/{{ program.program_id }}"
+                           class="delete-btn"
+                           onclick="return confirm('この番組を削除しますか？');">
+                            削除
+                        </a>
+
+                    </div>
+
+
+                    {% if program.official_url %}
+
+                    <a href="{{ program.official_url }}"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       class="official-btn">
+                        公式
+                    </a>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+            {% else %}
+
+            <p class="empty-message">
+                登録されている番組はありません。
+            </p>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    // 詳細画面へ移動前
+    function saveProgramState(){
+
+        const area =
+            document.querySelector(".page-scroll");
+
+        sessionStorage.setItem(
+            "master_oshi_program_url",
+            window.location.href
+        );
+
+        sessionStorage.setItem(
+            "master_oshi_program_scroll",
+            area.scrollTop
+        );
+    }
+
+
+    // 検索時
+    function clearProgramState(){
+
+        sessionStorage.removeItem(
+            "master_oshi_program_scroll"
+        );
+
+        sessionStorage.removeItem(
+            "master_oshi_program_url"
+        );
+    }
+
+
+    // ページ復元
+    window.addEventListener("load", () => {
+
+        const params =
+            new URLSearchParams(window.location.search);
+
+        if (params.has("first")) {
+
+            sessionStorage.removeItem(
+                "master_oshi_program_scroll"
+            );
+
+            sessionStorage.removeItem(
+                "master_oshi_program_url"
+            );
+
+            window.history.replaceState(
+                {},
+                "",
+                "/admin/master/oshi_program"
+            );
+
+            return;
+        }
+
+
+        const savedUrl =
+            sessionStorage.getItem(
+                "master_oshi_program_url"
+            );
+
+        const currentUrl =
+            window.location.href;
+
+
+        // 編集画面から一覧に戻ってきた場合
+        if (savedUrl && currentUrl !== savedUrl) {
+
+            window.location.replace(savedUrl);
+
+            return;
+        }
+
+
+        const scroll =
+            sessionStorage.getItem(
+                "master_oshi_program_scroll"
+            );
+
+        const area =
+            document.querySelector(".page-scroll");
+
+
+        if (area && scroll !== null) {
+
+            area.scrollTop =
+                Number(scroll);
+
+        }
+
+    });
+
+</script>
+
+</body>
+</html>

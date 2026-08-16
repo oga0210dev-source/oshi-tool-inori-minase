@@ -29,9 +29,7 @@
         <h1>{{ oshi_basic.oshi_name }}</h1>
 
         {% if oshi_basic.profile_message %}
-        <p class="oshi-profile-message">
-            {{ oshi_basic.profile_message }}
-        </p>
+        <p class="oshi-profile-message">{{ oshi_basic.profile_message }}</p>
         {% endif %}
 
     </section>
@@ -205,6 +203,33 @@
 
     </a>
 
+    <a href="/home/oshi/song"
+       class="oshi-menu-btn">
+
+        <span class="oshi-menu-icon">🎵</span>
+
+        <span class="oshi-menu-text">
+            <strong>楽曲</strong>
+            <small>楽曲一覧を見る</small>
+        </span>
+
+        <span class="oshi-menu-arrow">›</span>
+
+    </a>
+
+    <a href="/home/oshi/program"
+       class="oshi-menu-btn">
+
+        <span class="oshi-menu-icon">📻</span>
+
+        <span class="oshi-menu-text">
+            <strong>ラジオ・番組</strong>
+            <small>出演番組を見る</small>
+        </span>
+
+        <span class="oshi-menu-arrow">›</span>
+
+    </a>
 
     {% else %}
 

@@ -3,11 +3,16 @@
 ========================== */
 
 /*
-   出演作品・記念日・公式リンク画面では
+   出演作品・記念日・公式リンク・楽曲画面では
    body全体を固定し、oshi-pageを
    ヘッダー以外の残り領域にする
 */
-body:has(.oshi-work-list, .oshi-official-link-list){
+body:has(
+    .oshi-work-list,
+    .oshi-official-link-list,
+    .oshi-song-list,
+    .oshi-program-list
+){
     display:flex;
     flex-direction:column;
     height:100dvh;
@@ -33,9 +38,15 @@ body:has(.oshi-work-list, .oshi-official-link-list){
 
 /*
    一覧ページでは、
-   ヘッダーを除いた残りの高さを使用する
+   ヘッダー・検索エリアを除いた
+   残りの高さを使用する
 */
-body:has(.oshi-work-list, .oshi-official-link-list) .oshi-page{
+body:has(
+    .oshi-work-list,
+    .oshi-official-link-list,
+    .oshi-song-list,
+    .oshi-program-list
+) .oshi-page{
     flex:1 1 0;
     min-height:0;
     height:auto;
@@ -258,7 +269,7 @@ body:has(.oshi-work-list, .oshi-official-link-list) .oshi-page{
 
 
 /* ==========================
-   検索
+   出演作品・記念日 検索
 ========================== */
 
 .oshi-work-search{
@@ -320,7 +331,6 @@ body:has(.oshi-work-list, .oshi-official-link-list) .oshi-page{
     overflow-x:hidden;
     overscroll-behavior:contain;
 
-    /* スクロールバー非表示 */
     scrollbar-width:none;
     -ms-overflow-style:none;
 }
@@ -394,7 +404,7 @@ body:has(.oshi-work-list, .oshi-official-link-list) .oshi-page{
 
 
 /* ==========================
-   データなし
+   出演作品 データなし
 ========================== */
 
 .oshi-work-list .oshi-empty{
@@ -445,7 +455,6 @@ body:has(.oshi-work-list, .oshi-official-link-list) .oshi-page{
     overflow-x:hidden;
     overscroll-behavior:contain;
 
-    /* スクロールバー非表示 */
     scrollbar-width:none;
     -ms-overflow-style:none;
 }
@@ -534,6 +543,7 @@ body:has(.oshi-work-list, .oshi-official-link-list) .oshi-page{
     flex-shrink:0;
 }
 
+
 /* ==========================
    基本情報スライダー
 ========================== */
@@ -598,4 +608,500 @@ body:has(.oshi-work-list, .oshi-official-link-list) .oshi-page{
 .oshi-basic-slider-dot.active{
     background:#ff8fb1;
     transform:scale(1.2);
+}
+
+
+/* ==========================
+   推し情報 楽曲一覧ページ
+========================== */
+
+.oshi-song-page{
+    padding-bottom:0;
+}
+
+
+/* ==========================
+   楽曲検索・ソート
+========================== */
+
+.oshi-song-search{
+    flex-shrink:0;
+    margin:0 15px 16px;
+}
+
+.oshi-song-search-form{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+}
+
+
+/* ==========================
+   楽曲検索入力
+========================== */
+
+.oshi-song-search-form input,
+.oshi-song-search-form select{
+    width:100%;
+    min-height:42px;
+    padding:8px 10px;
+    box-sizing:border-box;
+    border:1px solid #ccc;
+    border-radius:8px;
+    background:#fff;
+    font-size:14px;
+}
+
+.oshi-song-search-form input:focus,
+.oshi-song-search-form select:focus{
+    outline:none;
+    border-color:#ff8fb1;
+}
+
+
+/* ==========================
+   楽曲検索ボタン
+========================== */
+
+.oshi-song-search-btn{
+    width:100%;
+    min-height:42px;
+    border:none;
+    border-radius:8px;
+    background:#ff8fb1;
+    color:#fff;
+    font-size:14px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.oshi-song-search-btn:hover{
+    opacity:.9;
+}
+
+
+/* ==========================
+   楽曲一覧
+========================== */
+
+.oshi-song-list{
+    flex:1 1 0;
+    min-height:0;
+    margin:0 15px;
+    padding:0 0 30px;
+    overflow-y:auto;
+    overflow-x:hidden;
+    overscroll-behavior:contain;
+
+    scrollbar-width:none;
+    -ms-overflow-style:none;
+}
+
+.oshi-song-list::-webkit-scrollbar{
+    display:none;
+}
+
+
+/* ==========================
+   アルバム
+========================== */
+
+.oshi-song-album{
+    margin-bottom:16px;
+    padding:16px;
+    box-sizing:border-box;
+    background:#fff;
+    border-radius:15px;
+    box-shadow:0 3px 8px rgba(0,0,0,.12);
+}
+
+.oshi-song-album-name{
+    margin:0 0 14px;
+    padding-bottom:10px;
+    border-bottom:1px solid #eee;
+    font-size:17px;
+    line-height:1.5;
+    word-break:break-word;
+}
+
+
+/* ==========================
+   楽曲
+========================== */
+
+.oshi-song-items{
+    display:flex;
+    flex-direction:column;
+}
+
+.oshi-song-item{
+    display:flex;
+    align-items:flex-start;
+    padding:12px 0;
+    border-bottom:1px solid #eee;
+}
+
+.oshi-song-item:first-child{
+    padding-top:0;
+}
+
+.oshi-song-item:last-child{
+    padding-bottom:0;
+    border-bottom:none;
+}
+
+
+/* ==========================
+   曲順
+========================== */
+
+.oshi-song-order{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:28px;
+    min-width:28px;
+    height:28px;
+    margin-right:10px;
+    border-radius:50%;
+    background:#fff0f5;
+    color:#ff8fb1;
+    font-size:12px;
+    font-weight:bold;
+}
+
+
+/* ==========================
+   楽曲情報
+========================== */
+
+.oshi-song-content{
+    flex:1;
+    min-width:0;
+}
+
+.oshi-song-name{
+    margin:0;
+    font-size:14px;
+    line-height:1.5;
+    word-break:break-word;
+}
+
+.oshi-song-release{
+    margin:3px 0 0;
+    color:#888;
+    font-size:11px;
+    line-height:1.5;
+}
+
+.oshi-song-tieup{
+    margin:4px 0 0;
+    color:#666;
+    font-size:12px;
+    line-height:1.5;
+    word-break:break-word;
+}
+
+
+/* ==========================
+   配信リンク
+========================== */
+
+.oshi-song-links{
+    display:flex;
+    flex-direction:column;
+    gap:5px;
+    margin-left:8px;
+    flex-shrink:0;
+}
+
+.oshi-song-link{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    min-width:76px;
+    min-height:30px;
+    padding:4px 7px;
+    box-sizing:border-box;
+    border-radius:7px;
+    font-size:10px;
+    font-weight:bold;
+    text-decoration:none;
+    transition:opacity .2s, transform .1s;
+}
+
+.oshi-song-link:hover{
+    opacity:.8;
+}
+
+.oshi-song-link:active{
+    transform:scale(.97);
+}
+
+
+/* ==========================
+   配信サービス別
+========================== */
+
+.oshi-song-link.youtube{
+    background:#fff0f0;
+    color:#e60000;
+}
+
+.oshi-song-link.apple-music{
+    background:#fff0f5;
+    color:#e83e8c;
+}
+
+.oshi-song-link.spotify{
+    background:#eefaf1;
+    color:#16833b;
+}
+
+
+/* ==========================
+   楽曲 データなし
+========================== */
+
+.oshi-song-list .oshi-empty{
+    margin:30px 0;
+}
+
+/* ==========================
+   推し情報 ラジオ・番組一覧ページ
+========================== */
+
+.oshi-program-page{
+    padding-bottom:0;
+}
+
+
+/* ==========================
+   検索・ソート
+========================== */
+
+.oshi-program-search{
+    flex-shrink:0;
+    margin:0 15px 16px;
+}
+
+.oshi-program-search-form{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+}
+
+
+/* ==========================
+   検索入力・選択
+========================== */
+
+.oshi-program-search-form input,
+.oshi-program-search-form select{
+    width:100%;
+    min-height:42px;
+    padding:8px 10px;
+    box-sizing:border-box;
+    border:1px solid #ccc;
+    border-radius:8px;
+    background:#fff;
+    font-size:14px;
+}
+
+.oshi-program-search-form input:focus,
+.oshi-program-search-form select:focus{
+    outline:none;
+    border-color:#ff8fb1;
+}
+
+
+/* ==========================
+   検索ボタン
+========================== */
+
+.oshi-program-search-btn{
+    width:100%;
+    min-height:42px;
+    border:none;
+    border-radius:8px;
+    background:#ff8fb1;
+    color:#fff;
+    font-size:14px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.oshi-program-search-btn:hover{
+    opacity:.9;
+}
+
+
+/* ==========================
+   番組一覧
+========================== */
+
+.oshi-program-list{
+    flex:1 1 0;
+    min-height:0;
+    margin:0 15px;
+    padding:0 0 30px;
+    overflow-y:auto;
+    overflow-x:hidden;
+    overscroll-behavior:contain;
+
+    scrollbar-width:none;
+    -ms-overflow-style:none;
+}
+
+.oshi-program-list::-webkit-scrollbar{
+    display:none;
+}
+
+
+/* ==========================
+   番組カード
+========================== */
+
+.oshi-program-card{
+    margin-bottom:16px;
+    padding:16px;
+    box-sizing:border-box;
+    background:#fff;
+    border-radius:15px;
+    box-shadow:0 3px 8px rgba(0,0,0,.12);
+}
+
+
+/* ==========================
+   番組名
+========================== */
+
+.oshi-program-name{
+    margin:0 0 8px;
+    font-size:17px;
+    font-weight:bold;
+    line-height:1.5;
+    word-break:break-word;
+}
+
+
+/* ==========================
+   番組種別
+========================== */
+
+.oshi-program-type{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    min-width:46px;
+    margin-right:6px;
+    padding:3px 7px;
+    box-sizing:border-box;
+    border-radius:6px;
+    font-size:10px;
+    font-weight:bold;
+    vertical-align:middle;
+}
+
+.oshi-program-type.radio{
+    background:#fff0f5;
+    color:#e83e8c;
+}
+
+.oshi-program-type.tv{
+    background:#fff4e8;
+    color:#e67e22;
+}
+
+.oshi-program-type.web{
+    background:#eef5ff;
+    color:#3976c6;
+}
+
+.oshi-program-type.other{
+    background:#f3f3f3;
+    color:#666;
+}
+
+
+/* ==========================
+   放送期間
+========================== */
+
+.oshi-program-period{
+    margin:0 0 8px;
+    color:#777;
+    font-size:13px;
+    line-height:1.5;
+}
+
+
+/* ==========================
+   番組説明
+========================== */
+
+.oshi-program-description{
+    margin:10px 0 0;
+    color:#666;
+    font-size:13px;
+    line-height:1.7;
+    white-space:pre-wrap;
+    word-break:break-word;
+}
+
+
+/* ==========================
+   公式サイト
+========================== */
+
+.oshi-program-link{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    min-height:38px;
+    margin-top:12px;
+    border-radius:8px;
+    background:#ff8fb1;
+    color:#fff;
+    font-size:13px;
+    font-weight:bold;
+    text-decoration:none;
+}
+
+.oshi-program-link:hover{
+    opacity:.9;
+}
+
+
+/* ==========================
+   データなし
+========================== */
+
+.oshi-program-list .oshi-empty{
+    margin:30px 0;
+}
+
+
+/* ==========================
+   スマートフォン
+========================== */
+
+@media (max-width:600px){
+
+    .oshi-program-card{
+        padding:15px;
+    }
+
+    .oshi-program-name{
+        font-size:16px;
+    }
+
+    .oshi-program-period{
+        font-size:12px;
+    }
+
+    .oshi-program-description{
+        font-size:12px;
+    }
+
 }

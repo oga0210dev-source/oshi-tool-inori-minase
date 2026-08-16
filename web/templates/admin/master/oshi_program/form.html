@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/static/img/logo.png" type="image/png">
+
+    <title>推し活オールインワン</title>
+
+    <link rel="stylesheet" href="/static/css/common.css">
+    <link rel="stylesheet" href="/static/css/admin/master/admin-common.css">
+    <link rel="stylesheet" href="/static/css/admin/master/oshi/oshi_program.css">
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="page-header">
+
+        <a href="/admin/master/oshi_program"
+           class="master-link">
+            ← ラジオ・番組管理
+        </a>
+
+        <h1 class="page-title">
+            {% if program %}
+                ラジオ・番組編集
+            {% else %}
+                ラジオ・番組登録
+            {% endif %}
+        </h1>
+
+    </div>
+
+
+    {% if error %}
+
+    <div class="error-message">
+        {{ error }}
+    </div>
+
+    {% endif %}
+
+
+    <form method="post"
+          action="{% if program %}/admin/master/oshi_program/update/{{ program.program_id }}{% else %}/admin/master/oshi_program/create{% endif %}"
+          class="master-form">
+
+
+        <!-- ==========================
+             番組名
+        ========================== -->
+
+        <div class="form-group">
+
+            <label for="program_name">
+                番組名
+                <span class="required">必須</span>
+            </label>
+
+            <input type="text"
+                   id="program_name"
+                   name="program_name"
+                   value="{{ program.program_name or '' if program else '' }}"
+                   maxlength="255"
+                   required>
+
+        </div>
+
+
+        <!-- ==========================
+             種別
+        ========================== -->
+
+        <div class="form-group">
+
+            <label for="program_type">
+                種別
+                <span class="required">必須</span>
+            </label>
+
+            <select id="program_type"
+                    name="program_type"
+                    required>
+
+                <option value="RADIO"
+                    {% if not program or program.program_type == "RADIO" %}selected{% endif %}>
+                    ラジオ
+                </option>
+
+                <option value="TV"
+                    {% if program and program.program_type == "TV" %}selected{% endif %}>
+                    テレビ
+                </option>
+
+                <option value="WEB"
+                    {% if program and program.program_type == "WEB" %}selected{% endif %}>
+                    Web
+                </option>
+
+                <option value="OTHER"
+                    {% if program and program.program_type == "OTHER" %}selected{% endif %}>
+                    その他
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <!-- ==========================
+             開始日
+        ========================== -->
+
+        <div class="form-group">
+
+            <label for="start_date">
+                開始日
+            </label>
+
+            <input type="date"
+                   id="start_date"
+                   name="start_date"
+                   value="{{ program.start_date or '' if program else '' }}">
+
+        </div>
+
+
+        <!-- ==========================
+             終了日
+        ========================== -->
+
+        <div class="form-group">
+
+            <label for="end_date">
+                終了日
+            </label>
+
+            <input type="date"
+                   id="end_date"
+                   name="end_date"
+                   value="{{ program.end_date or '' if program else '' }}">
+
+        </div>
+
+
+        <!-- ==========================
+             公式サイト
+        ========================== -->
+
+        <div class="form-group">
+
+            <label for="official_url">
+                公式サイトURL
+            </label>
+
+            <input type="url"
+                   id="official_url"
+                   name="official_url"
+                   value="{{ program.official_url or '' if program else '' }}"
+                   maxlength="500"
+                   placeholder="https://">
+
+        </div>
+
+
+        <!-- ==========================
+             説明
+        ========================== -->
+
+        <div class="form-group">
+
+            <label for="description">
+                説明
+            </label>
+
+            <textarea id="description"
+                      name="description"
+                      rows="5"
+                      placeholder="番組の説明など">{{ program.description or '' if program else '' }}</textarea>
+
+        </div>
+
+
+        <!-- ==========================
+             公開設定
+        ========================== -->
+
+        <div class="form-group form-checkbox">
+
+            <label>
+
+                <input type="checkbox"
+                       name="public_flag"
+                       value="true"
+                       {% if not program or program.public_flag %}checked{% endif %}>
+
+                公開する
+
+            </label>
+
+        </div>
+
+
+        <!-- ==========================
+             ボタン
+        ========================== -->
+
+        <div class="form-actions">
+
+            <a href="/admin/master/oshi_program"
+               class="cancel-btn">
+                キャンセル
+            </a>
+
+            <button type="submit"
+                    class="submit-btn">
+
+                {% if program %}
+                    更新
+                {% else %}
+                    登録
+                {% endif %}
+
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+</body>
+</html>
