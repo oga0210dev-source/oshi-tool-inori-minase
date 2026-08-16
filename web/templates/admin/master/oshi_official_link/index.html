@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <link rel="icon"
+          href="/static/img/logo.png"
+          type="image/png">
+
+    <title>公式リンク管理</title>
+
+    <link rel="stylesheet"
+          href="/static/css/common.css">
+
+    <link rel="stylesheet"
+          href="/static/css/admin/master/admin-common.css">
+
+    <link rel="stylesheet"
+          href="/static/css/admin/master/oshi/oshi_official_link.css">
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="page-header">
+
+        <a href="/admin/master"
+           class="master-link">
+            ← 管理マスタ
+        </a>
+
+        <h1 class="page-title">
+            公式リンク管理
+        </h1>
+
+    </div>
+
+
+    <!-- 新規登録 -->
+
+    <a href="/admin/master/oshi_official_link/create"
+       class="action-btn"
+       onclick="saveOfficialLinkState()">
+        新規登録
+    </a>
+
+
+    <!-- 検索 -->
+
+    <div class="search-area">
+
+        <form method="get"
+              class="search-form"
+              onsubmit="clearOfficialLinkState()">
+
+            <input
+                type="text"
+                name="keyword"
+                placeholder="リンク名・説明で検索"
+                value="{{ keyword }}"
+            >
+
+            <select name="sort">
+
+                <option
+                    value="display"
+                    {% if sort == "display" %}selected{% endif %}>
+                    表示順
+                </option>
+
+                <option
+                    value="name"
+                    {% if sort == "name" %}selected{% endif %}>
+                    リンク名順
+                </option>
+
+                <option
+                    value="created"
+                    {% if sort == "created" %}selected{% endif %}>
+                    追加順
+                </option>
+
+                <option
+                    value="updated"
+                    {% if sort == "updated" %}selected{% endif %}>
+                    更新順
+                </option>
+
+            </select>
+
+            <button type="submit"
+                    class="search-btn">
+                検索
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <!-- 公式リンク一覧 -->
+
+    <div class="page-scroll">
+
+        <div class="official-link-list">
+
+            {% for link in links %}
+
+            <div class="official-link-row">
+
+                <div class="official-link-info">
+
+                    <div class="official-link-name">
+
+                        {% if link.icon %}
+                        <span class="official-link-icon">
+                            {{ link.icon }}
+                        </span>
+                        {% endif %}
+
+                        {{ link.link_name }}
+
+                    </div>
+
+
+                    <div class="official-link-url">
+
+                        <a
+                            href="{{ link.url }}"
+                            target="_blank"
+                            rel="noopener noreferrer">
+                            {{ link.url }}
+                        </a>
+
+                    </div>
+
+
+                    {% if link.description %}
+
+                    <div class="official-link-description">
+                        {{ link.description }}
+                    </div>
+
+                    {% endif %}
+
+
+                    <div class="official-link-meta">
+
+                        <span>
+                            表示順：{{ link.display_order }}
+                        </span>
+
+                        <span>
+
+                            {% if link.public_flag %}
+                            公開
+                            {% else %}
+                            非公開
+                            {% endif %}
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="official-link-action">
+
+                    <a
+                        href="/admin/master/oshi_official_link/edit/{{ link.link_id }}"
+                        class="edit-btn"
+                        onclick="saveOfficialLinkState()">
+                        編集
+                    </a>
+
+                    <a
+                        href="/admin/master/oshi_official_link/delete/{{ link.link_id }}"
+                        class="delete-btn"
+                        onclick="return confirm('この公式リンクを削除しますか？');">
+                        削除
+                    </a>
+
+                </div>
+
+            </div>
+
+            {% else %}
+
+            <p class="empty-message">
+
+                {% if request.query_params.get('keyword') %}
+
+                「{{ request.query_params.get('keyword') }}」に一致する公式リンクはありません。
+
+                {% else %}
+
+                登録されている公式リンクはありません。
+
+                {% endif %}
+
+            </p>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   一覧状態保存
+   ========================================================= */
+
+function saveOfficialLinkState(){
+
+    const area =
+        document.querySelector(".page-scroll");
+
+    sessionStorage.setItem(
+        "master_oshi_official_link_url",
+        window.location.href
+    );
+
+    if(area){
+
+        sessionStorage.setItem(
+            "master_oshi_official_link_scroll",
+            area.scrollTop
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   検索時は状態をクリア
+   ========================================================= */
+
+function clearOfficialLinkState(){
+
+    sessionStorage.removeItem(
+        "master_oshi_official_link_url"
+    );
+
+    sessionStorage.removeItem(
+        "master_oshi_official_link_scroll"
+    );
+
+}
+
+
+/* =========================================================
+   ページ復元
+   ========================================================= */
+
+window.addEventListener(
+    "load",
+    function(){
+
+        const params =
+            new URLSearchParams(
+                window.location.search
+            );
+
+
+        /*
+         * first指定時は状態を完全にクリア
+         */
+
+        if(params.has("first")){
+
+            sessionStorage.removeItem(
+                "master_oshi_official_link_url"
+            );
+
+            sessionStorage.removeItem(
+                "master_oshi_official_link_scroll"
+            );
+
+            window.history.replaceState(
+                {},
+                "",
+                "/admin/master/oshi_official_link"
+            );
+
+            return;
+
+        }
+
+
+        const savedUrl =
+            sessionStorage.getItem(
+                "master_oshi_official_link_url"
+            );
+
+        const currentUrl =
+            window.location.href;
+
+
+        /*
+         * 編集・登録画面から戻った場合
+         *
+         * 検索条件・ソート条件を含めて
+         * 元のURLへ戻す
+         */
+
+        if(
+            savedUrl &&
+            currentUrl !== savedUrl
+        ){
+
+            window.location.replace(
+                savedUrl
+            );
+
+            return;
+
+        }
+
+
+        /*
+         * スクロール位置復元
+         */
+
+        const scroll =
+            sessionStorage.getItem(
+                "master_oshi_official_link_scroll"
+            );
+
+        const area =
+            document.querySelector(
+                ".page-scroll"
+            );
+
+
+        if(
+            area &&
+            scroll !== null
+        ){
+
+            area.scrollTop =
+                Number(scroll);
+
+        }
+
+    }
+);
+
+</script>
+
+</body>
+</html>

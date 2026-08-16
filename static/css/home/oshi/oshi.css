@@ -1,9 +1,56 @@
+/* ==========================
+   推し情報 一覧ページ共通
+========================== */
+
+/*
+   出演作品・記念日・公式リンク画面では
+   body全体を固定し、oshi-pageを
+   ヘッダー以外の残り領域にする
+*/
+body:has(.oshi-work-list, .oshi-official-link-list){
+    display:flex;
+    flex-direction:column;
+    height:100dvh;
+    margin:0;
+    overflow:hidden;
+}
+
+
+/* ==========================
+   推し情報ページ
+========================== */
+
 .oshi-page{
     width:100%;
     max-width:430px;
     margin:0 auto;
-    padding:15px 0 30px;
+    padding:15px 0 0;
     box-sizing:border-box;
+    display:flex;
+    flex-direction:column;
+}
+
+
+/*
+   一覧ページでは、
+   ヘッダーを除いた残りの高さを使用する
+*/
+body:has(.oshi-work-list, .oshi-official-link-list) .oshi-page{
+    flex:1 1 0;
+    min-height:0;
+    height:auto;
+    overflow:hidden;
+}
+
+
+/* ==========================
+   推し情報トップ
+========================== */
+
+.oshi-home-page{
+    height:auto;
+    overflow:visible;
+    padding-bottom:30px;
 }
 
 
@@ -60,7 +107,7 @@
     margin:0 15px 16px;
     padding:16px;
     box-sizing:border-box;
-    background:white;
+    background:#fff;
     border-radius:15px;
     box-shadow:0 3px 8px rgba(0,0,0,.12);
 }
@@ -123,4 +170,432 @@
     margin:30px 15px;
     text-align:center;
     color:#777;
+}
+
+
+/* ==========================
+   推し情報メニュー
+========================== */
+
+.oshi-menu-btn{
+    display:flex;
+    align-items:center;
+    width:auto;
+    min-height:70px;
+    margin:0 15px 16px;
+    padding:12px 16px;
+    box-sizing:border-box;
+    border-radius:15px;
+    background:#fff;
+    box-shadow:0 3px 8px rgba(0,0,0,.12);
+    text-decoration:none;
+    color:#333;
+}
+
+.oshi-menu-icon{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:42px;
+    height:42px;
+    margin-right:12px;
+    border-radius:10px;
+    background:#fff0f5;
+    font-size:22px;
+    flex-shrink:0;
+}
+
+.oshi-menu-text{
+    display:flex;
+    flex-direction:column;
+    flex:1;
+    min-width:0;
+}
+
+.oshi-menu-text strong{
+    font-size:15px;
+    line-height:1.5;
+}
+
+.oshi-menu-text small{
+    margin-top:2px;
+    color:#777;
+    font-size:12px;
+    line-height:1.5;
+}
+
+.oshi-menu-arrow{
+    margin-left:10px;
+    color:#999;
+    font-size:26px;
+    line-height:1;
+    flex-shrink:0;
+}
+
+
+/* ==========================
+   ページヘッダー
+========================== */
+
+.oshi-page-header{
+    flex-shrink:0;
+    margin:0 15px 16px;
+}
+
+.oshi-back-btn{
+    display:inline-block;
+    margin-bottom:10px;
+    color:#666;
+    font-size:13px;
+    text-decoration:none;
+}
+
+.oshi-page-header h1{
+    margin:0;
+    font-size:22px;
+    line-height:1.4;
+}
+
+
+/* ==========================
+   検索
+========================== */
+
+.oshi-work-search{
+    flex-shrink:0;
+    margin:0 15px 16px;
+}
+
+.oshi-work-search-form{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+}
+
+.oshi-work-search-form input,
+.oshi-work-search-form select{
+    width:100%;
+    min-height:42px;
+    padding:8px 10px;
+    box-sizing:border-box;
+    border:1px solid #ccc;
+    border-radius:8px;
+    background:#fff;
+    font-size:14px;
+}
+
+.oshi-work-search-form input:focus,
+.oshi-work-search-form select:focus{
+    outline:none;
+    border-color:#ff8fb1;
+}
+
+.oshi-work-search-btn{
+    width:100%;
+    min-height:42px;
+    border:none;
+    border-radius:8px;
+    background:#ff8fb1;
+    color:#fff;
+    font-size:14px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.oshi-work-search-btn:hover{
+    opacity:.9;
+}
+
+
+/* ==========================
+   出演作品・記念日一覧
+========================== */
+
+.oshi-work-list{
+    flex:1 1 0;
+    min-height:0;
+    margin:0 15px;
+    padding:0 0 30px;
+    overflow-y:auto;
+    overflow-x:hidden;
+    overscroll-behavior:contain;
+
+    /* スクロールバー非表示 */
+    scrollbar-width:none;
+    -ms-overflow-style:none;
+}
+
+.oshi-work-list::-webkit-scrollbar{
+    display:none;
+}
+
+
+/* ==========================
+   作品・記念日カード
+========================== */
+
+.oshi-work-card{
+    margin-bottom:16px;
+    padding:16px;
+    box-sizing:border-box;
+    background:#fff;
+    border-radius:15px;
+    box-shadow:0 3px 8px rgba(0,0,0,.12);
+}
+
+.oshi-work-name{
+    margin:0 0 8px;
+    font-size:17px;
+    line-height:1.5;
+    word-break:break-word;
+}
+
+.oshi-work-meta{
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px 12px;
+    margin-bottom:8px;
+    color:#666;
+    font-size:13px;
+    line-height:1.5;
+}
+
+.oshi-work-date{
+    margin:0 0 8px;
+    color:#777;
+    font-size:13px;
+}
+
+.oshi-work-description{
+    margin:10px 0 0;
+    font-size:14px;
+    line-height:1.7;
+    white-space:pre-wrap;
+    word-break:break-word;
+}
+
+.oshi-work-link{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    min-height:38px;
+    margin-top:12px;
+    border-radius:8px;
+    background:#ff8fb1;
+    color:#fff;
+    font-size:13px;
+    font-weight:bold;
+    text-decoration:none;
+}
+
+.oshi-work-link:hover{
+    opacity:.9;
+}
+
+
+/* ==========================
+   データなし
+========================== */
+
+.oshi-work-list .oshi-empty{
+    margin:30px 0;
+}
+
+
+/* ==========================
+   記念日
+========================== */
+
+.oshi-anniversary-years{
+    margin:10px 0;
+    font-size:14px;
+    line-height:1.5;
+}
+
+.oshi-anniversary-years strong{
+    font-size:22px;
+}
+
+.oshi-anniversary-next{
+    margin:10px 0;
+    padding:10px 12px;
+    box-sizing:border-box;
+    border-radius:8px;
+    background:#fff0f5;
+    font-size:13px;
+    line-height:1.5;
+}
+
+.oshi-anniversary-next strong{
+    margin-left:4px;
+    font-size:20px;
+}
+
+
+/* ==========================
+   公式リンク一覧
+========================== */
+
+.oshi-official-link-list{
+    flex:1 1 0;
+    min-height:0;
+    margin:0 15px;
+    padding:0 0 30px;
+    overflow-y:auto;
+    overflow-x:hidden;
+    overscroll-behavior:contain;
+
+    /* スクロールバー非表示 */
+    scrollbar-width:none;
+    -ms-overflow-style:none;
+}
+
+.oshi-official-link-list::-webkit-scrollbar{
+    display:none;
+}
+
+
+/* ==========================
+   公式リンクカード
+========================== */
+
+.oshi-official-link-card{
+    display:flex;
+    align-items:center;
+    width:100%;
+    min-height:70px;
+    margin-bottom:16px;
+    padding:12px 16px;
+    box-sizing:border-box;
+    border-radius:15px;
+    background:#fff;
+    box-shadow:0 3px 8px rgba(0,0,0,.12);
+    text-decoration:none;
+    color:#333;
+}
+
+.oshi-official-link-card:hover{
+    opacity:.9;
+}
+
+
+/* ==========================
+   公式リンクアイコン
+========================== */
+
+.oshi-official-link-icon{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:42px;
+    height:42px;
+    margin-right:12px;
+    border-radius:10px;
+    background:#fff0f5;
+    font-size:22px;
+    flex-shrink:0;
+}
+
+
+/* ==========================
+   公式リンク内容
+========================== */
+
+.oshi-official-link-content{
+    flex:1;
+    min-width:0;
+}
+
+.oshi-official-link-name{
+    margin:0;
+    font-size:15px;
+    line-height:1.5;
+    word-break:break-word;
+}
+
+.oshi-official-link-description{
+    margin:2px 0 0;
+    color:#777;
+    font-size:12px;
+    line-height:1.5;
+    word-break:break-word;
+}
+
+
+/* ==========================
+   公式リンク矢印
+========================== */
+
+.oshi-official-link-arrow{
+    margin-left:10px;
+    color:#999;
+    font-size:22px;
+    line-height:1;
+    flex-shrink:0;
+}
+
+/* ==========================
+   基本情報スライダー
+========================== */
+
+.oshi-basic-slider{
+    display:flex;
+    gap:20px;
+    overflow-x:auto;
+    scroll-snap-type:x mandatory;
+    scrollbar-width:none;
+    -ms-overflow-style:none;
+    padding:0 20px;
+}
+
+.oshi-basic-slider::-webkit-scrollbar{
+    display:none;
+}
+
+
+/* ==========================
+   基本情報スライド
+========================== */
+
+.oshi-basic-slide{
+    flex:0 0 100%;
+    scroll-snap-align:center;
+}
+
+
+/* ==========================
+   基本情報カード
+========================== */
+
+.oshi-basic-slide .oshi-info-card{
+    width:100%;
+    max-width:390px;
+    min-height:150px;
+    margin:0 auto;
+}
+
+
+/* ==========================
+   スライダードット
+========================== */
+
+.oshi-basic-slider-dots{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:8px;
+    margin:0 0 16px;
+}
+
+.oshi-basic-slider-dot{
+    display:block;
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    background:#ccc;
+}
+
+.oshi-basic-slider-dot.active{
+    background:#ff8fb1;
+    transform:scale(1.2);
 }

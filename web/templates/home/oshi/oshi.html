@@ -7,9 +7,13 @@
 {% endblock %}
 
 {% block content %}
-<main class="oshi-page">
+<main class="oshi-page oshi-home-page">
 
     {% if oshi_basic %}
+
+    <!-- ==========================
+         推しプロフィール
+    ========================== -->
 
     <section class="oshi-profile">
 
@@ -25,86 +29,181 @@
         <h1>{{ oshi_basic.oshi_name }}</h1>
 
         {% if oshi_basic.profile_message %}
-        <p class="oshi-profile-message">{{ oshi_basic.profile_message }}</p>
+        <p class="oshi-profile-message">
+            {{ oshi_basic.profile_message }}
+        </p>
         {% endif %}
 
     </section>
 
 
-    <section class="oshi-info-card">
+    <!-- ==========================
+         基本情報スライダー
+    ========================== -->
 
-        <h2>🎂 誕生日</h2>
+    <section class="oshi-basic-slider">
 
-        <p class="oshi-date">
-            {{ oshi_basic.birthday.strftime("%Y年%m月%d日") }}
-        </p>
+        <!-- 誕生日 -->
+        <div class="oshi-basic-slide">
 
-        <p class="oshi-age">
-            {{ oshi_basic.age }}歳
-        </p>
+            <section class="oshi-info-card">
 
-        <p class="oshi-countdown">
-            次の誕生日まで
-            <strong>
-                あと{{ oshi_basic.birthday_remaining_days }}日
-            </strong>
-        </p>
+                <h2>🎂 誕生日</h2>
+
+                <p class="oshi-date">
+                    {{ oshi_basic.birthday.strftime("%Y年%m月%d日") }}
+                </p>
+
+                <p class="oshi-age">
+                    {{ oshi_basic.age }}歳
+                </p>
+
+                <p class="oshi-countdown">
+                    次の誕生日まで
+                    <strong>
+                        あと{{ oshi_basic.birthday_remaining_days }}日
+                    </strong>
+                </p>
+
+            </section>
+
+        </div>
+
+
+        <!-- 声優デビュー -->
+        <div class="oshi-basic-slide">
+
+            <section class="oshi-info-card">
+
+                <h2>🎤 声優デビュー</h2>
+
+                <p class="oshi-date">
+                    {{ oshi_basic.voice_actor_debut_date.strftime(
+                        "%Y年%m月%d日"
+                    ) }}
+                </p>
+
+                <p class="oshi-elapsed">
+                    デビューから
+                    <strong>
+                        {{ oshi_basic.voice_actor_debut_elapsed_years }}年
+                        {{ oshi_basic.voice_actor_debut_elapsed_months }}ヶ月
+                        {{ oshi_basic.voice_actor_debut_elapsed_days }}日
+                    </strong>
+                </p>
+
+                <p class="oshi-total-days">
+                    {{ oshi_basic.voice_actor_debut_elapsed_total_days }}日
+                    経過
+                </p>
+
+            </section>
+
+        </div>
+
+
+        <!-- 歌手デビュー -->
+        {% if oshi_basic.singer_debut_date %}
+
+        <div class="oshi-basic-slide">
+
+            <section class="oshi-info-card">
+
+                <h2>🎵 歌手デビュー</h2>
+
+                <p class="oshi-date">
+                    {{ oshi_basic.singer_debut_date.strftime(
+                        "%Y年%m月%d日"
+                    ) }}
+                </p>
+
+                <p class="oshi-elapsed">
+                    デビューから
+                    <strong>
+                        {{ oshi_basic.singer_debut_elapsed_years }}年
+                        {{ oshi_basic.singer_debut_elapsed_months }}ヶ月
+                        {{ oshi_basic.singer_debut_elapsed_days }}日
+                    </strong>
+                </p>
+
+                <p class="oshi-total-days">
+                    {{ oshi_basic.singer_debut_elapsed_total_days }}日
+                    経過
+                </p>
+
+            </section>
+
+        </div>
+
+        {% endif %}
 
     </section>
 
 
-    <section class="oshi-info-card">
+    <!-- ==========================
+         スライド位置
+    ========================== -->
 
-        <h2>🎤 声優デビュー</h2>
+    <div class="oshi-basic-slider-dots">
 
-        <p class="oshi-date">
-            {{ oshi_basic.voice_actor_debut_date.strftime("%Y年%m月%d日") }}
-        </p>
+        <span class="oshi-basic-slider-dot active"></span>
 
-        <p class="oshi-elapsed">
-            デビューから
-            <strong>
-                {{ oshi_basic.voice_actor_debut_elapsed_years }}年
-                {{ oshi_basic.voice_actor_debut_elapsed_months }}ヶ月
-                {{ oshi_basic.voice_actor_debut_elapsed_days }}日
-            </strong>
-        </p>
+        <span class="oshi-basic-slider-dot"></span>
 
-        <p class="oshi-total-days">
-            {{ oshi_basic.voice_actor_debut_elapsed_total_days }}日
-            経過
-        </p>
+        {% if oshi_basic.singer_debut_date %}
+        <span class="oshi-basic-slider-dot"></span>
+        {% endif %}
 
-    </section>
+    </div>
 
 
-    {% if oshi_basic.singer_debut_date %}
+    <!-- ==========================
+         推し情報メニュー
+    ========================== -->
 
-    <section class="oshi-info-card">
+    <a href="/home/oshi/work"
+       class="oshi-menu-btn">
 
-        <h2>🎵 歌手デビュー</h2>
+        <span class="oshi-menu-icon">🎬</span>
 
-        <p class="oshi-date">
-            {{ oshi_basic.singer_debut_date.strftime("%Y年%m月%d日") }}
-        </p>
+        <span class="oshi-menu-text">
+            <strong>出演作品</strong>
+            <small>出演した作品を見る</small>
+        </span>
 
-        <p class="oshi-elapsed">
-            デビューから
-            <strong>
-                {{ oshi_basic.singer_debut_elapsed_years }}年
-                {{ oshi_basic.singer_debut_elapsed_months }}ヶ月
-                {{ oshi_basic.singer_debut_elapsed_days }}日
-            </strong>
-        </p>
+        <span class="oshi-menu-arrow">›</span>
 
-        <p class="oshi-total-days">
-            {{ oshi_basic.singer_debut_elapsed_total_days }}日
-            経過
-        </p>
+    </a>
 
-    </section>
 
-    {% endif %}
+    <a href="/home/oshi/anniversary"
+       class="oshi-menu-btn">
+
+        <span class="oshi-menu-icon">🎉</span>
+
+        <span class="oshi-menu-text">
+            <strong>記念日</strong>
+            <small>大切な記念日を見る</small>
+        </span>
+
+        <span class="oshi-menu-arrow">›</span>
+
+    </a>
+
+
+    <a href="/home/oshi/official_link"
+       class="oshi-menu-btn">
+
+        <span class="oshi-menu-icon">🔗</span>
+
+        <span class="oshi-menu-text">
+            <strong>公式リンク</strong>
+            <small>公式サイトやSNSを見る</small>
+        </span>
+
+        <span class="oshi-menu-arrow">›</span>
+
+    </a>
 
 
     {% else %}
@@ -116,4 +215,63 @@
     {% endif %}
 
 </main>
+{% endblock %}
+
+{% block script %}
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+
+    const slider = document.querySelector(".oshi-basic-slider");
+    const slides = document.querySelectorAll(".oshi-basic-slide");
+    const dots = document.querySelectorAll(".oshi-basic-slider-dot");
+
+    if(!slider || !slides.length || !dots.length){
+        return;
+    }
+
+    function updateDots(){
+
+        const sliderRect =
+            slider.getBoundingClientRect();
+
+        const sliderCenter =
+            sliderRect.left + sliderRect.width / 2;
+
+        let activeIndex = 0;
+        let minDistance = Infinity;
+
+        slides.forEach(function(slide, index){
+
+            const slideRect =
+                slide.getBoundingClientRect();
+
+            const slideCenter =
+                slideRect.left + slideRect.width / 2;
+
+            const distance =
+                Math.abs(sliderCenter - slideCenter);
+
+            if(distance < minDistance){
+                minDistance = distance;
+                activeIndex = index;
+            }
+
+        });
+
+        dots.forEach(function(dot, index){
+
+            dot.classList.toggle(
+                "active",
+                index === activeIndex
+            );
+
+        });
+    }
+
+    slider.addEventListener("scroll", updateDots);
+
+    updateDots();
+
+});
+</script>
 {% endblock %}

@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="icon"
+          href="/static/img/logo.png"
+          type="image/png">
+
+    <title>推し出演作品管理</title>
+
+    <link rel="stylesheet"
+          href="/static/css/common.css">
+
+    <link rel="stylesheet"
+          href="/static/css/admin/master/admin-common.css">
+
+    <link rel="stylesheet"
+          href="/static/css/admin/master/oshi/oshi_work.css">
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="page-header">
+
+        <a href="/admin/master"
+           class="master-link">
+            ← 管理マスタ
+        </a>
+
+        <h1 class="page-title">
+            出演作品管理
+        </h1>
+
+    </div>
+
+
+    <a href="/admin/master/oshi_work/create"
+       class="action-btn"
+       onclick="saveWorkState()">
+        新規登録
+    </a>
+
+
+    <!-- 検索 -->
+
+    <div class="search-area">
+
+        <form method="get"
+              class="search-form"
+              onsubmit="clearWorkState()">
+
+            <input
+                type="text"
+                name="keyword"
+                placeholder="作品名・キャラクター名で検索"
+                value="{{ keyword }}"
+            >
+
+            <select name="sort">
+
+                <option value="created"
+                        {% if sort == "created" %}selected{% endif %}>
+                    追加順
+                </option>
+
+                <option value="release_asc"
+                        {% if sort == "release_asc" %}selected{% endif %}>
+                    出演順（古い順）
+                </option>
+
+                <option value="release_desc"
+                        {% if sort == "release_desc" %}selected{% endif %}>
+                    出演順（新しい順）
+                </option>
+
+                <option value="name"
+                        {% if sort == "name" %}selected{% endif %}>
+                    作品名順
+                </option>
+
+                <option value="updated"
+                        {% if sort == "updated" %}selected{% endif %}>
+                    更新順
+                </option>
+
+            </select>
+
+            <button type="submit"
+                    class="search-btn">
+                検索
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <!-- 作品一覧 -->
+
+    <div class="page-scroll">
+
+        <div class="work-list">
+
+            {% for work in works %}
+
+            <div class="work-row">
+
+                <div class="work-info">
+
+                    <div class="work-name">
+                        {{ work.work_name }}
+                    </div>
+
+
+                    <div class="work-meta">
+
+                        <span>
+                            {{ work.work_type_name }}
+                        </span>
+
+                        {% if work.character_name %}
+
+                        <span>
+                            役：{{ work.character_name }}
+                        </span>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- 放送時期 / 公開日 -->
+
+                    {% if work.work_type == "ANIME" %}
+
+                        {% if work.broadcast_year and work.broadcast_season %}
+
+                        <div class="work-date">
+
+                            {{ work.broadcast_year }}年
+
+                            {% if work.broadcast_season == "SPRING" %}
+                                春
+                            {% elif work.broadcast_season == "SUMMER" %}
+                                夏
+                            {% elif work.broadcast_season == "AUTUMN" %}
+                                秋
+                            {% elif work.broadcast_season == "WINTER" %}
+                                冬
+                            {% endif %}
+
+                        </div>
+
+                        {% elif work.broadcast_year %}
+
+                        <div class="work-date">
+                            {{ work.broadcast_year }}年
+                        </div>
+
+                        {% endif %}
+
+                    {% elif work.release_date %}
+
+                    <div class="work-date">
+                        {{ work.release_date.strftime("%Y年%m月%d日") }}
+                    </div>
+
+                    {% endif %}
+
+
+                    <div class="work-status">
+
+                        {% if work.public_flag %}
+                            公開
+                        {% else %}
+                            非公開
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+
+                <div class="work-action">
+
+                    <a href="/admin/master/oshi_work/edit/{{ work.work_id }}"
+                       class="edit-btn"
+                       onclick="saveWorkState()">
+                        編集
+                    </a>
+
+                    <a href="/admin/master/oshi_work/delete/{{ work.work_id }}"
+                       class="delete-btn"
+                       onclick="return confirm('この作品を削除しますか？');">
+                        削除
+                    </a>
+
+                </div>
+
+            </div>
+
+            {% else %}
+
+            <p class="empty-message">
+
+                {% if keyword %}
+                    「{{ keyword }}」に一致する作品はありません。
+                {% else %}
+                    登録されている出演作品はありません。
+                {% endif %}
+
+            </p>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    const STORAGE_URL =
+        "master_oshi_work_url";
+
+    const STORAGE_SCROLL =
+        "master_oshi_work_scroll";
+
+
+    /* =========================================================
+       一覧状態保存
+       ========================================================= */
+
+    function saveWorkState() {
+
+        const area =
+            document.querySelector(".page-scroll");
+
+        sessionStorage.setItem(
+            STORAGE_URL,
+            window.location.href
+        );
+
+        if (area) {
+
+            sessionStorage.setItem(
+                STORAGE_SCROLL,
+                area.scrollTop
+            );
+
+        }
+
+    }
+
+
+    /* =========================================================
+       検索時は状態をクリア
+       ========================================================= */
+
+    function clearWorkState() {
+
+        sessionStorage.removeItem(
+            STORAGE_URL
+        );
+
+        sessionStorage.removeItem(
+            STORAGE_SCROLL
+        );
+
+    }
+
+
+    /* =========================================================
+       ページ復元
+       ========================================================= */
+
+    window.addEventListener(
+        "load",
+        function () {
+
+            const params =
+                new URLSearchParams(
+                    window.location.search
+                );
+
+
+            /*
+             * first指定時は状態を完全にクリア
+             */
+
+            if (params.has("first")) {
+
+                clearWorkState();
+
+                window.history.replaceState(
+                    {},
+                    "",
+                    "/admin/master/oshi_work"
+                );
+
+                return;
+
+            }
+
+
+            const savedUrl =
+                sessionStorage.getItem(
+                    STORAGE_URL
+                );
+
+            const currentUrl =
+                window.location.href;
+
+
+            /*
+             * 編集・登録画面から戻った場合
+             *
+             * 検索条件・ソート条件を含めて
+             * 元のURLへ戻す
+             */
+
+            if (
+                savedUrl &&
+                currentUrl !== savedUrl
+            ) {
+
+                window.location.replace(
+                    savedUrl
+                );
+
+                return;
+
+            }
+
+
+            /*
+             * スクロール位置復元
+             */
+
+            const scroll =
+                sessionStorage.getItem(
+                    STORAGE_SCROLL
+                );
+
+            const area =
+                document.querySelector(
+                    ".page-scroll"
+                );
+
+            if (
+                area &&
+                scroll !== null
+            ) {
+
+                area.scrollTop =
+                    Number(scroll);
+
+            }
+
+        }
+    );
+
+</script>
+
+</body>
+</html>

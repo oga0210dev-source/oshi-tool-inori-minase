@@ -1,0 +1,88 @@
+{% extends "templates/commons/base.html" %}
+
+{% block title %}公式リンク{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="/static/css/home/oshi/oshi.css">
+{% endblock %}
+
+{% block content %}
+
+<main class="oshi-page">
+
+    <!-- ページヘッダー -->
+
+    <section class="oshi-page-header">
+
+        <a
+            href="/home/oshi"
+            class="oshi-back-btn">
+            ← 推し情報
+        </a>
+
+        <h1>
+            公式リンク
+        </h1>
+
+    </section>
+
+
+    <!-- 公式リンク一覧 -->
+
+    <section class="oshi-official-link-list">
+
+        {% for link in links %}
+
+        <a
+            href="{{ link.url }}"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="oshi-official-link-card">
+
+            <div class="oshi-official-link-icon">
+
+                {% if link.icon %}
+                {{ link.icon }}
+                {% else %}
+                🔗
+                {% endif %}
+
+            </div>
+
+
+            <div class="oshi-official-link-content">
+
+                <h2 class="oshi-official-link-name">
+                    {{ link.link_name }}
+                </h2>
+
+                {% if link.description %}
+
+                <p class="oshi-official-link-description">
+                    {{ link.description }}
+                </p>
+
+                {% endif %}
+
+            </div>
+
+
+            <div class="oshi-official-link-arrow">
+                ↗
+            </div>
+
+        </a>
+
+        {% else %}
+
+        <p class="oshi-empty">
+            登録されている公式リンクはありません。
+        </p>
+
+        {% endfor %}
+
+    </section>
+
+</main>
+
+{% endblock %}

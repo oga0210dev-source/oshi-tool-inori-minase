@@ -1,0 +1,276 @@
+.official-link-list{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+}
+
+
+/* ==========================
+   公式リンク一覧
+========================== */
+
+.official-link-row{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:15px;
+    padding:15px;
+    box-sizing:border-box;
+    background:#fff;
+    border-radius:10px;
+    box-shadow:0 2px 6px rgba(0,0,0,.08);
+}
+
+.official-link-info{
+    flex:1;
+    min-width:0;
+}
+
+.official-link-name{
+    margin-bottom:6px;
+    font-size:16px;
+    font-weight:bold;
+    line-height:1.5;
+    word-break:break-word;
+}
+
+.official-link-icon{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    margin-right:6px;
+    font-size:18px;
+}
+
+.official-link-url{
+    margin-bottom:6px;
+    font-size:13px;
+    line-height:1.5;
+    word-break:break-all;
+}
+
+.official-link-url a{
+    color:#4285f4;
+    text-decoration:none;
+}
+
+.official-link-url a:hover{
+    text-decoration:underline;
+}
+
+.official-link-description{
+    margin-top:6px;
+    color:#666;
+    font-size:13px;
+    line-height:1.6;
+    white-space:pre-wrap;
+    word-break:break-word;
+}
+
+.official-link-meta{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px 15px;
+    margin-top:8px;
+    color:#777;
+    font-size:12px;
+    line-height:1.5;
+}
+
+
+/* ==========================
+   操作ボタン
+========================== */
+
+.official-link-action{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+    flex-shrink:0;
+}
+
+.official-link-action .edit-btn,
+.official-link-action .delete-btn{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    min-width:60px;
+    min-height:34px;
+    padding:5px 10px;
+    box-sizing:border-box;
+    border-radius:6px;
+    font-size:12px;
+    font-weight:bold;
+    text-decoration:none;
+}
+
+.official-link-action .edit-btn{
+    background:#eee;
+    color:#333;
+}
+
+.official-link-action .delete-btn{
+    background:#ffe5e5;
+    color:#d33;
+}
+
+.official-link-action .edit-btn:hover,
+.official-link-action .delete-btn:hover{
+    opacity:.8;
+}
+
+
+/* ==========================
+   フォーム
+========================== */
+
+.master-form{
+    width:100%;
+    max-width:600px;
+    margin:0 auto;
+}
+
+.master-form .form-group{
+    margin-bottom:18px;
+}
+
+.master-form label{
+    display:block;
+    margin-bottom:6px;
+    font-size:14px;
+    font-weight:bold;
+}
+
+.master-form input[type="text"],
+.master-form input[type="url"],
+.master-form textarea{
+    width:100%;
+    padding:10px;
+    box-sizing:border-box;
+    border:1px solid #ccc;
+    border-radius:6px;
+    background:#fff;
+    font-size:14px;
+}
+
+.master-form input[type="text"]:focus,
+.master-form input[type="url"]:focus,
+.master-form textarea:focus{
+    outline:none;
+    border-color:#ff8fb1;
+}
+
+.master-form textarea{
+    resize:vertical;
+    line-height:1.6;
+}
+
+.master-form .optional{
+    margin-left:5px;
+    color:#888;
+    font-size:11px;
+    font-weight:normal;
+}
+
+
+/* ==========================
+   公開フラグ
+========================== */
+
+.master-form .checkbox-group{
+    margin-top:5px;
+}
+
+.master-form .checkbox-group label{
+    display:flex;
+    align-items:center;
+    gap:7px;
+    font-weight:normal;
+}
+
+.master-form .checkbox-group input{
+    width:16px;
+    height:16px;
+}
+
+
+/* ==========================
+   フォームボタン
+========================== */
+
+.master-form .form-actions{
+    display:flex;
+    gap:10px;
+    margin-top:25px;
+}
+
+.master-form .cancel-btn,
+.master-form .save-btn{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex:1;
+    min-height:42px;
+    padding:8px 15px;
+    box-sizing:border-box;
+    border-radius:8px;
+    font-size:14px;
+    font-weight:bold;
+    text-decoration:none;
+    cursor:pointer;
+}
+
+.master-form .cancel-btn{
+    background:#eee;
+    color:#555;
+}
+
+.master-form .save-btn{
+    border:none;
+    background:#ff8fb1;
+    color:#fff;
+}
+
+.master-form .cancel-btn:hover,
+.master-form .save-btn:hover{
+    opacity:.85;
+}
+
+
+/* ==========================
+   スクロール
+========================== */
+
+.page-scroll{
+    overflow-y:auto;
+    scrollbar-width:none;
+}
+
+.page-scroll::-webkit-scrollbar{
+    display:none;
+}
+
+
+/* ==========================
+   スマートフォン
+========================== */
+
+@media (max-width:600px){
+
+    .official-link-row{
+        gap:10px;
+    }
+
+    .official-link-action{
+        gap:5px;
+    }
+
+    .official-link-action .edit-btn,
+    .official-link-action .delete-btn{
+        min-width:55px;
+        min-height:32px;
+        padding:4px 8px;
+        font-size:11px;
+    }
+
+}

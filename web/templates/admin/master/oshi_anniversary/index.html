@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <link rel="icon"
+          href="/static/img/logo.png"
+          type="image/png">
+
+    <title>推し記念日管理</title>
+
+    <link rel="stylesheet"
+          href="/static/css/common.css">
+
+    <link rel="stylesheet"
+          href="/static/css/admin/master/admin-common.css">
+
+    <link rel="stylesheet"
+          href="/static/css/admin/master/oshi/oshi_anniversary.css">
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="page-header">
+
+        <a href="/admin/master"
+           class="master-link">
+            ← 管理マスタ
+        </a>
+
+        <h1 class="page-title">
+            記念日管理
+        </h1>
+
+    </div>
+
+
+    <a href="/admin/master/oshi_anniversary/create"
+       class="action-btn"
+       onclick="saveAnniversaryState()">
+        新規登録
+    </a>
+
+
+    <!-- 検索 -->
+
+    <div class="search-area">
+
+        <form method="get"
+              class="search-form"
+              onsubmit="clearAnniversaryState()">
+
+            <input
+                type="text"
+                name="keyword"
+                placeholder="記念日名・説明で検索"
+                value="{{ keyword }}"
+            >
+
+            <select name="sort">
+
+                <option
+                    value="date_asc"
+                    {% if sort == "date_asc" %}selected{% endif %}>
+                    日付順（古い順）
+                </option>
+
+                <option
+                    value="date_desc"
+                    {% if sort == "date_desc" %}selected{% endif %}>
+                    日付順（新しい順）
+                </option>
+
+                <option
+                    value="display_order"
+                    {% if sort == "display_order" %}selected{% endif %}>
+                    表示順
+                </option>
+
+                <option
+                    value="name"
+                    {% if sort == "name" %}selected{% endif %}>
+                    記念日名順
+                </option>
+
+                <option
+                    value="created"
+                    {% if sort == "created" %}selected{% endif %}>
+                    追加順
+                </option>
+
+                <option
+                    value="updated"
+                    {% if sort == "updated" %}selected{% endif %}>
+                    更新順
+                </option>
+
+            </select>
+
+            <button type="submit"
+                    class="search-btn">
+                検索
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <!-- 記念日一覧 -->
+
+    <div class="page-scroll">
+
+        <div class="anniversary-list">
+
+            {% for anniversary in anniversaries %}
+
+            <div class="anniversary-row">
+
+                <div class="anniversary-info">
+
+                    <div class="anniversary-name">
+                        {{ anniversary.anniversary_name }}
+                    </div>
+
+                    <div class="anniversary-date">
+                        {{ anniversary.anniversary_date.strftime(
+                            "%Y年%m月%d日"
+                        ) }}
+                    </div>
+
+                    {% if anniversary.description %}
+
+                    <div class="anniversary-description">{{ anniversary.description }}</div>
+
+                    {% endif %}
+
+                    <div class="anniversary-status">
+
+                        {% if anniversary.public_flag %}
+                        公開
+                        {% else %}
+                        非公開
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+
+                <div class="anniversary-action">
+
+                    <a
+                        href="/admin/master/oshi_anniversary/edit/{{ anniversary.anniversary_id }}"
+                        class="edit-btn"
+                        onclick="saveAnniversaryState()">
+                        編集
+                    </a>
+
+                    <a
+                        href="/admin/master/oshi_anniversary/delete/{{ anniversary.anniversary_id }}"
+                        class="delete-btn"
+                        onclick="return confirm('この記念日を削除しますか？');">
+                        削除
+                    </a>
+
+                </div>
+
+            </div>
+
+            {% else %}
+
+            <p class="empty-message">
+
+                {% if request.query_params.get('keyword') %}
+
+                「{{ request.query_params.get('keyword') }}」に一致する記念日はありません。
+
+                {% else %}
+
+                登録されている記念日はありません。
+
+                {% endif %}
+
+            </p>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   一覧状態保存
+   ========================================================= */
+
+function saveAnniversaryState(){
+
+    const area =
+        document.querySelector(".page-scroll");
+
+    sessionStorage.setItem(
+        "master_oshi_anniversary_url",
+        window.location.href
+    );
+
+    if(area){
+
+        sessionStorage.setItem(
+            "master_oshi_anniversary_scroll",
+            area.scrollTop
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   検索時は状態をクリア
+   ========================================================= */
+
+function clearAnniversaryState(){
+
+    sessionStorage.removeItem(
+        "master_oshi_anniversary_url"
+    );
+
+    sessionStorage.removeItem(
+        "master_oshi_anniversary_scroll"
+    );
+
+}
+
+
+/* =========================================================
+   ページ復元
+   ========================================================= */
+
+window.addEventListener(
+    "load",
+    function(){
+
+        const params =
+            new URLSearchParams(
+                window.location.search
+            );
+
+
+        /*
+         * first指定時は状態を完全にクリア
+         */
+
+        if(params.has("first")){
+
+            sessionStorage.removeItem(
+                "master_oshi_anniversary_url"
+            );
+
+            sessionStorage.removeItem(
+                "master_oshi_anniversary_scroll"
+            );
+
+            window.history.replaceState(
+                {},
+                "",
+                "/admin/master/oshi_anniversary"
+            );
+
+            return;
+
+        }
+
+
+        const savedUrl =
+            sessionStorage.getItem(
+                "master_oshi_anniversary_url"
+            );
+
+        const currentUrl =
+            window.location.href;
+
+
+        /*
+         * 編集・登録画面から戻った場合
+         *
+         * 検索条件・ソート条件を含めて
+         * 元のURLへ戻す
+         */
+
+        if(
+            savedUrl &&
+            currentUrl !== savedUrl
+        ){
+
+            window.location.replace(
+                savedUrl
+            );
+
+            return;
+
+        }
+
+
+        /*
+         * スクロール位置復元
+         */
+
+        const scroll =
+            sessionStorage.getItem(
+                "master_oshi_anniversary_scroll"
+            );
+
+        const area =
+            document.querySelector(
+                ".page-scroll"
+            );
+
+
+        if(
+            area &&
+            scroll !== null
+        ){
+
+            area.scrollTop =
+                Number(scroll);
+
+        }
+
+    }
+);
+
+</script>
+
+</body>
+</html>
