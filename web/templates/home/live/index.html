@@ -12,64 +12,67 @@
         <div class="container">
 
             {% if lives %}
-            <div class="live-slider">
-
-                {% for live in lives %}
-                <div class="live-card">
-
-                    <div class="live-name">
-                        {{ live.live_name }}
-                    </div>
-
-                    <div class="tour-name">
-                        {{ live.tour_name }}
-                    </div>
-
-                    <div class="live-info">
-                        <div>
-                            📅 {{ live.live_date }}
-                            (あと{{ live.remaining_days }}日！)
+                <div class="live-slider">
+                    {% for live in lives %}
+                    <div class="live-card">
+                        <div class="live-name">
+                            {{ live.live_name }}
                         </div>
 
-                        <div>
-                            📍 {{ live.prefecture_name }}
-                            {{ live.venue_name }}
+                        <div class="tour-name">
+                            {{ live.tour_name }}
                         </div>
+
+                        <div class="live-info">
+                            <div>
+                                📅 {{ live.live_date }}
+                                (あと{{ live.remaining_days }}日！)
+                            </div>
+
+                            <div>
+                                📍 {{ live.prefecture_name }}
+                                {{ live.venue_name }}
+                            </div>
+                        </div>
+
+                        {% if is_login and live.is_join %}
+                        <div class="join-status">
+                            参加予定
+                        </div>
+                        {% endif %}
+
+                        {% if is_login and live.is_join %}
+                        <a href="/home/live/history/detail/{{ live.live_id }}?from=live"
+                           class="add-history">
+                            記録
+                        </a>
+                        {% endif %}
+
+                        <a href="/home/live/detail/{{ live.live_id }}"
+                           class="detail-btn">
+                            詳細
+                        </a>
                     </div>
+                    {% endfor %}
+                </div>
 
-                    {% if is_login and live.is_join %}
-                    <div class="join-status">
-                        参加予定
-                    </div>
-                    {% endif %}
+                <!-- スライダードット -->
+                <div class="live-slider-dots">
 
-                    {% if is_login and live.is_join %}
-                    <a href="/home/live/history/detail/{{ live.live_id }}?from=live"
-                       class="add-history">
-                        記録
-                    </a>
-                    {% endif %}
-
-                    <a href="/home/live/detail/{{ live.live_id }}"
-                       class="detail-btn">
-                        詳細
-                    </a>
+                    {% for live in lives %}
+                    <span class="live-slider-dot{% if loop.first %} active{% endif %}"></span>
+                    {% endfor %}
 
                 </div>
-                {% endfor %}
-
-            </div>
 
             {% else %}
-            <div class="no-live">
-                現在、開催予定のライブはありません
-            </div>
+                <div class="no-live">
+                    現在、開催予定のライブはありません
+                </div>
             {% endif %}
-
 
             <!-- メニュー -->
             <div class="menu-grid">
-
                 <!-- アーカイブ -->
                 <a href="/home/live/archive?first"
                    class="menu-btn">
@@ -118,6 +121,63 @@
 
 {% block script %}
 <script src="/static/js/common.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+
+    const slider = document.querySelector(".live-slider");
+    const slides = document.querySelectorAll(".live-card");
+    const dots = document.querySelectorAll(".live-slider-dot");
+
+    if(!slider || !slides.length || !dots.length){
+        return;
+    }
+
+    function updateDots(){
+
+        const sliderRect =
+            slider.getBoundingClientRect();
+
+        const sliderCenter =
+            sliderRect.left + sliderRect.width / 2;
+
+        let activeIndex = 0;
+        let minDistance = Infinity;
+
+        slides.forEach(function(slide, index){
+
+            const slideRect =
+                slide.getBoundingClientRect();
+
+            const slideCenter =
+                slideRect.left + slideRect.width / 2;
+
+            const distance =
+                Math.abs(sliderCenter - slideCenter);
+
+            if(distance < minDistance){
+                minDistance = distance;
+                activeIndex = index;
+            }
+
+        });
+
+        dots.forEach(function(dot, index){
+
+            dot.classList.toggle(
+                "active",
+                index === activeIndex
+            );
+
+        });
+    }
+
+    slider.addEventListener("scroll", updateDots);
+
+    updateDots();
+
+});
+</script>
 
 {% if message %}
 <script>

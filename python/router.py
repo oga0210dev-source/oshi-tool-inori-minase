@@ -15,14 +15,22 @@ from python.routers.home.live.history import (
 from python.routers.home.live.lost_item import lost_item
 from python.routers.home.live.prediction import setlist_prediction
 from python.routers.home.live.collected_song import collected_song
-from python.routers.home.oshi import oshi
+from python.routers.home.oshi import (
+    oshi,
+    oshi_work,
+    oshi_anniversary,
+    oshi_official_link
+)
 from python.routers.mypage import mypage, password, public_setting
 from python.routers.admin.master import (
     master,
     song as song_master,
     live as live_master,
     setlist as setlist_master,
-    oshi as oshi_master
+    oshi as oshi_master,
+    oshi_work as oshi_work_master,
+    oshi_anniversary as oshi_anniversary_master,
+    oshi_official_link as oshi_official_link_master
 )
 from python.routers.admin import inquiry as admin_inquiry
 
@@ -47,6 +55,9 @@ def register_router(app: FastAPI):
     app.include_router(live_master.router)
     app.include_router(setlist_master.router)
     app.include_router(oshi_master.router)
+    app.include_router(oshi_work_master.router)
+    app.include_router(oshi_anniversary_master.router)
+    app.include_router(oshi_official_link_master.router)
 
     app.include_router(live.router)
     app.include_router(archive.router)
@@ -63,3 +74,6 @@ def register_router(app: FastAPI):
     app.include_router(lost_item.router)
 
     app.include_router(oshi.router)
+    app.include_router(oshi_work.router)
+    app.include_router(oshi_anniversary.router)
+    app.include_router(oshi_official_link.router)

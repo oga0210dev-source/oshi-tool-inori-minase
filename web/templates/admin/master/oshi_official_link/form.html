@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <link rel="icon"
+          href="/static/img/logo.png"
+          type="image/png">
+
+    <title>
+        {% if mode == "create" %}
+        公式リンク 新規登録
+        {% else %}
+        公式リンク 編集
+        {% endif %}
+    </title>
+
+    <link rel="stylesheet"
+          href="/static/css/common.css">
+
+    <link rel="stylesheet"
+          href="/static/css/admin/master/admin-common.css">
+
+    <link rel="stylesheet"
+          href="/static/css/admin/master/oshi/oshi_official_link.css">
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="page-header">
+
+        <a href="/admin/master/oshi_official_link"
+           class="master-link">
+            ← 公式リンク管理
+        </a>
+
+        <h1 class="page-title">
+
+            {% if mode == "create" %}
+            公式リンク 新規登録
+            {% else %}
+            公式リンク 編集
+            {% endif %}
+
+        </h1>
+
+    </div>
+
+
+    <form
+        method="post"
+        action="{% if mode == 'create' %}/admin/master/oshi_official_link/create{% else %}/admin/master/oshi_official_link/edit/{{ link.link_id }}{% endif %}"
+        class="master-form"
+        data-unsaved-check="true">
+
+
+        <!-- リンク名 -->
+
+        <div class="form-group">
+
+            <label for="link_name">
+                リンク名
+            </label>
+
+            <input
+                type="text"
+                id="link_name"
+                name="link_name"
+                value="{{ link.link_name if link else '' }}"
+                maxlength="100"
+                required>
+
+        </div>
+
+
+        <!-- URL -->
+
+        <div class="form-group">
+
+            <label for="url">
+                URL
+            </label>
+
+            <input
+                type="url"
+                id="url"
+                name="url"
+                value="{{ link.url if link else '' }}"
+                maxlength="500"
+                placeholder="https://example.com/"
+                required>
+
+        </div>
+
+
+        <!-- アイコン -->
+
+        <div class="form-group">
+            <label for="icon">
+                アイコン
+            </label>
+
+            <select id="icon" name="icon">
+                <option value="🌐"
+                        {% if link and link.icon == "🌐" %}
+                        selected
+                        {% endif %}>
+                🌐 公式サイト
+                </option>
+
+                <option value="𝕏"
+                        {% if link and link.icon == "𝕏" %}
+                        selected
+                        {% endif %}>
+                𝕏 X
+                </option>
+
+                <option value="📷"
+                        {% if link and link.icon == "📷" %}
+                        selected
+                        {% endif %}>
+                📷 Instagram
+                </option>
+
+                <option value="▶️"
+                        {% if link and link.icon == "▶️" %}
+                        selected
+                        {% endif %}>
+                ▶️ YouTube
+                </option>
+
+                <option value="🎵"
+                        {% if link and link.icon == "🎵" %}
+                        selected
+                        {% endif %}>
+                🎵 音楽・アーティスト
+                </option>
+
+                <option value="🏠"
+                        {% if link and link.icon == "🏠" %}
+                        selected
+                        {% endif %}>
+                🏠 ファンクラブ
+                </option>
+
+                <option value="💬"
+                        {% if link and link.icon == "💬" %}
+                        selected
+                        {% endif %}>
+                💬 LINE
+                </option>
+
+                <option value="🎵"
+                        {% if link and link.icon == "🎵" %}
+                        selected
+                        {% endif %}>
+                🎵 TikTok
+                </option>
+
+            </select>
+
+        </div>
+
+        <!-- 説明 -->
+
+        <div class="form-group">
+
+            <label for="description">
+                説明
+                <span class="optional">任意</span>
+            </label>
+
+            <textarea
+                id="description"
+                name="description"
+                rows="5"
+            >{{ link.description if link and link.description else "" }}</textarea>
+
+        </div>
+
+
+        <!-- 公開フラグ -->
+
+        <div class="form-group checkbox-group">
+
+            <label>
+
+                <input
+                    type="checkbox"
+                    name="public_flag"
+                    {% if not link or link.public_flag %}
+                    checked
+                    {% endif %}>
+
+                公開する
+
+            </label>
+
+        </div>
+
+
+        <!-- ボタン -->
+
+        <div class="form-actions">
+
+            <a
+                href="/admin/master/oshi_official_link"
+                class="cancel-btn">
+                キャンセル
+            </a>
+
+            <button
+                type="submit"
+                class="save-btn">
+                保存
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+</body>
+</html>

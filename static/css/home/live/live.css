@@ -185,3 +185,28 @@ html::-webkit-scrollbar{
     font-weight:bold;
     align-items:center;
 }
+
+/* ==========================
+   スライダードット
+========================== */
+
+.live-slider-dots{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:8px;
+    margin:10px 0 16px;
+}
+
+.live-slider-dot{
+    display:block;
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    background:#ccc;
+}
+
+.live-slider-dot.active{
+    background:#ff8fb1;
+    transform:scale(1.2);
+}

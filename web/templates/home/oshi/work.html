@@ -1,0 +1,233 @@
+{% extends "templates/commons/base.html" %}
+
+{% block title %}出演作品{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="/static/css/home/oshi/oshi.css">
+{% endblock %}
+
+{% block content %}
+
+<main class="oshi-page">
+
+    <!-- ページヘッダー -->
+    <section class="oshi-page-header">
+
+        <a href="/home/oshi"
+           class="oshi-back-btn">
+            ← 推し情報
+        </a>
+
+        <h1>
+            出演作品
+        </h1>
+
+    </section>
+
+
+    <!-- 検索・ソート -->
+    <section class="oshi-work-search">
+
+        <form method="get"
+              class="oshi-work-search-form">
+
+            <input
+                type="text"
+                name="keyword"
+                value="{{ keyword }}"
+                placeholder="作品名・キャラクター名で検索"
+            >
+
+            <select name="sort">
+
+                <option
+                    value="release_asc"
+                    {% if sort == "release_asc" %}
+                    selected
+                    {% endif %}
+                >
+                    出演順（古い順）
+                </option>
+
+                <option
+                    value="release_desc"
+                    {% if sort == "release_desc" %}
+                    selected
+                    {% endif %}
+                >
+                    出演順（新しい順）
+                </option>
+
+                <option
+                    value="name"
+                    {% if sort == "name" %}
+                    selected
+                    {% endif %}
+                >
+                    作品名順
+                </option>
+
+                <option
+                    value="type"
+                    {% if sort == "type" %}
+                    selected
+                    {% endif %}
+                >
+                    作品種別順
+                </option>
+
+            </select>
+
+            <button
+                type="submit"
+                class="oshi-work-search-btn">
+                検索
+            </button>
+
+        </form>
+
+    </section>
+
+
+    <!-- 出演作品一覧 -->
+    <section class="oshi-work-list">
+
+        {% for work in works %}
+
+        <article class="oshi-work-card">
+
+            <!-- 作品名 -->
+            <h2 class="oshi-work-name">
+                {{ work.work_name }}
+            </h2>
+
+
+            <!-- 作品種別・キャラクター -->
+            <div class="oshi-work-meta">
+
+                <span>
+                    {% if work.work_type == "ANIME" %}
+                    アニメ
+                    {% elif work.work_type == "MOVIE" %}
+                    映画
+                    {% elif work.work_type == "GAME" %}
+                    ゲーム
+                    {% elif work.work_type == "DRAMA" %}
+                    ドラマCD
+                    {% elif work.work_type == "OTHER" %}
+                    その他
+                    {% endif %}
+                </span>
+
+                {% if work.character_name %}
+                <span>
+                    役：{{ work.character_name }}
+                </span>
+                {% endif %}
+
+            </div>
+
+
+            <!-- 放送時期・公開日等 -->
+            {% if work.work_type == "ANIME" %}
+
+                {% if work.broadcast_year
+                      and work.broadcast_season_name %}
+
+                <div class="oshi-work-date">
+                    放送時期：
+                    {{ work.broadcast_year }}年
+                    {{ work.broadcast_season_name }}
+                </div>
+
+                {% endif %}
+
+            {% elif work.work_type == "MOVIE" %}
+
+                {% if work.release_date %}
+
+                <div class="oshi-work-date">
+                    公開日：
+                    {{ work.release_date.strftime("%Y年%m月%d日") }}
+                </div>
+
+                {% endif %}
+
+            {% elif work.work_type == "GAME" %}
+
+                {% if work.release_date %}
+
+                <div class="oshi-work-date">
+                    発売日：
+                    {{ work.release_date.strftime("%Y年%m月%d日") }}
+                </div>
+
+                {% endif %}
+
+            {% elif work.work_type == "DRAMA" %}
+
+                {% if work.release_date %}
+
+                <div class="oshi-work-date">
+                    発売日：
+                    {{ work.release_date.strftime("%Y年%m月%d日") }}
+                </div>
+
+                {% endif %}
+
+            {% elif work.work_type == "OTHER" %}
+
+                {% if work.release_date %}
+
+                <div class="oshi-work-date">
+                    公開日：
+                    {{ work.release_date.strftime("%Y年%m月%d日") }}
+                </div>
+
+                {% endif %}
+
+            {% endif %}
+
+
+            <!-- 説明 -->
+            {% if work.description %}
+
+            <div class="oshi-work-description">{{ work.description }}</div>
+
+            {% endif %}
+
+
+            <!-- 公式サイト -->
+            {% if work.official_url %}
+
+            <a
+                href="{{ work.official_url }}"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="oshi-work-link">
+                公式サイト
+            </a>
+
+            {% endif %}
+
+        </article>
+
+        {% else %}
+
+        <p class="oshi-empty">
+
+            {% if keyword %}
+            「{{ keyword }}」に一致する出演作品はありません。
+            {% else %}
+            出演作品が登録されていません。
+            {% endif %}
+
+        </p>
+
+        {% endfor %}
+
+    </section>
+
+</main>
+
+{% endblock %}

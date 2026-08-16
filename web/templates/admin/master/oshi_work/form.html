@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="icon"
+          href="/static/img/logo.png"
+          type="image/png">
+
+    <title>
+        {% if mode == "create" %}
+        出演作品 新規登録
+        {% else %}
+        出演作品 編集
+        {% endif %}
+    </title>
+
+    <link rel="stylesheet"
+          href="/static/css/common.css">
+
+    <link rel="stylesheet"
+          href="/static/css/admin/master/admin-common.css">
+
+    <link rel="stylesheet"
+          href="/static/css/admin/master/oshi/oshi_work.css">
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="page-header">
+
+        <a href="/admin/master/oshi_work"
+           class="master-link">
+            ← 出演作品管理
+        </a>
+
+        <h1 class="page-title">
+            {% if mode == "create" %}
+            出演作品 新規登録
+            {% else %}
+            出演作品 編集
+            {% endif %}
+        </h1>
+
+    </div>
+
+
+    <form method="post"
+          action="{% if mode == 'create' %}/admin/master/oshi_work/create{% else %}/admin/master/oshi_work/edit/{{ work.work_id }}{% endif %}"
+          class="master-form"
+          data-unsaved-check="true">
+
+
+        <!-- 作品名 -->
+
+        <div class="form-group">
+
+            <label for="work_name">
+                作品名
+            </label>
+
+            <input
+                type="text"
+                id="work_name"
+                name="work_name"
+                value="{{ work.work_name if work else '' }}"
+                required>
+
+        </div>
+
+
+        <!-- 作品種別 -->
+
+        <div class="form-group">
+
+            <label for="work_type">
+                作品種別
+            </label>
+
+            <select
+                id="work_type"
+                name="work_type"
+                required>
+
+                <option value="">
+                    選択してください
+                </option>
+
+                {% for value, label in work_types %}
+
+                <option
+                    value="{{ value }}"
+                    {% if work and work.work_type == value %}
+                    selected
+                    {% endif %}>
+                    {{ label }}
+                </option>
+
+                {% endfor %}
+
+            </select>
+
+        </div>
+
+
+        <!-- キャラクター -->
+
+        <div class="form-group">
+
+            <label for="character_name">
+                キャラクター名
+                <span class="optional">任意</span>
+            </label>
+
+            <input
+                type="text"
+                id="character_name"
+                name="character_name"
+                value="{% if work %}{{ work.character_name or '' }}{% endif %}"
+                placeholder="キャラクター名がある場合のみ入力">
+
+        </div>
+
+
+        <!-- アニメ：放送時期 -->
+
+        <div
+            id="broadcast-fields"
+            {% if not work or work.work_type != "ANIME" %}
+            style="display:none;"
+            {% endif %}>
+
+            <div class="form-group">
+
+                <label for="broadcast_year">
+                    放送年
+                </label>
+
+                <input
+                    type="number"
+                    id="broadcast_year"
+                    name="broadcast_year"
+                    min="1900"
+                    max="2100"
+                    value="{% if work %}{{ work.broadcast_year or '' }}{% endif %}"
+                    placeholder="例：2010">
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="broadcast_season">
+                    放送時期
+                </label>
+
+                <select
+                    id="broadcast_season"
+                    name="broadcast_season">
+
+                    <option value="">
+                        選択してください
+                    </option>
+
+                    {% for value, label in broadcast_seasons %}
+
+                    <option
+                        value="{{ value }}"
+                        {% if work and work.broadcast_season == value %}
+                        selected
+                        {% endif %}>
+                        {{ label }}
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+        </div>
+
+
+        <!-- アニメ以外：公開日 -->
+
+        <div
+            id="release-date-field"
+            class="form-group"
+            {% if work and work.work_type == "ANIME" %}
+            style="display:none;"
+            {% endif %}>
+
+            <label for="release_date">
+                公開日
+            </label>
+
+            <input
+                type="date"
+                id="release_date"
+                name="release_date"
+                value="{% if work and work.release_date %}{{ work.release_date }}{% endif %}">
+
+        </div>
+
+
+        <!-- 公式サイト -->
+
+        <div class="form-group">
+
+            <label for="official_url">
+                公式サイトURL
+                <span class="optional">任意</span>
+            </label>
+
+            <input
+                type="url"
+                id="official_url"
+                name="official_url"
+                value="{% if work %}{{ work.official_url or '' }}{% endif %}"
+                placeholder="https://">
+
+        </div>
+
+
+        <!-- 説明 -->
+
+        <div class="form-group">
+
+            <label for="description">
+                説明
+                <span class="optional">任意</span>
+            </label>
+
+            <textarea
+                id="description"
+                name="description"
+                rows="5">{% if work and work.description %}{{ work.description }}{% endif %}</textarea>
+
+        </div>
+
+
+        <!-- 公開フラグ -->
+
+        <div class="form-group checkbox-group">
+
+            <label>
+
+                <input
+                    type="checkbox"
+                    name="public_flag"
+                    {% if not work or work.public_flag %}
+                    checked
+                    {% endif %}>
+
+                公開する
+
+            </label>
+
+        </div>
+
+
+        <!-- ボタン -->
+
+        <div class="form-actions">
+
+            <a href="/admin/master/oshi_work"
+               class="cancel-btn">
+                キャンセル
+            </a>
+
+            <button
+                type="submit"
+                class="save-btn">
+                保存
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+
+<script>
+
+const workType = document.getElementById("work_type");
+const broadcastFields = document.getElementById("broadcast-fields");
+const releaseDateField = document.getElementById("release-date-field");
+
+const broadcastYear = document.getElementById("broadcast_year");
+const broadcastSeason = document.getElementById("broadcast_season");
+const releaseDate = document.getElementById("release_date");
+
+
+function updateDateFields() {
+
+    const isAnime = workType.value === "ANIME";
+
+    broadcastFields.style.display = isAnime
+        ? ""
+        : "none";
+
+    releaseDateField.style.display = isAnime
+        ? "none"
+        : "";
+
+    broadcastYear.disabled = !isAnime;
+    broadcastSeason.disabled = !isAnime;
+
+    releaseDate.disabled = isAnime;
+
+}
+
+
+workType.addEventListener(
+    "change",
+    updateDateFields
+);
+
+
+updateDateFields();
+
+</script>
+
+</body>
+</html>

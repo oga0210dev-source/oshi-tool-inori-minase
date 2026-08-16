@@ -276,7 +276,26 @@ create table public.m_oshi_work (
   display_order integer not null default 0,
   public_flag boolean not null default true,
   is_deleted boolean not null default false,
+  broadcast_year integer null,
+  broadcast_season character varying(10) null,
   constraint m_oshi_work_pkey primary key (work_id),
+  constraint chk_m_oshi_work_broadcast_season check (
+    (
+      (broadcast_season is null)
+      or (
+        (broadcast_season)::text = any (
+          (
+            array[
+              'SPRING'::character varying,
+              'SUMMER'::character varying,
+              'AUTUMN'::character varying,
+              'WINTER'::character varying
+            ]
+          )::text[]
+        )
+      )
+    )
+  ),
   constraint chk_m_oshi_work_work_type check (
     (
       (work_type)::text = any (
