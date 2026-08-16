@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Form, Request
 from fastapi.responses import RedirectResponse
-from python.core import templates, database, auth
+from python.core import templates, database
 
 from python.services.inquiry_service import create_inquiry
 
@@ -13,8 +13,6 @@ router = APIRouter(
 
 @router.get("")
 async def inquiry_page(request: Request):
-    if not auth.is_login(request):
-        return RedirectResponse("/login", status_code=303)
 
     return templates.TemplateResponse(
         request=request,
@@ -30,10 +28,12 @@ async def inquiry_submit(
     email: str = Form(""),
     message: str = Form(...)
 ):
-    if not auth.is_login(request):
-        return RedirectResponse("/login", status_code=303)
 
     user_id = request.session.get("user_id")
+
+    # 未ログインの場合
+    if not user_id:
+        user_id = "GUEST"
 
     if inquiry_type == "INQUIRY" and not email.strip():
         return templates.TemplateResponse(
@@ -74,13 +74,14 @@ async def inquiry_complete(
     request: Request,
     inquiry_id: int
 ):
-    if not auth.is_login(request):
-        return RedirectResponse("/login", status_code=303)
+
+    is_login = bool(request.session.get("user_id"))
 
     return templates.TemplateResponse(
         request=request,
         name="templates/home/inquiry/complete.html",
         context={
-            "inquiry_id": inquiry_id
+            "inquiry_id": inquiry_id,
+            "is_login": is_login
         }
     )

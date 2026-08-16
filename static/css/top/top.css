@@ -74,6 +74,48 @@
 }
 
 /*==========================
+    ゲストホーム
+==========================*/
+.guest-home-link{
+    align-self:center;
+    width:auto !important;
+    margin-top:8px;
+    padding:8px 20px;
+    font-size:13px;
+    line-height:1.5;
+    text-align:center;
+    color:#c71585;
+    text-decoration:underline;
+}
+
+/*==========================
+    サポート
+==========================*/
+.legal-links{
+    width:100%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:5px;
+    margin-top:15px;
+    font-size:13px;
+}
+
+.legal-links a{
+    color:#c71585;
+    text-decoration:none;
+    cursor:pointer;
+}
+
+.legal-links a:hover{
+    text-decoration:underline;
+}
+
+.legal-links span{
+    color:#c71585;
+}
+
+/*==========================
     説明
 ==========================*/
 .description-area{
@@ -89,4 +131,89 @@
     font-size:14px;
     line-height:1.8;
     color:#c71585;
+}
+
+/*==========================
+    モーダル共通
+==========================*/
+.top-modal{
+    display:none;
+    position:fixed;
+    z-index:1000;
+    inset:0;
+    background:rgba(0,0,0,0.5);
+
+    align-items:center;
+    justify-content:center;
+
+    padding:20px;
+    box-sizing:border-box;
+}
+
+/*==========================
+    モーダル本体
+==========================*/
+.top-modal-content{
+    width:100%;
+    max-width:430px;
+    height:85dvh;
+    min-height:0;
+
+    background:#fff;
+    border-radius:12px;
+
+    display:flex;
+    flex-direction:column;
+
+    overflow:hidden;
+}
+
+/*==========================
+    モーダルヘッダー
+==========================*/
+.top-modal-header{
+    height:50px;
+    flex-shrink:0;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    padding:0 15px;
+    box-sizing:border-box;
+
+    border-bottom:1px solid #ddd;
+}
+
+.top-modal-title{
+    font-size:18px;
+    font-weight:bold;
+}
+
+.top-modal-close{
+    border:none;
+    background:none;
+
+    font-size:28px;
+    line-height:1;
+
+    cursor:pointer;
+    padding:0 5px;
+}
+
+/*==========================
+    iframe
+==========================*/
+.top-modal-body{
+    flex:1;
+    min-height:0;
+    padding:0;
+    overflow:hidden;
+}
+
+.top-modal-body iframe{
+    display:block;
+    width:100%;
+    height:100%;
+    border:none;
 }

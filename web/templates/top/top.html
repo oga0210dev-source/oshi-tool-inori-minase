@@ -10,6 +10,100 @@
 
 {% block css %}
 <link rel="stylesheet" href="/static/css/top/top.css">
+
+<style>
+    /* =========================================================
+       モーダル共通
+       ========================================================= */
+
+    .top-modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.5);
+
+        align-items: center;
+        justify-content: center;
+    }
+
+    .top-modal-content {
+        width: calc(100% - 30px);
+        max-width: 430px;
+        height: 80vh;
+
+        background: #fff;
+        border-radius: 12px;
+
+        display: flex;
+        flex-direction: column;
+
+        overflow: hidden;
+    }
+
+    .top-modal-header {
+        height: 50px;
+        flex-shrink: 0;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        padding: 0 15px;
+        box-sizing: border-box;
+
+        border-bottom: 1px solid #ddd;
+    }
+
+    .top-modal-title {
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    .top-modal-close {
+        border: none;
+        background: none;
+        font-size: 28px;
+        line-height: 1;
+        cursor: pointer;
+        padding: 0 5px;
+    }
+
+    /* =========================================================
+       iframe
+       ========================================================= */
+
+    .top-modal-body {
+        flex: 1;
+        min-height: 0;
+        padding: 0;
+    }
+
+    .top-modal-body iframe {
+        width: 100%;
+        height: 100%;
+        border: none;
+    }
+
+    /* =========================================================
+       法的情報・問い合わせリンク
+       ========================================================= */
+
+    .legal-links {
+        margin-top: 15px;
+        text-align: center;
+        font-size: 13px;
+    }
+
+    .legal-links a {
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    .legal-links span {
+        margin: 0 5px;
+    }
+</style>
 {% endblock %}
 
 {% block content %}
@@ -18,7 +112,9 @@
 
         <!-- タイトル -->
         <div class="logo-area">
-            <img src="/static/img/title_logo.png" class="logo" alt="タイトルロゴ">
+            <img src="/static/img/title_logo.png"
+                 class="logo"
+                 alt="タイトルロゴ">
         </div>
 
         <!-- 説明 -->
@@ -31,16 +127,49 @@
 
         <!-- ボタン -->
         <div class="button-area">
+
             <a href="/login">
                 <img src="/static/img/login_button.png"
                      class="button-image"
                      alt="ログイン">
             </a>
+
             <a href="/register">
                 <img src="/static/img/register_button.png"
                      class="button-image"
                      alt="新規登録">
             </a>
+
+            <a href="/home"
+               onclick="return enterGuestHome();"
+               class="guest-home-link">
+                ログインせずにホームへ
+            </a>
+
+        </div>
+
+        <!-- 利用規約等 -->
+        <div class="legal-links">
+
+            <a href="#"
+               onclick="openLegalModal('terms'); return false;">
+                利用規約
+            </a>
+
+            <span>｜</span>
+
+            <a href="#"
+               onclick="openLegalModal('privacy'); return false;">
+                プライバシーポリシー
+            </a>
+
+            <span>｜</span>
+
+            <a href="#"
+               onclick="openInquiryModal(); return false;">
+                お問い合わせ
+            </a>
+
         </div>
 
         <!-- 注釈 -->
@@ -54,4 +183,250 @@
 
     </div>
 </div>
+
+
+<!-- =========================================================
+     法的情報モーダル
+     ========================================================= -->
+
+<div id="legalModal"
+     class="top-modal"
+     onclick="closeLegalModal(event)">
+
+    <div class="top-modal-content"
+         onclick="event.stopPropagation()">
+
+        <div class="top-modal-header">
+
+            <div id="legalModalTitle"
+                 class="top-modal-title">
+            </div>
+
+            <button type="button"
+                    class="top-modal-close"
+                    onclick="closeLegalModal()">
+                ×
+            </button>
+
+        </div>
+
+        <div class="top-modal-body">
+            <iframe
+                id="legalFrame"
+                src="">
+            </iframe>
+        </div>
+
+    </div>
+</div>
+
+
+<!-- =========================================================
+     問い合わせモーダル
+     ========================================================= -->
+
+<div id="inquiryModal"
+     class="top-modal"
+     onclick="closeInquiryModal(event)">
+
+    <div class="top-modal-content"
+         onclick="event.stopPropagation()">
+
+        <div class="top-modal-header">
+
+            <div class="top-modal-title">
+                お問い合わせ
+            </div>
+
+            <button type="button"
+                    class="top-modal-close"
+                    onclick="closeInquiryModal()">
+                ×
+            </button>
+
+        </div>
+
+        <div class="top-modal-body">
+            <iframe
+                id="inquiryFrame"
+                src="">
+            </iframe>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}
+
+
+{% block script %}
+
+<script src="/static/js/common.js"></script>
+
+<script>
+    /* =========================================================
+       ゲストホーム
+       ========================================================= */
+
+    function enterGuestHome(){
+
+        return confirm(
+            "ログインしていないため、一部の機能に制限があります。\n\n" +
+            "ライブ情報やセトリなどの閲覧はできますが、" +
+            "個人データの記録・編集などは利用できません。\n\n" +
+            "ゲストとしてホーム画面を表示しますか？"
+        );
+    }
+
+
+    /* =========================================================
+       利用規約・プライバシーポリシー
+       ========================================================= */
+
+    function openLegalModal(type){
+        const modal =
+            document.getElementById("legalModal");
+
+        const frame =
+            document.getElementById("legalFrame");
+
+        const title =
+            document.getElementById("legalModalTitle");
+
+        if(!modal || !frame || !title){
+            return;
+        }
+
+        if(type === "terms"){
+
+            title.textContent = "利用規約";
+            frame.src = "/home/legal/terms";
+
+        }else if(type === "privacy"){
+
+            title.textContent = "プライバシーポリシー";
+            frame.src = "/home/legal/privacy";
+
+        }else{
+
+            return;
+        }
+
+        modal.style.display = "flex";
+    }
+
+
+    function closeLegalModal(event){
+
+        if(
+            event &&
+            event.target !== event.currentTarget
+        ){
+            return;
+        }
+
+        const modal =
+            document.getElementById("legalModal");
+
+        const frame =
+            document.getElementById("legalFrame");
+
+        if(!modal || !frame){
+            return;
+        }
+
+        modal.style.display = "none";
+
+        frame.src = "";
+    }
+
+
+    /* =========================================================
+       問い合わせ
+       ========================================================= */
+
+    function openInquiryModal(){
+
+        const modal =
+            document.getElementById("inquiryModal");
+
+        const frame =
+            document.getElementById("inquiryFrame");
+
+        if(!modal || !frame){
+            return;
+        }
+
+        frame.src = "/home/inquiry";
+        modal.style.display = "flex";
+    }
+
+
+    function closeInquiryModal(event){
+
+        if(
+            event &&
+            event.target !== event.currentTarget
+        ){
+            return;
+        }
+
+        const modal =
+            document.getElementById("inquiryModal");
+
+        const frame =
+            document.getElementById("inquiryFrame");
+
+        if(!modal || !frame){
+            return;
+        }
+
+        modal.style.display = "none";
+
+        frame.src = "";
+    }
+
+
+    /* =========================================================
+       ESCキー
+       ========================================================= */
+
+    document.addEventListener(
+        "keydown",
+        function(event){
+
+            if(event.key !== "Escape"){
+                return;
+            }
+
+            closeLegalModal();
+            closeInquiryModal();
+        }
+    );
+
+
+    /* =========================================================
+       問い合わせ完了時
+       iframeから親画面へ通知
+       ========================================================= */
+
+    window.addEventListener(
+        "message",
+        function(event){
+
+            if(event.origin !== window.location.origin){
+                return;
+            }
+
+            if(
+                event.data &&
+                event.data.type === "closeInquiryModal"
+            ){
+                closeInquiryModal();
+            }
+
+        }
+    );
+</script>
+
 {% endblock %}

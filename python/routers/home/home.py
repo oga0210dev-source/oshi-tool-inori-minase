@@ -27,15 +27,22 @@ def index(request: Request):
 @router.get("/home")
 def home(request: Request):
 
-    if not request.session.get("user_id"):
-        return RedirectResponse(
-            url="/login",
-            status_code=303
+    user_id = request.session.get("user_id")
+
+    # 未ログインの場合
+    if not user_id:
+        return templates.TemplateResponse(
+            request=request,
+            name="templates/home/home.html",
+            context={
+                "user": None,
+                "member_period": None,
+                "is_guest": True
+            }
         )
 
-    user = UserModel.get_user(
-        request.session.get("user_id")
-    )
+    # ログイン済みの場合
+    user = UserModel.get_user(user_id)
 
     member_period = calculate_member_period(
         user["member_since"]
@@ -46,6 +53,7 @@ def home(request: Request):
         name="templates/home/home.html",
         context={
             "user": user,
-            "member_period": member_period
+            "member_period": member_period,
+            "is_guest": False
         }
     )

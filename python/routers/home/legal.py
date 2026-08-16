@@ -2,6 +2,7 @@ from fastapi import APIRouter, Request
 from fastapi.responses import PlainTextResponse
 from python.core import templates
 
+
 router = APIRouter(
     prefix="/home/legal",
     tags=["legal"]
@@ -13,6 +14,7 @@ async def legal(
     request: Request,
     legal_type: str
 ):
+
     if legal_type not in ["terms", "privacy"]:
         return PlainTextResponse(
             "ページが見つかりません。",
@@ -20,10 +22,6 @@ async def legal(
         )
 
     return templates.TemplateResponse(
-        request,
-        "templates/home/legal/legal.html",
-        {
-            "legal_type": legal_type,
-            "show_back": True
-        }
+        request=request,
+        name=f"templates/commons/legal/{legal_type}.html"
     )

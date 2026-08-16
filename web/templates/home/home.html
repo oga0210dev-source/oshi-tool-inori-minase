@@ -4,162 +4,985 @@
 
 {% block css %}
 <link rel="stylesheet" href="/static/css/home/home.css">
+
+<style>
+    /* =========================================================
+       法的情報・問い合わせモーダル共通
+       ========================================================= */
+
+    .home-modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        inset: 0;
+
+        background: rgba(0, 0, 0, 0.5);
+
+        align-items: center;
+        justify-content: center;
+
+        padding: 20px;
+        box-sizing: border-box;
+    }
+
+    .home-modal-content {
+        width: 100%;
+        max-width: 430px;
+        max-height: 85dvh;
+
+        background: #ffffff;
+        border-radius: 12px;
+
+        display: flex;
+        flex-direction: column;
+
+        overflow: hidden;
+    }
+
+
+    /* =========================================================
+       モーダルヘッダー
+       ========================================================= */
+
+    .home-modal-header {
+        height: 50px;
+        flex-shrink: 0;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        padding: 0 15px;
+        box-sizing: border-box;
+
+        border-bottom: 1px solid #ddd;
+    }
+
+    .home-modal-title {
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    .home-modal-close {
+        border: none;
+        background: none;
+
+        font-size: 28px;
+        line-height: 1;
+
+        cursor: pointer;
+        padding: 0 5px;
+    }
+
+
+    /* =========================================================
+       法的情報本文
+       ========================================================= */
+
+    .home-modal-body {
+        min-height: 0;
+
+        padding: 15px;
+
+        overflow-y: auto;
+
+        box-sizing: border-box;
+
+        font-size: 13px;
+        line-height: 1.8;
+        text-align: left;
+    }
+
+    .home-modal-body h3 {
+        margin: 20px 0 8px;
+        font-size: 15px;
+    }
+
+    .home-modal-body h3:first-child {
+        margin-top: 0;
+    }
+
+    .home-modal-body p {
+        margin: 0 0 12px;
+    }
+
+    .home-modal-body ul {
+        margin: 0 0 12px;
+        padding-left: 22px;
+    }
+
+    .home-modal-body li {
+        margin-bottom: 6px;
+    }
+
+
+    /* =========================================================
+       問い合わせモーダル
+       ========================================================= */
+
+    .home-inquiry-body {
+        flex: 1;
+        min-height: 0;
+
+        overflow: hidden;
+
+        padding: 0;
+    }
+
+    .home-inquiry-body iframe {
+        width: 100%;
+        height: 100%;
+
+        border: none;
+    }
+</style>
 {% endblock %}
 
+
 {% block content %}
+
 <div class="background">
+
     <div class="page-scroll">
 
         <div class="container">
 
             <!-- プロフィール -->
             <div class="profile-card">
-                <div class="profile-image">
-                    <img src="{{ user.profile_image or '/static/img/profile/default.png' }}">
-                </div>
 
-                <div class="profile-info">
-                    <div class="profile-name">
-                        {{ user.user_name }}
+                {% if is_guest %}
+
+                    <div class="profile-image">
+                        <img src="/static/img/profile/default.png"
+                             alt="ゲスト">
                     </div>
 
-                    <div class="member-history">
-                        町民歴 {{ member_period }}
+                    <div class="profile-info">
+                        <div class="profile-name">
+                            ゲスト
+                        </div>
+
+                        <div class="member-history">
+                            ログインすると町民歴を確認できます
+                        </div>
                     </div>
-                </div>
+
+                {% else %}
+
+                    <div class="profile-image">
+                        <img src="{{ user.profile_image or '/static/img/profile/default.png' }}"
+                             alt="プロフィール画像">
+                    </div>
+
+                    <div class="profile-info">
+                        <div class="profile-name">
+                            {{ user.user_name }}
+                        </div>
+
+                        <div class="member-history">
+                            町民歴 {{ member_period }}
+                        </div>
+                    </div>
+
+                {% endif %}
+
             </div>
+
 
             <!-- ボタンエリア -->
             <div class="home-scroll">
 
                 <!-- マイページ -->
-                <a href="/mypage" class="menu-btn wide-btn">
-                    <img src="/static/img/home/mypage.svg" alt="マイページ">
+                {% if is_guest %}
+
+                <a href="/login"
+                   class="menu-btn wide-btn"
+                   onclick="return requireLogin();">
+
+                    <img src="/static/img/home/mypage.svg"
+                         alt="マイページ">
+
                     <span>マイページ</span>
+
                 </a>
+
+                {% else %}
+
+                <a href="/mypage"
+                   class="menu-btn wide-btn">
+
+                    <img src="/static/img/home/mypage.svg"
+                         alt="マイページ">
+
+                    <span>マイページ</span>
+
+                </a>
+
+                {% endif %}
+
 
                 <!-- メニュー -->
                 <div class="menu-grid">
 
-                    <a href="/home/live" class="menu-btn">
-                        <img src="/static/img/home/live.svg" alt="ライブ">
+                    <!-- ライブ -->
+                    <a href="/home/live"
+                       class="menu-btn">
+
+                        <img src="/static/img/home/live.svg"
+                             alt="ライブ">
+
                         <span>ライブ</span>
+
                     </a>
 
-                    <a href="#" class="menu-btn not-implemented">
-                        <img src="/static/img/home/meeting.svg" alt="町民集会">
+
+                    <!-- 町民集会 -->
+                    <a href="#"
+                       class="menu-btn not-implemented">
+
+                        <img src="/static/img/home/meeting.svg"
+                             alt="町民集会">
+
                         <span>町民集会</span>
+
                     </a>
 
-                    <a href="#" class="menu-btn not-implemented">
-                        <img src="/static/img/home/event.svg" alt="イベント">
+
+                    <!-- イベント -->
+                    <a href="#"
+                       class="menu-btn not-implemented">
+
+                        <img src="/static/img/home/event.svg"
+                             alt="イベント">
+
                         <span>イベント</span>
+
                     </a>
 
-                    <a href="#" class="menu-btn not-implemented">
-                        <img src="/static/img/home/goods.svg" alt="グッズ">
+
+                    <!-- グッズ -->
+                    <a href="#"
+                       class="menu-btn not-implemented">
+
+                        <img src="/static/img/home/goods.svg"
+                             alt="グッズ">
+
                         <span>グッズ</span>
+
                     </a>
 
-                    <a href="#" class="menu-btn not-implemented">
-                        <img src="/static/img/home/encounter.svg" alt="エンカ">
+
+                    <!-- エンカ -->
+                    <a href="#"
+                       class="menu-btn not-implemented">
+
+                        <img src="/static/img/home/encounter.svg"
+                             alt="エンカ">
+
                         <span>エンカ</span>
+
                     </a>
 
-                    <a href="#" class="menu-btn not-implemented">
-                        <img src="/static/img/home/radio.svg" alt="メロフラ">
+
+                    <!-- メロフラ -->
+                    <a href="#"
+                       class="menu-btn not-implemented">
+
+                        <img src="/static/img/home/radio.svg"
+                             alt="メロフラ">
+
                         <span>メロフラ</span>
+
                     </a>
 
                 </div>
 
+
                 <!-- 推し情報 -->
-                <a href="/home/oshi" class="menu-btn wide-btn">
-                    <img src="/static/img/home/info.svg" alt="推し情報">
+                <a href="/home/oshi"
+                   class="menu-btn wide-btn">
+
+                    <img src="/static/img/home/info.svg"
+                         alt="推し情報">
+
                     <span>推し情報</span>
+
                 </a>
+
 
                 <!-- 設定 -->
-                <a href="#" id="setting-button" class="menu-btn wide-btn">
-                    <img src="/static/img/home/setting.svg" alt="設定">
+                <a href="#"
+                   id="setting-button"
+                   class="menu-btn wide-btn">
+
+                    <img src="/static/img/home/setting.svg"
+                         alt="設定">
+
                     <span>設定</span>
+
                 </a>
 
-                <!-- 設定モーダル -->
-                <div id="setting-modal" class="setting-modal">
+
+                <!-- =================================================
+                     設定モーダル
+                     ================================================= -->
+
+                <div id="setting-modal"
+                     class="setting-modal">
+
                     <div class="setting-box">
+
                         <h2>設定</h2>
 
-                        <h3>アカウント</h3>
-                        <a href="/mypage">
-                            マイページ
-                        </a>
-                        <a href="/mypage/public-setting" class="not-implemented">
-                            公開設定
-                        </a>
-                        <a href="#" class="not-implemented">
-                            メール変更
-                        </a>
-                        <a href="/password/change">
-                            パスワード変更
-                        </a>
 
+                        <!-- アカウント -->
+                        <h3>アカウント</h3>
+
+                        {% if is_guest %}
+
+                            <a href="/login"
+                               onclick="return requireLogin();">
+                                マイページ
+                            </a>
+
+                            <a href="/login"
+                               onclick="return requireLogin();">
+                                公開設定
+                            </a>
+
+                            <a href="/login"
+                               onclick="return requireLogin();">
+                                メール変更
+                            </a>
+
+                            <a href="/login"
+                               onclick="return requireLogin();">
+                                パスワード変更
+                            </a>
+
+                        {% else %}
+
+                            <a href="/mypage">
+                                マイページ
+                            </a>
+
+                            <a href="/mypage/public-setting"
+                               class="not-implemented">
+                                公開設定
+                            </a>
+
+                            <a href="#"
+                               class="not-implemented">
+                                メール変更
+                            </a>
+
+                            <a href="/password/change">
+                                パスワード変更
+                            </a>
+
+                        {% endif %}
+
+
+                        <!-- サポート -->
                         <h3>サポート</h3>
+
                         <a href="/home/inquiry">
                             お問い合わせ
                         </a>
-                        <a href="/home/legal/terms">
+
+                        <a href="#"
+                           onclick="openLegalModal('terms'); return false;">
                             利用規約
                         </a>
-                        <a href="/home/legal/privacy">
+
+                        <a href="#"
+                           onclick="openLegalModal('privacy'); return false;">
                             プライバシー
                         </a>
 
-                        {% if user.role == "admin" %}
+
+                        <!-- 管理 -->
+                        {% if not is_guest and user.role == "admin" %}
+
                             <h3>管理</h3>
+
                             <a href="/admin/master">
                                 マスタ管理
                             </a>
+
                             <a href="/admin/inquiry">
                                 お問い合わせ管理
                             </a>
+
                         {% endif %}
 
-                        <h3>その他</h3>
-                        <a href="/logout">
-                            ログアウト
-                        </a>
+
+                        <!-- その他 -->
+                        {% if not is_guest %}
+
+                            <h3>その他</h3>
+
+                            <a href="/logout">
+                                ログアウト
+                            </a>
+
+                        {% endif %}
+
                     </div>
+
                 </div>
 
             </div>
+
         </div>
+
     </div>
+
 </div>
+
+
+<!-- =========================================================
+     法的情報モーダル
+     ========================================================= -->
+
+<div id="legalModal"
+     class="home-modal"
+     onclick="closeLegalModal(event)">
+
+    <div class="home-modal-content"
+         onclick="event.stopPropagation()">
+
+        <div class="home-modal-header">
+
+            <div id="legalModalTitle"
+                 class="home-modal-title">
+            </div>
+
+            <button type="button"
+                    class="home-modal-close"
+                    onclick="closeLegalModal()">
+                ×
+            </button>
+
+        </div>
+
+        <div id="legalModalBody"
+             class="home-modal-body">
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     問い合わせモーダル
+     ========================================================= -->
+
+<div id="inquiryModal"
+     class="home-modal"
+     onclick="closeInquiryModal(event)">
+
+    <div class="home-modal-content"
+         onclick="event.stopPropagation()">
+
+        <div class="home-modal-header">
+
+            <div class="home-modal-title">
+                お問い合わせ
+            </div>
+
+            <button type="button"
+                    class="home-modal-close"
+                    onclick="closeInquiryModal()">
+                ×
+            </button>
+
+        </div>
+
+        <div class="home-inquiry-body">
+
+            <iframe id="inquiryFrame"
+                    src="">
+            </iframe>
+
+        </div>
+
+    </div>
+
+</div>
+
 {% endblock %}
 
+
 {% block script %}
+
 <script src="/static/js/common.js"></script>
 
 {% if message %}
+
 <script>
     showToast("{{ message }}");
 </script>
+
 {% endif %}
 
+
 <script>
-    const settingButton = document.getElementById("setting-button");
-    const settingModal = document.getElementById("setting-modal");
 
-    settingButton.addEventListener("click", (e) => {
-        e.preventDefault();
-        settingModal.style.display = "block";
-    });
+    /* =========================================================
+       設定
+       ========================================================= */
 
-    settingModal.addEventListener("click", (e) => {
-        if (e.target === settingModal) {
-            settingModal.style.display = "none";
+    const settingButton =
+        document.getElementById("setting-button");
+
+    const settingModal =
+        document.getElementById("setting-modal");
+
+
+    settingButton.addEventListener(
+        "click",
+        function(event){
+
+            event.preventDefault();
+
+            settingModal.style.display =
+                "block";
+
         }
-    });
+    );
+
+
+    settingModal.addEventListener(
+        "click",
+        function(event){
+
+            if(event.target === settingModal){
+
+                settingModal.style.display =
+                    "none";
+
+            }
+
+        }
+    );
+
+
+    /* =========================================================
+       ログイン確認
+       ========================================================= */
+
+    function requireLogin(){
+
+        return confirm(
+            "この機能を利用するにはログインが必要です。\n\n" +
+            "ログイン画面へ移動しますか？"
+        );
+
+    }
+
+
+    /* =========================================================
+       利用規約・プライバシーポリシー
+       ========================================================= */
+
+    const legalContents = {
+
+        terms: {
+
+            title: "利用規約",
+
+            body: `
+                <h3>第1条（適用）</h3>
+
+                <p>
+                    本規約は、「推し活オールインワン」
+                    （以下「本サービス」といいます。）の
+                    利用条件を定めるものです。
+                    登録ユーザーは、本規約に同意したうえで
+                    本サービスを利用するものとします。
+                </p>
+
+
+                <h3>第2条（アカウント）</h3>
+
+                <p>
+                    ユーザーは、自らの責任において
+                    アカウント情報を管理するものとします。
+                    アカウントを第三者に貸与、譲渡、
+                    または共有してはなりません。
+                </p>
+
+
+                <h3>第3条（禁止事項）</h3>
+
+                <p>
+                    ユーザーは、法令または公序良俗に反する行為、
+                    本サービスの運営を妨害する行為、
+                    他のユーザーに迷惑をかける行為、
+                    その他運営者が不適切と判断する行為を
+                    行ってはなりません。
+                </p>
+
+
+                <h3>第4条（サービスの変更・停止）</h3>
+
+                <p>
+                    運営者は、必要に応じて本サービスの内容を
+                    変更、追加、停止または終了することがあります。
+                </p>
+
+
+                <h3>第5条（免責事項）</h3>
+
+                <p>
+                    本サービスは、ユーザーの利用によって
+                    生じた損害について、運営者に故意または
+                    重大な過失がある場合を除き、
+                    責任を負わないものとします。
+                </p>
+
+
+                <h3>第6条（規約の変更）</h3>
+
+                <p>
+                    運営者は、必要に応じて本規約を変更する
+                    ことがあります。
+                    変更後の規約は、本サービス上に掲載した時点で
+                    効力を生じるものとします。
+                </p>
+
+
+                <h3>第7条（準拠法）</h3>
+
+                <p>
+                    本規約は日本法を準拠法とします。
+                </p>
+            `
+        },
+
+
+        privacy: {
+
+            title: "プライバシーポリシー",
+
+            body: `
+                <h3>1. 取得する情報</h3>
+
+                <p>
+                    本サービスでは、ユーザー登録および本サービスの提供に必要な範囲で、
+                    以下の情報を取得する場合があります。
+                </p>
+
+                <ul>
+                    <li>ユーザーID</li>
+                    <li>表示名</li>
+                    <li>パスワード</li>
+                    <li>メールアドレス</li>
+                    <li>プロフィール情報</li>
+                    <li>町民開始日</li>
+                    <li>ライブへの参加記録</li>
+                    <li>ライブに関するメモや費用等の記録</li>
+                    <li>お問い合わせ内容</li>
+                    <li>その他、本サービスの利用に伴ってユーザーが登録する情報</li>
+                </ul>
+
+
+                <h3>2. 利用目的</h3>
+
+                <p>
+                    取得した情報は、以下の目的で利用します。
+                </p>
+
+                <ul>
+                    <li>本サービスの提供および運営</li>
+                    <li>ユーザー認証およびアカウント管理</li>
+                    <li>ユーザーが登録した情報の保存および表示</li>
+                    <li>本サービスの改善および機能開発</li>
+                    <li>不正利用やサービスへの迷惑行為の防止</li>
+                    <li>お問い合わせへの対応</li>
+                    <li>サービスに関する重要なお知らせの送信</li>
+                </ul>
+
+
+                <h3>3. 個人情報の管理</h3>
+
+                <p>
+                    取得した情報について、適切な安全管理措置を講じ、
+                    不正アクセス、紛失、漏えい、改ざん等の防止に努めます。
+                </p>
+
+
+                <h3>4. 第三者提供</h3>
+
+                <p>
+                    本サービスでは、法令に基づく場合を除き、
+                    ユーザー本人の同意なく個人情報を第三者へ提供することはありません。
+                </p>
+
+                <p>
+                    ただし、本サービスの運営に必要な外部サービスを利用する場合があります。
+                    その場合、各サービス提供事業者の規約やプライバシーポリシー等に基づいて
+                    情報が取り扱われることがあります。
+                </p>
+
+
+                <h3>5. Cookie等について</h3>
+
+                <p>
+                    本サービスでは、ログイン状態の維持やサービスの提供、
+                    利用状況の確認等のためにCookie等を使用する場合があります。
+                </p>
+
+
+                <h3>6. 広告について</h3>
+
+                <p>
+                    本サービスでは、Google AdSense等の第三者配信による広告サービスを
+                    利用しています。
+                </p>
+
+                <p>
+                    広告配信事業者は、ユーザーに適切な広告を表示するため、
+                    Cookie等を使用する場合があります。
+                </p>
+
+                <p>
+                    Googleによる広告でのCookieの利用については、
+                    Googleの広告に関するポリシーをご確認ください。
+                </p>
+
+
+                <h3>7. お問い合わせについて</h3>
+
+                <p>
+                    お問い合わせの際に入力されたメールアドレスは、
+                    お問い合わせへの回答および必要な連絡のために利用します。
+                </p>
+
+                <p>
+                    お問い合わせ内容は、本サービスの運営および改善のために
+                    必要な範囲で利用する場合があります。
+                </p>
+
+
+                <h3>8. 個人情報の開示・訂正・削除</h3>
+
+                <p>
+                    ユーザー本人から、自己の個人情報について開示、訂正、
+                    削除等を希望する申し出があった場合は、
+                    本人確認を行ったうえで、法令および本サービスの運営上
+                    必要な範囲で対応します。
+                </p>
+
+                <p>
+                    ご希望の場合は、本サービスのお問い合わせフォームからご連絡ください。
+                </p>
+
+
+                <h3>9. 情報の保存期間</h3>
+
+                <p>
+                    取得した情報は、本サービスの提供に必要な期間、
+                    または法令上必要な期間保存します。
+                </p>
+
+                <p>
+                    ユーザーがアカウントを退会した場合、
+                    本サービスの運営上必要な情報や法令上保存が必要な情報を除き、
+                    適切な方法で削除します。
+                </p>
+
+
+                <h3>10. プライバシーポリシーの変更</h3>
+
+                <p>
+                    本ポリシーは、必要に応じて変更することがあります。
+                </p>
+
+                <p>
+                    変更後のプライバシーポリシーは、
+                    本サービス上に掲載した時点から適用されるものとします。
+                </p>
+
+
+                <h3>11. お問い合わせ</h3>
+
+                <p>
+                    本ポリシーに関するお問い合わせは、
+                    本サービスのお問い合わせフォームからご連絡ください。
+                </p>
+            `
+        }
+
+    };
+
+
+    /* =========================================================
+       法的情報モーダルを開く
+       ========================================================= */
+
+    function openLegalModal(type){
+
+        const content =
+            legalContents[type];
+
+        if(!content){
+            return;
+        }
+
+        const modal =
+            document.getElementById("legalModal");
+
+        const title =
+            document.getElementById("legalModalTitle");
+
+        const body =
+            document.getElementById("legalModalBody");
+
+        if(!modal || !title || !body){
+            return;
+        }
+
+        title.textContent =
+            content.title;
+
+        body.innerHTML =
+            content.body;
+
+        body.scrollTop =
+            0;
+
+        modal.style.display =
+            "flex";
+    }
+
+
+    /* =========================================================
+       法的情報モーダルを閉じる
+       ========================================================= */
+
+    function closeLegalModal(event){
+
+        if(
+            event &&
+            event.target !== event.currentTarget
+        ){
+            return;
+        }
+
+        const modal =
+            document.getElementById("legalModal");
+
+        if(!modal){
+            return;
+        }
+
+        modal.style.display =
+            "none";
+    }
+
+
+    /* =========================================================
+       問い合わせモーダル
+       ========================================================= */
+
+    function openInquiryModal(){
+
+        const modal =
+            document.getElementById("inquiryModal");
+
+        const frame =
+            document.getElementById("inquiryFrame");
+
+        if(!modal || !frame){
+            return;
+        }
+
+        frame.src =
+            "/home/inquiry";
+
+        modal.style.display =
+            "flex";
+    }
+
+
+    function closeInquiryModal(event){
+
+        if(
+            event &&
+            event.target !== event.currentTarget
+        ){
+            return;
+        }
+
+        const modal =
+            document.getElementById("inquiryModal");
+
+        const frame =
+            document.getElementById("inquiryFrame");
+
+        if(!modal || !frame){
+            return;
+        }
+
+        modal.style.display =
+            "none";
+
+        frame.src =
+            "";
+    }
+
+
+    /* =========================================================
+       ESCキー
+       ========================================================= */
+
+    document.addEventListener(
+        "keydown",
+        function(event){
+
+            if(event.key !== "Escape"){
+                return;
+            }
+
+            closeLegalModal();
+            closeInquiryModal();
+
+            if(settingModal){
+                settingModal.style.display =
+                    "none";
+            }
+
+        }
+    );
+
+
+    /* =========================================================
+       問い合わせ完了時
+       ========================================================= */
+
+    window.addEventListener(
+        "message",
+        function(event){
+
+            if(event.origin !== window.location.origin){
+                return;
+            }
+
+            if(
+                event.data &&
+                event.data.type === "closeInquiryModal"
+            ){
+
+                closeInquiryModal();
+
+            }
+
+        }
+    );
+
 </script>
+
 {% endblock %}

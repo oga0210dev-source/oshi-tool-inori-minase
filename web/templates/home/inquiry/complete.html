@@ -27,19 +27,43 @@
         </div>
 
         <p class="complete-note">
-            {% if email %}
-            ご入力いただいたメールアドレスへ、
-            回答をお送りいたします。
-            {% else %}
-            内容を確認のうえ、必要に応じて対応いたします。
-            {% endif %}
+            お問い合わせ内容を確認のうえ、
+            必要に応じて対応いたします。
         </p>
 
-        <a href="/home" class="back-button">
-            ホームへ戻る
-        </a>
+        {% if is_login %}
+            <a href="/home" class="back-button">
+                ホームへ戻る
+            </a>
+        {% else %}
+            <button type="button"
+                    class="back-button"
+                    onclick="closeInquiryModal()">
+                閉じる
+            </button>
+        {% endif %}
 
     </div>
 
 </div>
+{% endblock %}
+
+{% block script %}
+{% if not is_login %}
+<script>
+    function closeInquiryModal(){
+
+        if(window.parent !== window){
+
+            window.parent.postMessage(
+                {
+                    type: "closeInquiryModal"
+                },
+                window.location.origin
+            );
+
+        }
+    }
+</script>
+{% endif %}
 {% endblock %}

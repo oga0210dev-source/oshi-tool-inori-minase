@@ -18,12 +18,6 @@ async def live_setlist(
         request: Request,
         live_id: int
 ):
-    if not auth.is_login(request):
-        return RedirectResponse(
-            "/login",
-            status_code=303
-        )
-
     live = setlist_model.get_live_info(
         live_id
     )
