@@ -1,0 +1,172 @@
+{% extends "templates/commons/base.html" %}
+
+{% block title %}楽曲{% endblock %}
+
+{% block css %}
+
+<link rel="stylesheet" href="/static/css/home/oshi/oshi.css">
+{% endblock %}
+
+{% block content %}
+
+<main class="oshi-page oshi-song-page">
+
+    <!-- ==========================
+         ページヘッダー
+    ========================== -->
+    <section class="oshi-page-header">
+
+        <a href="/home/oshi"
+           class="oshi-back-btn">
+            ← 推し情報
+        </a>
+
+        <h1>🎵 楽曲</h1>
+
+    </section>
+
+    <section class="oshi-song-search">
+
+        <form method="get"
+              action="/home/oshi/song"
+              class="oshi-song-search-form">
+
+            <input type="text"
+                   name="keyword"
+                   value="{{ keyword or '' }}"
+                   placeholder="曲名・アルバム名で検索"
+                   class="oshi-song-search-input">
+
+            <select name="sort"
+                    class="oshi-song-sort">
+
+                <option value="album"
+                        {% if sort == "album" %}selected{% endif %}>
+                    アルバム順
+                </option>
+
+                <option value="song"
+                        {% if sort == "song" %}selected{% endif %}>
+                    曲名順
+                </option>
+
+                <option value="release_desc"
+                        {% if sort == "release_desc" %}selected{% endif %}>
+                    発売日新しい順
+                </option>
+
+                <option value="release_asc"
+                        {% if sort == "release_asc" %}selected{% endif %}>
+                    発売日古い順
+                </option>
+
+            </select>
+
+            <button type="submit"
+                    class="oshi-song-search-btn">
+                検索
+            </button>
+
+        </form>
+
+    </section>
+
+    <!-- ==========================
+         楽曲一覧
+    ========================== -->
+
+    <div class="oshi-song-list">
+
+        {% if albums %}
+
+        {% for album in albums %}
+
+        <section class="oshi-song-album">
+
+            <h2 class="oshi-song-album-name">
+                {{ album.album_name }}
+            </h2>
+
+            <div class="oshi-song-items">
+
+                {% for song in album.songs %}
+
+                <div class="oshi-song-item">
+
+                    <div class="oshi-song-order">
+                        {{ song.display_order or loop.index }}
+                    </div>
+
+                    <div class="oshi-song-content">
+
+                        <h3 class="oshi-song-name">
+                            {{ song.song_name }}
+                        </h3>
+
+                        {% if song.release_date %}
+                        <p class="oshi-song-release">
+                            {{ song.release_date.strftime("%Y年%m月%d日") }}
+                        </p>
+                        {% endif %}
+
+                        {% if song.tie_up %}
+                        <p class="oshi-song-tieup">
+                            {{ song.tie_up }}
+                        </p>
+                        {% endif %}
+
+                    </div>
+
+                    {% if song.youtube_url or song.apple_music_url or song.spotify_url %}
+                    <div class="oshi-song-links">
+                        {% if song.youtube_url %}
+                        <a href="{{ song.youtube_url }}"
+                           target="_blank"
+                           rel="noopener noreferrer"
+                           class="oshi-song-link youtube">
+                            YouTube
+                        </a>
+                        {% endif %}
+
+                        {% if song.apple_music_url %}
+                        <a href="{{ song.apple_music_url }}"
+                           target="_blank"
+                           rel="noopener noreferrer"
+                           class="oshi-song-link apple-music">
+                            Apple Music
+                        </a>
+                        {% endif %}
+
+                        {% if song.spotify_url %}
+                        <a href="{{ song.spotify_url }}"
+                           target="_blank"
+                           rel="noopener noreferrer"
+                           class="oshi-song-link spotify">
+                            Spotify
+                        </a>
+                        {% endif %}
+
+                    </div>
+                    {% endif %}
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+        </section>
+
+        {% endfor %}
+
+        {% else %}
+
+        <p class="oshi-empty">
+            楽曲が登録されていません。
+        </p>
+
+        {% endif %}
+
+    </div>
+</main>
+{% endblock %}

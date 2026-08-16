@@ -1,0 +1,233 @@
+{% extends "templates/commons/base.html" %}
+
+{% block title %}ラジオ・番組{% endblock %}
+
+{% block css %}
+
+<link rel="stylesheet" href="/static/css/home/oshi/oshi.css">
+
+{% endblock %}
+
+{% block content %}
+
+<main class="oshi-page oshi-program-page">
+
+    <!-- ==========================
+         ページヘッダー
+    ========================== -->
+
+    <section class="oshi-page-header">
+
+        <a href="/home/oshi"
+           class="oshi-back-btn">
+            ← 推し情報
+        </a>
+
+        <h1>📻 ラジオ・番組</h1>
+
+    </section>
+
+
+    <!-- ==========================
+         検索・ソート
+    ========================== -->
+
+    <section class="oshi-program-search">
+
+        <form method="get"
+              action="/home/oshi/program"
+              class="oshi-program-search-form">
+
+            <input type="text"
+                   name="keyword"
+                   value="{{ keyword or '' }}"
+                   placeholder="番組名・説明で検索"
+                   class="oshi-program-search-input">
+
+
+            <select name="program_type"
+                    class="oshi-program-type-select">
+
+                <option value=""
+                        {% if not program_type %}selected{% endif %}>
+                    すべての種別
+                </option>
+
+                <option value="RADIO"
+                        {% if program_type == "RADIO" %}selected{% endif %}>
+                    ラジオ
+                </option>
+
+                <option value="TV"
+                        {% if program_type == "TV" %}selected{% endif %}>
+                    テレビ
+                </option>
+
+                <option value="WEB"
+                        {% if program_type == "WEB" %}selected{% endif %}>
+                    Web
+                </option>
+
+                <option value="OTHER"
+                        {% if program_type == "OTHER" %}selected{% endif %}>
+                    その他
+                </option>
+
+            </select>
+
+
+            <select name="sort"
+                    class="oshi-program-sort">
+
+                <option value="display"
+                        {% if sort == "display" %}selected{% endif %}>
+                    表示順
+                </option>
+
+                <option value="name"
+                        {% if sort == "name" %}selected{% endif %}>
+                    番組名順
+                </option>
+
+                <option value="start_date_desc"
+                        {% if sort == "start_date_desc" %}selected{% endif %}>
+                    開始日新しい順
+                </option>
+
+                <option value="start_date_asc"
+                        {% if sort == "start_date_asc" %}selected{% endif %}>
+                    開始日古い順
+                </option>
+
+            </select>
+
+
+            <button type="submit"
+                    class="oshi-program-search-btn">
+                検索
+            </button>
+
+        </form>
+
+    </section>
+
+
+    <!-- ==========================
+         番組一覧
+    ========================== -->
+
+    <div class="oshi-program-list">
+
+        {% if programs %}
+
+        {% for program in programs %}
+
+        <section class="oshi-program-card">
+
+            <!-- ==========================
+                 番組名
+            ========================== -->
+
+            <h2 class="oshi-program-name">
+
+                {% if program.program_type == "RADIO" %}
+
+                <span class="oshi-program-type radio">
+                    ラジオ
+                </span>
+
+                {% elif program.program_type == "TV" %}
+
+                <span class="oshi-program-type tv">
+                    TV
+                </span>
+
+                {% elif program.program_type == "WEB" %}
+
+                <span class="oshi-program-type web">
+                    Web
+                </span>
+
+                {% else %}
+
+                <span class="oshi-program-type other">
+                    その他
+                </span>
+
+                {% endif %}
+
+                {{ program.program_name }}
+
+            </h2>
+
+
+            <!-- ==========================
+                 放送期間
+            ========================== -->
+
+            {% if program.start_date or program.end_date %}
+
+            <p class="oshi-program-period">
+
+                {% if program.start_date %}
+                    {{ program.start_date.strftime("%Y年%m月%d日") }}
+                {% else %}
+                    開始日未設定
+                {% endif %}
+
+                ～
+
+                {% if program.end_date %}
+                    {{ program.end_date.strftime("%Y年%m月%d日") }}
+                {% else %}
+                    放送中
+                {% endif %}
+
+            </p>
+
+            {% endif %}
+
+
+            <!-- ==========================
+                 説明
+            ========================== -->
+
+            {% if program.description %}
+
+            <p class="oshi-program-description">{{ program.description or '' }}</p>
+
+            {% endif %}
+
+
+            <!-- ==========================
+                 公式サイト
+            ========================== -->
+
+            {% if program.official_url %}
+
+            <a href="{{ program.official_url }}"
+               target="_blank"
+               rel="noopener noreferrer"
+               class="oshi-program-link">
+                公式サイト
+            </a>
+
+            {% endif %}
+
+        </section>
+
+        {% endfor %}
+
+        {% else %}
+
+        <p class="oshi-empty">
+            該当する番組がありません。
+        </p>
+
+        {% endif %}
+
+    </div>
+
+</main>
+
+{% endblock %}
