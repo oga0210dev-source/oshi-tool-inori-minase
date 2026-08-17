@@ -245,24 +245,6 @@ create trigger update_m_oshi_program_updated_at BEFORE
 update on m_oshi_program for EACH row
 execute FUNCTION update_updated_at_column ();
 
-create table public.m_oshi_history (
-  created_at timestamp without time zone not null default CURRENT_TIMESTAMP,
-  updated_at timestamp without time zone not null default CURRENT_TIMESTAMP,
-  history_id bigserial not null,
-  history_date date not null,
-  title character varying(255) not null,
-  description text null,
-  official_url character varying(500) null,
-  display_order integer not null default 0,
-  public_flag boolean not null default true,
-  is_deleted boolean not null default false,
-  constraint m_oshi_history_pkey primary key (history_id)
-) TABLESPACE pg_default;
-
-create trigger update_m_oshi_history_updated_at BEFORE
-update on m_oshi_history for EACH row
-execute FUNCTION update_updated_at_column ();
-
 create table public.m_oshi_work (
   created_at timestamp without time zone not null default CURRENT_TIMESTAMP,
   updated_at timestamp without time zone not null default CURRENT_TIMESTAMP,
