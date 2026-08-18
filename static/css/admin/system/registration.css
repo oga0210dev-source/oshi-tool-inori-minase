@@ -1,0 +1,53 @@
+.registration-form {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.registration-mode-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.registration-mode-option {
+    position: relative;
+    display: block;
+    cursor: pointer;
+}
+
+.registration-mode-option input {
+    position: absolute;
+    opacity: 0;
+}
+
+.registration-mode-content {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 16px;
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, .15);
+}
+
+.registration-mode-title {
+    font-size: 17px;
+    font-weight: bold;
+}
+
+.registration-mode-description {
+    font-size: 13px;
+    color: #666;
+    line-height: 1.5;
+}
+
+.registration-mode-option input:checked + .registration-mode-content {
+    box-shadow: inset 0 0 0 2px #333,
+                0 3px 8px rgba(0, 0, 0, .15);
+}
+
+.registration-mode-option input:focus-visible + .registration-mode-content {
+    outline: 2px solid #333;
+    outline-offset: 2px;
+}

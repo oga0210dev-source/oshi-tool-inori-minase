@@ -2,39 +2,49 @@
    マスタメニュー
 ========================= */
 
-.master-grid{
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:15px;
-    width:100%;
-    max-width:400px;
-    margin:20px auto;
+.master-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    width: 100%;
+    max-width: 400px;
+    margin: 20px auto 40px;
 }
 
 
 /* メニュー一覧 */
-.master-menu{
-    display:flex;
-    flex-direction:column;
-    gap:15px;
+.master-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+
+/* セクションタイトル */
+.master-section-title {
+    width: 100%;
+    max-width: 400px;
+    margin: 35px auto 10px;
+    font-size: 20px;
+    font-weight: bold;
 }
 
 
 /* マスタボタン */
-.master-btn{
-    height:60px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    background:#fff;
-    border-radius:20px;
-    text-decoration:none;
-    color:#333;
-    font-size:18px;
-    font-weight:bold;
-    box-shadow:0 3px 8px rgba(0,0,0,.15);
+.master-btn {
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    border-radius: 20px;
+    text-decoration: none;
+    color: #333;
+    font-size: 18px;
+    font-weight: bold;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, .15);
 }
 
-.master-btn:hover{
-    opacity:.85;
+.master-btn:hover {
+    opacity: .85;
 }
