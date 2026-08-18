@@ -26,6 +26,7 @@ from python.routers.home.oshi import (
 from python.routers.mypage import mypage, password, public_setting
 from python.routers.admin.master import (
     master,
+    invitation_code,
     song as song_master,
     live as live_master,
     setlist as setlist_master,
@@ -35,6 +36,7 @@ from python.routers.admin.master import (
     oshi_official_link as oshi_official_link_master,
     oshi_program as oshi_program_master
 )
+from python.routers.admin.system import registration
 from python.routers.admin import inquiry as admin_inquiry
 
 
@@ -53,6 +55,7 @@ def register_router(app: FastAPI):
     app.include_router(public_setting.router)
 
     app.include_router(master.router)
+    app.include_router(invitation_code.router)
     app.include_router(admin_inquiry.router)
     app.include_router(song_master.router)
     app.include_router(live_master.router)
@@ -62,6 +65,8 @@ def register_router(app: FastAPI):
     app.include_router(oshi_anniversary_master.router)
     app.include_router(oshi_official_link_master.router)
     app.include_router(oshi_program_master.router)
+
+    app.include_router(registration.router)
 
     app.include_router(live.router)
     app.include_router(archive.router)
