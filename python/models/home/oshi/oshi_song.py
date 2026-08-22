@@ -37,6 +37,9 @@ def get_song_list(keyword=None, sort="album"):
             album_name,
             release_date,
             display_order,
+            lyricist,
+            composer,
+            arranger,
             tie_up,
             youtube_url,
             apple_music_url,
@@ -45,6 +48,7 @@ def get_song_list(keyword=None, sort="album"):
         WHERE
             is_deleted = FALSE
             AND is_public = TRUE
+            AND song_type = 'INORI'
     """
 
     params = []

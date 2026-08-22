@@ -1,9 +1,17 @@
 from fastapi import FastAPI
 
 from python.routers import login, register, batch
-from python.routers.home import home, legal, inquiry as home_inquiry
-from python.routers.home.live import setlist as live_setlist, live, detail as live_detail
-from python.routers.home.live.archive import archive
+from python.routers.home import (
+    home,
+    legal,
+    inquiry as home_inquiry
+)
+from python.routers.home.live import (
+    live,
+    detail as live_detail,
+    setlist as live_setlist
+)
+from python.routers.home.live.archive import archive as live_archive
 from python.routers.home.live.history import (
     history,
     history_detail,
@@ -15,6 +23,12 @@ from python.routers.home.live.history import (
 from python.routers.home.live.lost_item import lost_item
 from python.routers.home.live.prediction import setlist_prediction
 from python.routers.home.live.collected_song import collected_song
+from python.routers.home.meeting import (
+    meeting,
+    detail as meeting_detail,
+    setlist as meeting_setlist
+)
+from python.routers.home.meeting.archive import archive as meeting_archive
 from python.routers.home.oshi import (
     oshi,
     oshi_work,
@@ -29,6 +43,7 @@ from python.routers.admin.master import (
     invitation_code,
     song as song_master,
     live as live_master,
+    meeting as meeting_master,
     setlist as setlist_master,
     oshi as oshi_master,
     oshi_work as oshi_work_master,
@@ -59,6 +74,7 @@ def register_router(app: FastAPI):
     app.include_router(admin_inquiry.router)
     app.include_router(song_master.router)
     app.include_router(live_master.router)
+    app.include_router(meeting_master.router)
     app.include_router(setlist_master.router)
     app.include_router(oshi_master.router)
     app.include_router(oshi_work_master.router)
@@ -69,7 +85,7 @@ def register_router(app: FastAPI):
     app.include_router(registration.router)
 
     app.include_router(live.router)
-    app.include_router(archive.router)
+    app.include_router(live_archive.router)
     app.include_router(live_detail.router)
     app.include_router(live_setlist.router)
     app.include_router(history.router)
@@ -81,6 +97,11 @@ def register_router(app: FastAPI):
     app.include_router(collected_song.router)
     app.include_router(setlist_prediction.router)
     app.include_router(lost_item.router)
+
+    app.include_router(meeting.router)
+    app.include_router(meeting_archive.router)
+    app.include_router(meeting_detail.router)
+    app.include_router(meeting_setlist.router)
 
     app.include_router(oshi.router)
     app.include_router(oshi_work.router)

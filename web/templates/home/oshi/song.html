@@ -3,7 +3,6 @@
 {% block title %}楽曲{% endblock %}
 
 {% block css %}
-
 <link rel="stylesheet" href="/static/css/home/oshi/oshi.css">
 {% endblock %}
 
@@ -14,6 +13,7 @@
     <!-- ==========================
          ページヘッダー
     ========================== -->
+
     <section class="oshi-page-header">
 
         <a href="/home/oshi"
@@ -24,6 +24,11 @@
         <h1>🎵 楽曲</h1>
 
     </section>
+
+
+    <!-- ==========================
+         検索・ソート
+    ========================== -->
 
     <section class="oshi-song-search">
 
@@ -71,6 +76,7 @@
 
     </section>
 
+
     <!-- ==========================
          楽曲一覧
     ========================== -->
@@ -93,9 +99,16 @@
 
                 <div class="oshi-song-item">
 
+                    <!-- 曲順 -->
+
                     <div class="oshi-song-order">
                         {{ song.display_order or loop.index }}
                     </div>
+
+
+                    <!-- ==========================
+                         楽曲情報
+                    ========================== -->
 
                     <div class="oshi-song-content">
 
@@ -109,45 +122,18 @@
                         </p>
                         {% endif %}
 
-                        {% if song.tie_up %}
-                        <p class="oshi-song-tieup">
-                            {{ song.tie_up }}
-                        </p>
-                        {% endif %}
-
                     </div>
 
-                    {% if song.youtube_url or song.apple_music_url or song.spotify_url %}
-                    <div class="oshi-song-links">
-                        {% if song.youtube_url %}
-                        <a href="{{ song.youtube_url }}"
-                           target="_blank"
-                           rel="noopener noreferrer"
-                           class="oshi-song-link youtube">
-                            YouTube
-                        </a>
-                        {% endif %}
 
-                        {% if song.apple_music_url %}
-                        <a href="{{ song.apple_music_url }}"
-                           target="_blank"
-                           rel="noopener noreferrer"
-                           class="oshi-song-link apple-music">
-                            Apple Music
-                        </a>
-                        {% endif %}
+                    <!-- ==========================
+                         詳細ボタン
+                    ========================== -->
 
-                        {% if song.spotify_url %}
-                        <a href="{{ song.spotify_url }}"
-                           target="_blank"
-                           rel="noopener noreferrer"
-                           class="oshi-song-link spotify">
-                            Spotify
-                        </a>
-                        {% endif %}
-
-                    </div>
-                    {% endif %}
+                    <button type="button"
+                            class="oshi-song-detail-btn"
+                            data-song-id="{{ song.song_id }}">
+                        詳細
+                    </button>
 
                 </div>
 
@@ -168,5 +154,262 @@
         {% endif %}
 
     </div>
+
 </main>
+
+
+<!-- ==========================
+     楽曲詳細モーダル
+========================== -->
+
+<div id="oshiSongModal"
+     class="oshi-song-modal"
+     aria-hidden="true">
+
+    <div class="oshi-song-modal-overlay"></div>
+
+    <div class="oshi-song-modal-content">
+
+        <button type="button"
+                class="oshi-song-modal-close"
+                id="oshiSongModalClose">
+            ×
+        </button>
+
+        <h2 id="oshiSongModalTitle"
+            class="oshi-song-modal-title">
+        </h2>
+
+        <!-- ==========================
+             楽曲詳細
+        ========================== -->
+
+        <div class="oshi-song-modal-info">
+
+            <div class="oshi-song-modal-row">
+                <span>発売日</span>
+                <strong id="oshiSongModalRelease">-</strong>
+            </div>
+
+            <div class="oshi-song-modal-row">
+                <span>作詞</span>
+                <strong id="oshiSongModalLyricist">-</strong>
+            </div>
+
+            <div class="oshi-song-modal-row">
+                <span>作曲</span>
+                <strong id="oshiSongModalComposer">-</strong>
+            </div>
+
+            <div class="oshi-song-modal-row">
+                <span>編曲</span>
+                <strong id="oshiSongModalArranger">-</strong>
+            </div>
+
+            <div class="oshi-song-modal-row">
+                <span>タイアップ</span>
+                <strong id="oshiSongModalTieup">-</strong>
+            </div>
+
+        </div>
+
+
+        <!-- ==========================
+             配信リンク
+        ========================== -->
+
+        <div id="oshiSongModalLinks"
+             class="oshi-song-modal-links">
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+const oshiSongData = {
+    {% set ns = namespace(first=true) %}
+
+    {% for album in albums %}
+        {% for song in album.songs %}
+
+            {% if not ns.first %},{% endif %}
+            {% set ns.first = false %}
+
+            "{{ song.song_id }}": {
+                songName: {{ song.song_name | tojson }},
+                releaseDate: {{ song.release_date.strftime("%Y年%m月%d日") | tojson if song.release_date else "null" }},
+                lyricist: {{ song.lyricist | tojson if song.lyricist else "null" }},
+                composer: {{ song.composer | tojson if song.composer else "null" }},
+                arranger: {{ song.arranger | tojson if song.arranger else "null" }},
+                tieUp: {{ song.tie_up | tojson if song.tie_up else "null" }},
+                youtubeUrl: {{ song.youtube_url | tojson if song.youtube_url else "null" }},
+                appleMusicUrl: {{ song.apple_music_url | tojson if song.apple_music_url else "null" }},
+                spotifyUrl: {{ song.spotify_url | tojson if song.spotify_url else "null" }}
+            }
+
+        {% endfor %}
+    {% endfor %}
+};
+
+
+const modal = document.getElementById("oshiSongModal");
+const modalClose = document.getElementById("oshiSongModalClose");
+
+const modalTitle = document.getElementById("oshiSongModalTitle");
+const modalRelease = document.getElementById("oshiSongModalRelease");
+const modalLyricist = document.getElementById("oshiSongModalLyricist");
+const modalComposer = document.getElementById("oshiSongModalComposer");
+const modalArranger = document.getElementById("oshiSongModalArranger");
+const modalTieup = document.getElementById("oshiSongModalTieup");
+const modalLinks = document.getElementById("oshiSongModalLinks");
+
+
+/* ==========================
+   モーダル表示
+========================== */
+
+function openSongModal(songId) {
+
+    const song = oshiSongData[songId];
+
+    if (!song) {
+        return;
+    }
+
+    modalTitle.textContent = song.songName;
+
+    modalRelease.textContent = song.releaseDate || "-";
+    modalLyricist.textContent = song.lyricist || "-";
+    modalComposer.textContent = song.composer || "-";
+    modalArranger.textContent = song.arranger || "-";
+    modalTieup.textContent = song.tieUp || "-";
+
+    modalLinks.innerHTML = "";
+
+
+    /* ==========================
+       YouTube
+    ========================== */
+
+    if (song.youtubeUrl) {
+
+        const link = document.createElement("a");
+
+        link.href = song.youtubeUrl;
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+        link.className = "oshi-song-modal-link youtube";
+        link.textContent = "YouTube";
+
+        modalLinks.appendChild(link);
+    }
+
+
+    /* ==========================
+       Apple Music
+    ========================== */
+
+    if (song.appleMusicUrl) {
+
+        const link = document.createElement("a");
+
+        link.href = song.appleMusicUrl;
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+        link.className = "oshi-song-modal-link apple-music";
+        link.textContent = "Apple Music";
+
+        modalLinks.appendChild(link);
+    }
+
+
+    /* ==========================
+       Spotify
+    ========================== */
+
+    if (song.spotifyUrl) {
+
+        const link = document.createElement("a");
+
+        link.href = song.spotifyUrl;
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+        link.className = "oshi-song-modal-link spotify";
+        link.textContent = "Spotify";
+
+        modalLinks.appendChild(link);
+    }
+
+
+    modal.classList.add("active");
+    modal.setAttribute("aria-hidden", "false");
+}
+
+
+/* ==========================
+   モーダルを閉じる
+========================== */
+
+function closeSongModal() {
+
+    modal.classList.remove("active");
+    modal.setAttribute("aria-hidden", "true");
+}
+
+
+/* ==========================
+   詳細ボタン
+========================== */
+
+document.querySelectorAll(".oshi-song-detail-btn").forEach(button => {
+
+    button.addEventListener("click", () => {
+
+        openSongModal(button.dataset.songId);
+
+    });
+
+});
+
+
+/* ==========================
+   閉じるボタン
+========================== */
+
+modalClose.addEventListener(
+    "click",
+    closeSongModal
+);
+
+
+/* ==========================
+   背景クリック
+========================== */
+
+document.querySelector(".oshi-song-modal-overlay")
+    .addEventListener(
+        "click",
+        closeSongModal
+    );
+
+
+/* ==========================
+   ESCキー
+========================== */
+
+document.addEventListener("keydown", event => {
+
+    if (event.key === "Escape") {
+
+        closeSongModal();
+
+    }
+
+});
+
+</script>
+
 {% endblock %}

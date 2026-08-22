@@ -95,8 +95,21 @@ create table public.m_song (
   is_deleted boolean null default false,
   created_at timestamp with time zone not null default now(),
   updated_at timestamp with time zone not null default now(),
+  song_type character varying(20) not null default 'INORI'::character varying,
   constraint m_song_pkey primary key (song_id),
-  constraint unique_song_album unique (album_name, song_name)
+  constraint unique_song_album unique (album_name, song_name),
+  constraint chk_m_song_type check (
+    (
+      (song_type)::text = any (
+        (
+          array[
+            'INORI'::character varying,
+            'OTHER'::character varying
+          ]
+        )::text[]
+      )
+    )
+  )
 ) TABLESPACE pg_default;
 
 create trigger update_m_song_updated_at BEFORE
@@ -123,6 +136,67 @@ create table public.m_live (
 
 create trigger update_m_live_updated_at BEFORE
 update on m_live for EACH row
+execute FUNCTION update_updated_at_column ();
+
+create table public.m_meeting (
+  created_at timestamp without time zone not null default CURRENT_TIMESTAMP,
+  updated_at timestamp without time zone not null default CURRENT_TIMESTAMP,
+  meeting_id bigserial not null,
+  meeting_name character varying(200) not null,
+  meeting_date date not null,
+  performance_type character varying(10) not null,
+  venue_name character varying(200) not null,
+  prefecture_code smallint null,
+  official_url character varying(500) null,
+  public_flag boolean not null default true,
+  is_deleted boolean not null default false,
+  constraint m_meeting_pkey primary key (meeting_id),
+  constraint fk_meeting_prefecture foreign KEY (prefecture_code) references m_prefecture (prefecture_code),
+  constraint chk_meeting_performance_type check (
+    (
+      (performance_type)::text = any (
+        (
+          array[
+            'DAY'::character varying,
+            'NIGHT'::character varying,
+            'PART1'::character varying,
+            'PART2'::character varying,
+            'PART3'::character varying
+          ]
+        )::text[]
+      )
+    )
+  )
+) TABLESPACE pg_default;
+
+create index IF not exists idx_meeting_date on public.m_meeting using btree (meeting_date) TABLESPACE pg_default;
+
+create index IF not exists idx_meeting_prefecture on public.m_meeting using btree (prefecture_code) TABLESPACE pg_default;
+
+create index IF not exists idx_meeting_deleted on public.m_meeting using btree (is_deleted) TABLESPACE pg_default;
+
+create trigger set_m_meeting_updated_at BEFORE
+update on m_meeting for EACH row
+execute FUNCTION update_updated_at_column ();
+
+create table public.m_meeting_guest (
+  created_at timestamp without time zone not null default CURRENT_TIMESTAMP,
+  updated_at timestamp without time zone not null default CURRENT_TIMESTAMP,
+  meeting_id bigint not null,
+  guest_id bigserial not null,
+  guest_name character varying(200) not null,
+  display_order integer not null default 0,
+  is_deleted boolean not null default false,
+  constraint m_meeting_guest_pkey primary key (guest_id),
+  constraint fk_meeting_guest_meeting foreign KEY (meeting_id) references m_meeting (meeting_id)
+) TABLESPACE pg_default;
+
+create index IF not exists idx_meeting_guest_meeting on public.m_meeting_guest using btree (meeting_id) TABLESPACE pg_default;
+
+create index IF not exists idx_meeting_guest_deleted on public.m_meeting_guest using btree (is_deleted) TABLESPACE pg_default;
+
+create trigger set_m_meeting_guest_updated_at BEFORE
+update on m_meeting_guest for EACH row
 execute FUNCTION update_updated_at_column ();
 
 create table public.m_setlist (
@@ -423,6 +497,21 @@ create table public.t_live_user (
 
 create trigger update_t_live_user_updated_at BEFORE
 update on t_live_user for EACH row
+execute FUNCTION update_updated_at_column ();
+
+create table public.t_meeting_user (
+  user_id text not null,
+  meeting_id bigint not null,
+  is_join boolean not null default true,
+  created_at timestamp without time zone not null default now(),
+  updated_at timestamp without time zone not null default now(),
+  constraint pk_t_meeting_user primary key (user_id, meeting_id),
+  constraint fk_t_meeting_user_meeting foreign key (meeting_id) references m_meeting (meeting_id),
+  constraint fk_t_meeting_user_user foreign key (user_id) references m_user (user_id)
+) TABLESPACE pg_default;
+
+create trigger update_t_meeting_user_updated_at BEFORE
+update on t_meeting_user for EACH row
 execute FUNCTION update_updated_at_column ();
 
 create table public.t_user_lost_item (

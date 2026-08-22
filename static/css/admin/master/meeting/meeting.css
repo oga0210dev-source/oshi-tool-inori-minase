@@ -1,0 +1,207 @@
+/* =========================
+   町民集会一覧
+========================= */
+/* 一覧スクロール */
+.meeting-list{
+    flex:1;
+    min-height:0;
+    overflow-y:auto;
+    margin-top:10px;
+    padding-bottom:20px;
+    scrollbar-width:none;
+}
+
+.meeting-list::-webkit-scrollbar{
+    display:none;
+}
+
+
+/* 町民集会カード */
+.meeting-block{
+    margin-bottom:20px;
+    padding:15px;
+    background:#fff;
+    border-radius:20px;
+    box-shadow:0 3px 8px rgba(0,0,0,.12);
+}
+
+
+/* 町民集会名 */
+.meeting-title{
+    margin:0 0 10px;
+    padding-bottom:8px;
+    border-bottom:2px solid #ff8fb1;
+    font-size:18px;
+    font-weight:bold;
+}
+
+
+/* 町民集会行 */
+.meeting-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    padding:12px 0;
+    border-bottom:1px solid #eee;
+}
+
+.meeting-row:last-child{
+    border-bottom:none;
+}
+
+
+.meeting-info{
+    flex:1;
+}
+
+
+.meeting-place{
+    margin-top:5px;
+    font-size:14px;
+    color:#666;
+}
+
+
+.meeting-date{
+    margin-top:3px;
+    font-size:13px;
+    color:#999;
+}
+
+
+/* 操作ボタン */
+.meeting-action{
+    display:flex;
+    flex-direction:column;
+    align-items:flex-end;
+    gap:8px;
+}
+
+
+.meeting-action-top{
+    display:flex;
+    gap:8px;
+}
+
+
+/* セトリ */
+.setlist-btn{
+    width:118px;
+    height:32px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:16px;
+    text-decoration:none;
+    font-size:13px;
+    font-weight:bold;
+    background:#c8a2ff;
+    color:#fff;
+}
+
+
+/* ゲスト */
+.guest-btn{
+    width:118px;
+    height:32px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:16px;
+    text-decoration:none;
+    font-size:13px;
+    font-weight:bold;
+    background:#8fc9ff;
+    color:#fff;
+}
+
+/* ==========================
+町民集会 ゲスト管理
+========================== */
+
+.guest-form{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+}
+
+.guest-form-row{
+    display:flex;
+    gap:8px;
+    width:100%;
+}
+
+.guest-form-row input[type="text"]{
+    flex:1;
+    min-width:0;
+}
+
+.guest-form-row input[type="number"]{
+    width:80px;
+    flex-shrink:0;
+}
+
+.guest-form-row input{
+    min-height:40px;
+    padding:8px 10px;
+    box-sizing:border-box;
+    border:1px solid #ccc;
+    border-radius:6px;
+    background:#fff;
+    font-size:14px;
+}
+
+.guest-form-row input:focus{
+    outline:none;
+    border-color:#ff8fb1;
+}
+
+.guest-action{
+    display:flex;
+    justify-content:flex-end;
+    gap:8px;
+    margin-top:4px;
+}
+
+.guest-action .edit-btn,
+.guest-action .delete-btn{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    min-width:60px;
+    min-height:36px;
+    padding:6px 10px;
+    box-sizing:border-box;
+    border-radius:6px;
+    font-size:13px;
+    text-decoration:none;
+    cursor:pointer;
+}
+
+.guest-action .edit-btn{
+    border:none;
+}
+
+.guest-item{
+    width:100%;
+}
+
+/* ==========================
+スマートフォン
+========================== */
+
+@media (max-width:600px){
+    .guest-form-row{
+        gap:6px;
+    }
+
+    .guest-form-row input[type="number"]{
+        width:70px;
+    }
+
+    .guest-action .edit-btn,
+    .guest-action .delete-btn{
+        min-width:56px;
+        font-size:12px;
+    }
+}

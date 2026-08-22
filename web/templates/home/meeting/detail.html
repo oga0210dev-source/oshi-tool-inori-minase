@@ -1,0 +1,120 @@
+{% extends "templates/commons/base.html" %}
+
+{% block title %}町民集会詳細 - 推し活オールインワン{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="/static/css/home/meeting/detail.css">
+{% endblock %}
+
+{% block content %}
+<div class="background">
+
+    {% if request.query_params.get('from') == 'history' %}
+    <a href="/home/meeting/history" class="back-link">
+        ← 参加履歴
+    </a>
+    {% else %}
+    <a href="/home/meeting/archive" class="back-link">
+        ← 町民集会一覧
+    </a>
+    {% endif %}
+
+    <div class="page-scroll">
+        <div class="container">
+            <!-- 基本情報 -->
+            <div class="detail-card">
+                <div class="group-title">
+                    基本情報
+                </div>
+                <div class="meeting-name">
+                    {{ meeting.meeting_name }}
+                </div>
+                <div class="meeting-info">
+                    <div>
+                        📅 {{ meeting.meeting_date }}
+                    </div>
+                    <div class="performance-type">
+                        🎤 {{ performance_type }}
+                    </div>
+                    <div class="day-status">
+                        {{ day_status }}
+                    </div>
+                    <div>
+                        📍 {{ meeting.prefecture_name }}
+                        {{ meeting.venue_name }}
+                    </div>
+                    {% if is_login %}
+                        {% if meeting.meeting_date >= today %}
+                            {% if meeting.is_join %}
+                            <div class="join-status future">
+                                参加予定
+                            </div>
+                            {% else %}
+                            <div class="join-status none">
+                                未参加
+                            </div>
+                            {% endif %}
+                        {% else %}
+                            {% if meeting.is_join %}
+                            <div class="join-status past">
+                                参加済み
+                            </div>
+                            {% else %}
+                            <div class="join-status none">
+                                未参加
+                            </div>
+                            {% endif %}
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- 関連リンク -->
+            {% if meeting.official_url %}
+            <div class="detail-card">
+                <div class="group-title">
+                    関連リンク
+                </div>
+                <a href="{{ meeting.official_url }}"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="link-btn">
+                    🌐 公式サイト
+                </a>
+            </div>
+            {% endif %}
+
+            <!-- セットリスト -->
+            <div class="detail-card">
+                <div class="group-title">
+                    セットリスト
+                </div>
+                <a
+                    href="/home/meeting/setlist/{{ meeting.meeting_id }}"
+                    class="link-btn">
+                    🎵 セットリストを見る
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+function backToMeetingArchive(){
+    const url =
+        sessionStorage.getItem(
+            "meetingArchiveUrl"
+        );
+
+    if(url){
+        location.href = url;
+    }else{
+        location.href = "/home/meeting/archive";
+    }
+
+    return false;
+}
+</script>
+{% endblock %}

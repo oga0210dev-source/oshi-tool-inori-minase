@@ -4,11 +4,6 @@
     margin-top:10px;
 }
 
-
-/* ==========================
-   コンテナ
-========================== */
-
 .container{
     width:100%;
     max-width:430px;
@@ -16,84 +11,52 @@
     padding:15px 0 30px;
 }
 
-
-/* ==========================
-   詳細カード
-========================== */
-
 .detail-card{
     width:85%;
     max-width:390px;
     margin:0 auto 15px;
     padding:20px;
     box-sizing:border-box;
-
     background:#fff;
     border-radius:20px;
     box-shadow:0 3px 8px rgba(0,0,0,.12);
 }
 
-
-/* ==========================
-   グループタイトル
-========================== */
-
 .group-title{
     margin-bottom:15px;
     padding-bottom:8px;
-
     border-bottom:1px solid #eee;
-
     font-size:15px;
     font-weight:bold;
     color:#555;
 }
 
-
-/* ==========================
-   ライブ情報
-========================== */
-
-.live-name{
+.meeting-name{
     margin-bottom:8px;
-
     font-size:20px;
     font-weight:bold;
 }
 
-.tour-name{
+.performance-type{
     margin-bottom:15px;
-
-    font-size:14px;
+    font-size:13px;
     color:#777;
 }
 
-.live-date{
+.meeting-date{
     font-size:14px;
 }
-
-
-/* ==========================
-   セットリスト
-========================== */
 
 .song-list{
     display:flex;
     flex-direction:column;
 }
 
-
-/* ==========================
-   楽曲
-========================== */
-
 .song-item{
     display:flex;
     align-items:flex-start;
     gap:10px;
-
     padding:12px 0;
-
     border-bottom:1px solid #eee;
 }
 
@@ -101,32 +64,19 @@
     border-bottom:none;
 }
 
-
-/* ==========================
-   曲番号
-========================== */
-
 .song-number{
     display:flex;
     align-items:center;
     justify-content:center;
-
     width:28px;
     min-width:28px;
     height:28px;
-
     border-radius:50%;
     background:#fff0f5;
     color:#ff8fb1;
-
     font-size:12px;
     font-weight:bold;
 }
-
-
-/* ==========================
-   曲情報
-========================== */
 
 .song-info{
     flex:1;
@@ -142,26 +92,17 @@
 
 .album-name{
     margin-top:4px;
-
     font-size:11px;
     color:#888;
     line-height:1.5;
-
     word-break:break-word;
 }
-
-
-/* ==========================
-   音楽リンク
-========================== */
 
 .music-links{
     display:flex;
     flex-direction:column;
     gap:5px;
-
     margin-left:8px;
-
     flex-shrink:0;
 }
 
@@ -169,35 +110,15 @@
     display:flex;
     align-items:center;
     justify-content:center;
-
     min-width:76px;
     min-height:30px;
-
     padding:4px 7px;
     box-sizing:border-box;
-
     border-radius:7px;
-
     font-size:10px;
     font-weight:bold;
-
     text-decoration:none;
-
-    transition:opacity .2s, transform .1s;
 }
-
-.music-btn:hover{
-    opacity:.8;
-}
-
-.music-btn:active{
-    transform:scale(.97);
-}
-
-
-/* ==========================
-   配信サービス別
-========================== */
 
 .music-btn.youtube{
     background:#fff0f0;
@@ -214,43 +135,22 @@
     color:#16833b;
 }
 
-
-/* ==========================
-   メドレー
-========================== */
-
 .medley-badge{
     display:block;
     width:max-content;
-
     margin-top:4px;
     padding:2px 6px;
-
     border-radius:10px;
-
     background:#ff8fb1;
     color:#fff;
-
     font-size:10px;
 }
 
-
-/* ==========================
-   データなし
-========================== */
-
 .no-song{
     padding:20px 0;
-
     text-align:center;
-
     color:#888;
 }
-
-
-/* ==========================
-   スクロールバー非表示
-========================== */
 
 html{
     scrollbar-width:none;

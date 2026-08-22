@@ -242,6 +242,7 @@ DB接続は `python.core.database.get_connection()` を使用する。
 - `song_id`
 - `song_group_id`
 - `song_name`
+- `song_type`
 - `release_date`
 - `album_name`
 - `display_order`
@@ -251,7 +252,7 @@ DB接続は `python.core.database.get_connection()` を使用する。
 - `tie_up`
 - `youtube_url`
 - `apple_music_url`
-- `spotify_url`
+- `spotify_music_url`
 - `is_public`
 - `is_deleted`
 - `created_at`
@@ -260,6 +261,15 @@ DB接続は `python.core.database.get_connection()` を使用する。
 `album_name` と `song_name` の組み合わせは一意。
 
 `song_group_id` により同一楽曲のアルバム等によるグループ管理を行う。
+
+`song_type` により楽曲の種別を管理する。
+
+- `INORI`：水瀬いのり名義の楽曲
+- `OTHER`：水瀬いのり名義以外の楽曲、カバー曲、町民集会等で歌唱されるその他の楽曲
+
+既存の楽曲は `INORI` として扱う。
+
+`m_setlist` から楽曲を参照する際は、`song_id` を使用する。
 
 ---
 
@@ -284,6 +294,60 @@ DB接続は `python.core.database.get_connection()` を使用する。
 - `updated_at`
 
 `prefecture_code` は `m_prefecture.prefecture_code` を参照する。
+
+---
+
+#### `m_meeting`
+
+町民集会情報を管理する。
+
+主な項目：
+
+- `meeting_id`
+- `meeting_name`
+- `meeting_date`
+- `performance_type`
+- `venue_name`
+- `prefecture_code`
+- `official_url`
+- `public_flag`
+- `is_deleted`
+- `created_at`
+- `updated_at`
+
+`prefecture_code` は `m_prefecture.prefecture_code` を参照する。
+
+`performance_type` は以下の値を使用する。
+
+- `DAY`：昼公演
+- `NIGHT`：夜公演
+- `PART1`：第1部
+- `PART2`：第2部
+- `PART3`：第3部
+
+---
+
+#### `m_meeting_guest`
+
+町民集会ごとのゲスト情報を管理する。
+
+1つの町民集会に対して複数のゲストを登録できる。
+
+主な項目：
+
+- `meeting_id`
+- `guest_id`
+- `guest_name`
+- `display_order`
+- `is_deleted`
+- `created_at`
+- `updated_at`
+
+`meeting_id` は `m_meeting.meeting_id` を参照する。
+
+`display_order` によりゲストの表示順を管理する。
+
+`is_deleted` により論理削除を管理する。
 
 ---
 
@@ -561,6 +625,22 @@ DB接続は `python.core.database.get_connection()` を使用する。
 - `updated_at`
 
 `user_id` と `live_id` の組み合わせを主キーとする。
+
+---
+
+#### `t_meeting_user`
+
+ユーザーと町民集会の参加状況を管理する。
+
+主な項目：
+
+- `user_id`
+- `meeting_id`
+- `is_join`
+- `created_at`
+- `updated_at`
+
+`user_id` と `meeting_id` の組み合わせを主キーとする。
 
 ---
 

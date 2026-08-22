@@ -82,3 +82,66 @@ html{
 html::-webkit-scrollbar{
     display:none;
 }
+
+/* ==========================
+   回収状況スライダー
+========================== */
+
+.collection-slider{
+    width:100%;
+    display:flex;
+    overflow-x:auto;
+    scroll-snap-type:x mandatory;
+    scrollbar-width:none;
+    -webkit-overflow-scrolling:touch;
+}
+
+.collection-slider::-webkit-scrollbar{
+    display:none;
+}
+
+.collection-card{
+    flex:0 0 100%;
+    min-width:100%;
+    box-sizing:border-box;
+    padding:20px;
+    scroll-snap-align:start;
+}
+
+.collection-type{
+    margin-bottom:12px;
+    font-size:16px;
+    font-weight:bold;
+    text-align:center;
+}
+
+.collection-card > div:not(.collection-type){
+    text-align:center;
+    font-size:15px;
+    font-weight:bold;
+    color:#333;
+    line-height:2.2;
+}
+
+
+/* ==========================
+   スライダードット
+========================== */
+
+.collection-slider-dots{
+    display:flex;
+    justify-content:center;
+    gap:8px;
+    margin:0 0 20px;
+}
+
+.collection-slider-dot{
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    background:#ddd;
+}
+
+.collection-slider-dot.active{
+    background:#ff8fb1;
+}

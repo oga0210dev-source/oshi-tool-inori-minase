@@ -89,6 +89,7 @@ async def song_create(
         request: Request,
 
         song_name: str = Form(...),
+        song_type: str = Form("INORI"),
         song_group_id: int = Form(None),
         release_date: str = Form(None),
         album_name: str = Form(None),
@@ -110,6 +111,7 @@ async def song_create(
 
     song_data = {
         "song_name": song_name,
+        "song_type": song_type,
         "song_group_id": song_group_id,
         "release_date": release_date,
         "album_name": album_name,
@@ -132,6 +134,17 @@ async def song_create(
             name="templates/admin/master/song/form.html",
             context={
                 "error": "曲名を入力してください",
+                "song": song_data,
+                "song_groups": song_groups
+            }
+        )
+
+    if song_type not in ("INORI", "OTHER"):
+        return templates.TemplateResponse(
+            request=request,
+            name="templates/admin/master/song/form.html",
+            context={
+                "error": "曲タイプが不正です",
                 "song": song_data,
                 "song_groups": song_groups
             }
@@ -218,6 +231,7 @@ async def song_update(
         song_id: int,
 
         song_name: str = Form(...),
+        song_type: str = Form("INORI"),
         song_group_id: int = Form(None),
         release_date: str = Form(None),
         album_name: str = Form(None),
@@ -239,6 +253,7 @@ async def song_update(
 
     song_data = {
         "song_name": song_name,
+        "song_type": song_type,
         "song_group_id": song_group_id,
         "release_date": release_date,
         "album_name": album_name,
@@ -266,6 +281,17 @@ async def song_update(
             }
         )
 
+    if song_type not in ("INORI", "OTHER"):
+        return templates.TemplateResponse(
+            request=request,
+            name="templates/admin/master/song/form.html",
+            context={
+                "error": "曲タイプが不正です",
+                "song": song_data,
+                "song_groups": song_groups
+            }
+        )
+
     if not song_group_id:
         song = song_model.get_song(song_id)
         song_data["song_group_id"] = song["song_group_id"]
@@ -284,6 +310,35 @@ async def song_update(
                 "song_groups": song_groups
             }
         )
+
+    if display_order is not None and display_order < 1:
+        return templates.TemplateResponse(
+            request=request,
+            name="templates/admin/master/song/form.html",
+            context={
+                "error": "表示順は1以上で入力してください",
+                "song": song_data,
+                "song_groups": song_groups
+            }
+        )
+
+    url_list = [
+        ("YouTube URL", youtube_url),
+        ("Apple Music URL", apple_music_url),
+        ("Spotify URL", spotify_url)
+    ]
+
+    for name, url in url_list:
+        if not validator.is_valid_url(url):
+            return templates.TemplateResponse(
+                request=request,
+                name="templates/admin/master/song/form.html",
+                context={
+                    "error": f"{name}の形式が正しくありません",
+                    "song": song_data,
+                    "song_groups": song_groups
+                }
+            )
 
     song_model.update_song(
         song_id,
