@@ -578,6 +578,43 @@ DB接続は `python.core.database.get_connection()` を使用する。
 
 ---
 
+#### `t_meeting_record`
+
+ユーザーの町民集会参加記録を管理する。
+
+主な項目：
+
+- `record_id`
+- `user_id`
+- `meeting_id`
+- `seat_info`
+- `memo`
+- `created_at`
+- `updated_at`
+
+`user_id` と `meeting_id` の組み合わせは一意。
+
+---
+
+#### `t_meeting_expense`
+
+町民集会関連の支出を管理する。
+
+主な項目：
+
+- `expense_id`
+- `user_id`
+- `meeting_id`
+- `expense_type_id`
+- `amount`
+- `memo`
+- `created_at`
+- `updated_at`
+
+`amount` は0以上。
+
+---
+
 #### `t_setlist_prediction`
 
 ユーザーが作成した予測セトリを管理する。

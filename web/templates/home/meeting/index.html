@@ -46,6 +46,13 @@
                         </div>
                         {% endif %}
 
+                        {% if is_login and meeting.is_join %}
+                        <a href="/home/meeting/history/detail/{{ meeting.meeting_id }}?from=meeting"
+                           class="add-history">
+                            記録
+                        </a>
+                        {% endif %}
+
                         <a href="/home/meeting/detail/{{ meeting.meeting_id }}"
                            class="detail-btn">
                             詳細

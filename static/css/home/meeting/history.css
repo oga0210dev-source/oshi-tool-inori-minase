@@ -1,0 +1,115 @@
+.background .back-link{
+    align-self:flex-start;
+    margin-left:15px;
+    margin-top:10px;
+}
+
+.container{
+    width:100%;
+    max-width:430px;
+    margin:0 auto;
+    padding:15px 0 30px;
+}
+
+.page-title{
+    text-align:center;
+    font-size:22px;
+    font-weight:bold;
+    margin-bottom:20px;
+    color:#333;
+}
+
+.history-list{
+    width:100%;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+}
+
+.history-card{
+    width:85%;
+    max-width:390px;
+    margin:0 auto;
+    padding:20px;
+    background:white;
+    border-radius:20px;
+    box-shadow:0 3px 8px rgba(0,0,0,.12);
+}
+
+.meeting-name{
+    font-size:17px;
+    font-weight:bold;
+    margin-bottom:5px;
+}
+
+.performance-type{
+    font-size:13px;
+    color:#777;
+    margin-bottom:15px;
+}
+
+.history-info{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    font-size:14px;
+    line-height:1.5;
+}
+
+.history-actions{
+    display:flex;
+    gap:8px;
+    margin-top:15px;
+}
+
+.history-actions a{
+    flex:1;
+    text-align:center;
+    padding:10px 0;
+    border-radius:12px;
+    text-decoration:none;
+    font-size:13px;
+    font-weight:bold;
+}
+
+.detail-btn{
+    background:#ff8fb1;
+    color:white;
+}
+
+.meeting-detail-btn{
+    background:#eee;
+    color:#666;
+}
+
+.no-history{
+    width:90%;
+    max-width:400px;
+    margin:30px auto;
+    text-align:center;
+    color:#777;
+}
+
+.memo{
+    padding:10px;
+    border-radius:10px;
+    background:#fff7fa;
+    font-size:13px;
+    line-height:1.5;
+    white-space:pre-wrap;
+    overflow-wrap:break-word;
+}
+
+.expense{
+    margin-top:5px;
+    font-weight:bold;
+    color:#555;
+}
+
+html{
+    scrollbar-width:none;
+}
+
+html::-webkit-scrollbar{
+    display:none;
+}

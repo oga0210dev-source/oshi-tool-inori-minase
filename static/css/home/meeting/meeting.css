@@ -1,3 +1,7 @@
+/* ==========================
+   町民集会画面
+========================== */
+
 .container{
     width:100%;
     max-width:430px;
@@ -7,17 +11,27 @@
 
 
 /* ==========================
-   町民集会スライダー
+   町民集会横スライダー
 ========================== */
 
 .meeting-slider{
+    width:100%;
+    min-width:0;
+
     display:flex;
     gap:20px;
+
     overflow-x:auto;
+    overflow-y:hidden;
+
     scroll-snap-type:x mandatory;
+
     scrollbar-width:none;
     -ms-overflow-style:none;
+
     padding:0 20px;
+
+    overscroll-behavior-x:contain;
 }
 
 .meeting-slider::-webkit-scrollbar{
@@ -26,17 +40,16 @@
 
 
 /* ==========================
-   町民集会カード
+   町民集会スライド
 ========================== */
 
 .meeting-card{
     flex:0 0 100%;
-    scroll-snap-align:center;
-
     width:85%;
     max-width:390px;
     min-height:150px;
     margin:0 auto;
+    scroll-snap-align:center;
     background:white;
     border-radius:20px;
     padding:15px;
@@ -46,11 +59,17 @@
     justify-content:space-between;
 }
 
+
+/* ==========================
+   町民集会情報
+========================== */
+
 .meeting-name{
     font-size:16px;
     font-weight:bold;
-    margin-bottom:4px;
+    margin-bottom:8px;
 }
+
 
 .meeting-info{
     font-size:13px;
@@ -77,6 +96,26 @@
 
 
 /* ==========================
+   記録ボタン
+========================== */
+
+.add-history{
+    background:#eee;
+    color:#666;
+    width:100%;
+    height:40px;
+    margin-top:10px;
+    border-radius:10px;
+    border:none;
+    text-decoration:none;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:14px;
+}
+
+
+/* ==========================
    詳細ボタン
 ========================== */
 
@@ -84,6 +123,7 @@
     background:#ff8fb1;
     width:100%;
     height:40px;
+    margin-top:10px;
     border-radius:10px;
     border:none;
     color:white;
@@ -96,7 +136,7 @@
 
 
 /* ==========================
-   開催予定なし
+   町民集会なし
 ========================== */
 
 .no-meeting{
@@ -109,20 +149,7 @@
 
 
 /* ==========================
-   スクロールバー非表示
-========================== */
-
-html{
-    scrollbar-width:none;
-}
-
-html::-webkit-scrollbar{
-    display:none;
-}
-
-
-/* ==========================
-   ボタン共通
+   メニューボタン共通
 ========================== */
 
 .menu-btn,
@@ -137,9 +164,30 @@ html::-webkit-scrollbar{
     transition:.2s;
 }
 
+
 .menu-btn:hover,
 .wide-btn:hover{
     transform:scale(1.03);
+}
+
+
+/* ==========================
+   横長ボタン
+========================== */
+
+.wide-btn{
+    width:80%;
+    max-width:400px;
+    height:70px;
+    margin:10px auto;
+}
+
+
+.wide-btn img{
+    width:45px;
+    height:45px;
+    object-fit:contain;
+    margin-right:15px;
 }
 
 
@@ -156,9 +204,19 @@ html::-webkit-scrollbar{
     gap:10px;
 }
 
+
 .menu-grid .menu-btn{
     height:70px;
 }
+
+
+.menu-btn img{
+    width:35px;
+    height:35px;
+    object-fit:contain;
+    margin-right:10px;
+}
+
 
 .menu-btn span{
     font-size:14px;
@@ -179,6 +237,7 @@ html::-webkit-scrollbar{
     margin:10px 0 16px;
 }
 
+
 .meeting-slider-dot{
     display:block;
     width:8px;
@@ -187,7 +246,28 @@ html::-webkit-scrollbar{
     background:#ccc;
 }
 
+
 .meeting-slider-dot.active{
     background:#ff8fb1;
     transform:scale(1.2);
+}
+
+
+/* ==========================
+   スマートフォン
+========================== */
+
+@media (max-width:600px){
+
+    .container{
+        width:100%;
+        max-width:430px;
+        padding:15px 0 30px;
+    }
+
+    .meeting-slider{
+        width:100%;
+        padding:0 20px;
+    }
+
 }

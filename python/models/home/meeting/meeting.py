@@ -17,17 +17,30 @@ def get_meeting_list(user_id):
                     m.performance_type,
                     m.official_url,
                     p.prefecture_name,
-                    FALSE AS is_join
+
+                    COALESCE(
+                        u.is_join,
+                        FALSE
+                    ) AS is_join
+
                 FROM m_meeting m
+
                 LEFT JOIN m_prefecture p
                     ON m.prefecture_code = p.prefecture_code
+
+                LEFT JOIN t_meeting_user u
+                    ON m.meeting_id = u.meeting_id
+                   AND u.user_id = %s
+
                 WHERE
                     m.is_deleted = FALSE
                     AND m.public_flag = TRUE
                     AND m.meeting_date >= CURRENT_DATE
+
                 ORDER BY
                     m.meeting_date ASC
-                """
+                """,
+                (user_id,)
             )
 
             meetings = cur.fetchall()

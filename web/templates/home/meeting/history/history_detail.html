@@ -1,0 +1,202 @@
+{% extends "templates/commons/base.html" %}
+
+{% block title %}参加履歴詳細 - 推し活オールインワン{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="/static/css/home/meeting/history_detail.css">
+{% endblock %}
+
+{% block content %}
+<div class="background">
+
+    {% if request.query_params.get('from') == 'meeting' %}
+    <a href="/home/meeting" class="back-link">← 町民集会</a>
+    {% else %}
+    <a href="/home/meeting/history" class="back-link">← 参加履歴</a>
+    {% endif %}
+
+    <div class="page-scroll">
+        <div class="container">
+
+            <div class="detail-card">
+                <div class="group-title">基本情報</div>
+
+                <div class="meeting-name">
+                    {{ meeting.meeting_name }}
+                </div>
+
+                <div class="performance-type">
+                    {% if meeting.performance_type == "DAY" %}
+                        昼公演
+                    {% elif meeting.performance_type == "NIGHT" %}
+                        夜公演
+                    {% elif meeting.performance_type == "PART1" %}
+                        第1部
+                    {% elif meeting.performance_type == "PART2" %}
+                        第2部
+                    {% elif meeting.performance_type == "PART3" %}
+                        第3部
+                    {% endif %}
+                </div>
+
+                <div class="info-list">
+                    <div>📅 {{ meeting.meeting_date }}</div>
+                    <div>📍 {{ meeting.prefecture_name }} {{ meeting.venue_name }}</div>
+                </div>
+            </div>
+
+            <div class="detail-card">
+                <div class="group-title">参加記録</div>
+
+                {% if meeting.seat_info %}
+                <div class="record-item">
+                    💺 {{ meeting.seat_info }}
+                </div>
+                {% else %}
+                <div class="empty-text">
+                    座席情報なし
+                </div>
+                {% endif %}
+
+                {% if meeting.memo %}
+                <div class="memo">
+                    <span class="memo-icon">📝</span>
+                    <span class="memo-text">{{ meeting.memo }}</span>
+                </div>
+                {% else %}
+                <div class="empty-text">
+                    感想メモなし
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="detail-card">
+                <div class="group-title">費用</div>
+
+                {% if expenses %}
+                <div class="expense-list">
+
+                    {% for expense in expenses %}
+                    <div class="expense-item">
+
+                        <div class="expense-name">
+                            {{ expense.expense_type_name }}
+                        </div>
+
+                        <div class="expense-amount">
+                            {{ expense.amount }}円
+                        </div>
+
+                        <div class="expense-actions">
+
+                            <div class="memo-area">
+                                {% if expense.memo %}
+                                <button
+                                    class="icon-btn memo-btn"
+                                    onclick="openExpenseMemo('{{ expense.memo }}')">
+                                    📝
+                                </button>
+                                {% else %}
+                                <div class="icon-space"></div>
+                                {% endif %}
+                            </div>
+
+                            <a
+                                href="/home/meeting/history/expense/edit/{{ expense.expense_id }}"
+                                class="icon-btn">
+                                ✏️
+                            </a>
+
+                            <form
+                                method="post"
+                                action="/home/meeting/history/expense/delete/{{ expense.expense_id }}"
+                                onsubmit="return confirm('削除しますか？')">
+                                <button class="icon-btn">
+                                    🗑️
+                                </button>
+                            </form>
+
+                        </div>
+                    </div>
+                    {% endfor %}
+
+                </div>
+                {% else %}
+                <div class="empty-text">
+                    費用登録なし
+                </div>
+                {% endif %}
+
+                <div class="total-expense">
+                    合計 {{ total_expense }}円
+                </div>
+            </div>
+
+            <div id="expenseMemoModal" class="memo-modal">
+                <div class="memo-modal-content">
+
+                    <div class="memo-title">
+                        費用メモ
+                    </div>
+
+                    <div id="expenseMemoText" class="memo-content"></div>
+
+                    <button
+                        class="close-btn"
+                        onclick="closeExpenseMemo()">
+                        閉じる
+                    </button>
+
+                </div>
+            </div>
+
+            <a
+                href="/home/meeting/history/edit/{{ meeting.meeting_id }}"
+                class="edit-btn">
+                ✏️ 参加記録を編集
+            </a>
+
+            <a
+                href="/home/meeting/history/expense/{{ meeting.meeting_id }}"
+                class="expense-btn">
+                💰 費用を追加
+            </a>
+
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+function openExpenseMemo(memo){
+    const modal =
+        document.getElementById("expenseMemoModal");
+
+    document.getElementById(
+        "expenseMemoText"
+    ).innerText = memo;
+
+    modal.style.display = "flex";
+}
+
+
+function closeExpenseMemo(){
+    document.getElementById(
+        "expenseMemoModal"
+    ).style.display = "none";
+}
+
+
+document.getElementById(
+    "expenseMemoModal"
+).addEventListener(
+    "click",
+    function(e){
+        if(e.target === this){
+            closeExpenseMemo();
+        }
+    }
+);
+</script>
+{% endblock %}

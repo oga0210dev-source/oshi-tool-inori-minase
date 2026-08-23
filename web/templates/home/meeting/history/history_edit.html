@@ -1,0 +1,76 @@
+{% extends "templates/commons/base.html" %}
+
+{% block title %}
+参加記録編集
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="/static/css/home/meeting/history_edit.css">
+{% endblock %}
+
+{% block content %}
+
+<div class="background">
+
+    <a href="/home/meeting/history/detail/{{ meeting_id }}"
+       class="back-link">
+        ← 詳細へ戻る
+    </a>
+
+    <div class="page-scroll">
+        <div class="container">
+
+            <div class="edit-card">
+
+                <div class="group-title">
+                    参加記録編集
+                </div>
+
+                <form method="post"
+                      action="/home/meeting/history/edit/{{ meeting_id }}"
+                      data-unsaved-check="true">
+
+                    <div class="form-group">
+                        <label>
+                            💺 座席情報
+                        </label>
+
+                        <input
+                            type="text"
+                            name="seat_info"
+                            value="{{ record.seat_info or '' }}"
+                            placeholder="例：1階A席 10列5番"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label>
+                            📝 感想・メモ
+                        </label>
+
+                        <textarea
+                            name="memo"
+                            rows="8"
+                            placeholder="町民集会の感想や思い出を入力">{{ record.memo or '' }}</textarea>
+                    </div>
+
+                    <button type="submit"
+                            class="save-btn">
+                        保存
+                    </button>
+
+                </form>
+
+                <a href="/home/meeting/history/detail/{{ meeting_id }}"
+                   class="cancel-btn">
+                    キャンセル
+                </a>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

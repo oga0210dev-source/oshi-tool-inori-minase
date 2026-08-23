@@ -1,0 +1,207 @@
+{% extends "templates/commons/base.html" %}
+
+{% block title %}参加履歴 - 推し活オールインワン{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="/static/css/home/meeting/history.css">
+{% endblock %}
+
+{% block content %}
+<div class="background">
+
+    <a href="/home/meeting" class="back-link">
+        ← 町民集会
+    </a>
+
+    <div class="page-scroll">
+        <div class="container">
+
+            <div class="page-title">
+                参加履歴
+            </div>
+
+            {% if meetings %}
+
+            <div class="history-list">
+
+                {% for meeting in meetings %}
+
+                <div class="history-card">
+
+                    <div class="meeting-name">
+                        {{ meeting.meeting_name }}
+                    </div>
+
+                    <div class="performance-type">
+                        {% if meeting.performance_type == "DAY" %}
+                            昼公演
+                        {% elif meeting.performance_type == "NIGHT" %}
+                            夜公演
+                        {% elif meeting.performance_type == "PART1" %}
+                            第1部
+                        {% elif meeting.performance_type == "PART2" %}
+                            第2部
+                        {% elif meeting.performance_type == "PART3" %}
+                            第3部
+                        {% endif %}
+                    </div>
+
+                    <div class="history-info">
+                        <div>
+                            📅 {{ meeting.meeting_date }}
+                        </div>
+
+                        <div>
+                            📍 {{ meeting.prefecture_name }}
+                            {{ meeting.venue_name }}
+                        </div>
+
+                        {% if meeting.seat_info %}
+                        <div>
+                            💺 {{ meeting.seat_info }}
+                        </div>
+                        {% endif %}
+
+                        {% if meeting.memo %}
+                        <div class="memo">📝 {{ meeting.memo }}</div>
+                        {% endif %}
+
+                        <div class="expense">
+                            💰 {{ meeting.total_expense }}円
+                        </div>
+                    </div>
+
+                    <div class="history-actions">
+
+                        <a href="/home/meeting/history/detail/{{ meeting.meeting_id }}"
+                           class="detail-btn"
+                           onclick="saveHistoryState()">
+                            記録を見る
+                        </a>
+
+                        <a href="/home/meeting/detail/{{ meeting.meeting_id }}?from=history"
+                           class="meeting-detail-btn"
+                           onclick="saveHistoryState()">
+                            町民集会詳細
+                        </a>
+
+                    </div>
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+            {% else %}
+
+            <div class="no-history">
+                参加履歴がありません。
+            </div>
+
+            {% endif %}
+
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+function saveHistoryState(){
+
+    const pageScroll =
+        document.querySelector(".page-scroll");
+
+    if(pageScroll){
+        sessionStorage.setItem(
+            "meetingHistoryScrollY",
+            pageScroll.scrollTop
+        );
+    }
+}
+
+
+function clearHistoryState(){
+
+    sessionStorage.removeItem(
+        "meetingHistoryScrollY"
+    );
+}
+
+
+function restoreHistoryState(){
+
+    const params =
+        new URLSearchParams(
+            window.location.search
+        );
+
+    const pageScroll =
+        document.querySelector(".page-scroll");
+
+
+    if(params.has("first")){
+
+        clearHistoryState();
+
+        if(pageScroll){
+            pageScroll.scrollTop = 0;
+        }
+
+        params.delete("first");
+
+        const newUrl =
+            window.location.pathname +
+            (
+                params.toString()
+                    ? "?" + params.toString()
+                    : ""
+            );
+
+        window.history.replaceState(
+            {},
+            "",
+            newUrl
+        );
+
+        return;
+    }
+
+
+    const savedScrollY =
+        sessionStorage.getItem(
+            "meetingHistoryScrollY"
+        );
+
+    if(
+        pageScroll &&
+        savedScrollY !== null
+    ){
+
+        requestAnimationFrame(function(){
+
+            pageScroll.scrollTop =
+                Number(savedScrollY);
+
+        });
+    }
+}
+
+
+document.addEventListener(
+    "DOMContentLoaded",
+    restoreHistoryState
+);
+
+
+window.addEventListener(
+    "pageshow",
+    function(){
+
+        restoreHistoryState();
+
+    }
+);
+</script>
+{% endblock %}

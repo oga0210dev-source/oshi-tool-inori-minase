@@ -499,6 +499,28 @@ create trigger update_t_live_user_updated_at BEFORE
 update on t_live_user for EACH row
 execute FUNCTION update_updated_at_column ();
 
+create table public.t_meeting_record (
+  created_at timestamp without time zone not null default CURRENT_TIMESTAMP,
+  updated_at timestamp without time zone not null default CURRENT_TIMESTAMP,
+  record_id bigserial not null,
+  user_id text not null,
+  meeting_id bigint not null,
+  seat_info character varying(200) null,
+  memo text null,
+  constraint t_meeting_record_pkey primary key (record_id),
+  constraint unique_t_meeting_record unique (user_id, meeting_id),
+  constraint fk_t_meeting_record_meeting foreign KEY (meeting_id) references m_meeting (meeting_id),
+  constraint fk_t_meeting_record_user foreign KEY (user_id) references m_user (user_id)
+) TABLESPACE pg_default;
+
+create index IF not exists idx_t_meeting_record_user on public.t_meeting_record using btree (user_id) TABLESPACE pg_default;
+
+create index IF not exists idx_t_meeting_record_meeting on public.t_meeting_record using btree (meeting_id) TABLESPACE pg_default;
+
+create trigger update_t_meeting_record_updated_at BEFORE
+update on t_meeting_record for EACH row
+execute FUNCTION update_updated_at_column ();
+
 create table public.t_meeting_user (
   user_id text not null,
   meeting_id bigint not null,

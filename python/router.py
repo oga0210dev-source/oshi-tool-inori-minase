@@ -13,12 +13,12 @@ from python.routers.home.live import (
 )
 from python.routers.home.live.archive import archive as live_archive
 from python.routers.home.live.history import (
-    history,
-    history_detail,
-    history_edit,
-    history_expense_add,
-    history_expense_edit,
-    history_expense_delete
+    history as live_history,
+    history_detail as live_history_detail,
+    history_edit as live_history_edit,
+    history_expense_add as live_history_expense_add,
+    history_expense_edit as live_history_expense_edit,
+    history_expense_delete as live_history_expense_delete
 )
 from python.routers.home.live.lost_item import lost_item
 from python.routers.home.live.prediction import setlist_prediction
@@ -29,6 +29,14 @@ from python.routers.home.meeting import (
     setlist as meeting_setlist
 )
 from python.routers.home.meeting.archive import archive as meeting_archive
+from python.routers.home.meeting.history import (
+    history as meeting_history,
+    history_detail as meeting_history_detail,
+    history_edit as meeting_history_edit,
+    history_expense_add as meeting_history_expense_add,
+    history_expense_edit as meeting_history_expense_edit,
+    history_expense_delete as meeting_history_expense_delete
+)
 from python.routers.home.oshi import (
     oshi,
     oshi_work,
@@ -88,12 +96,12 @@ def register_router(app: FastAPI):
     app.include_router(live_archive.router)
     app.include_router(live_detail.router)
     app.include_router(live_setlist.router)
-    app.include_router(history.router)
-    app.include_router(history_detail.router)
-    app.include_router(history_edit.router)
-    app.include_router(history_expense_add.router)
-    app.include_router(history_expense_delete.router)
-    app.include_router(history_expense_edit.router)
+    app.include_router(live_history.router)
+    app.include_router(live_history_detail.router)
+    app.include_router(live_history_edit.router)
+    app.include_router(live_history_expense_add.router)
+    app.include_router(live_history_expense_delete.router)
+    app.include_router(live_history_expense_edit.router)
     app.include_router(collected_song.router)
     app.include_router(setlist_prediction.router)
     app.include_router(lost_item.router)
@@ -102,6 +110,12 @@ def register_router(app: FastAPI):
     app.include_router(meeting_archive.router)
     app.include_router(meeting_detail.router)
     app.include_router(meeting_setlist.router)
+    app.include_router(meeting_history.router)
+    app.include_router(meeting_history_detail.router)
+    app.include_router(meeting_history_edit.router)
+    app.include_router(meeting_history_expense_add.router)
+    app.include_router(meeting_history_expense_edit.router)
+    app.include_router(meeting_history_expense_delete.router)
 
     app.include_router(oshi.router)
     app.include_router(oshi_work.router)
