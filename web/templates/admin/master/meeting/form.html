@@ -1,10 +1,227 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
+
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/static/img/logo.png" type="image/png">
+
+    <title>推し活オールインワン</title>
+
+    <link rel="stylesheet" href="/static/css/common.css">
+    <link rel="stylesheet" href="/static/css/admin/master/admin-common.css">
+    <link rel="stylesheet" href="/static/css/admin/master/meeting/meeting.css">
 </head>
+
 <body>
+
+<div class="container">
+
+    <h1 class="page-title">
+        {% if meeting and meeting.meeting_id %}
+            町民集会編集
+        {% else %}
+            町民集会登録
+        {% endif %}
+    </h1>
+
+    <div class="form-scroll">
+
+        {% if error %}
+        <p class="error-message">
+            {{ error }}
+        </p>
+        {% endif %}
+
+        <form
+            {% if meeting and meeting.meeting_id %}
+                action="/admin/master/meeting/update/{{ meeting.meeting_id }}"
+            {% else %}
+                action="/admin/master/meeting/create"
+            {% endif %}
+            method="post"
+            class="meeting-form">
+
+            <!-- 町民集会情報 -->
+            <div class="form-group">
+                <h2 class="form-title">
+                    町民集会情報
+                </h2>
+
+                <label>
+                    町民集会名
+                </label>
+
+                <input
+                    type="text"
+                    name="meeting_name"
+                    value="{{ meeting.meeting_name or '' }}"
+                    required>
+
+                <label>
+                    開催日
+                </label>
+
+                <input
+                    type="date"
+                    name="meeting_date"
+                    value="{{ meeting.meeting_date or '' }}"
+                    required>
+
+                <label>
+                    公演区分
+                </label>
+
+                <select
+                    name="performance_type"
+                    required>
+
+                    <option
+                        value="DAY"
+                        {% if not meeting or meeting.performance_type == "DAY" %}
+                            selected
+                        {% endif %} >
+                        昼公演
+                    </option>
+
+                    <option
+                        value="NIGHT"
+                        {% if meeting and meeting.performance_type == "NIGHT" %}
+                            selected
+                        {% endif %} >
+                        夜公演
+                    </option>
+
+                    <option
+                        value="PART1"
+                        {% if meeting and meeting.performance_type == "PART1" %}
+                            selected
+                        {% endif %} >
+                        1部
+                    </option>
+
+                    <option
+                        value="PART2"
+                        {% if meeting and meeting.performance_type == "PART2" %}
+                            selected
+                        {% endif %} >
+                        2部
+                    </option>
+
+                    <option
+                        value="PART3"
+                        {% if meeting and meeting.performance_type == "PART3" %}
+                            selected
+                        {% endif %} >
+                        3部
+                    </option>
+
+                </select>
+
+                <label>
+                    会場名
+                </label>
+
+                <input
+                    type="text"
+                    name="venue_name"
+                    value="{{ meeting.venue_name or '' }}"
+                    required>
+
+                <label>
+                    都道府県
+                </label>
+
+                <select
+                    name="prefecture_code">
+
+                    <option value="">
+                        未設定
+                    </option>
+
+                    {% for area, prefectures in prefecture_groups.items() %}
+
+                    <optgroup label="{{ area }}">
+
+                        {% for prefecture in prefectures %}
+
+                        <option
+                            value="{{ prefecture.prefecture_code }}"
+                            {% if meeting and meeting.prefecture_code == prefecture.prefecture_code %}
+                                selected
+                            {% endif %}>
+                            {{ prefecture.prefecture_name }}
+                        </option>
+
+                        {% endfor %}
+
+                    </optgroup>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+            <!-- 関連情報 -->
+            <div class="form-group">
+
+                <h2 class="form-title">
+                    関連情報
+                </h2>
+
+                <label>
+                    公式サイト
+                </label>
+
+                <input
+                    type="url"
+                    name="official_url"
+                    value="{{ meeting.official_url or '' }}">
+
+            </div>
+
+            <!-- 公開設定 -->
+            <div class="form-group">
+
+                <h2 class="form-title">
+                    公開設定
+                </h2>
+
+                <label class="checkbox">
+
+                    <input
+                        type="checkbox"
+                        name="public_flag"
+                        value="true"
+                        {% if not meeting or meeting.public_flag %}
+                            checked
+                        {% endif %}>
+                    公開する
+                </label>
+
+            </div>
+
+            <button
+                type="submit"
+                class="action-btn">
+                {% if meeting and meeting.meeting_id %}
+                    更新
+                {% else %}
+                    登録
+                {% endif %}
+            </button>
+
+        </form>
+
+        <a href="/admin/master/meeting"
+            class="back-btn">
+            戻る
+        </a>
+
+    </div>
+
+</div>
 
 </body>
 </html>

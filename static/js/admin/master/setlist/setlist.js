@@ -41,7 +41,6 @@ function addSong() {
     const setlistArea =
         document.getElementById("setlist-area");
 
-    // 今回追加するメドレーの番号を取得
     let medleyOrder = null;
 
     if (isMedley) {
@@ -142,12 +141,10 @@ function editSetlist(){
     document.getElementById("add-area")
         .style.display="block";
 
-
     document.querySelectorAll(".drag-handle")
         .forEach(item=>{
             item.style.display="block";
         });
-
 
     document.querySelectorAll(".delete-btn")
         .forEach(item=>{
@@ -209,13 +206,16 @@ function getSetlistOrder(){
     });
 
     return order;
-
 }
 
 async function saveSetlist(){
 
+    console.log("saveSetlist called");
+    console.log("eventType:", eventType);
+    console.log("eventId:", eventId);
+
     const response = await fetch(
-        `/admin/master/setlist/LIVE/${liveId}/save`,
+        `/admin/master/setlist/${eventType}/${eventId}/save`,
         {
             method:"POST",
             headers:{
@@ -226,6 +226,10 @@ async function saveSetlist(){
     );
 
     const result = await response.json();
+
+    console.log("save result:", result);
+
+    // 以下そのまま
 
     if(result.success){
 
@@ -248,12 +252,10 @@ async function saveSetlist(){
         document.getElementById("add-area")
             .style.display="none";
 
-
         document.querySelectorAll(".drag-handle")
             .forEach(item=>{
                 item.style.display="none";
             });
-
 
         document.querySelectorAll(".delete-btn")
             .forEach(item=>{

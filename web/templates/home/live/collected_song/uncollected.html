@@ -15,23 +15,49 @@
 
     <div class="page-scroll">
         <div class="container">
+
             <h1 class="page-title">
                 未回収楽曲
             </h1>
 
+            <!-- 集計対象切り替え -->
+            <div class="collection-mode">
+
+                <a href="/home/live/collected_song/uncollected?include_chomin=false"
+                   class="mode-btn{% if not include_chomin %} active{% endif %}">
+                    ライブのみ
+                </a>
+
+                <a href="/home/live/collected_song/uncollected?include_chomin=true"
+                   class="mode-btn{% if include_chomin %} active{% endif %}">
+                    町民集会を含む
+                </a>
+
+            </div>
+
             {% if songs %}
+
             <div class="song-list">
+
                 {% for song in songs %}
+
                 <div class="song-card">
-                    <div class="song-name">
-                        {{ song.song_name }}
+
+                    <div class="song-info">
+
+                        <div class="song-name">
+                            {{ song.song_name }}
+                        </div>
+
                     </div>
 
                     <div class="song-links">
+
                         {% if song.youtube_url %}
                         <a href="{{ song.youtube_url }}"
                            target="_blank"
-                           rel="noopener noreferrer">
+                           rel="noopener noreferrer"
+                           class="song-link youtube">
                             YouTube
                         </a>
                         {% endif %}
@@ -39,7 +65,8 @@
                         {% if song.apple_music_url %}
                         <a href="{{ song.apple_music_url }}"
                            target="_blank"
-                           rel="noopener noreferrer">
+                           rel="noopener noreferrer"
+                           class="song-link apple-music">
                             Apple Music
                         </a>
                         {% endif %}
@@ -47,20 +74,28 @@
                         {% if song.spotify_url %}
                         <a href="{{ song.spotify_url }}"
                            target="_blank"
-                           rel="noopener noreferrer">
+                           rel="noopener noreferrer"
+                           class="song-link spotify">
                             Spotify
                         </a>
                         {% endif %}
+
                     </div>
+
                 </div>
+
                 {% endfor %}
+
             </div>
 
             {% else %}
+
             <div class="no-song">
                 すべての楽曲を回収しています！
             </div>
+
             {% endif %}
+
         </div>
     </div>
 </div>

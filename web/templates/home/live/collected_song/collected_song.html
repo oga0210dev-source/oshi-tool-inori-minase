@@ -8,6 +8,7 @@
 
 {% block content %}
 <div class="background">
+
     <a href="/home/live" class="back-link">
         ← ライブ
     </a>
@@ -16,17 +17,62 @@
         回収済み楽曲
     </h1>
 
-    <div>
-        🎵 回収済み：{{ summary.collected_count }}曲
+    <div class="collection-slider">
+
+        <!-- ライブのみ -->
+        <div class="collection-card">
+
+            <div class="collection-type">
+                ライブのみ
+            </div>
+
+            <div>
+                🎵 回収済み：{{ summary.collected_count }}曲
+            </div>
+
+            <div>
+                ❌ 未回収：{{ summary.uncollected_count }}曲
+            </div>
+
+            <div>
+                📈 回収率：{{ summary.collection_rate }}%
+            </div>
+
+        </div>
+
+
+        <!-- 町民集会込み -->
+        <div class="collection-card">
+
+            <div class="collection-type">
+                町民集会を含む
+            </div>
+
+            <div>
+                🎵 回収済み：{{ summary_with_chomin.collected_count }}曲
+            </div>
+
+            <div>
+                ❌ 未回収：{{ summary_with_chomin.uncollected_count }}曲
+            </div>
+
+            <div>
+                📈 回収率：{{ summary_with_chomin.collection_rate }}%
+            </div>
+
+        </div>
+
     </div>
 
-    <div>
-        ❌ 未回収：{{ summary.uncollected_count }}曲
+
+    <!-- スライダードット -->
+    <div class="collection-slider-dots">
+
+        <span class="collection-slider-dot active"></span>
+        <span class="collection-slider-dot"></span>
+
     </div>
 
-    <div>
-        📈 回収率：{{ summary.collection_rate }}%
-    </div>
 
     <div class="collection-menu">
 
@@ -44,6 +90,33 @@
            class="menu-btn">
             ライブ登場曲
         </a>
+
     </div>
+
 </div>
+
+<script>
+const slider =
+    document.querySelector(".collection-slider");
+
+const dots =
+    document.querySelectorAll(".collection-slider-dot");
+
+slider.addEventListener("scroll", () => {
+
+    const index =
+        Math.round(
+            slider.scrollLeft /
+            slider.clientWidth
+        );
+
+    dots.forEach((dot, i) => {
+        dot.classList.toggle(
+            "active",
+            i === index
+        );
+    });
+
+});
+</script>
 {% endblock %}

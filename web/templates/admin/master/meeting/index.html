@@ -1,10 +1,300 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
+
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/static/img/logo.png" type="image/png">
+
+    <title>推し活オールインワン</title>
+
+    <link rel="stylesheet" href="/static/css/common.css">
+    <link rel="stylesheet" href="/static/css/admin/master/admin-common.css">
+    <link rel="stylesheet" href="/static/css/admin/master/meeting/meeting.css">
 </head>
+
 <body>
+
+<div class="container">
+
+    <div class="page-header">
+
+        <a href="/admin/master" class="master-link">
+            ← 管理マスタ
+        </a>
+
+        <h1 class="page-title">
+            町民集会管理
+        </h1>
+
+    </div>
+
+    <a href="/admin/master/meeting/create" class="action-btn">
+        新規登録
+    </a>
+
+
+    <!-- 検索・ソート -->
+    <div class="search-area">
+
+        <form
+            method="get"
+            class="search-form"
+            onsubmit="clearArchiveState()"
+        >
+
+            <input
+                type="text"
+                name="keyword"
+                placeholder="町民集会名・会場名で検索"
+                value="{{ request.query_params.get('keyword', '') }}"
+            >
+
+            <select name="sort">
+
+                <option
+                    value="date"
+                    {% if request.query_params.get('sort', 'date') == "date" %}
+                        selected
+                    {% endif %}
+                >
+                    開催日順
+                </option>
+
+                <option
+                    value="date_desc"
+                    {% if request.query_params.get('sort') == "date_desc" %}
+                        selected
+                    {% endif %}
+                >
+                    開催日（新しい順）
+                </option>
+
+                <option
+                    value="date_asc"
+                    {% if request.query_params.get('sort') == "date_asc" %}
+                        selected
+                    {% endif %}
+                >
+                    開催日（古い順）
+                </option>
+
+                <option
+                    value="name"
+                    {% if request.query_params.get('sort') == "name" %}
+                        selected
+                    {% endif %}
+                >
+                    町民集会名順
+                </option>
+
+                <option
+                    value="updated"
+                    {% if request.query_params.get('sort') == "updated" %}
+                        selected
+                    {% endif %}
+                >
+                    更新日順
+                </option>
+
+            </select>
+
+            <button
+                type="submit"
+                class="search-btn"
+            >
+                検索
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <!-- 町民集会一覧 -->
+    <div class="page-scroll">
+        <div class="meeting-list">
+
+            {% for meeting in meetings %}
+
+            <div class="meeting-block">
+                <h2 class="meeting-title">
+                    {{ meeting.meeting_name }}
+                </h2>
+
+                <div class="meeting-row">
+                    <div class="meeting-info">
+                        <div class="meeting-place">
+                            {{ meeting.venue_name }}
+
+                            {% if meeting.prefecture_name %}
+                                （{{ meeting.prefecture_name }}）
+                            {% endif %}
+                        </div>
+
+                        <div class="meeting-date">
+
+                            {{ meeting.meeting_date }}
+
+                            {% if meeting.performance_type == "DAY" %}
+                                昼公演
+                            {% elif meeting.performance_type == "NIGHT" %}
+                                夜公演
+                            {% elif meeting.performance_type == "PART1" %}
+                                1部
+                            {% elif meeting.performance_type == "PART2" %}
+                                2部
+                            {% elif meeting.performance_type == "PART3" %}
+                                3部
+                            {% endif %}
+
+                        </div>
+                    </div>
+
+                    <div class="meeting-action">
+                        <div class="meeting-action-top">
+                            <a href="/admin/master/meeting/edit/{{ meeting.meeting_id }}"
+                               class="edit-btn"
+                               onclick="saveArchiveState()">
+                                編集
+                            </a>
+
+                            <a href="/admin/master/meeting/delete/{{ meeting.meeting_id }}"
+                               class="delete-btn"
+                               onclick="return confirm('この町民集会を削除しますか？');">
+                                削除
+                            </a>
+                        </div>
+
+                        <a href="/admin/master/setlist/CHOMIN/{{ meeting.meeting_id }}"
+                           class="setlist-btn"
+                           onclick="saveArchiveState()">
+                            セトリ
+                        </a>
+
+                        <a href="/admin/master/meeting/{{ meeting.meeting_id }}/guest"
+                           class="guest-btn"
+                           onclick="saveArchiveState()">
+                            ゲスト
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+
+            {% else %}
+
+            <p class="empty-message">
+                登録されている町民集会はありません。
+            </p>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    // 詳細画面へ移動前
+    function saveArchiveState(){
+
+        const area =
+            document.querySelector(".page-scroll");
+
+        sessionStorage.setItem(
+            "master_meeting_url",
+            window.location.href
+        );
+
+        sessionStorage.setItem(
+            "master_meeting_scroll",
+            area.scrollTop
+        );
+    }
+
+
+    // 検索時
+    function clearArchiveState(){
+
+        sessionStorage.removeItem(
+            "master_meeting_scroll"
+        );
+
+        sessionStorage.removeItem(
+            "master_meeting_url"
+        );
+    }
+
+
+    // ページ復元
+    window.addEventListener("load", () => {
+
+        const params =
+            new URLSearchParams(window.location.search);
+
+
+        if (params.has("first")) {
+
+            sessionStorage.removeItem(
+                "master_meeting_scroll"
+            );
+
+            sessionStorage.removeItem(
+                "master_meeting_url"
+            );
+
+            window.history.replaceState(
+                {},
+                "",
+                "/admin/master/meeting"
+            );
+
+            return;
+        }
+
+
+        const savedUrl =
+            sessionStorage.getItem(
+                "master_meeting_url"
+            );
+
+        const currentUrl =
+            window.location.href;
+
+
+        // 編集画面・セトリ画面・ゲスト画面から
+        // 一覧に戻ってきた場合
+        if (savedUrl && currentUrl !== savedUrl) {
+
+            window.location.replace(savedUrl);
+
+            return;
+        }
+
+
+        const scroll =
+            sessionStorage.getItem(
+                "master_meeting_scroll"
+            );
+
+        const area =
+            document.querySelector(".page-scroll");
+
+
+        if (area && scroll !== null) {
+
+            area.scrollTop =
+                Number(scroll);
+
+        }
+
+    });
+
+</script>
 
 </body>
 </html>

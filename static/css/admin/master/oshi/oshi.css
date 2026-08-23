@@ -1,133 +1,327 @@
-.oshi-card {
-    margin-top: 20px;
-    padding: 20px;
-    border-radius: 12px;
-    background: #fff;
+/* =========================
+   推し情報
+========================= */
+
+
+/* =========================
+   推し情報カード
+========================= */
+
+.oshi-card{
+    margin-top:20px;
+    padding:20px;
+    box-sizing:border-box;
+    border-radius:12px;
+    background:#fff;
 }
 
-.oshi-image {
-    width: 160px;
-    height: 160px;
-    margin: 0 auto 20px;
-    overflow: hidden;
-    border-radius: 50%;
+
+.oshi-image{
+    width:160px;
+    height:160px;
+    margin:0 auto 20px;
+    overflow:hidden;
+    border-radius:50%;
 }
 
-.oshi-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+
+.oshi-image img{
+    display:block;
+    width:100%;
+    height:100%;
+    object-fit:cover;
 }
 
-.oshi-info h2 {
-    margin: 0 0 20px;
-    text-align: center;
+
+.oshi-info h2{
+    margin:0 0 20px;
+    text-align:center;
 }
 
-.oshi-info-row {
-    display: flex;
-    gap: 16px;
-    padding: 12px 0;
-    border-bottom: 1px solid #eee;
+
+.oshi-info-row{
+    display:flex;
+    gap:16px;
+    padding:12px 0;
+    border-bottom:1px solid #eee;
 }
 
-.oshi-info-row .label {
-    flex: 0 0 120px;
-    font-weight: bold;
+
+.oshi-info-row .label{
+    flex:0 0 120px;
+    font-weight:bold;
 }
 
-.oshi-message {
-    padding-top: 12px;
+
+.oshi-message{
+    padding-top:12px;
 }
 
-.oshi-message .label {
-    font-weight: bold;
+
+.oshi-message .label{
+    font-weight:bold;
 }
 
-.oshi-message p {
-    margin: 8px 0 0;
-    white-space: pre-wrap;
+
+.oshi-message p{
+    margin:8px 0 0;
+    white-space:pre-wrap;
 }
 
-.oshi-action {
-    margin-top: 20px;
-    text-align: center;
+
+/* =========================
+   操作エリア
+========================= */
+
+.oshi-action{
+    margin-top:20px;
+    text-align:center;
 }
 
-.master-form {
-    margin-top: 20px;
+
+.edit-btn{
+    display:inline-block;
+    min-width:100px;
+    box-sizing:border-box;
+    padding:10px 20px;
+    border-radius:6px;
+    background:#333;
+    color:#fff;
+    text-align:center;
+    text-decoration:none;
+    white-space:nowrap;
 }
 
-.master-form .form-group {
-    margin-bottom: 20px;
+
+/* =========================
+   推し情報 登録・編集フォーム
+========================= */
+
+.master-form{
+    width:100%;
+    max-width:400px;
+    margin:20px auto 0;
+    box-sizing:border-box;
+
+    flex:1;
+    min-height:0;
+
+    overflow-y:auto;
+    overflow-x:hidden;
+
+    padding-bottom:20px;
+
+    scrollbar-width:none;
+    -ms-overflow-style:none;
 }
 
-.master-form label {
-    display: block;
-    margin-bottom: 6px;
-    font-weight: bold;
+.master-form::-webkit-scrollbar{
+    display:none;
 }
+
+
+/* =========================
+   フォーム項目
+========================= */
+
+.master-form .form-group{
+    width:100%;
+    box-sizing:border-box;
+    margin-bottom:20px;
+}
+
+
+.master-form label{
+    display:block;
+    margin:12px 0 6px;
+    font-size:15px;
+    font-weight:bold;
+}
+
+
+/* =========================
+   入力
+========================= */
 
 .master-form input,
-.master-form textarea {
-    box-sizing: border-box;
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font-size: 16px;
+.master-form textarea{
+    width:100%;
+    max-width:100%;
+    box-sizing:border-box;
+    padding:10px;
+    border:1px solid #ccc;
+    border-radius:8px;
+    background:#fff;
+    font-size:15px;
 }
 
-.master-form textarea {
-    resize: vertical;
+
+/* =========================
+   日付入力
+========================= */
+
+.master-form input[type="date"]{
+    width:100%;
+    max-width:100%;
+    min-width:0;
+    height:45px;
+    box-sizing:border-box;
+    padding:0 10px;
+
+    -webkit-appearance:none;
+    appearance:none;
 }
 
-.form-actions {
-    display: flex;
-    gap: 12px;
-    margin-top: 30px;
+
+/* =========================
+   テキスト入力
+========================= */
+
+.master-form input[type="text"]{
+    width:100%;
+    max-width:100%;
+    min-width:0;
+    height:45px;
+    box-sizing:border-box;
 }
 
-.form-actions > * {
-    flex: 1;
+
+/* =========================
+   テキストエリア
+========================= */
+
+.master-form textarea{
+    min-height:120px;
+    line-height:1.7;
+    resize:vertical;
 }
+
+
+.master-form input:focus,
+.master-form textarea:focus{
+    outline:none;
+    border-color:#ff8fb1;
+}
+
+/* =========================
+   プロフィール画像
+========================= */
+
+.oshi-image-preview{
+    width:160px;
+    height:160px;
+    margin:10px auto 15px;
+    overflow:hidden;
+    border-radius:50%;
+}
+
+.oshi-image-preview img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.master-form input[type="file"]{
+    width:100%;
+    box-sizing:border-box;
+    padding:10px;
+    border:1px solid #ccc;
+    border-radius:6px;
+    background:#fff;
+    font-size:14px;
+}
+
+
+/* =========================
+   ボタン
+========================= */
+
+.form-actions{
+    display:flex;
+    gap:12px;
+    width:100%;
+    box-sizing:border-box;
+    margin-top:30px;
+}
+
+
+.form-actions > *{
+    flex:1;
+    min-width:0;
+}
+
 
 .cancel-btn,
-.save-btn {
-    display: block;
-    padding: 12px;
-    border-radius: 6px;
-    text-align: center;
-    font-size: 16px;
-    text-decoration: none;
-    cursor: pointer;
+.save-btn{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    min-height:45px;
+    padding:10px 12px;
+    box-sizing:border-box;
+    border-radius:8px;
+    text-align:center;
+    font-size:15px;
+    font-weight:bold;
+    text-decoration:none;
+    cursor:pointer;
 }
 
-.cancel-btn {
-    background: #ddd;
-    color: #333;
+
+.cancel-btn{
+    background:#ddd;
+    color:#333;
 }
 
-.save-btn {
-    border: none;
-    background: #333;
-    color: #fff;
+
+.save-btn{
+    border:none;
+    background:#333;
+    color:#fff;
 }
 
-.edit-btn {
-    display: inline-block;
-    min-width: 100px;
-    box-sizing: border-box;
-    padding: 10px 20px;
-    border-radius: 6px;
-    background: #333;
-    color: #fff;
-    text-align: center;
-    text-decoration: none;
-    white-space: nowrap;
+
+/* =========================
+   データなし
+========================= */
+
+.empty-message{
+    margin:40px 0 20px;
+    text-align:center;
 }
 
-.empty-message {
-    margin: 40px 0 20px;
-    text-align: center;
+
+/* =========================
+   小さい画面
+========================= */
+
+@media (max-width:430px){
+
+    .master-form{
+        max-width:100%;
+    }
+
+    .master-form input,
+    .master-form textarea{
+        font-size:14px;
+    }
+
+}
+
+
+/* =========================
+   極小画面
+========================= */
+
+@media (max-width:360px){
+
+    .form-actions{
+        gap:8px;
+    }
+
+    .cancel-btn,
+    .save-btn{
+        font-size:14px;
+    }
+
 }

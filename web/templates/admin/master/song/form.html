@@ -5,131 +5,375 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="/static/img/logo.png" type="image/png">
+
     <title>推し活オールインワン</title>
+
     <link rel="stylesheet" href="/static/css/common.css">
     <link rel="stylesheet" href="/static/css/admin/master/admin-common.css">
     <link rel="stylesheet" href="/static/css/admin/master/song/song.css">
 </head>
 
 <body>
-    <div class="container">
-        <h1 class="page-title">
-            {% if song and song.song_id %}曲編集{% else %}曲登録{% endif %}
-        </h1>
 
-        {% if error %}
-        <p class="error-message">{{ error }}</p>
+<div class="container">
+
+    <h1 class="page-title">
+        {% if song and song.song_id %}
+            曲編集
+        {% else %}
+            曲登録
         {% endif %}
+    </h1>
 
-        <form {% if song and song.song_id %}action="/admin/master/song/update/{{ song.song_id }}"{% else %}action="/admin/master/song/create"{% endif %} method="post" class="song-form">
 
-            <div class="form-group">
-                <h2 class="form-title">基本情報</h2>
+    {% if error %}
+    <p class="error-message">
+        {{ error }}
+    </p>
+    {% endif %}
 
-                <label>曲名</label>
-                {% if song and song.song_group_id %}
-                <input
-                    id="song_name"
-                    type="text"
-                    name="song_name"
-                    value="{{ song.song_name or '' }}"
-                    readonly
+
+    <form
+        {% if song and song.song_id %}
+            action="/admin/master/song/update/{{ song.song_id }}"
+        {% else %}
+            action="/admin/master/song/create"
+        {% endif %}
+        method="post"
+        class="song-form"
+    >
+
+        <!-- 基本情報 -->
+        <div class="form-group">
+
+            <h2 class="form-title">
+                基本情報
+            </h2>
+
+
+            <label>
+                曲名
+            </label>
+
+            {% if song and song.song_group_id %}
+
+            <input
+                id="song_name"
+                type="text"
+                name="song_name"
+                value="{{ song.song_name or '' }}"
+                readonly
+            >
+
+            {% else %}
+
+            <input
+                id="song_name"
+                type="text"
+                name="song_name"
+                value="{{ song.song_name or '' }}"
+                required
+            >
+
+            {% endif %}
+
+
+            <label>
+                曲タイプ
+            </label>
+
+            <select
+                id="song_type"
+                name="song_type"
+            >
+
+                <option
+                    value="INORI"
+                    {% if not song or song.song_type == "INORI" %}
+                        selected
+                    {% endif %}
                 >
-                {% else %}
-                <input
-                    id="song_name"
-                    type="text"
-                    name="song_name"
-                    value="{{ song.song_name or '' }}"
-                    required
+                    水瀬いのり
+                </option>
+
+                <option
+                    value="OTHER"
+                    {% if song and song.song_type == "OTHER" %}
+                        selected
+                    {% endif %}
                 >
-                {% endif %}
+                    その他
+                </option>
 
-                <label>同一曲グループ</label>
+            </select>
 
-                {% if song and song.song_id %}
-                <select id="song_group_id" disabled>
-                    <option value="{{ song.song_group_id }}">
-                        {{ song.song_name }}
-                    </option>
-                </select>
-                <input type="hidden" name="song_group_id" value="{{ song.song_group_id }}">
-                {% else %}
-                <select id="song_group_id" name="song_group_id">
-                    <option value="">新規作成</option>
 
-                    {% for group in song_groups %}
-                    <option value="{{ group.song_group_id }}"
-                        {% if song and song.song_group_id == group.song_group_id %}selected{% endif %}>
-                        {{ group.song_name }}
-                    </option>
-                    {% endfor %}
-                </select>
-                {% endif %}
+            <label>
+                同一曲グループ
+            </label>
 
-                <label>アルバム名</label>
-                <input type="text" name="album_name" value="{{ song.album_name or '' }}">
+            {% if song and song.song_id %}
 
-                <label>リリース日</label>
-                <input type="date" name="release_date" value="{{ song.release_date or '' }}">
+            <select
+                id="song_group_id"
+                disabled
+            >
+                <option value="{{ song.song_group_id }}">
+                    {{ song.song_name }}
+                </option>
+            </select>
 
-                <label>表示順</label>
-                <input type="number" name="display_order" min="1" value="{{ song.display_order or '' }}">
-            </div>
+            <input
+                type="hidden"
+                name="song_group_id"
+                value="{{ song.song_group_id }}"
+            >
 
-            <div class="form-group">
-                <h2 class="form-title">制作情報</h2>
+            {% else %}
 
-                <label>作詞者</label>
-                <input id="lyricist" type="text" name="lyricist" value="{{ song.lyricist or '' }}">
+            <select
+                id="song_group_id"
+                name="song_group_id"
+            >
 
-                <label>作曲者</label>
-                <input id="composer" type="text" name="composer" value="{{ song.composer or '' }}">
+                <option value="">
+                    新規作成
+                </option>
 
-                <label>編曲者</label>
-                <input id="arranger" type="text" name="arranger" value="{{ song.arranger or '' }}">
-            </div>
+                {% for group in song_groups %}
 
-            <div class="form-group">
-                <h2 class="form-title">関連情報</h2>
+                <option
+                    value="{{ group.song_group_id }}"
+                    {% if song and song.song_group_id == group.song_group_id %}
+                        selected
+                    {% endif %}
+                >
+                    {{ group.song_name }}
+                </option>
 
-                <label>タイアップ</label>
-                <input id="tie_up" type="text" name="tie_up" value="{{ song.tie_up or '' }}">
-            </div>
+                {% endfor %}
 
-            <div class="form-group">
-                <h2 class="form-title">配信情報</h2>
+            </select>
 
-                <label>YouTube URL</label>
-                <input id="youtube_url" type="url" name="youtube_url" value="{{ song.youtube_url or '' }}">
+            {% endif %}
 
-                <label>Apple Music URL</label>
-                <input id="apple_music_url" type="url" name="apple_music_url" value="{{ song.apple_music_url or '' }}">
 
-                <label>Spotify URL</label>
-                <input id="spotify_url" type="url" name="spotify_url" value="{{ song.spotify_url or '' }}">
-            </div>
+            <label>
+                アルバム名
+            </label>
 
-            <div class="form-group">
-                <h2 class="form-title">公開設定</h2>
+            <input
+                type="text"
+                name="album_name"
+                value="{{ song.album_name or '' }}"
+            >
 
-                <label class="checkbox">
-                <input type="checkbox" name="is_public" value="true" {% if not song or song.is_public %}checked{% endif %}>
-                公開する
-                </label>
-            </div>
 
-            <button type="submit" class="action-btn">
-            {% if song and song.song_id %}更新{% else %}登録{% endif %}
-            </button>
-            <a href="/admin/master/song" class="back-btn">
+            <label>
+                リリース日
+            </label>
+
+            <input
+                type="date"
+                name="release_date"
+                value="{{ song.release_date or '' }}"
+            >
+
+
+            {% if song and song.song_id %}
+
+            <label>
+                表示順
+            </label>
+
+            <input
+                type="number"
+                name="display_order"
+                min="1"
+                value="{{ song.display_order or '' }}"
+            >
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- 制作情報 -->
+        <div class="form-group">
+
+            <h2 class="form-title">
+                制作情報
+            </h2>
+
+
+            <label>
+                作詞者
+            </label>
+
+            <input
+                id="lyricist"
+                type="text"
+                name="lyricist"
+                value="{{ song.lyricist or '' }}"
+            >
+
+
+            <label>
+                作曲者
+            </label>
+
+            <input
+                id="composer"
+                type="text"
+                name="composer"
+                value="{{ song.composer or '' }}"
+            >
+
+
+            <label>
+                編曲者
+            </label>
+
+            <input
+                id="arranger"
+                type="text"
+                name="arranger"
+                value="{{ song.arranger or '' }}"
+            >
+
+        </div>
+
+
+        <!-- 関連情報 -->
+        <div class="form-group">
+
+            <h2 class="form-title">
+                関連情報
+            </h2>
+
+
+            <label>
+                タイアップ
+            </label>
+
+            <input
+                id="tie_up"
+                type="text"
+                name="tie_up"
+                value="{{ song.tie_up or '' }}"
+            >
+
+        </div>
+
+
+        <!-- 配信情報 -->
+        <div class="form-group">
+
+            <h2 class="form-title">
+                配信情報
+            </h2>
+
+
+            <label>
+                YouTube URL
+            </label>
+
+            <input
+                id="youtube_url"
+                type="url"
+                name="youtube_url"
+                value="{{ song.youtube_url or '' }}"
+            >
+
+
+            <label>
+                Apple Music URL
+            </label>
+
+            <input
+                id="apple_music_url"
+                type="url"
+                name="apple_music_url"
+                value="{{ song.apple_music_url or '' }}"
+            >
+
+
+            <label>
+                Spotify URL
+            </label>
+
+            <input
+                id="spotify_url"
+                type="url"
+                name="spotify_url"
+                value="{{ song.spotify_url or '' }}"
+            >
+
+        </div>
+
+
+        <!-- 公開設定 -->
+        <div class="form-group">
+
+            <h2 class="form-title">
+                公開設定
+            </h2>
+
+
+            <label class="public-toggle">
+
+                <input
+                    type="checkbox"
+                    name="is_public"
+                    value="true"
+                    {% if not song or song.is_public %}
+                        checked
+                    {% endif %}
+                >
+
+                <span class="public-toggle-slider"></span>
+
+                <span class="public-toggle-label">
+                    公開する
+                </span>
+
+            </label>
+
+        </div>
+
+
+        <button
+            type="submit"
+            class="action-btn"
+        >
+            {% if song and song.song_id %}
+                更新
+            {% else %}
+                登録
+            {% endif %}
+        </button>
+
+
+        <a
+            href="/admin/master/song"
+            class="back-btn"
+        >
             戻る
-            </a>
-        </form>
-    </div>
+        </a>
+
+    </form>
+
+</div>
+
+
 <script>
-const groupSelect = document.getElementById("song_group_id");
-const songNameInput = document.getElementById("song_name");
+
+const groupSelect =
+    document.getElementById("song_group_id");
+
+const songNameInput =
+    document.getElementById("song_name");
+
 
 function clearSongInfo(){
 
@@ -158,32 +402,47 @@ async function loadSongGroup(groupId){
     }
 
 
-    const response = await fetch(
-        `/admin/master/song/group/${groupId}`
-    );
-
-    const song = await response.json();
-
-
-    // 曲名固定
-    songNameInput.value = song.song_name;
-    songNameInput.readOnly = true;
+    const response =
+        await fetch(
+            `/admin/master/song/group/${groupId}`
+        );
 
 
-    document.getElementById("lyricist").value = song.lyricist ?? "";
-    document.getElementById("composer").value = song.composer ?? "";
-    document.getElementById("arranger").value = song.arranger ?? "";
+    const song =
+        await response.json();
 
-    document.getElementById("tie_up").value = song.tie_up ?? "";
 
-    document.getElementById("youtube_url").value = song.youtube_url ?? "";
-    document.getElementById("apple_music_url").value = song.apple_music_url ?? "";
-    document.getElementById("spotify_url").value = song.spotify_url ?? "";
+    songNameInput.value =
+        song.song_name;
+
+    songNameInput.readOnly =
+        true;
+
+
+    document.getElementById("lyricist").value =
+        song.lyricist ?? "";
+
+    document.getElementById("composer").value =
+        song.composer ?? "";
+
+    document.getElementById("arranger").value =
+        song.arranger ?? "";
+
+    document.getElementById("tie_up").value =
+        song.tie_up ?? "";
+
+    document.getElementById("youtube_url").value =
+        song.youtube_url ?? "";
+
+    document.getElementById("apple_music_url").value =
+        song.apple_music_url ?? "";
+
+    document.getElementById("spotify_url").value =
+        song.spotify_url ?? "";
 
 }
 
 
-// 選択変更時
 if(groupSelect){
 
     groupSelect.addEventListener(
@@ -194,14 +453,17 @@ if(groupSelect){
     );
 
 
-    // 初期表示時
     if(groupSelect.value){
 
-        loadSongGroup(groupSelect.value);
+        loadSongGroup(
+            groupSelect.value
+        );
 
     }
+
 }
 
 </script>
+
 </body>
 </html>

@@ -16,154 +16,334 @@
 <body>
 
 <div class="container">
+
     <div class="page-header">
+
+        {% if event_type == "LIVE" %}
+
         <a href="/admin/master/live" class="master-link">
             ← ライブ管理
         </a>
+
+        {% elif event_type == "CHOMIN" %}
+
+        <a href="/admin/master/meeting" class="master-link">
+            ← 町民集会管理
+        </a>
+
+        {% endif %}
+
         <h1 class="page-title">
             セットリスト
         </h1>
 
+
         <div class="live-info">
+
             <div class="live-info-title">
-                ライブ情報
+
+                {% if event_type == "LIVE" %}
+                    ライブ情報
+                {% elif event_type == "CHOMIN" %}
+                    町民集会情報
+                {% endif %}
+
             </div>
+
+
+            {% if event_type == "LIVE" %}
 
             <div class="live-info-item">
                 <span>ライブ名</span>
-                {{ live.live_name }}
+                {{ event.live_name }}
             </div>
 
             <div class="live-info-item">
                 <span>開催場所</span>
-                {{ live.prefecture_name }}
+                {{ event.prefecture_name }}
             </div>
+
+            {% elif event_type == "CHOMIN" %}
+            <div class="live-info-item">
+                <span>町民集会名</span>
+                {{ event.meeting_name }}
+            </div>
+
+            <div class="live-info-item">
+                <span>開催日</span>
+                {{ event.meeting_date }}
+            </div>
+
+            <div class="live-info-item">
+                <span>公演</span>
+
+                {% if event.performance_type == "DAY" %}
+                    昼公演
+
+                {% elif event.performance_type == "NIGHT" %}
+                    夜公演
+
+                {% elif event.performance_type == "PART1" %}
+                    1部
+
+                {% elif event.performance_type == "PART2" %}
+                    2部
+
+                {% elif event.performance_type == "PART3" %}
+                    3部
+                {% endif %}
+            </div>
+
+            <div class="live-info-item">
+                <span>開催場所</span>
+                {{ event.prefecture_name }}
+            </div>
+
+            {% endif %}
+
         </div>
+
     </div>
 
+
     <div class="button-area">
-        <div class="cancel-area" id="cancel-area" style="display:none;">
-            <button class="cancel-btn" onclick="cancelEdit()">
+
+        <div
+            class="cancel-area"
+            id="cancel-area"
+            style="display:none;"
+        >
+            <button
+                class="cancel-btn"
+                onclick="cancelEdit()"
+            >
                 キャンセル
             </button>
         </div>
 
+
         <div class="edit-area">
-            <button id="edit-btn"
-                    class="edit-btn"
-                    onclick="editSetlist()">
+
+            <button
+                id="edit-btn"
+                class="edit-btn"
+                onclick="editSetlist()"
+            >
                 編集
             </button>
+
         </div>
 
-        <div class="save-area" id="save-area" style="display:none;">
-            <button class="save-btn" onclick="saveSetlist()">
+
+        <div
+            class="save-area"
+            id="save-area"
+            style="display:none;"
+        >
+            <button
+                class="save-btn"
+                onclick="saveSetlist()"
+            >
                 保存
             </button>
         </div>
 
-        <div class="add-area" id="add-area" style="display:none;">
-            <button class="add-btn" onclick="openSongModal()">
+
+        <div
+            class="add-area"
+            id="add-area"
+            style="display:none;"
+        >
+            <button
+                class="add-btn"
+                onclick="openSongModal()"
+            >
                 +追加
             </button>
         </div>
+
     </div>
 
+
     <!-- セットリスト -->
-    <div class="setlist-area" id="setlist-area">
+
+    <div
+        class="setlist-area"
+        id="setlist-area"
+    >
+
         {% if setlist_list %}
+
             {% for song in setlist_list %}
-            <div class="setlist-item"
-                 data-song-id="{{ song.song_id }}"
-                 data-is-medley="{{ song.is_medley }}"
-                 data-medley-order="{{ song.medley_order or '' }}">
+
+            <div
+                class="setlist-item"
+                data-song-id="{{ song.song_id }}"
+                data-is-medley="{{ song.is_medley }}"
+                data-medley-order="{{ song.medley_order or '' }}"
+            >
 
                 <div class="song-order">
                     {{ loop.index }}
                 </div>
 
+
                 <div class="song-name">
+
                     {{ song.song_name }}
+
                     {% if song.is_medley %}
-                        {% if song.is_medley %}
-                        <span class="medley-badge">
-                            メドレー{{ song.medley_order }}
-                        </span>
-                        {% endif %}
+
+                    <span class="medley-badge">
+                        メドレー{{ song.medley_order }}
+                    </span>
+
                     {% endif %}
+
                 </div>
-                <button class="delete-btn" onclick="deleteSong(this)">
+
+
+                <button
+                    class="delete-btn"
+                    onclick="deleteSong(this)"
+                >
                     ×
                 </button>
+
+
                 <div class="drag-handle">
                     ☰
                 </div>
+
             </div>
+
             {% endfor %}
 
         {% else %}
+
             <div class="no-setlist">
                 セットリストが登録されていません
             </div>
+
         {% endif %}
+
     </div>
 
+
     <!-- 曲追加モーダル -->
-    <div id="song-modal" class="modal" onclick="closeSongModal()">
-        <div class="modal-content" onclick="event.stopPropagation()">
+
+    <div
+        id="song-modal"
+        class="modal"
+        onclick="closeSongModal()"
+    >
+
+        <div
+            class="modal-content"
+            onclick="event.stopPropagation()"
+        >
+
             <div class="modal-header">
                 曲マスタ
             </div>
 
+
             <!-- 検索 -->
+
             <div class="search-area">
-                <input type="text"
-                       id="song-search"
-                       placeholder="曲名">
-                <button class="search-btn" onclick="searchSong()">
+
+                <input
+                    type="text"
+                    id="song-search"
+                    placeholder="曲名"
+                >
+
+                <button
+                    class="search-btn"
+                    onclick="searchSong()"
+                >
                     検索
                 </button>
+
             </div>
+
 
             <!-- 曲一覧 -->
+
             <div class="song-list">
+
                 {% for group in song_groups %}
+
                 <label class="song-select">
-                    <input type="checkbox"
-                           name="song"
-                           value="{{ group.song_group_id }}">
+
+                    <input
+                        type="checkbox"
+                        name="song"
+                        value="{{ group.song_group_id }}"
+                    >
+
                     {{ group.song_name }}
+
                 </label>
+
                 {% endfor %}
+
             </div>
+
 
             <div class="modal-footer">
+
                 <label class="medley-check">
-                    <input type="checkbox" id="is-medley">
+
+                    <input
+                        type="checkbox"
+                        id="is-medley"
+                    >
+
                     メドレー
+
                 </label>
 
-                <button class="modal-add-btn" onclick="addSong()">
+
+                <button
+                    class="modal-add-btn"
+                    onclick="addSong()"
+                >
                     選択
                 </button>
+
             </div>
+
         </div>
+
     </div>
+
 </div>
+
+
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.6/Sortable.min.js"></script>
+
 <script>
+
 function openSongModal(){
     document.getElementById("song-modal").style.display = "block";
 }
+
 
 function closeSongModal(){
     document.getElementById("song-modal").style.display = "none";
 }
 
+
+/*
+ * セットリスト対象イベント
+ */
+const eventType = "{{ event_type }}";
+const eventId = {{ event_id }};
+
 </script>
+
 <script src="/static/js/admin/master/setlist/setlist.js"></script>
-<script>
-const liveId = {{ live.live_id }};
-</script>
+
 </body>
 </html>

@@ -1,27 +1,4 @@
 /* ==========================
-   推し情報 一覧ページ共通
-========================== */
-
-/*
-   出演作品・記念日・公式リンク・楽曲画面では
-   body全体を固定し、oshi-pageを
-   ヘッダー以外の残り領域にする
-*/
-body:has(
-    .oshi-work-list,
-    .oshi-official-link-list,
-    .oshi-song-list,
-    .oshi-program-list
-){
-    display:flex;
-    flex-direction:column;
-    height:100dvh;
-    margin:0;
-    overflow:hidden;
-}
-
-
-/* ==========================
    推し情報ページ
 ========================== */
 
@@ -33,24 +10,7 @@ body:has(
     box-sizing:border-box;
     display:flex;
     flex-direction:column;
-}
-
-
-/*
-   一覧ページでは、
-   ヘッダー・検索エリアを除いた
-   残りの高さを使用する
-*/
-body:has(
-    .oshi-work-list,
-    .oshi-official-link-list,
-    .oshi-song-list,
-    .oshi-program-list
-) .oshi-page{
-    flex:1 1 0;
     min-height:0;
-    height:auto;
-    overflow:hidden;
 }
 
 
@@ -58,10 +18,68 @@ body:has(
    推し情報トップ
 ========================== */
 
-.oshi-home-page{
-    height:auto;
-    overflow:visible;
+/*
+   推し情報トップでは
+   base.htmlのページスクロールを使用しない
+*/
+body:has(.oshi-home-page) .page-scroll{
+    overflow:hidden;
+    min-height:0;
+}
+
+
+/*
+   推し情報トップ全体
+*/
+.oshi-page.oshi-home-page{
+    width:100%;
+    max-width:430px;
+    height:100%;
+    min-height:0;
+    margin:0 auto;
+    padding:15px 0 0;
+    box-sizing:border-box;
+
+    display:flex;
+    flex-direction:column;
+
+    overflow:hidden;
+}
+
+
+/*
+   プロフィール
+   ここは固定
+*/
+.oshi-home-page .oshi-profile{
+    flex:0 0 auto;
+    margin:0 15px 20px;
+    text-align:center;
+}
+
+
+/*
+   プロフィールより下
+   ここだけ縦スクロール
+*/
+.oshi-home-page .oshi-home-scroll{
+    flex:1 1 auto;
+    min-height:0;
+    width:100%;
+
+    overflow-y:auto;
+    overflow-x:hidden;
+
     padding-bottom:30px;
+
+    overscroll-behavior:contain;
+
+    scrollbar-width:none;
+    -ms-overflow-style:none;
+}
+
+.oshi-home-page .oshi-home-scroll::-webkit-scrollbar{
+    display:none;
 }
 
 
@@ -323,14 +341,13 @@ body:has(
 ========================== */
 
 .oshi-work-list{
-    flex:1 1 0;
+    flex:1;
     min-height:0;
     margin:0 15px;
     padding:0 0 30px;
     overflow-y:auto;
     overflow-x:hidden;
     overscroll-behavior:contain;
-
     scrollbar-width:none;
     -ms-overflow-style:none;
 }
@@ -447,14 +464,13 @@ body:has(
 ========================== */
 
 .oshi-official-link-list{
-    flex:1 1 0;
+    flex:1;
     min-height:0;
     margin:0 15px;
     padding:0 0 30px;
     overflow-y:auto;
     overflow-x:hidden;
     overscroll-behavior:contain;
-
     scrollbar-width:none;
     -ms-overflow-style:none;
 }
@@ -685,14 +701,13 @@ body:has(
 ========================== */
 
 .oshi-song-list{
-    flex:1 1 0;
+    flex:1;
     min-height:0;
     margin:0 15px;
     padding:0 0 30px;
     overflow-y:auto;
     overflow-x:hidden;
     overscroll-behavior:contain;
-
     scrollbar-width:none;
     -ms-overflow-style:none;
 }
@@ -807,14 +822,6 @@ body:has(
    配信リンク
 ========================== */
 
-.oshi-song-links{
-    display:flex;
-    flex-direction:column;
-    gap:5px;
-    margin-left:8px;
-    flex-shrink:0;
-}
-
 .oshi-song-link{
     display:flex;
     align-items:center;
@@ -866,6 +873,7 @@ body:has(
 .oshi-song-list .oshi-empty{
     margin:30px 0;
 }
+
 
 /* ==========================
    推し情報 ラジオ・番組一覧ページ
@@ -941,14 +949,13 @@ body:has(
 ========================== */
 
 .oshi-program-list{
-    flex:1 1 0;
+    flex:1;
     min-height:0;
     margin:0 15px;
     padding:0 0 30px;
     overflow-y:auto;
     overflow-x:hidden;
     overscroll-behavior:contain;
-
     scrollbar-width:none;
     -ms-overflow-style:none;
 }
@@ -1104,4 +1111,211 @@ body:has(
         font-size:12px;
     }
 
+}
+
+
+/* ==========================
+   楽曲 操作エリア
+========================== */
+
+.oshi-song-actions{
+    display:flex;
+    flex-direction:column;
+    gap:5px;
+    margin-left:8px;
+    flex-shrink:0;
+}
+
+
+/* ==========================
+   詳細ボタン
+========================== */
+
+.oshi-song-detail-btn{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:76px;
+    min-height:30px;
+    padding:4px 7px;
+    box-sizing:border-box;
+    border:none;
+    border-radius:7px;
+    background:#fff0f5;
+    color:#ff6f9f;
+    font-size:10px;
+    font-weight:bold;
+    cursor:pointer;
+    transition:opacity .2s, transform .1s;
+}
+
+.oshi-song-detail-btn:hover{
+    opacity:.8;
+}
+
+.oshi-song-detail-btn:active{
+    transform:scale(.97);
+}
+
+
+/* ==========================
+   楽曲詳細モーダル
+========================== */
+
+.oshi-song-modal{
+    position:fixed;
+    inset:0;
+    z-index:1000;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    box-sizing:border-box;
+}
+
+.oshi-song-modal.active{
+    display:flex;
+}
+
+
+/* ==========================
+   モーダル背景
+========================== */
+
+.oshi-song-modal-overlay{
+    position:absolute;
+    inset:0;
+    background:rgba(0,0,0,.45);
+}
+
+
+/* ==========================
+   モーダル本体
+========================== */
+
+.oshi-song-modal-content{
+    position:relative;
+    z-index:1;
+    width:100%;
+    max-width:390px;
+    max-height:80dvh;
+    padding:20px;
+    box-sizing:border-box;
+    overflow-y:auto;
+    background:#fff;
+    border-radius:18px;
+    box-shadow:0 5px 20px rgba(0,0,0,.2);
+
+    scrollbar-width:none;
+    -ms-overflow-style:none;
+}
+
+.oshi-song-modal-content::-webkit-scrollbar{
+    display:none;
+}
+
+
+/* ==========================
+   閉じるボタン
+========================== */
+
+.oshi-song-modal-close{
+    position:absolute;
+    top:8px;
+    right:10px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:32px;
+    height:32px;
+    padding:0;
+    border:none;
+    background:transparent;
+    color:#999;
+    font-size:28px;
+    line-height:1;
+    cursor:pointer;
+}
+
+
+/* ==========================
+   モーダルタイトル
+========================== */
+
+.oshi-song-modal-title{
+    margin:0 35px 20px 0;
+    font-size:19px;
+    line-height:1.5;
+    word-break:break-word;
+}
+
+
+/* ==========================
+   詳細情報
+========================== */
+
+.oshi-song-modal-info{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+.oshi-song-modal-row{
+    display:flex;
+    flex-direction:column;
+    gap:3px;
+    padding-bottom:10px;
+    border-bottom:1px solid #eee;
+}
+
+.oshi-song-modal-row span{
+    color:#888;
+    font-size:11px;
+}
+
+.oshi-song-modal-row strong{
+    color:#333;
+    font-size:14px;
+    line-height:1.5;
+    word-break:break-word;
+}
+
+
+/* ==========================
+   モーダル音楽リンク
+========================== */
+
+.oshi-song-modal-links{
+    display:flex;
+    flex-direction:column;
+    gap:7px;
+    margin-top:16px;
+}
+
+.oshi-song-modal-link{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    min-height:38px;
+    border-radius:8px;
+    color:#fff;
+    font-size:12px;
+    font-weight:bold;
+    text-decoration:none;
+}
+
+.oshi-song-modal-link:hover{
+    opacity:.9;
+}
+
+.oshi-song-modal-link.youtube{
+    background:#ff4b4b;
+}
+
+.oshi-song-modal-link.apple-music{
+    background:#fa4b8b;
+}
+
+.oshi-song-modal-link.spotify{
+    background:#1db954;
 }

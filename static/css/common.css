@@ -1,6 +1,6 @@
 @font-face {
-    font-family: "HachiMaruPop-Regular";
-    src: url("/static/fonts/HachiMaruPop-Regular.ttf");
+    font-family:"HachiMaruPop-Regular";
+    src:url("/static/fonts/HachiMaruPop-Regular.ttf");
 }
 
 
@@ -13,11 +13,34 @@
 }
 
 
-html,
-body{
-    margin:0;
+html{
     width:100%;
     height:100%;
+    margin:0;
+    padding:0;
+    overflow:hidden;
+}
+
+
+body{
+    position:fixed;
+    inset:0;
+    width:100%;
+    height:100dvh;
+    min-width:0;
+    min-height:0;
+    margin:0;
+    padding:0;
+    overflow:hidden;
+
+    display:flex;
+    flex-direction:column;
+
+    background-image:url("/static/img/background_phone.png");
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+    background-attachment:fixed;
 }
 
 
@@ -32,47 +55,15 @@ select{
 }
 
 
-/* 背景 */
-body{
-    background-image:url("/static/img/background_phone.png");
-    background-size:cover;
-    background-position:center;
-    background-repeat:no-repeat;
-    background-attachment:fixed;
-}
-
-
-/*==========================
-    画面共通
-==========================*/
-
-.back-link{
-    display:block;
-    width:max-content;
-    color:#888;
-    text-decoration:none;
-    font-size:14px;
-    margin-bottom:5px;
-}
-
-.background{
-    width:100%;
-    height:100dvh;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-}
-
-
 /*==========================
     ヘッダー
 ==========================*/
 
 .header{
     width:100%;
+    flex:0 0 auto;
     text-align:center;
     padding-top:10px;
-    flex-shrink:0;
 }
 
 
@@ -85,16 +76,52 @@ body{
 
 
 /*==========================
+    画面共通
+==========================*/
+
+.background{
+    width:100%;
+    flex:1 1 0;
+    min-width:0;
+    min-height:0;
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+
+    overflow:hidden;
+}
+
+
+.back-link{
+    display:block;
+    width:max-content;
+    flex-shrink:0;
+    color:#888;
+    text-decoration:none;
+    font-size:14px;
+    margin-bottom:5px;
+}
+
+
+/*==========================
     ページスクロール
 ==========================*/
 
 .page-scroll{
     width:100%;
-    flex:1;
+    flex:1 1 0;
+    min-width:0;
     min-height:0;
+
     overflow-y:auto;
     overflow-x:hidden;
+
+    overscroll-behavior:contain;
+    -webkit-overflow-scrolling:touch;
+
     scrollbar-width:none;
+    -ms-overflow-style:none;
 }
 
 
@@ -110,12 +137,15 @@ body{
 .container{
     width:100%;
     max-width:430px;
+    min-width:0;
     margin:0 auto;
     padding:10px 20px 80px;
 }
 
 
-/* タイトル */
+/*==========================
+    タイトル
+==========================*/
 
 .page-title{
     margin:10px 0 20px;
@@ -125,17 +155,16 @@ body{
 }
 
 
-
 /*==========================
     フォーム共通
 ==========================*/
 
-.form-group {
+.form-group{
     margin-bottom:20px;
 }
 
 
-.form-group label {
+.form-group label{
     display:block;
     margin-bottom:8px;
     font-weight:bold;
@@ -159,15 +188,22 @@ body{
     top:-100px;
     left:50%;
     transform:translateX(-50%);
+
     width:85%;
     max-width:400px;
+
     padding:15px 20px;
+
     border-radius:12px;
+
     background:#ff6b6b;
     color:white;
+
     text-align:center;
     font-size:14px;
+
     transition:.4s;
+
     z-index:9999;
 }
 
@@ -177,8 +213,64 @@ body{
 }
 
 
-/* 非表示 */
+/*==========================
+    非表示
+==========================*/
 
 .hidden{
     display:none!important;
+}
+
+
+/*==========================
+    スマートフォン
+==========================*/
+
+@media (max-width:600px){
+
+    html{
+        width:100%;
+        height:100%;
+        height:100dvh;
+        overflow:hidden;
+    }
+
+
+    body{
+        position:fixed;
+        top:0;
+        right:0;
+        bottom:0;
+        left:0;
+
+        width:100%;
+        height:100%;
+        height:100dvh;
+
+        margin:0;
+        padding:0;
+
+        overflow:hidden;
+    }
+
+
+    .background{
+        width:100%;
+        flex:1 1 0;
+        min-height:0;
+        height:auto;
+        overflow:hidden;
+    }
+
+
+    .page-scroll{
+        width:100%;
+        flex:1 1 0;
+        min-height:0;
+        height:auto;
+
+        overflow-y:auto;
+        overflow-x:hidden;
+    }
+
 }

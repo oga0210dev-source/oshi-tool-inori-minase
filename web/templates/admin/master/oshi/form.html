@@ -34,123 +34,173 @@
     </div>
 
 
-    <form
-        method="post"
-        action="/admin/master/oshi/save"
-        class="master-form"
-        data-unsaved-check="true"
-    >
+    <div class="form-scroll">
 
-        <div class="form-group">
-            <label for="oshi_name">
-                推し名
-            </label>
+        <form
+            method="post"
+            action="/admin/master/oshi/save"
+            class="master-form"
+            enctype="multipart/form-data"
+            data-unsaved-check="true"
+        >
 
-            <input
-                type="text"
-                id="oshi_name"
-                name="oshi_name"
-                value="{{ oshi.oshi_name if oshi else '' }}"
-                maxlength="100"
-                required
-            >
-        </div>
+            <div class="form-group">
 
+                <label for="oshi_name">
+                    推し名
+                </label>
 
-        <div class="form-group">
-            <label for="birthday">
-                誕生日
-            </label>
+                <input
+                    type="text"
+                    id="oshi_name"
+                    name="oshi_name"
+                    value="{{ oshi.oshi_name if oshi else '' }}"
+                    maxlength="100"
+                    required
+                >
 
-            <input
-                type="date"
-                id="birthday"
-                name="birthday"
-                value="{{ oshi.birthday if oshi else '' }}"
-                required
-            >
-        </div>
+            </div>
 
 
-        <div class="form-group">
-            <label for="voice_actor_debut_date">
-                声優デビュー日
-            </label>
+            <div class="form-group">
 
-            <input
-                type="date"
-                id="voice_actor_debut_date"
-                name="voice_actor_debut_date"
-                value="{{ oshi.voice_actor_debut_date if oshi else '' }}"
-                required
-            >
-        </div>
+                <label for="birthday">
+                    誕生日
+                </label>
 
+                <input
+                    type="date"
+                    id="birthday"
+                    name="birthday"
+                    value="{{ oshi.birthday if oshi else '' }}"
+                    required
+                >
 
-        <div class="form-group">
-            <label for="singer_debut_date">
-                歌手デビュー日
-            </label>
-
-            <input
-                type="date"
-                id="singer_debut_date"
-                name="singer_debut_date"
-                value="{{ oshi.singer_debut_date if oshi else '' }}"
-            >
-        </div>
+            </div>
 
 
-        <div class="form-group">
-            <label for="profile_image">
-                プロフィール画像
-            </label>
+            <div class="form-group">
 
-            <input
-                type="text"
-                id="profile_image"
-                name="profile_image"
-                value="{{ oshi.profile_image if oshi else '' }}"
-                maxlength="255"
-                placeholder="画像URL"
-            >
-        </div>
+                <label for="voice_actor_debut_date">
+                    声優デビュー日
+                </label>
 
+                <input
+                    type="date"
+                    id="voice_actor_debut_date"
+                    name="voice_actor_debut_date"
+                    value="{{ oshi.voice_actor_debut_date if oshi else '' }}"
+                    required
+                >
 
-        <div class="form-group">
-            <label for="profile_message">
-                プロフィール
-            </label>
-
-            <textarea
-                id="profile_message"
-                name="profile_message"
-                rows="5"
-            >{{ oshi.profile_message if oshi else '' }}</textarea>
-        </div>
+            </div>
 
 
-        <div class="form-actions">
+            <div class="form-group">
 
-            <a
-                href="/admin/master/oshi"
-                class="cancel-btn"
-            >
-                キャンセル
-            </a>
+                <label for="singer_debut_date">
+                    歌手デビュー日
+                </label>
 
-            <button
-                type="submit"
-                class="save-btn"
-            >
-                保存
-            </button>
+                <input
+                    type="date"
+                    id="singer_debut_date"
+                    name="singer_debut_date"
+                    value="{{ oshi.singer_debut_date if oshi else '' }}"
+                >
 
-        </div>
+            </div>
 
-    </form>
+
+            <!-- =========================
+                 プロフィール画像
+            ========================= -->
+
+            <div class="form-group">
+
+                <label for="profile_image">
+                    プロフィール画像
+                </label>
+
+                {% if oshi and oshi.profile_image %}
+
+                <div class="oshi-image-preview">
+                    <img
+                        src="{{ oshi.profile_image }}"
+                        alt="プロフィール画像"
+                    >
+                </div>
+
+                {% endif %}
+
+                <input
+                    type="file"
+                    id="profile_image"
+                    name="profile_image"
+                    accept="image/*"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="profile_message">
+                    プロフィール
+                </label>
+
+                <textarea
+                    id="profile_message"
+                    name="profile_message"
+                    rows="5"
+                >{{ oshi.profile_message if oshi else '' }}</textarea>
+
+            </div>
+
+
+            <div class="form-actions">
+
+                <a
+                    href="/admin/master/oshi"
+                    class="cancel-btn"
+                >
+                    キャンセル
+                </a>
+
+                <button
+                    type="submit"
+                    class="save-btn"
+                >
+                    保存
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
 
 </div>
+<script>
+const imageInput = document.getElementById("profile_image");
+const imagePreview = document.getElementById("oshi-image-preview");
 
+imageInput.addEventListener("change", function(){
+
+    const file = this.files[0];
+
+    if (!file) {
+        return;
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = function(event){
+        imagePreview.src = event.target.result;
+    };
+
+    reader.readAsDataURL(file);
+});
+</script>
 </body>
 </html>

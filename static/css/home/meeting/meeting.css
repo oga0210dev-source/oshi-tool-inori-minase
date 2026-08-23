@@ -1,0 +1,273 @@
+/* ==========================
+   町民集会画面
+========================== */
+
+.container{
+    width:100%;
+    max-width:430px;
+    margin:0 auto;
+    padding:15px 0 30px;
+}
+
+
+/* ==========================
+   町民集会横スライダー
+========================== */
+
+.meeting-slider{
+    width:100%;
+    min-width:0;
+
+    display:flex;
+    gap:20px;
+
+    overflow-x:auto;
+    overflow-y:hidden;
+
+    scroll-snap-type:x mandatory;
+
+    scrollbar-width:none;
+    -ms-overflow-style:none;
+
+    padding:0 20px;
+
+    overscroll-behavior-x:contain;
+}
+
+.meeting-slider::-webkit-scrollbar{
+    display:none;
+}
+
+
+/* ==========================
+   町民集会スライド
+========================== */
+
+.meeting-card{
+    flex:0 0 100%;
+    width:85%;
+    max-width:390px;
+    min-height:150px;
+    margin:0 auto;
+    scroll-snap-align:center;
+    background:white;
+    border-radius:20px;
+    padding:15px;
+    box-shadow:0 3px 8px rgba(0,0,0,0.12);
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+}
+
+
+/* ==========================
+   町民集会情報
+========================== */
+
+.meeting-name{
+    font-size:16px;
+    font-weight:bold;
+    margin-bottom:8px;
+}
+
+
+.meeting-info{
+    font-size:13px;
+    line-height:1.7;
+}
+
+
+/* ==========================
+   参加予定
+========================== */
+
+.join-status{
+    display:inline-flex;
+    width:max-content;
+    margin-top:10px;
+    padding:5px 12px;
+    border-radius:20px;
+    background:#8bc34a;
+    color:white;
+    font-size:13px;
+    font-weight:bold;
+    align-items:center;
+}
+
+
+/* ==========================
+   記録ボタン
+========================== */
+
+.add-history{
+    background:#eee;
+    color:#666;
+    width:100%;
+    height:40px;
+    margin-top:10px;
+    border-radius:10px;
+    border:none;
+    text-decoration:none;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:14px;
+}
+
+
+/* ==========================
+   詳細ボタン
+========================== */
+
+.detail-btn{
+    background:#ff8fb1;
+    width:100%;
+    height:40px;
+    margin-top:10px;
+    border-radius:10px;
+    border:none;
+    color:white;
+    text-decoration:none;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:14px;
+}
+
+
+/* ==========================
+   町民集会なし
+========================== */
+
+.no-meeting{
+    width:90%;
+    max-width:400px;
+    margin:30px auto;
+    text-align:center;
+    color:#777;
+}
+
+
+/* ==========================
+   メニューボタン共通
+========================== */
+
+.menu-btn,
+.wide-btn{
+    background:rgba(255,255,255,.88);
+    border-radius:15px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    text-decoration:none;
+    box-shadow:0 2px 6px rgba(0,0,0,.12);
+    transition:.2s;
+}
+
+
+.menu-btn:hover,
+.wide-btn:hover{
+    transform:scale(1.03);
+}
+
+
+/* ==========================
+   横長ボタン
+========================== */
+
+.wide-btn{
+    width:80%;
+    max-width:400px;
+    height:70px;
+    margin:10px auto;
+}
+
+
+.wide-btn img{
+    width:45px;
+    height:45px;
+    object-fit:contain;
+    margin-right:15px;
+}
+
+
+/* ==========================
+   2列メニュー
+========================== */
+
+.menu-grid{
+    width:80%;
+    max-width:400px;
+    margin:10px auto;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+}
+
+
+.menu-grid .menu-btn{
+    height:70px;
+}
+
+
+.menu-btn img{
+    width:35px;
+    height:35px;
+    object-fit:contain;
+    margin-right:10px;
+}
+
+
+.menu-btn span{
+    font-size:14px;
+    font-weight:bold;
+    color:#333;
+}
+
+
+/* ==========================
+   スライダードット
+========================== */
+
+.meeting-slider-dots{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:8px;
+    margin:10px 0 16px;
+}
+
+
+.meeting-slider-dot{
+    display:block;
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    background:#ccc;
+}
+
+
+.meeting-slider-dot.active{
+    background:#ff8fb1;
+    transform:scale(1.2);
+}
+
+
+/* ==========================
+   スマートフォン
+========================== */
+
+@media (max-width:600px){
+
+    .container{
+        width:100%;
+        max-width:430px;
+        padding:15px 0 30px;
+    }
+
+    .meeting-slider{
+        width:100%;
+        padding:0 20px;
+    }
+
+}

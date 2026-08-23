@@ -18,46 +18,74 @@ router = APIRouter(
 def collected_song(request: Request):
 
     user_id = request.session["user_id"]
-    summary = get_song_collection_summary(user_id)
+
+    # ライブのみ
+    summary = get_song_collection_summary(
+        user_id,
+        include_chomin=False
+    )
+
+    # 町民集会込み
+    summary_with_chomin = get_song_collection_summary(
+        user_id,
+        include_chomin=True
+    )
 
     return templates.TemplateResponse(
         request=request,
         name="templates/home/live/collected_song/collected_song.html",
         context={
             "request": request,
-            "summary": summary
+            "summary": summary,
+            "summary_with_chomin": summary_with_chomin
         }
     )
 
 
 @router.get("/collected")
-def collected_song_list(request: Request):
+def collected_song_list(
+        request: Request,
+        include_chomin: bool = False
+):
 
     user_id = request.session["user_id"]
-    songs = get_collected_song_list(user_id)
+
+    songs = get_collected_song_list(
+        user_id,
+        include_chomin=include_chomin
+    )
 
     return templates.TemplateResponse(
         request=request,
         name="templates/home/live/collected_song/collected.html",
         context={
             "request": request,
-            "songs": songs
+            "songs": songs,
+            "include_chomin": include_chomin
         }
     )
 
 
 @router.get("/uncollected")
-def uncollected_song(request: Request):
+def uncollected_song(
+    request: Request,
+    include_chomin: bool = False
+):
 
     user_id = request.session["user_id"]
-    songs = get_uncollected_song_list(user_id)
+
+    songs = get_uncollected_song_list(
+        user_id,
+        include_chomin=include_chomin
+    )
 
     return templates.TemplateResponse(
         request=request,
         name="templates/home/live/collected_song/uncollected.html",
         context={
             "request": request,
-            "songs": songs
+            "songs": songs,
+            "include_chomin": include_chomin
         }
     )
 
@@ -65,13 +93,20 @@ def uncollected_song(request: Request):
 @router.get("/appearance")
 def appearance_song(request: Request):
 
-    songs = get_live_appearance_song_list()
+    include_chomin = (
+        request.query_params.get("include_chomin") == "true"
+    )
+
+    songs = get_live_appearance_song_list(
+        include_chomin=include_chomin
+    )
 
     return templates.TemplateResponse(
         request=request,
         name="templates/home/live/collected_song/appearance.html",
         context={
             "request": request,
-            "songs": songs
+            "songs": songs,
+            "include_chomin": include_chomin
         }
     )

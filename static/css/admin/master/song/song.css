@@ -53,6 +53,20 @@
 }
 
 
+/* 曲タイプ */
+.song-type-badge{
+    display:inline-block;
+    margin-left:8px;
+    padding:3px 8px;
+    border-radius:10px;
+    background:#eee;
+    color:#666;
+    font-size:11px;
+    font-weight:bold;
+    vertical-align:middle;
+}
+
+
 /* 編集削除エリア */
 .song-action{
     display:flex;
@@ -99,4 +113,71 @@
     border-radius:12px;
     font-size:15px;
     background:#fff;
+}
+
+.song-form input[type="date"]{
+    width:100%;
+    max-width:100%;
+    min-width:0;
+    box-sizing:border-box;
+    appearance:none;
+    -webkit-appearance:none;
+}
+
+/* =========================
+   公開設定トグル
+========================= */
+
+.public-toggle{
+    display:flex !important;
+    align-items:center;
+    gap:10px;
+    margin-top:10px !important;
+    cursor:pointer;
+    user-select:none;
+}
+
+
+.public-toggle input{
+    display:none;
+}
+
+
+.public-toggle-slider{
+    position:relative;
+    width:48px;
+    height:26px;
+    flex:none;
+    background:#ccc;
+    border-radius:20px;
+    transition:.2s;
+}
+
+
+.public-toggle-slider::after{
+    content:"";
+    position:absolute;
+    top:3px;
+    left:3px;
+    width:20px;
+    height:20px;
+    background:#fff;
+    border-radius:50%;
+    transition:.2s;
+}
+
+
+.public-toggle input:checked + .public-toggle-slider{
+    background:#ff8fb1;
+}
+
+
+.public-toggle input:checked + .public-toggle-slider::after{
+    transform:translateX(22px);
+}
+
+
+.public-toggle-label{
+    font-size:15px;
+    font-weight:bold;
 }

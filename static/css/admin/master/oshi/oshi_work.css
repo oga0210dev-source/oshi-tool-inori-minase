@@ -3,14 +3,20 @@
 ========================= */
 
 
-/* 一覧スクロール */
+/* =========================
+   一覧スクロール領域
+========================= */
+
 .page-scroll{
     flex:1;
     min-height:0;
+    min-width:0;
     overflow-y:auto;
+    overflow-x:hidden;
     margin-top:10px;
     padding-bottom:20px;
     scrollbar-width:none;
+    -ms-overflow-style:none;
 }
 
 .page-scroll::-webkit-scrollbar{
@@ -18,18 +24,26 @@
 }
 
 
-/* 作品一覧 */
+/* =========================
+   作品一覧
+========================= */
+
 .work-list{
     width:100%;
+    min-width:0;
 }
 
 
-/* 作品カード */
+/* =========================
+   作品カード
+========================= */
+
 .work-row{
     display:flex;
-    justify-content:space-between;
     align-items:flex-start;
     gap:12px;
+    width:100%;
+    min-width:0;
     margin-bottom:20px;
     padding:15px;
     box-sizing:border-box;
@@ -39,7 +53,10 @@
 }
 
 
-/* 作品情報 */
+/* =========================
+   作品情報
+========================= */
+
 .work-info{
     flex:1;
     min-width:0;
@@ -70,6 +87,7 @@
 .work-date{
     margin-top:3px;
     font-size:13px;
+    line-height:1.5;
     color:#999;
 }
 
@@ -77,15 +95,19 @@
 .work-status{
     margin-top:5px;
     font-size:12px;
+    line-height:1.5;
     color:#666;
 }
 
 
-/* 操作ボタン */
+/* =========================
+   操作ボタン
+========================= */
+
 .work-action{
     display:flex;
     flex-direction:column;
-    align-items:flex-end;
+    align-items:stretch;
     gap:8px;
     flex-shrink:0;
 }
@@ -105,19 +127,29 @@
 }
 
 
-/* 編集 */
+/* =========================
+   編集
+========================= */
+
 .edit-btn{
     background:#333;
     color:#fff;
 }
 
 
-/* 削除 */
+/* =========================
+   削除
+========================= */
+
 .delete-btn{
     background:#eee;
     color:#555;
 }
 
+
+/* =========================
+   データなし
+========================= */
 
 .empty-message{
     margin:40px 0 20px;
@@ -127,25 +159,54 @@
 
 
 /* =========================
-   フォーム
+   登録・編集フォーム
 ========================= */
 
 .master-form{
-    margin-top:20px;
+    width:100%;
+    max-width:400px;
+    margin:20px auto 0;
+    box-sizing:border-box;
+
+    flex:1;
+    min-height:0;
+
+    overflow-y:auto;
+    overflow-x:hidden;
+
+    padding-bottom:20px;
+
+    scrollbar-width:none;
+    -ms-overflow-style:none;
+}
+
+.master-form::-webkit-scrollbar{
+    display:none;
 }
 
 
+/* =========================
+   フォーム項目
+========================= */
+
 .master-form .form-group{
+    width:100%;
+    box-sizing:border-box;
     margin-bottom:20px;
 }
 
 
 .master-form label{
     display:block;
-    margin-bottom:6px;
+    margin:12px 0 6px;
+    font-size:15px;
     font-weight:bold;
 }
 
+
+/* =========================
+   入力項目
+========================= */
 
 .master-form input[type="text"],
 .master-form input[type="url"],
@@ -154,21 +215,91 @@
 .master-form select,
 .master-form textarea{
     width:100%;
-    padding:10px;
+    max-width:100%;
+    min-width:0;
     box-sizing:border-box;
     border:1px solid #ccc;
-    border-radius:6px;
+    border-radius:8px;
     background:#fff;
-    font-size:16px;
+    font-size:15px;
 }
 
 
+/* =========================
+   テキスト・URL・数値
+========================= */
+
+.master-form input[type="text"],
+.master-form input[type="url"],
+.master-form input[type="number"]{
+    height:45px;
+    padding:0 12px;
+}
+
+
+/* =========================
+   日付入力
+========================= */
+
+.master-form input[type="date"]{
+    height:45px;
+    padding:0 10px;
+
+    -webkit-appearance:none;
+    appearance:none;
+}
+
+
+/* =========================
+   コンボボックス
+========================= */
+
+.master-form select{
+    height:45px;
+    padding:0 36px 0 12px;
+
+    -webkit-appearance:none;
+    appearance:none;
+
+    background-color:#fff;
+    background-image:
+        linear-gradient(45deg,transparent 50%,#999 50%),
+        linear-gradient(135deg,#999 50%,transparent 50%);
+    background-position:
+        calc(100% - 18px) 18px,
+        calc(100% - 12px) 18px;
+    background-size:6px 6px;
+    background-repeat:no-repeat;
+}
+
+
+/* =========================
+   テキストエリア
+========================= */
+
 .master-form textarea{
     min-height:120px;
+    padding:10px;
     resize:vertical;
     line-height:1.6;
 }
 
+
+/* =========================
+   フォーカス
+========================= */
+
+.master-form input:focus,
+.master-form select:focus,
+.master-form textarea:focus{
+    outline:none;
+    border-color:#ff8fb1;
+}
+
+
+/* =========================
+   チェックボックス
+========================= */
 
 .checkbox-group label{
     display:flex;
@@ -192,6 +323,8 @@
 .form-actions{
     display:flex;
     gap:12px;
+    width:100%;
+    box-sizing:border-box;
     margin-top:30px;
 }
 
@@ -199,13 +332,15 @@
 .form-actions a,
 .form-actions button{
     flex:1;
+    min-width:0;
     min-height:44px;
     padding:10px;
     box-sizing:border-box;
     border:none;
-    border-radius:6px;
+    border-radius:8px;
     text-align:center;
-    font-size:16px;
+    font-size:15px;
+    font-weight:bold;
     text-decoration:none;
     cursor:pointer;
 }
@@ -235,4 +370,46 @@
     font-size:12px;
     font-weight:normal;
     color:#999;
+}
+
+
+/* =========================
+   小さい画面
+========================= */
+
+@media (max-width:430px){
+
+    .master-form{
+        max-width:100%;
+    }
+
+    .master-form input,
+    .master-form select,
+    .master-form textarea{
+        font-size:14px;
+    }
+
+}
+
+
+/* =========================
+   極小画面
+========================= */
+
+@media (max-width:360px){
+
+    .work-row{
+        gap:6px;
+        padding:12px;
+    }
+
+    .work-action a{
+        width:60px;
+        font-size:12px;
+    }
+
+    .form-actions{
+        gap:8px;
+    }
+
 }
