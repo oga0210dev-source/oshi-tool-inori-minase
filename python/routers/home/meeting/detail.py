@@ -34,10 +34,17 @@ async def meeting_detail(
             status_code=303
         )
 
+    guests = detail_model.get_meeting_guest_list(
+        meeting_id
+    )
+
     today = date.today()
 
     if meeting["meeting_date"] > today:
-        days = (meeting["meeting_date"] - today).days
+        days = (
+            meeting["meeting_date"] - today
+        ).days
+
         day_status = f"あと{days}日"
 
     elif meeting["meeting_date"] < today:
@@ -78,6 +85,7 @@ async def meeting_detail(
         name="templates/home/meeting/detail.html",
         context={
             "meeting": meeting,
+            "guests": guests,
             "today": today,
             "day_status": day_status,
             "performance_type": performance_type,
