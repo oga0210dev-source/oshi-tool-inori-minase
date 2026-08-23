@@ -1,39 +1,46 @@
 from python.core.database import get_connection
 
 
-def get_song_collection_summary(user_id, include_chomin=False):
+def get_song_collection_summary(user_id, mode="live"):
     conn = get_connection()
 
     try:
         with conn.cursor() as cur:
 
-            # 全公開曲数
-            cur.execute(
+            if mode == "all":
+                song_type_condition = ""
+            else:
+                song_type_condition = """
+                    AND s.song_type = 'INORI'
                 """
-                SELECT COUNT(DISTINCT song_group_id) AS count
-                FROM m_song
-                WHERE song_type = 'INORI'
-                AND is_public = true
-                AND is_deleted = false
+
+            if mode == "live":
+                event_type_condition = """
+                    st.event_type = 'LIVE'
+                """
+            else:
+                event_type_condition = """
+                    st.event_type IN ('LIVE', 'CHOMIN')
+                """
+
+            cur.execute(
+                f"""
+                SELECT
+                    COUNT(DISTINCT s.song_group_id) AS count
+                FROM m_song s
+                WHERE
+                    s.is_public = TRUE
+                    AND s.is_deleted = FALSE
+                    {song_type_condition}
                 """
             )
 
             total_count = cur.fetchone()["count"]
 
-            # 回収対象イベント
-            if include_chomin:
-                event_type_condition = """
-                    st.event_type IN ('LIVE', 'CHOMIN')
-                """
-            else:
-                event_type_condition = """
-                    st.event_type = 'LIVE'
-                """
-
-            # 回収済み曲数
             cur.execute(
                 f"""
-                SELECT COUNT(DISTINCT st.song_id) AS count
+                SELECT
+                    COUNT(DISTINCT st.song_id) AS count
                 FROM t_live_user u
                 INNER JOIN m_live l
                     ON l.live_id = u.live_id
@@ -42,17 +49,21 @@ def get_song_collection_summary(user_id, include_chomin=False):
                     AND st.event_id = l.live_id
                 INNER JOIN m_song s
                     ON s.song_group_id = st.song_id
-                WHERE u.user_id = %s
-                AND u.is_join = true
-                AND s.song_type = 'INORI'
-                AND s.is_public = true
-                AND s.is_deleted = false
+                WHERE
+                    u.user_id = %s
+                    AND u.is_join = TRUE
+                    AND s.is_public = TRUE
+                    AND s.is_deleted = FALSE
+                    {song_type_condition}
                 """,
                 (user_id,)
             )
 
             collected_count = cur.fetchone()["count"]
-            uncollected_count = total_count - collected_count
+
+            uncollected_count = (
+                total_count - collected_count
+            )
 
             if total_count == 0:
                 collection_rate = 0
@@ -67,30 +78,37 @@ def get_song_collection_summary(user_id, include_chomin=False):
                 "uncollected_count": uncollected_count,
                 "collection_rate": collection_rate
             }
+
     finally:
         conn.close()
 
 
-def get_collected_song_list(user_id, include_chomin=False):
-
+def get_collected_song_list(user_id, mode="live"):
     conn = get_connection()
 
     try:
         with conn.cursor() as cur:
 
-            if include_chomin:
+            if mode == "all":
+                song_type_condition = ""
+            else:
+                song_type_condition = """
+                    AND s.song_type = 'INORI'
+                """
+
+            if mode == "live":
                 event_type_condition = """
-                    st.event_type IN ('LIVE', 'CHOMIN')
+                    st.event_type = 'LIVE'
                 """
             else:
                 event_type_condition = """
-                    st.event_type = 'LIVE'
+                    st.event_type IN ('LIVE', 'CHOMIN')
                 """
 
             cur.execute(
                 f"""
                 SELECT
-                    st.song_id AS song_group_id,
+                    s.song_group_id,
                     MIN(s.song_name) AS song_name,
                     MIN(s.youtube_url) AS youtube_url,
                     MIN(s.apple_music_url) AS apple_music_url,
@@ -104,15 +122,17 @@ def get_collected_song_list(user_id, include_chomin=False):
                     AND st.event_id = l.live_id
                 INNER JOIN m_song s
                     ON s.song_group_id = st.song_id
-                WHERE u.user_id = %s
-                AND u.is_join = true
-                AND s.song_type = 'INORI'
-                AND s.is_public = true
-                AND s.is_deleted = false
+                WHERE
+                    u.user_id = %s
+                    AND u.is_join = TRUE
+                    AND s.is_public = TRUE
+                    AND s.is_deleted = FALSE
+                    {song_type_condition}
                 GROUP BY
-                    st.song_id
+                    s.song_group_id
                 ORDER BY
-                    listen_count DESC
+                    listen_count DESC,
+                    MIN(s.song_name)
                 """,
                 (user_id,)
             )
@@ -123,20 +143,26 @@ def get_collected_song_list(user_id, include_chomin=False):
         conn.close()
 
 
-def get_uncollected_song_list(user_id, include_chomin=False):
-
+def get_uncollected_song_list(user_id, mode="live"):
     conn = get_connection()
 
     try:
         with conn.cursor() as cur:
 
-            if include_chomin:
+            if mode == "all":
+                song_type_condition = ""
+            else:
+                song_type_condition = """
+                    AND s.song_type = 'INORI'
+                """
+
+            if mode == "live":
                 event_type_condition = """
-                    st.event_type IN ('LIVE', 'CHOMIN')
+                    st.event_type = 'LIVE'
                 """
             else:
                 event_type_condition = """
-                    st.event_type = 'LIVE'
+                    st.event_type IN ('LIVE', 'CHOMIN')
                 """
 
             cur.execute(
@@ -148,19 +174,21 @@ def get_uncollected_song_list(user_id, include_chomin=False):
                     MIN(s.apple_music_url) AS apple_music_url,
                     MIN(s.spotify_url) AS spotify_url
                 FROM m_song s
-                WHERE s.song_type = 'INORI'
-                AND s.is_public = true
-                AND s.is_deleted = false
-                AND NOT EXISTS (
-                    SELECT 1
-                    FROM t_live_user u
-                    INNER JOIN m_setlist st
-                        ON {event_type_condition}
-                        AND st.event_id = u.live_id
-                    WHERE u.user_id = %s
-                    AND u.is_join = true
-                    AND st.song_id = s.song_group_id
-                )
+                WHERE
+                    s.is_public = TRUE
+                    AND s.is_deleted = FALSE
+                    {song_type_condition}
+                    AND NOT EXISTS (
+                        SELECT 1
+                        FROM t_live_user u
+                        INNER JOIN m_setlist st
+                            ON {event_type_condition}
+                            AND st.event_id = u.live_id
+                        WHERE
+                            u.user_id = %s
+                            AND u.is_join = TRUE
+                            AND st.song_id = s.song_group_id
+                    )
                 GROUP BY
                     s.song_group_id
                 ORDER BY
@@ -175,19 +203,26 @@ def get_uncollected_song_list(user_id, include_chomin=False):
         conn.close()
 
 
-def get_live_appearance_song_list(include_chomin=False):
+def get_live_appearance_song_list(mode="live"):
     conn = get_connection()
 
     try:
         with conn.cursor() as cur:
 
-            if include_chomin:
+            if mode == "all":
+                song_type_condition = ""
+            else:
+                song_type_condition = """
+                    AND s.song_type = 'INORI'
+                """
+
+            if mode == "live":
                 event_type_condition = """
-                    st.event_type IN ('LIVE', 'CHOMIN')
+                    st.event_type = 'LIVE'
                 """
             else:
                 event_type_condition = """
-                    st.event_type = 'LIVE'
+                    st.event_type IN ('LIVE', 'CHOMIN')
                 """
 
             cur.execute(
@@ -202,10 +237,11 @@ def get_live_appearance_song_list(include_chomin=False):
                 FROM m_setlist st
                 INNER JOIN m_song s
                     ON s.song_group_id = st.song_id
-                WHERE {event_type_condition}
-                AND s.song_type = 'INORI'
-                AND s.is_public = true
-                AND s.is_deleted = false
+                WHERE
+                    {event_type_condition}
+                    AND s.is_public = TRUE
+                    AND s.is_deleted = FALSE
+                    {song_type_condition}
                 GROUP BY
                     s.song_group_id
                 ORDER BY
