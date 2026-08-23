@@ -125,3 +125,36 @@
     text-decoration:none;
     font-size:14px;
 }
+
+.guest-list{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+.guest-item{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:10px;
+    border-radius:10px;
+    background:#fafafa;
+    text-decoration:none;
+    color:#555;
+}
+
+.guest-item:hover{
+    opacity:.8;
+}
+
+.guest-image{
+    width:40px;
+    height:40px;
+    object-fit:cover;
+    border-radius:50%;
+}
+
+.guest-name{
+    font-size:14px;
+    font-weight:bold;
+}

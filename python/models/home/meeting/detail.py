@@ -38,3 +38,32 @@ def get_meeting_detail(user_id, meeting_id):
 
     finally:
         conn.close()
+
+
+def get_meeting_guest_list(meeting_id):
+    conn = get_connection()
+
+    try:
+        with conn.cursor() as cur:
+            cur.execute(
+                """
+                SELECT
+                    guest_id,
+                    guest_name,
+                    display_order
+                FROM m_meeting_guest
+                WHERE meeting_id = %s
+                AND is_deleted = FALSE
+                ORDER BY
+                    display_order,
+                    guest_id
+                """,
+                (
+                    meeting_id,
+                )
+            )
+
+            return cur.fetchall()
+
+    finally:
+        conn.close()

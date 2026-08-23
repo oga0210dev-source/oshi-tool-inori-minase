@@ -21,30 +21,41 @@
 
     <div class="page-scroll">
         <div class="container">
+
             <!-- 基本情報 -->
             <div class="detail-card">
+
                 <div class="group-title">
                     基本情報
                 </div>
+
                 <div class="meeting-name">
                     {{ meeting.meeting_name }}
                 </div>
+
                 <div class="meeting-info">
+
                     <div>
                         📅 {{ meeting.meeting_date }}
                     </div>
+
                     <div class="performance-type">
                         🎤 {{ performance_type }}
                     </div>
+
                     <div class="day-status">
                         {{ day_status }}
                     </div>
+
                     <div>
                         📍 {{ meeting.prefecture_name }}
                         {{ meeting.venue_name }}
                     </div>
+
                     {% if is_login %}
+
                         {% if meeting.meeting_date >= today %}
+
                             {% if meeting.is_join %}
                             <div class="join-status future">
                                 参加予定
@@ -54,7 +65,9 @@
                                 未参加
                             </div>
                             {% endif %}
+
                         {% else %}
+
                             {% if meeting.is_join %}
                             <div class="join-status past">
                                 参加済み
@@ -64,45 +77,95 @@
                                 未参加
                             </div>
                             {% endif %}
+
                         {% endif %}
+
                     {% endif %}
+
                 </div>
+
             </div>
+
+
+            <!-- ゲスト -->
+            {% if guests %}
+
+            <div class="detail-card">
+
+                <div class="group-title">
+                    ゲスト
+                </div>
+
+                <div class="guest-list">
+
+                    {% for guest in guests %}
+
+                    <a
+                        href="/home/meeting/guest/{{ guest.guest_id }}"
+                        class="guest-item">
+
+                        <span class="guest-name">
+                            🎤 {{ guest.guest_name }}
+                        </span>
+
+                    </a>
+
+                    {% endfor %}
+
+                </div>
+
+            </div>
+
+            {% endif %}
+
 
             <!-- 関連リンク -->
             {% if meeting.official_url %}
+
             <div class="detail-card">
+
                 <div class="group-title">
                     関連リンク
                 </div>
-                <a href="{{ meeting.official_url }}"
+
+                <a
+                    href="{{ meeting.official_url }}"
                     target="_blank"
                     rel="noopener noreferrer"
                     class="link-btn">
                     🌐 公式サイト
                 </a>
+
             </div>
+
             {% endif %}
+
 
             <!-- セットリスト -->
             <div class="detail-card">
+
                 <div class="group-title">
                     セットリスト
                 </div>
+
                 <a
                     href="/home/meeting/setlist/{{ meeting.meeting_id }}"
                     class="link-btn">
                     🎵 セットリストを見る
                 </a>
+
             </div>
+
         </div>
     </div>
+
 </div>
 {% endblock %}
 
 {% block script %}
 <script>
 function backToMeetingArchive(){
+
     const url =
         sessionStorage.getItem(
             "meetingArchiveUrl"
