@@ -8,6 +8,7 @@
 
 {% block content %}
 <div class="background">
+
     <a href="/home/live/collected_song"
        class="back-link">
         ← 回収済み楽曲
@@ -22,21 +23,31 @@
 
             <!-- 集計対象切り替え -->
             <div class="collection-mode">
-                <a href="/home/live/collected_song/collected?include_chomin=false"
-                   class="mode-btn {% if not include_chomin %}active{% endif %}">
+
+                <a href="/home/live/collected_song/collected?mode=live"
+                   class="mode-btn {% if mode == 'live' %}active{% endif %}">
                     ライブのみ
                 </a>
 
-                <a href="/home/live/collected_song/collected?include_chomin=true"
-                   class="mode-btn {% if include_chomin %}active{% endif %}">
+                <a href="/home/live/collected_song/collected?mode=chomin"
+                   class="mode-btn {% if mode == 'chomin' %}active{% endif %}">
                     町民集会を含む
                 </a>
+
+                <a href="/home/live/collected_song/collected?mode=all"
+                   class="mode-btn {% if mode == 'all' %}active{% endif %}">
+                    町民集会歌唱曲も含む
+                </a>
+
             </div>
 
+
             {% if songs %}
+
             <div class="song-list">
 
                 {% for song in songs %}
+
                 <div class="song-card">
 
                     <div class="song-info">
@@ -50,6 +61,7 @@
                         </div>
 
                     </div>
+
 
                     <div class="song-links">
 
@@ -83,6 +95,7 @@
                     </div>
 
                 </div>
+
                 {% endfor %}
 
             </div>
@@ -97,5 +110,6 @@
 
         </div>
     </div>
+
 </div>
 {% endblock %}

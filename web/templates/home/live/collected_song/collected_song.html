@@ -41,7 +41,7 @@
         </div>
 
 
-        <!-- 町民集会込み -->
+        <!-- 町民集会を含む -->
         <div class="collection-card">
 
             <div class="collection-type">
@@ -62,6 +62,28 @@
 
         </div>
 
+
+        <!-- 町民集会歌唱曲も含む -->
+        <div class="collection-card">
+
+            <div class="collection-type">
+                町民集会歌唱曲も含む
+            </div>
+
+            <div>
+                🎵 回収済み：{{ summary_all_meeting_songs.collected_count }}曲
+            </div>
+
+            <div>
+                ❌ 未回収：{{ summary_all_meeting_songs.uncollected_count }}曲
+            </div>
+
+            <div>
+                📈 回収率：{{ summary_all_meeting_songs.collection_rate }}%
+            </div>
+
+        </div>
+
     </div>
 
 
@@ -70,23 +92,25 @@
 
         <span class="collection-slider-dot active"></span>
         <span class="collection-slider-dot"></span>
+        <span class="collection-slider-dot"></span>
 
     </div>
 
 
+    <!-- メニュー -->
     <div class="collection-menu">
 
-        <a href="/home/live/collected_song/collected"
+        <a href="/home/live/collected_song/collected?mode=live"
            class="menu-btn">
             回収済み
         </a>
 
-        <a href="/home/live/collected_song/uncollected"
+        <a href="/home/live/collected_song/uncollected?mode=live"
            class="menu-btn">
             未回収
         </a>
 
-        <a href="/home/live/collected_song/appearance"
+        <a href="/home/live/collected_song/appearance?mode=live"
            class="menu-btn">
             ライブ登場曲
         </a>
@@ -94,28 +118,75 @@
     </div>
 
 </div>
+{% endblock %}
 
+{% block script %}
 <script>
-const slider =
-    document.querySelector(".collection-slider");
+document.addEventListener("DOMContentLoaded", function(){
 
-const dots =
-    document.querySelectorAll(".collection-slider-dot");
+    const slider =
+        document.querySelector(".collection-slider");
 
-slider.addEventListener("scroll", () => {
+    const slides =
+        document.querySelectorAll(".collection-card");
 
-    const index =
-        Math.round(
-            slider.scrollLeft /
-            slider.clientWidth
-        );
+    const dots =
+        document.querySelectorAll(".collection-slider-dot");
 
-    dots.forEach((dot, i) => {
-        dot.classList.toggle(
-            "active",
-            i === index
-        );
-    });
+    if(!slider || !slides.length || !dots.length){
+        return;
+    }
+
+    function updateDots(){
+
+        const sliderRect =
+            slider.getBoundingClientRect();
+
+        const sliderCenter =
+            sliderRect.left +
+            sliderRect.width / 2;
+
+        let activeIndex = 0;
+        let minDistance = Infinity;
+
+        slides.forEach(function(slide, index){
+
+            const slideRect =
+                slide.getBoundingClientRect();
+
+            const slideCenter =
+                slideRect.left +
+                slideRect.width / 2;
+
+            const distance =
+                Math.abs(
+                    sliderCenter -
+                    slideCenter
+                );
+
+            if(distance < minDistance){
+                minDistance = distance;
+                activeIndex = index;
+            }
+
+        });
+
+        dots.forEach(function(dot, index){
+
+            dot.classList.toggle(
+                "active",
+                index === activeIndex
+            );
+
+        });
+    }
+
+    slider.addEventListener(
+        "scroll",
+        updateDots
+    );
+
+    updateDots();
 
 });
 </script>
