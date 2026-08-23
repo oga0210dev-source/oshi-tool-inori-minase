@@ -1,3 +1,7 @@
+/* ==========================
+   ライブ画面
+========================== */
+
 .container{
     width:100%;
     max-width:430px;
@@ -6,31 +10,46 @@
 }
 
 
+/* ==========================
+   ライブ横スライダー
+========================== */
+
 .live-slider{
+    width:100%;
+    min-width:0;
+
     display:flex;
     gap:20px;
+
     overflow-x:auto;
+    overflow-y:hidden;
+
     scroll-snap-type:x mandatory;
+
     scrollbar-width:none;
     -ms-overflow-style:none;
+
     padding:0 20px;
+
+    overscroll-behavior-x:contain;
 }
 
 .live-slider::-webkit-scrollbar{
     display:none;
 }
 
+
+/* ==========================
+   ライブスライド
+========================== */
+
 .live-card{
     flex:0 0 100%;
-    scroll-snap-align:center;
-}
-
-/* ライブカード */
-.live-card{
     width:85%;
     max-width:390px;
     min-height:150px;
     margin:0 auto;
+    scroll-snap-align:center;
     background:white;
     border-radius:20px;
     padding:15px;
@@ -39,6 +58,11 @@
     flex-direction:column;
     justify-content:space-between;
 }
+
+
+/* ==========================
+   ライブ情報
+========================== */
 
 .live-name{
     font-size:16px;
@@ -60,118 +84,9 @@
 }
 
 
-.add-history{
-    background:#eee;
-    color:#666;
-    width:100%;
-    height:40px;
-    border-radius:10px;
-    border:none;
-    text-decoration:none;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:14px;
-}
-
-.detail-btn{
-    background:#ff8fb1;
-    width:100%;
-    height:40px;
-    border-radius:10px;
-    border:none;
-    color:white;
-    text-decoration:none;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:14px;
-}
-
-
-.no-live{
-    width:90%;
-    max-width:400px;
-    margin:30px auto;
-    text-align:center;
-    color:#777;
-}
-
-
-/* スクロールバー非表示 */
-html{
-    scrollbar-width:none;
-}
-
-html::-webkit-scrollbar{
-    display:none;
-}
-
 /* ==========================
-   ボタン共通
+   参加予定
 ========================== */
-.menu-btn,
-.wide-btn{
-    background:rgba(255,255,255,.88);
-    border-radius:15px;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    text-decoration:none;
-    box-shadow:0 2px 6px rgba(0,0,0,.12);
-    transition:.2s;
-}
-
-.menu-btn:hover,
-.wide-btn:hover{
-    transform:scale(1.03);
-}
-
-/* ==========================
-   横長ボタン
-========================== */
-.wide-btn{
-    width:80%;
-    max-width:400px;
-    height:70px;
-    margin:10px auto;
-}
-
-.wide-btn img{
-    width:45px;
-    height:45px;
-    object-fit:contain;
-    margin-right:15px;
-}
-
-/* ==========================
-   2列メニュー
-========================== */
-.menu-grid{
-    width:80%;
-    max-width:400px;
-    margin:10px auto;
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:10px;
-}
-
-.menu-grid .menu-btn{
-    height:70px;
-}
-
-.menu-btn img{
-    width:35px;
-    height:35px;
-    object-fit:contain;
-    margin-right:10px;
-}
-
-.menu-btn span{
-    font-size:14px;
-    font-weight:bold;
-    color:#333;
-}
 
 .join-status{
     display:inline-flex;
@@ -186,6 +101,137 @@ html::-webkit-scrollbar{
     align-items:center;
 }
 
+
+/* ==========================
+   記録ボタン
+========================== */
+
+.add-history{
+    background:#eee;
+    color:#666;
+    width:100%;
+    height:40px;
+    margin-top:10px;
+    border-radius:10px;
+    border:none;
+    text-decoration:none;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:14px;
+}
+
+
+/* ==========================
+   詳細ボタン
+========================== */
+
+.detail-btn{
+    background:#ff8fb1;
+    width:100%;
+    height:40px;
+    margin-top:10px;
+    border-radius:10px;
+    border:none;
+    color:white;
+    text-decoration:none;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:14px;
+}
+
+
+/* ==========================
+   ライブなし
+========================== */
+
+.no-live{
+    width:90%;
+    max-width:400px;
+    margin:30px auto;
+    text-align:center;
+    color:#777;
+}
+
+
+/* ==========================
+   メニューボタン共通
+========================== */
+
+.menu-btn,
+.wide-btn{
+    background:rgba(255,255,255,.88);
+    border-radius:15px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    text-decoration:none;
+    box-shadow:0 2px 6px rgba(0,0,0,.12);
+    transition:.2s;
+}
+
+
+.menu-btn:hover,
+.wide-btn:hover{
+    transform:scale(1.03);
+}
+
+
+/* ==========================
+   横長ボタン
+========================== */
+
+.wide-btn{
+    width:80%;
+    max-width:400px;
+    height:70px;
+    margin:10px auto;
+}
+
+
+.wide-btn img{
+    width:45px;
+    height:45px;
+    object-fit:contain;
+    margin-right:15px;
+}
+
+
+/* ==========================
+   2列メニュー
+========================== */
+
+.menu-grid{
+    width:80%;
+    max-width:400px;
+    margin:10px auto;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+}
+
+
+.menu-grid .menu-btn{
+    height:70px;
+}
+
+
+.menu-btn img{
+    width:35px;
+    height:35px;
+    object-fit:contain;
+    margin-right:10px;
+}
+
+
+.menu-btn span{
+    font-size:14px;
+    font-weight:bold;
+    color:#333;
+}
+
+
 /* ==========================
    スライダードット
 ========================== */
@@ -198,6 +244,7 @@ html::-webkit-scrollbar{
     margin:10px 0 16px;
 }
 
+
 .live-slider-dot{
     display:block;
     width:8px;
@@ -206,7 +253,28 @@ html::-webkit-scrollbar{
     background:#ccc;
 }
 
+
 .live-slider-dot.active{
     background:#ff8fb1;
     transform:scale(1.2);
+}
+
+
+/* ==========================
+   スマートフォン
+========================== */
+
+@media (max-width:600px){
+
+    .container{
+        width:100%;
+        max-width:430px;
+        padding:15px 0 30px;
+    }
+
+    .live-slider{
+        width:100%;
+        padding:0 20px;
+    }
+
 }

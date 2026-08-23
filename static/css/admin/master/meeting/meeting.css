@@ -1,23 +1,44 @@
 /* =========================
    町民集会一覧
 ========================= */
-/* 一覧スクロール */
-.meeting-list{
+
+/* =========================
+   一覧スクロール領域
+========================= */
+
+.page-scroll{
     flex:1;
     min-height:0;
+    min-width:0;
     overflow-y:auto;
-    margin-top:10px;
+    overflow-x:hidden;
     padding-bottom:20px;
     scrollbar-width:none;
+    -ms-overflow-style:none;
 }
 
-.meeting-list::-webkit-scrollbar{
+.page-scroll::-webkit-scrollbar{
     display:none;
 }
 
 
-/* 町民集会カード */
+/* =========================
+   町民集会一覧
+========================= */
+
+.meeting-list{
+    width:100%;
+    min-width:0;
+}
+
+
+/* =========================
+   町民集会カード
+========================= */
+
 .meeting-block{
+    width:100%;
+    box-sizing:border-box;
     margin-bottom:20px;
     padding:15px;
     background:#fff;
@@ -26,21 +47,32 @@
 }
 
 
-/* 町民集会名 */
+/* =========================
+   町民集会名
+========================= */
+
 .meeting-title{
     margin:0 0 10px;
     padding-bottom:8px;
     border-bottom:2px solid #ff8fb1;
     font-size:18px;
     font-weight:bold;
+    line-height:1.4;
+    word-break:break-word;
 }
 
 
-/* 町民集会行 */
+/* =========================
+   町民集会行
+========================= */
+
 .meeting-row{
     display:flex;
-    justify-content:space-between;
     align-items:flex-start;
+    gap:10px;
+    width:100%;
+    min-width:0;
+    box-sizing:border-box;
     padding:12px 0;
     border-bottom:1px solid #eee;
 }
@@ -50,31 +82,53 @@
 }
 
 
+/* =========================
+   町民集会情報
+========================= */
+
 .meeting-info{
     flex:1;
+    min-width:0;
+}
+
+
+.meeting-name{
+    min-width:0;
+    font-size:16px;
+    font-weight:bold;
+    line-height:1.5;
+    color:#333;
+    word-break:break-word;
 }
 
 
 .meeting-place{
     margin-top:5px;
     font-size:14px;
+    line-height:1.5;
     color:#666;
+    word-break:break-word;
 }
 
 
 .meeting-date{
     margin-top:3px;
     font-size:13px;
+    line-height:1.5;
     color:#999;
 }
 
 
-/* 操作ボタン */
+/* =========================
+   操作エリア
+========================= */
+
 .meeting-action{
     display:flex;
     flex-direction:column;
-    align-items:flex-end;
+    align-items:stretch;
     gap:8px;
+    flex-shrink:0;
 }
 
 
@@ -84,10 +138,45 @@
 }
 
 
-/* セトリ */
-.setlist-btn{
-    width:118px;
+/* =========================
+   編集・削除
+========================= */
+
+.edit-btn,
+.delete-btn{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:60px;
     height:32px;
+    box-sizing:border-box;
+    border-radius:16px;
+    text-decoration:none;
+    font-size:12px;
+    font-weight:bold;
+}
+
+
+.edit-btn{
+    background:#ff8fb1;
+    color:#fff;
+}
+
+
+.delete-btn{
+    background:#eee;
+    color:#666;
+}
+
+
+/* =========================
+   セトリ
+========================= */
+
+.setlist-btn{
+    width:100%;
+    height:32px;
+    box-sizing:border-box;
     display:flex;
     align-items:center;
     justify-content:center;
@@ -100,10 +189,14 @@
 }
 
 
-/* ゲスト */
+/* =========================
+   ゲスト
+========================= */
+
 .guest-btn{
-    width:118px;
+    width:100%;
     height:32px;
+    box-sizing:border-box;
     display:flex;
     align-items:center;
     justify-content:center;
@@ -115,9 +208,185 @@
     color:#fff;
 }
 
-/* ==========================
-町民集会 ゲスト管理
-========================== */
+
+/* =========================
+   データなし
+========================= */
+
+.empty-message{
+    margin:30px 0;
+    text-align:center;
+    color:#777;
+}
+
+
+/* =========================
+   町民集会 登録・編集フォーム
+========================= */
+
+.meeting-form{
+    width:100%;
+    max-width:400px;
+    margin:0 auto;
+    box-sizing:border-box;
+    flex:1;
+    min-height:0;
+    overflow-y:auto;
+    overflow-x:hidden;
+    padding-bottom:20px;
+    scrollbar-width:none;
+    -ms-overflow-style:none;
+}
+
+.meeting-form::-webkit-scrollbar{
+    display:none;
+}
+
+
+/* =========================
+   フォーム項目
+========================= */
+
+.meeting-form label{
+    display:block;
+    margin:12px 0 6px;
+    font-size:15px;
+    font-weight:bold;
+}
+
+
+.meeting-form input,
+.meeting-form select{
+    width:100%;
+    max-width:100%;
+    height:45px;
+    padding:0 12px;
+    box-sizing:border-box;
+    border:1px solid #ddd;
+    border-radius:12px;
+    font-size:15px;
+    background:#fff;
+}
+
+
+/* =========================
+   日付入力
+========================= */
+
+.meeting-form input[type="date"]{
+    width:100%;
+    max-width:100%;
+    min-width:0;
+    box-sizing:border-box;
+    padding:0 10px;
+    -webkit-appearance:none;
+    appearance:none;
+}
+
+
+/* =========================
+   コンボボックス
+========================= */
+
+.meeting-form select{
+    width:100%;
+    max-width:100%;
+    min-width:0;
+    box-sizing:border-box;
+    padding:0 36px 0 12px;
+    -webkit-appearance:none;
+    appearance:none;
+    background-color:#fff;
+    background-image:
+        linear-gradient(45deg,transparent 50%,#999 50%),
+        linear-gradient(135deg,#999 50%,transparent 50%);
+    background-position:
+        calc(100% - 18px) 18px,
+        calc(100% - 12px) 18px;
+    background-size:6px 6px;
+    background-repeat:no-repeat;
+}
+
+
+/* =========================
+   URL入力
+========================= */
+
+.meeting-form input[type="url"]{
+    width:100%;
+    max-width:100%;
+    min-width:0;
+    box-sizing:border-box;
+}
+
+
+/* =========================
+   テキスト入力
+========================= */
+
+.meeting-form input[type="text"],
+.meeting-form input[type="number"]{
+    width:100%;
+    max-width:100%;
+    min-width:0;
+    box-sizing:border-box;
+}
+
+
+/* =========================
+   フォーカス
+========================= */
+
+.meeting-form input:focus,
+.meeting-form select:focus{
+    outline:none;
+    border-color:#ff8fb1;
+}
+
+
+/* =========================
+   フォームタイトル
+========================= */
+
+.form-group{
+    width:100%;
+    box-sizing:border-box;
+    margin-bottom:20px;
+}
+
+
+.form-title{
+    margin:0 0 10px;
+    padding-bottom:8px;
+    border-bottom:2px solid #ff8fb1;
+    font-size:18px;
+    font-weight:bold;
+}
+
+
+/* =========================
+   公開設定
+========================= */
+
+.meeting-form .checkbox{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin-top:10px;
+    cursor:pointer;
+}
+
+
+.meeting-form .checkbox input{
+    width:18px;
+    height:18px;
+    margin:0;
+}
+
+
+/* =========================
+   町民集会 ゲスト管理
+========================= */
 
 .guest-form{
     display:flex;
@@ -125,21 +394,26 @@
     gap:12px;
 }
 
+
 .guest-form-row{
     display:flex;
     gap:8px;
     width:100%;
+    min-width:0;
 }
+
 
 .guest-form-row input[type="text"]{
     flex:1;
     min-width:0;
 }
 
+
 .guest-form-row input[type="number"]{
     width:80px;
     flex-shrink:0;
 }
+
 
 .guest-form-row input{
     min-height:40px;
@@ -151,10 +425,12 @@
     font-size:14px;
 }
 
+
 .guest-form-row input:focus{
     outline:none;
     border-color:#ff8fb1;
 }
+
 
 .guest-action{
     display:flex;
@@ -162,6 +438,7 @@
     gap:8px;
     margin-top:4px;
 }
+
 
 .guest-action .edit-btn,
 .guest-action .delete-btn{
@@ -178,19 +455,57 @@
     cursor:pointer;
 }
 
+
 .guest-action .edit-btn{
     border:none;
 }
+
 
 .guest-item{
     width:100%;
 }
 
-/* ==========================
-スマートフォン
-========================== */
 
-@media (max-width:600px){
+/* =========================
+   小さい画面
+========================= */
+
+@media (max-width:430px){
+
+    .meeting-form{
+        max-width:100%;
+    }
+
+    .meeting-form input,
+    .meeting-form select{
+        font-size:14px;
+    }
+
+    .meeting-block{
+        padding:15px;
+    }
+
+    .meeting-row{
+        gap:8px;
+    }
+
+    .meeting-name{
+        font-size:15px;
+    }
+
+    .meeting-place{
+        font-size:13px;
+    }
+
+    .meeting-date{
+        font-size:12px;
+    }
+
+    .edit-btn,
+    .delete-btn{
+        width:56px;
+    }
+
     .guest-form-row{
         gap:6px;
     }
@@ -202,6 +517,37 @@
     .guest-action .edit-btn,
     .guest-action .delete-btn{
         min-width:56px;
+        font-size:12px;
+    }
+}
+
+
+/* =========================
+   極小画面
+========================= */
+
+@media (max-width:360px){
+
+    .meeting-block{
+        padding:12px;
+    }
+
+    .meeting-row{
+        gap:6px;
+    }
+
+    .meeting-action-top{
+        gap:5px;
+    }
+
+    .edit-btn,
+    .delete-btn{
+        width:52px;
+        font-size:11px;
+    }
+
+    .setlist-btn,
+    .guest-btn{
         font-size:12px;
     }
 }

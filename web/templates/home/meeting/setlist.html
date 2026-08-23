@@ -23,7 +23,17 @@
                 </div>
 
                 <div class="performance-type">
-                    {{ meeting.performance_type }}
+                    {% if meeting.performance_type == "DAY" %}
+                        昼公演
+                    {% elif meeting.performance_type == "NIGHT" %}
+                        夜公演
+                    {% elif meeting.performance_type == "PART1" %}
+                        第1部
+                    {% elif meeting.performance_type == "PART2" %}
+                        第2部
+                    {% elif meeting.performance_type == "PART3" %}
+                        第3部
+                    {% endif %}
                 </div>
 
                 <div class="meeting-date">

@@ -1,25 +1,53 @@
-.program-list{
-    display:flex;
-    flex-direction:column;
-    gap:12px;
+/* =========================
+   番組一覧
+========================= */
+
+.page-scroll{
+    flex:1;
+    min-height:0;
+    min-width:0;
+    overflow-y:auto;
+    overflow-x:hidden;
+    padding-bottom:20px;
+    scrollbar-width:none;
+    -ms-overflow-style:none;
+}
+
+.page-scroll::-webkit-scrollbar{
+    display:none;
 }
 
 
-/* ==========================
+/* =========================
+   番組一覧
+========================= */
+
+.program-list{
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+    width:100%;
+    min-width:0;
+}
+
+
+/* =========================
    番組行
-========================== */
+========================= */
 
 .program-row{
     display:flex;
     align-items:flex-start;
-    justify-content:space-between;
     gap:12px;
+    width:100%;
+    min-width:0;
     padding:15px;
     box-sizing:border-box;
     background:#fff;
-    border-radius:10px;
-    box-shadow:0 2px 6px rgba(0,0,0,.08);
+    border-radius:20px;
+    box-shadow:0 3px 8px rgba(0,0,0,.12);
 }
+
 
 .program-info{
     flex:1;
@@ -27,21 +55,23 @@
 }
 
 
-/* ==========================
+/* =========================
    番組名
-========================== */
+========================= */
 
 .program-name{
-    font-size:15px;
+    margin:0 0 8px;
+    font-size:16px;
     font-weight:bold;
     line-height:1.5;
+    color:#333;
     word-break:break-word;
 }
 
 
-/* ==========================
+/* =========================
    種別
-========================== */
+========================= */
 
 .program-type{
     display:inline-flex;
@@ -51,7 +81,7 @@
     margin-right:6px;
     padding:3px 6px;
     box-sizing:border-box;
-    border-radius:6px;
+    border-radius:10px;
     font-size:10px;
     font-weight:bold;
     vertical-align:middle;
@@ -78,56 +108,57 @@
 }
 
 
-/* ==========================
+/* =========================
    放送期間
-========================== */
+========================= */
 
 .program-period{
     margin-top:5px;
     color:#777;
-    font-size:12px;
+    font-size:13px;
     line-height:1.5;
 }
 
 
-/* ==========================
+/* =========================
    説明
-========================== */
+========================= */
 
 .program-description{
     margin-top:6px;
     color:#666;
-    font-size:12px;
+    font-size:13px;
     line-height:1.6;
     white-space:pre-wrap;
     word-break:break-word;
 }
 
 
-/* ==========================
+/* =========================
    メタ情報
-========================== */
+========================= */
 
 .program-meta{
     margin-top:6px;
     color:#999;
-    font-size:11px;
+    font-size:12px;
     line-height:1.5;
 }
 
 
-/* ==========================
+/* =========================
    操作
-========================== */
+========================= */
 
 .program-action{
     display:flex;
     flex-direction:column;
     align-items:stretch;
-    gap:5px;
+    gap:8px;
     width:76px;
     flex-shrink:0;
 }
+
 
 .program-action-top{
     display:flex;
@@ -135,20 +166,21 @@
 }
 
 
-/* ==========================
+/* =========================
    公式
-========================== */
+========================= */
 
 .official-btn{
     display:flex;
     align-items:center;
     justify-content:center;
-    min-height:30px;
-    padding:4px 6px;
+    width:100%;
+    height:32px;
+    padding:0;
     box-sizing:border-box;
-    border-radius:6px;
-    background:#f5f5f5;
-    color:#555;
+    border-radius:16px;
+    background:#eee;
+    color:#666;
     font-size:11px;
     font-weight:bold;
     text-decoration:none;
@@ -159,33 +191,37 @@
 }
 
 
-/* ==========================
+/* =========================
    編集・削除
-========================== */
+========================= */
 
 .program-action .edit-btn,
 .program-action .delete-btn{
     display:flex;
     align-items:center;
     justify-content:center;
-    min-height:30px;
-    padding:4px 6px;
+    width:100%;
+    height:32px;
+    padding:0;
     box-sizing:border-box;
-    border-radius:6px;
+    border-radius:16px;
     font-size:11px;
     font-weight:bold;
     text-decoration:none;
 }
 
+
 .program-action .edit-btn{
-    background:#fff0f5;
-    color:#e83e8c;
+    background:#ff8fb1;
+    color:#fff;
 }
 
+
 .program-action .delete-btn{
-    background:#f5f5f5;
-    color:#777;
+    background:#eee;
+    color:#666;
 }
+
 
 .program-action .edit-btn:hover,
 .program-action .delete-btn:hover,
@@ -194,76 +230,156 @@
 }
 
 
-/* ==========================
+/* =========================
    データなし
-========================== */
+========================= */
 
 .program-list .empty-message{
-    margin:30px 0;
+    margin:40px 0 20px;
     text-align:center;
     color:#777;
 }
 
 
-/* ==========================
+/* =========================
    フォーム
-========================== */
+========================= */
 
 .master-form{
     width:100%;
-    max-width:600px;
-    margin:0 auto;
+    max-width:400px;
+    margin:20px auto 0;
+    box-sizing:border-box;
+    flex:1;
+    min-height:0;
+    overflow-y:auto;
+    overflow-x:hidden;
+    padding-bottom:20px;
+    scrollbar-width:none;
+    -ms-overflow-style:none;
 }
 
-.master-form .form-group{
-    margin-bottom:18px;
+.master-form::-webkit-scrollbar{
+    display:none;
 }
+
+
+/* =========================
+   フォーム項目
+========================= */
+
+.master-form .form-group{
+    width:100%;
+    box-sizing:border-box;
+    margin-bottom:20px;
+}
+
 
 .master-form label{
     display:block;
-    margin-bottom:6px;
-    font-size:14px;
+    margin:12px 0 6px;
+    font-size:15px;
     font-weight:bold;
 }
 
+
+/* =========================
+   入力
+========================= */
+
 .master-form input[type="text"],
-.master-form input[type="url"],
-.master-form input[type="date"],
-.master-form textarea,
-.master-form select{
+.master-form input[type="url"]{
     width:100%;
-    padding:10px;
+    max-width:100%;
+    height:45px;
+    padding:0 12px;
     box-sizing:border-box;
-    border:1px solid #ccc;
-    border-radius:6px;
+    border:1px solid #ddd;
+    border-radius:12px;
     background:#fff;
-    font-size:14px;
+    font-size:15px;
+    min-width:0;
 }
 
-.master-form input[type="text"]:focus,
-.master-form input[type="url"]:focus,
-.master-form input[type="date"]:focus,
+
+/* =========================
+   日付
+========================= */
+
+.master-form input[type="date"]{
+    width:100%;
+    max-width:100%;
+    height:45px;
+    min-width:0;
+    padding:0 10px;
+    box-sizing:border-box;
+    border:1px solid #ddd;
+    border-radius:12px;
+    background:#fff;
+    font-size:15px;
+    -webkit-appearance:none;
+    appearance:none;
+}
+
+
+/* =========================
+   コンボボックス
+========================= */
+
+.master-form select{
+    width:100%;
+    max-width:100%;
+    height:45px;
+    min-width:0;
+    padding:0 12px;
+    box-sizing:border-box;
+    border:1px solid #ddd;
+    border-radius:12px;
+    background:#fff;
+    font-size:15px;
+}
+
+
+/* =========================
+   フォーカス
+========================= */
+
+.master-form input:focus,
 .master-form textarea:focus,
 .master-form select:focus{
     outline:none;
     border-color:#ff8fb1;
 }
 
+
+/* =========================
+   テキストエリア
+========================= */
+
 .master-form textarea{
-    resize:vertical;
+    width:100%;
+    max-width:100%;
+    min-height:120px;
+    padding:10px 12px;
+    box-sizing:border-box;
+    border:1px solid #ddd;
+    border-radius:12px;
+    background:#fff;
+    font-size:15px;
     line-height:1.6;
+    resize:vertical;
 }
 
 
-/* ==========================
+/* =========================
    必須
-========================== */
+========================= */
 
 .master-form .required{
     display:inline-block;
     margin-left:5px;
     padding:2px 5px;
-    border-radius:4px;
+    border-radius:6px;
     background:#ff8fb1;
     color:#fff;
     font-size:10px;
@@ -272,37 +388,42 @@
 }
 
 
-/* ==========================
+/* =========================
    公開設定
-========================== */
+========================= */
 
 .master-form .form-checkbox{
     margin-top:5px;
 }
 
+
 .master-form .form-checkbox label{
     display:flex;
     align-items:center;
-    gap:7px;
+    gap:8px;
+    margin:0;
     font-weight:normal;
+    cursor:pointer;
 }
 
+
 .master-form .form-checkbox input{
-    width:16px;
-    height:16px;
+    width:18px;
+    height:18px;
     margin:0;
 }
 
 
-/* ==========================
+/* =========================
    フォームボタン
-========================== */
+========================= */
 
 .master-form .form-actions{
     display:flex;
-    gap:10px;
-    margin-top:25px;
+    gap:12px;
+    margin-top:30px;
 }
+
 
 .master-form .cancel-btn,
 .master-form .submit-btn{
@@ -310,26 +431,29 @@
     align-items:center;
     justify-content:center;
     flex:1;
-    min-height:42px;
-    padding:8px 15px;
+    min-height:44px;
+    padding:10px;
     box-sizing:border-box;
-    border-radius:8px;
-    font-size:14px;
+    border:none;
+    border-radius:12px;
+    font-size:16px;
     font-weight:bold;
     text-decoration:none;
     cursor:pointer;
 }
 
+
 .master-form .cancel-btn{
-    background:#eee;
-    color:#555;
+    background:#ddd;
+    color:#333;
 }
 
+
 .master-form .submit-btn{
-    border:none;
-    background:#ff8fb1;
+    background:#333;
     color:#fff;
 }
+
 
 .master-form .cancel-btn:hover,
 .master-form .submit-btn:hover{
@@ -337,63 +461,73 @@
 }
 
 
-/* ==========================
-   スクロール
-========================== */
-
-.page-scroll{
-    overflow-y:auto;
-    scrollbar-width:none;
-}
-
-.page-scroll::-webkit-scrollbar{
-    display:none;
-}
-
-
-/* ==========================
+/* =========================
    スマートフォン
-========================== */
+========================= */
 
-@media (max-width:600px){
+@media (max-width:430px){
+
+    .master-form{
+        max-width:100%;
+    }
+
+    .master-form input,
+    .master-form select,
+    .master-form textarea{
+        font-size:14px;
+    }
 
     .program-row{
-        gap:10px;
-        padding:13px;
+        gap:8px;
+        padding:15px;
+    }
+
+    .program-name{
+        font-size:15px;
+    }
+
+    .program-period{
+        font-size:12px;
+    }
+
+    .program-description{
+        font-size:12px;
     }
 
     .program-action{
-        width:70px;
-    }
-
-    .program-action-top{
-        gap:4px;
-    }
-
-    .program-action .edit-btn,
-    .program-action .delete-btn{
-        min-height:30px;
-        padding:4px 5px;
-        font-size:10px;
-    }
-
-    .official-btn{
-        min-height:30px;
-        font-size:10px;
-    }
-
-    .master-form{
-        max-width:none;
-    }
-
-    .master-form .form-actions{
+        width:64px;
         gap:8px;
     }
 
-    .master-form .cancel-btn,
-    .master-form .submit-btn{
-        min-height:42px;
-        font-size:13px;
+    .program-action .edit-btn,
+    .program-action .delete-btn,
+    .official-btn{
+        height:32px;
+        font-size:10px;
+    }
+
+}
+
+
+/* =========================
+   さらに小さい画面
+========================= */
+
+@media (max-width:360px){
+
+    .program-row{
+        gap:6px;
+        padding:12px;
+    }
+
+    .program-action{
+        width:58px;
+    }
+
+    .program-action .edit-btn,
+    .program-action .delete-btn,
+    .official-btn{
+        font-size:9px;
     }
 
 }
