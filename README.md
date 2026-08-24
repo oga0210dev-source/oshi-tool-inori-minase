@@ -3,7 +3,7 @@
 > このファイルは、推し活オールインワンの現在の実装状況・構成・仕様を記録する現行仕様書です。
 > 今後の開発では、このファイルの内容を現行仕様の基準とします。
 >
-> 最終更新日：2026-08-17
+> 最終更新日：2026-08-24
 
 ---
 
@@ -21,14 +21,14 @@
 
 ### 1.3 基本方針
 
-- スマートフォンでの利用を前提とする
-- シンプルで使いやすいUIを重視する
-- 既存機能との連携を重視する
-- 既存データを活用できる機能を優先する
-- 管理コストが高い機能は無理に追加しない
-- 無料での運用を前提とする
-- 必要な業務データのみ保存する
-- 操作履歴・アクセス履歴などのログ機能は実装しない
+* スマートフォンでの利用を前提とする
+* シンプルで使いやすいUIを重視する
+* 既存機能との連携を重視する
+* 既存データを活用できる機能を優先する
+* 管理コストが高い機能は無理に追加しない
+* 無料での運用を前提とする
+* 必要な業務データのみ保存する
+* 操作履歴・アクセス履歴などのログ機能は実装しない
 
 ---
 
@@ -36,42 +36,42 @@
 
 ### 2.1 Backend
 
-- Python
-- FastAPI
-- Uvicorn
+* Python
+* FastAPI
+* Uvicorn
 
 ### 2.2 Template
 
-- Jinja2
-- Jinja2Templates
+* Jinja2
+* Jinja2Templates
 
 ### 2.3 Database
 
-- Supabase PostgreSQL
-- psycopg
+* Supabase PostgreSQL
+* psycopg
 
 ### 2.4 Authentication / Session
 
-- Starlette SessionMiddleware
-- セッションによるログイン状態管理
+* Starlette SessionMiddleware
+* セッションによるログイン状態管理
 
 ### 2.5 Frontend
 
-- HTML
-- CSS
-- JavaScript
+* HTML
+* CSS
+* JavaScript
 
 ### 2.6 開発環境
 
-- PyCharm
-- Windows
+* PyCharm
+* Windows
 
 ### 2.7 UI方針
 
-- スマートフォンファースト
-- コンテンツ最大幅：約430px
-- HachiMaruPop-Regular.ttf をUIフォントとして使用
-- 共通CSSと機能別CSSを使い分ける
+* スマートフォンファースト
+* コンテンツ最大幅：約430px
+* HachiMaruPop-Regular.ttf をUIフォントとして使用
+* 共通CSSと機能別CSSを使い分ける
 
 ---
 
@@ -108,7 +108,9 @@ static/
 ├── img/
 └── fonts/
 ```
+
 ---
+
 ## 4. DB構成
 
 ### 4.1 DB
@@ -119,14 +121,14 @@ DB接続は `python.core.database.get_connection()` を使用する。
 
 ### 4.2 DB設計の基本方針
 
-- PostgreSQLを使用する
-- 既存テーブルを利用できる場合は、新規テーブルを増やさない
-- 論理削除を使用するテーブルでは `is_deleted` を使用する
-- 公開・非公開を管理するデータでは `public_flag` または `is_public` を使用する
-- `created_at` / `updated_at` によって登録日時・更新日時を管理する
-- 更新日時は `update_updated_at_column()` トリガーを使用する
-- 外部キーによるテーブル間の関連を維持する
-- DB定義を変更する場合は、既存機能への影響を確認する
+* PostgreSQLを使用する
+* 既存テーブルを利用できる場合は、新規テーブルを増やさない
+* 論理削除を使用するテーブルでは `is_deleted` を使用する
+* 公開・非公開を管理するデータでは `public_flag` または `is_public` を使用する
+* `created_at` / `updated_at` によって登録日時・更新日時を管理する
+* 更新日時は `update_updated_at_column()` トリガーを使用する
+* 外部キーによるテーブル間の関連を維持する
+* DB定義を変更する場合は、既存機能への影響を確認する
 
 ---
 
@@ -138,13 +140,13 @@ DB接続は `python.core.database.get_connection()` を使用する。
 
 主な用途：
 
-- ユーザー登録設定などのシステム設定
+* ユーザー登録設定などのシステム設定
 
 登録可否の値：
 
-- `0`：登録不可
-- `1`：登録可能（通常）
-- `2`：登録可能（招待限定）
+* `0`：登録不可
+* `1`：登録可能（通常）
+* `2`：登録可能（招待限定）
 
 ---
 
@@ -154,13 +156,13 @@ DB接続は `python.core.database.get_connection()` を使用する。
 
 主な項目：
 
-- 招待コード
-- 有効状態
-- 最大利用回数
-- 利用回数
-- 有効期限
-- 登録日時
-- 更新日時
+* 招待コード
+* 有効状態
+* 最大利用回数
+* 利用回数
+* 有効期限
+* 登録日時
+* 更新日時
 
 ---
 
@@ -170,23 +172,23 @@ DB接続は `python.core.database.get_connection()` を使用する。
 
 主な項目：
 
-- `user_id`
-- `user_name`
-- `password`
-- `role`
-- `profile_image`
-- `member_since`
-- `email`
-- `gender`
-- `birthday`
-- `prefecture`
-- `x_account`
-- `instagram_account`
-- `discord_account`
-- `profile_message`
-- `is_active`
-- `created_at`
-- `updated_at`
+* `user_id`
+* `user_name`
+* `password`
+* `role`
+* `profile_image`
+* `member_since`
+* `email`
+* `gender`
+* `birthday`
+* `prefecture`
+* `x_account`
+* `instagram_account`
+* `discord_account`
+* `profile_message`
+* `is_active`
+* `created_at`
+* `updated_at`
 
 `prefecture` は `m_prefecture.prefecture_code` を参照する。
 
@@ -198,19 +200,19 @@ DB接続は `python.core.database.get_connection()` を使用する。
 
 公開設定対象：
 
-- 性別
-- 誕生日
-- 年齢
-- 町民開始日
-- 都道府県
-- SNS
-- ライブ
-- 町民集会
+* 性別
+* 誕生日
+* 年齢
+* 町民開始日
+* 都道府県
+* SNS
+* ライブ
+* 町民集会
 
 公開設定値：
 
-- `0`：非公開
-- その他の値については現行実装を正とする
+* `0`：非公開
+* その他の値については現行実装を正とする
 
 `m_user.user_id` と1対1で関連する。
 
@@ -222,12 +224,12 @@ DB接続は `python.core.database.get_connection()` を使用する。
 
 主な項目：
 
-- `prefecture_code`
-- `prefecture_name`
-- `area_name`
-- `display_order`
-- `is_overseas`
-- `is_active`
+* `prefecture_code`
+* `prefecture_name`
+* `area_name`
+* `display_order`
+* `is_overseas`
+* `is_active`
 
 `0` は「未設定」、`99` は「海外」。
 
@@ -239,24 +241,24 @@ DB接続は `python.core.database.get_connection()` を使用する。
 
 主な項目：
 
-- `song_id`
-- `song_group_id`
-- `song_name`
-- `song_type`
-- `release_date`
-- `album_name`
-- `display_order`
-- `lyricist`
-- `composer`
-- `arranger`
-- `tie_up`
-- `youtube_url`
-- `apple_music_url`
-- `spotify_music_url`
-- `is_public`
-- `is_deleted`
-- `created_at`
-- `updated_at`
+* `song_id`
+* `song_group_id`
+* `song_name`
+* `song_type`
+* `release_date`
+* `album_name`
+* `display_order`
+* `lyricist`
+* `composer`
+* `arranger`
+* `tie_up`
+* `youtube_url`
+* `apple_music_url`
+* `spotify_music_url`
+* `is_public`
+* `is_deleted`
+* `created_at`
+* `updated_at`
 
 `album_name` と `song_name` の組み合わせは一意。
 
@@ -264,8 +266,8 @@ DB接続は `python.core.database.get_connection()` を使用する。
 
 `song_type` により楽曲の種別を管理する。
 
-- `INORI`：水瀬いのり名義の楽曲
-- `OTHER`：水瀬いのり名義以外の楽曲、カバー曲、町民集会等で歌唱されるその他の楽曲
+* `INORI`：水瀬いのり名義の楽曲
+* `OTHER`：水瀬いのり名義以外の楽曲、カバー曲、町民集会等で歌唱されるその他の楽曲
 
 既存の楽曲は `INORI` として扱う。
 
@@ -279,19 +281,19 @@ DB接続は `python.core.database.get_connection()` を使用する。
 
 主な項目：
 
-- `live_id`
-- `live_name`
-- `tour_name`
-- `tour_order`
-- `live_date`
-- `venue_name`
-- `prefecture_code`
-- `blu_ray_url`
-- `official_url`
-- `public_flag`
-- `is_deleted`
-- `created_at`
-- `updated_at`
+* `live_id`
+* `live_name`
+* `tour_name`
+* `tour_order`
+* `live_date`
+* `venue_name`
+* `prefecture_code`
+* `blu_ray_url`
+* `official_url`
+* `public_flag`
+* `is_deleted`
+* `created_at`
+* `updated_at`
 
 `prefecture_code` は `m_prefecture.prefecture_code` を参照する。
 
@@ -303,27 +305,27 @@ DB接続は `python.core.database.get_connection()` を使用する。
 
 主な項目：
 
-- `meeting_id`
-- `meeting_name`
-- `meeting_date`
-- `performance_type`
-- `venue_name`
-- `prefecture_code`
-- `official_url`
-- `public_flag`
-- `is_deleted`
-- `created_at`
-- `updated_at`
+* `meeting_id`
+* `meeting_name`
+* `meeting_date`
+* `performance_type`
+* `venue_name`
+* `prefecture_code`
+* `official_url`
+* `public_flag`
+* `is_deleted`
+* `created_at`
+* `updated_at`
 
 `prefecture_code` は `m_prefecture.prefecture_code` を参照する。
 
 `performance_type` は以下の値を使用する。
 
-- `DAY`：昼公演
-- `NIGHT`：夜公演
-- `PART1`：第1部
-- `PART2`：第2部
-- `PART3`：第3部
+* `DAY`：昼公演
+* `NIGHT`：夜公演
+* `PART1`：第1部
+* `PART2`：第2部
+* `PART3`：第3部
 
 ---
 
@@ -335,13 +337,13 @@ DB接続は `python.core.database.get_connection()` を使用する。
 
 主な項目：
 
-- `meeting_id`
-- `guest_id`
-- `guest_name`
-- `display_order`
-- `is_deleted`
-- `created_at`
-- `updated_at`
+* `meeting_id`
+* `guest_id`
+* `guest_name`
+* `display_order`
+* `is_deleted`
+* `created_at`
+* `updated_at`
 
 `meeting_id` は `m_meeting.meeting_id` を参照する。
 
@@ -357,19 +359,19 @@ DB接続は `python.core.database.get_connection()` を使用する。
 
 イベント種別：
 
-- `LIVE`
-- `CHOMIN`
+* `LIVE`
+* `CHOMIN`
 
 主な項目：
 
-- `event_type`
-- `event_id`
-- `song_id`
-- `song_order`
-- `is_medley`
-- `medley_order`
-- `created_at`
-- `updated_at`
+* `event_type`
+* `event_id`
+* `song_id`
+* `song_order`
+* `is_medley`
+* `medley_order`
+* `created_at`
+* `updated_at`
 
 `event_type` と `event_id` により、ライブまたは町民集会のイベントを識別する。
 
@@ -383,14 +385,14 @@ DB接続は `python.core.database.get_connection()` を使用する。
 
 現在の登録データ：
 
-| コード | 名称 | 表示順 |
-|---|---|---:|
-| `ticket` | チケット代 | 1 |
-| `transport` | 交通費 | 2 |
-| `hotel` | 宿泊費 | 3 |
-| `food` | 食費 | 4 |
-| `goods` | グッズ | 5 |
-| `other` | その他 | 6 |
+| コード         | 名称    | 表示順 |
+| ----------- | ----- | --: |
+| `ticket`    | チケット代 |   1 |
+| `transport` | 交通費   |   2 |
+| `hotel`     | 宿泊費   |   3 |
+| `food`      | 食費    |   4 |
+| `goods`     | グッズ   |   5 |
+| `other`     | その他   |   6 |
 
 ---
 
@@ -400,17 +402,17 @@ DB接続は `python.core.database.get_connection()` を使用する。
 
 現在の登録データ：
 
-| 表示順 | 項目 |
-|---:|---|
-| 1 | チケット |
-| 2 | スマートフォン |
-| 3 | 財布 |
-| 4 | 身分証 |
-| 5 | ペンライト |
-| 6 | タオル |
-| 7 | 飲み物 |
-| 8 | 双眼鏡 |
-| 9 | 会員証 |
+| 表示順 | 項目      |
+| --: | ------- |
+|   1 | チケット    |
+|   2 | スマートフォン |
+|   3 | 財布      |
+|   4 | 身分証     |
+|   5 | ペンライト   |
+|   6 | タオル     |
+|   7 | 飲み物     |
+|   8 | 双眼鏡     |
+|   9 | 会員証     |
 
 ---
 
@@ -424,15 +426,15 @@ DB接続は `python.core.database.get_connection()` を使用する。
 
 主な項目：
 
-- `oshi_id`
-- `oshi_name`
-- `birthday`
-- `voice_actor_debut_date`
-- `singer_debut_date`
-- `profile_image`
-- `profile_message`
-- `created_at`
-- `updated_at`
+* `oshi_id`
+* `oshi_name`
+* `birthday`
+* `voice_actor_debut_date`
+* `singer_debut_date`
+* `profile_image`
+* `profile_message`
+* `created_at`
+* `updated_at`
 
 ---
 
@@ -442,15 +444,15 @@ DB接続は `python.core.database.get_connection()` を使用する。
 
 主な項目：
 
-- `anniversary_id`
-- `anniversary_name`
-- `anniversary_date`
-- `description`
-- `display_order`
-- `public_flag`
-- `is_deleted`
-- `created_at`
-- `updated_at`
+* `anniversary_id`
+* `anniversary_name`
+* `anniversary_date`
+* `description`
+* `display_order`
+* `public_flag`
+* `is_deleted`
+* `created_at`
+* `updated_at`
 
 ---
 
@@ -460,25 +462,25 @@ DB接続は `python.core.database.get_connection()` を使用する。
 
 番組種別：
 
-- `RADIO`
-- `TV`
-- `WEB`
-- `OTHER`
+* `RADIO`
+* `TV`
+* `WEB`
+* `OTHER`
 
 主な項目：
 
-- `program_id`
-- `program_name`
-- `program_type`
-- `start_date`
-- `end_date`
-- `official_url`
-- `description`
-- `display_order`
-- `public_flag`
-- `is_deleted`
-- `created_at`
-- `updated_at`
+* `program_id`
+* `program_name`
+* `program_type`
+* `start_date`
+* `end_date`
+* `official_url`
+* `description`
+* `display_order`
+* `public_flag`
+* `is_deleted`
+* `created_at`
+* `updated_at`
 
 ---
 
@@ -488,35 +490,35 @@ DB接続は `python.core.database.get_connection()` を使用する。
 
 作品種別：
 
-- `ANIME`
-- `MOVIE`
-- `GAME`
-- `DRAMA`
-- `OTHER`
+* `ANIME`
+* `MOVIE`
+* `GAME`
+* `DRAMA`
+* `OTHER`
 
 放送時期：
 
-- `SPRING`
-- `SUMMER`
-- `AUTUMN`
-- `WINTER`
+* `SPRING`
+* `SUMMER`
+* `AUTUMN`
+* `WINTER`
 
 主な項目：
 
-- `work_id`
-- `work_name`
-- `work_type`
-- `character_name`
-- `release_date`
-- `official_url`
-- `description`
-- `display_order`
-- `public_flag`
-- `is_deleted`
-- `broadcast_year`
-- `broadcast_season`
-- `created_at`
-- `updated_at`
+* `work_id`
+* `work_name`
+* `work_type`
+* `character_name`
+* `release_date`
+* `official_url`
+* `description`
+* `display_order`
+* `public_flag`
+* `is_deleted`
+* `broadcast_year`
+* `broadcast_season`
+* `created_at`
+* `updated_at`
 
 ---
 
@@ -526,20 +528,50 @@ DB接続は `python.core.database.get_connection()` を使用する。
 
 主な項目：
 
-- `link_id`
-- `link_name`
-- `url`
-- `icon`
-- `description`
-- `display_order`
-- `public_flag`
-- `is_deleted`
-- `created_at`
-- `updated_at`
+* `link_id`
+* `link_name`
+* `url`
+* `icon`
+* `description`
+* `display_order`
+* `public_flag`
+* `is_deleted`
+* `created_at`
+* `updated_at`
 
 ---
 
-### 4.5 トランザクションテーブル
+### 4.5 推し情報とライブ情報の連携
+
+推し情報トップから既存のライブ機能へ遷移できる。
+
+導線：
+
+```text
+推し情報
+  ↓
+ライブ
+  ↓
+ライブ一覧
+  ↓
+ライブ詳細
+  ↓
+セットリスト
+```
+
+推し情報トップの「ライブ」メニューから、既存の `/home/live` へ遷移する。
+
+ライブ情報は既存の `m_live` およびライブ関連機能を利用する。
+
+推し情報とライブ情報をDB上で直接関連付けるテーブルは作成しない。
+
+ライブ一覧では既存の `t_live_user` を利用し、ログインユーザーの参加予定状態などを表示する。
+
+既存ライブ機能を流用することで、ライブ情報の重複管理を避ける。
+
+---
+
+### 4.6 トランザクションテーブル
 
 #### `t_live_record`
 
@@ -547,13 +579,13 @@ DB接続は `python.core.database.get_connection()` を使用する。
 
 主な項目：
 
-- `record_id`
-- `user_id`
-- `live_id`
-- `seat_info`
-- `memo`
-- `created_at`
-- `updated_at`
+* `record_id`
+* `user_id`
+* `live_id`
+* `seat_info`
+* `memo`
+* `created_at`
+* `updated_at`
 
 `user_id` と `live_id` の組み合わせは一意。
 
@@ -565,14 +597,14 @@ DB接続は `python.core.database.get_connection()` を使用する。
 
 主な項目：
 
-- `expense_id`
-- `user_id`
-- `live_id`
-- `expense_type_id`
-- `amount`
-- `memo`
-- `created_at`
-- `updated_at`
+* `expense_id`
+* `user_id`
+* `live_id`
+* `expense_type_id`
+* `amount`
+* `memo`
+* `created_at`
+* `updated_at`
 
 `amount` は0以上。
 
@@ -584,13 +616,13 @@ DB接続は `python.core.database.get_connection()` を使用する。
 
 主な項目：
 
-- `record_id`
-- `user_id`
-- `meeting_id`
-- `seat_info`
-- `memo`
-- `created_at`
-- `updated_at`
+* `record_id`
+* `user_id`
+* `meeting_id`
+* `seat_info`
+* `memo`
+* `created_at`
+* `updated_at`
 
 `user_id` と `meeting_id` の組み合わせは一意。
 
@@ -602,14 +634,14 @@ DB接続は `python.core.database.get_connection()` を使用する。
 
 主な項目：
 
-- `expense_id`
-- `user_id`
-- `meeting_id`
-- `expense_type_id`
-- `amount`
-- `memo`
-- `created_at`
-- `updated_at`
+* `expense_id`
+* `user_id`
+* `meeting_id`
+* `expense_type_id`
+* `amount`
+* `memo`
+* `created_at`
+* `updated_at`
 
 `amount` は0以上。
 
@@ -621,11 +653,11 @@ DB接続は `python.core.database.get_connection()` を使用する。
 
 主な項目：
 
-- `prediction_id`
-- `user_id`
-- `live_id`
-- `created_at`
-- `updated_at`
+* `prediction_id`
+* `user_id`
+* `live_id`
+* `created_at`
+* `updated_at`
 
 `user_id` と `live_id` の組み合わせは一意。
 
@@ -637,13 +669,13 @@ DB接続は `python.core.database.get_connection()` を使用する。
 
 主な項目：
 
-- `prediction_id`
-- `song_id`
-- `song_order`
-- `is_medley`
-- `medley_order`
-- `created_at`
-- `updated_at`
+* `prediction_id`
+* `song_id`
+* `song_order`
+* `is_medley`
+* `medley_order`
+* `created_at`
+* `updated_at`
 
 `prediction_id` と `song_id` の組み合わせは一意。
 
@@ -655,11 +687,11 @@ DB接続は `python.core.database.get_connection()` を使用する。
 
 主な項目：
 
-- `user_id`
-- `live_id`
-- `is_join`
-- `created_at`
-- `updated_at`
+* `user_id`
+* `live_id`
+* `is_join`
+* `created_at`
+* `updated_at`
 
 `user_id` と `live_id` の組み合わせを主キーとする。
 
@@ -671,11 +703,11 @@ DB接続は `python.core.database.get_connection()` を使用する。
 
 主な項目：
 
-- `user_id`
-- `meeting_id`
-- `is_join`
-- `created_at`
-- `updated_at`
+* `user_id`
+* `meeting_id`
+* `is_join`
+* `created_at`
+* `updated_at`
 
 `user_id` と `meeting_id` の組み合わせを主キーとする。
 
@@ -687,13 +719,13 @@ DB接続は `python.core.database.get_connection()` を使用する。
 
 主な項目：
 
-- `user_lost_item_id`
-- `user_id`
-- `lost_item_id`
-- `item_name`
-- `is_checked`
-- `created_at`
-- `updated_at`
+* `user_lost_item_id`
+* `user_id`
+* `lost_item_id`
+* `item_name`
+* `is_checked`
+* `created_at`
+* `updated_at`
 
 `lost_item_id` は `m_lost_item.lost_item_id` を参照する。
 
@@ -705,32 +737,33 @@ DB接続は `python.core.database.get_connection()` を使用する。
 
 問い合わせ種別：
 
-- `INQUIRY`：問い合わせ
-- `REQUEST`：要望
-- `BUG`：不具合
+* `INQUIRY`：問い合わせ
+* `REQUEST`：要望
+* `BUG`：不具合
 
 ステータス：
 
-- `UNRESOLVED`：未対応
-- `IN_PROGRESS`：対応中
-- `RESOLVED`：解決済み
+* `UNRESOLVED`：未対応
+* `IN_PROGRESS`：対応中
+* `RESOLVED`：解決済み
 
 主な項目：
 
-- `inquiry_id`
-- `user_id`
-- `inquiry_type`
-- `subject`
-- `email`
-- `message`
-- `status`
-- `admin_memo`
-- `created_at`
-- `updated_at`
+* `inquiry_id`
+* `user_id`
+* `inquiry_type`
+* `subject`
+* `email`
+* `message`
+* `status`
+* `admin_memo`
+* `created_at`
+* `updated_at`
 
 `INQUIRY` の場合はメールアドレスが必須。
 
 ---
+
 ## 5. Router構成
 
 ### 5.1 Routerの基本方針
@@ -746,7 +779,9 @@ Model / Service
  ↓
 Database
 ```
+
 ---
+
 ## 6. Model / Service構成
 
 ### 6.1 基本方針
@@ -768,7 +803,9 @@ Model
  ↓
 Database
 ```
+
 ---
+
 ## 7. Template構成
 
 ### 7.1 基本方針
@@ -784,4 +821,3 @@ Router
  ↓
 Template
 ```
----
