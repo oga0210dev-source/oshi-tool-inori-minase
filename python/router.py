@@ -37,6 +37,10 @@ from python.routers.home.meeting.history import (
     history_expense_edit as meeting_history_expense_edit,
     history_expense_delete as meeting_history_expense_delete
 )
+from python.routers.home.meeting.guest import (
+    guest as meeting_guest,
+    detail as meeting_guest_detail
+)
 from python.routers.home.oshi import (
     oshi,
     oshi_work,
@@ -116,6 +120,8 @@ def register_router(app: FastAPI):
     app.include_router(meeting_history_expense_add.router)
     app.include_router(meeting_history_expense_edit.router)
     app.include_router(meeting_history_expense_delete.router)
+    app.include_router(meeting_guest.router)
+    app.include_router(meeting_guest_detail.router)
 
     app.include_router(oshi.router)
     app.include_router(oshi_work.router)

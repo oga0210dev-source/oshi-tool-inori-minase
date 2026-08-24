@@ -8,9 +8,21 @@
 
 {% block content %}
 <div class="background">
-    <a href="/home/meeting/detail/{{ meeting.meeting_id }}" class="back-link">
+    {% if from_page == "history" %}
+
+    <a href="/home/meeting/detail/{{ meeting.meeting_id }}?from=history"
+       class="back-link">
+        ← 参加履歴詳細
+    </a>
+
+    {% else %}
+
+    <a href="/home/meeting/detail/{{ meeting.meeting_id }}{% if from_page == 'guest' %}?from=guest&guest_id={{ guest_id }}{% endif %}"
+       class="back-link">
         ← 町民集会詳細
     </a>
+
+    {% endif %}
 
     <div class="page-scroll">
         <div class="container">

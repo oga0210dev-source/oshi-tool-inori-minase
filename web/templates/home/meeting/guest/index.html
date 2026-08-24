@@ -1,0 +1,75 @@
+{% extends "templates/commons/base.html" %}
+
+{% block title %}ゲスト一覧 - 推し活オールインワン{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="/static/css/home/meeting/guest.css">
+{% endblock %}
+
+{% block content %}
+<div class="background">
+
+    <a href="/home/meeting"
+       class="back-link">
+        ← 町民集会
+    </a>
+
+    <div class="page-scroll">
+        <div class="container">
+
+            <h1 class="page-title">
+                ゲスト一覧
+            </h1>
+
+            {% if guests %}
+
+            <div class="guest-list">
+
+                {% for guest in guests %}
+
+                <a href="/home/meeting/guest/detail/{{ guest.guest_id }}"
+                   class="guest-card">
+
+                    <div class="guest-info">
+
+                        <div class="guest-name">
+                            🎤 {{ guest.guest_name }}
+                        </div>
+
+                        <div class="guest-detail">
+
+                            <span>
+                                出演回数：
+                                {{ guest.appearance_count }}回
+                            </span>
+
+                            {% if guest.latest_meeting_date %}
+                            <span>
+                                最終出演：
+                                {{ guest.latest_meeting_date }}
+                            </span>
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+                </a>
+
+                {% endfor %}
+
+            </div>
+
+            {% else %}
+
+            <div class="no-guest">
+                登録されているゲストはいません。
+            </div>
+
+            {% endif %}
+
+        </div>
+    </div>
+
+</div>
+{% endblock %}

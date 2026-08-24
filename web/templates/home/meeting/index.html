@@ -101,6 +101,12 @@
 
                 {% endif %}
 
+                <!-- ゲスト一覧 -->
+                <a href="/home/meeting/guest?first"
+                   class="menu-btn">
+                    <span>ゲスト一覧</span>
+                </a>
+
             </div>
 
         </div>
@@ -147,7 +153,9 @@ document.addEventListener("DOMContentLoaded", function(){
                 slideRect.left + slideRect.width / 2;
 
             const distance =
-                Math.abs(sliderCenter - slideCenter);
+                Math.abs(
+                    sliderCenter - slideCenter
+                );
 
             if(distance < minDistance){
                 minDistance = distance;
@@ -166,11 +174,15 @@ document.addEventListener("DOMContentLoaded", function(){
         });
     }
 
-    slider.addEventListener("scroll", updateDots);
+    slider.addEventListener(
+        "scroll",
+        updateDots
+    );
 
     updateDots();
 
 });
+
 </script>
 
 {% if message %}

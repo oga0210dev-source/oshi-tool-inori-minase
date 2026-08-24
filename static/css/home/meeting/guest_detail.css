@@ -1,0 +1,94 @@
+.background .back-link {
+    align-self: flex-start;
+    margin-left: 15px;
+    margin-top: 10px;
+}
+
+.detail-card {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.group-title {
+    margin-bottom: 12px;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.guest-name {
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 1.5;
+    margin-bottom: 12px;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+}
+
+.guest-info {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+
+/* 出演した町民集会 */
+
+.meeting-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.meeting-card {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 16px;
+
+    text-decoration: none;
+    color: inherit;
+
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.meeting-name {
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 1.5;
+    margin-bottom: 8px;
+
+    word-break: break-word;
+    overflow-wrap: anywhere;
+}
+
+.meeting-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    font-size: 13px;
+    line-height: 1.5;
+    color: #666;
+}
+
+.no-meeting {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 20px;
+
+    text-align: center;
+
+    font-size: 14px;
+    line-height: 1.6;
+    color: #666;
+
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}

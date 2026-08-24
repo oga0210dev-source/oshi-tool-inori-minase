@@ -25,7 +25,9 @@ async def meeting_setlist(
         request: Request,
         meeting_id: int
 ):
-    meeting = setlist_model.get_meeting_info(meeting_id)
+    meeting = setlist_model.get_meeting_info(
+        meeting_id
+    )
 
     if meeting is None:
         return RedirectResponse(
@@ -33,18 +35,33 @@ async def meeting_setlist(
             status_code=303
         )
 
-    meeting["performance_type_label"] = PERFORMANCE_TYPE_LABELS.get(
-        meeting["performance_type"],
-        meeting["performance_type"]
+    meeting["performance_type_label"] = (
+        PERFORMANCE_TYPE_LABELS.get(
+            meeting["performance_type"],
+            meeting["performance_type"]
+        )
     )
 
-    songs = setlist_model.get_setlist(meeting_id)
+    songs = setlist_model.get_setlist(
+        meeting_id
+    )
+
+    from_page = request.query_params.get(
+        "from",
+        "archive"
+    )
+
+    guest_id = request.query_params.get(
+        "guest_id"
+    )
 
     return templates.TemplateResponse(
         request=request,
         name="templates/home/meeting/setlist.html",
         context={
             "meeting": meeting,
-            "songs": songs
+            "songs": songs,
+            "from_page": from_page,
+            "guest_id": guest_id
         }
     )
