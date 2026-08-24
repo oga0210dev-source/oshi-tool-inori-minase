@@ -127,8 +127,7 @@
                     セットリスト
                 </div>
 
-                <a
-                    href="/home/live/setlist/{{ live.live_id }}"
+                <a href="/home/live/setlist/{{ live.live_id }}?from={{ request.query_params.get('from', 'archive') }}"
                     class="link-btn"
                 >
                     🎵 セットリストを見る

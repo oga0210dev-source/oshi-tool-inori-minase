@@ -8,9 +8,21 @@
 
 {% block content %}
 <div class="background">
-    <a href="/home/live/detail/{{ live.live_id }}" class="back-link">
+    {% if from_page == "history" %}
+
+    <a href="/home/live/detail/{{ live.live_id }}?from=history"
+       class="back-link">
+        ← 参加履歴詳細
+    </a>
+
+    {% else %}
+
+    <a href="/home/live/detail/{{ live.live_id }}?from=archive"
+       class="back-link">
         ← ライブ詳細
     </a>
+
+    {% endif %}
 
     <div class="page-scroll">
         <div class="container">

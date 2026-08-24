@@ -9,14 +9,27 @@
 {% block content %}
 <div class="background">
 
-    {% if request.query_params.get('from') == 'history' %}
-    <a href="/home/meeting/history" class="back-link">
+    {% if request.query_params.get('from') == 'guest' %}
+
+    <a href="/home/meeting/guest/detail/{{ request.query_params.get('guest_id') }}"
+       class="back-link">
+        ← ゲスト詳細
+    </a>
+
+    {% elif request.query_params.get('from') == 'history' %}
+
+    <a href="/home/meeting/history"
+       class="back-link">
         ← 参加履歴
     </a>
+
     {% else %}
-    <a href="/home/meeting/archive" class="back-link">
+
+    <a href="/home/meeting/archive"
+       class="back-link">
         ← 町民集会一覧
     </a>
+
     {% endif %}
 
     <div class="page-scroll">
@@ -101,7 +114,7 @@
                     {% for guest in guests %}
 
                     <a
-                        href="/home/meeting/guest/{{ guest.guest_id }}"
+                        href="/home/meeting/guest/detail/{{ guest.guest_id }}"
                         class="guest-item">
 
                         <span class="guest-name">
@@ -148,11 +161,31 @@
                     セットリスト
                 </div>
 
+                {% if request.query_params.get('from') == 'guest' %}
+
                 <a
-                    href="/home/meeting/setlist/{{ meeting.meeting_id }}"
+                    href="/home/meeting/setlist/{{ meeting.meeting_id }}?from=guest&guest_id={{ request.query_params.get('guest_id') }}"
                     class="link-btn">
                     🎵 セットリストを見る
                 </a>
+
+                {% elif request.query_params.get('from') == 'history' %}
+
+                <a
+                    href="/home/meeting/setlist/{{ meeting.meeting_id }}?from=history"
+                    class="link-btn">
+                    🎵 セットリストを見る
+                </a>
+
+                {% else %}
+
+                <a
+                    href="/home/meeting/setlist/{{ meeting.meeting_id }}?from=archive"
+                    class="link-btn">
+                    🎵 セットリストを見る
+                </a>
+
+                {% endif %}
 
             </div>
 

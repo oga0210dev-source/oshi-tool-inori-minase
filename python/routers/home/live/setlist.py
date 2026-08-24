@@ -32,11 +32,17 @@ async def live_setlist(
         live_id
     )
 
+    from_page = request.query_params.get(
+        "from",
+        "archive"
+    )
+
     return templates.TemplateResponse(
         request=request,
         name="templates/home/live/setlist.html",
         context={
             "live": live,
-            "songs": songs
+            "songs": songs,
+            "from_page": from_page
         }
     )
