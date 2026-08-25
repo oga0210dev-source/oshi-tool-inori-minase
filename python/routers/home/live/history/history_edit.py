@@ -2,7 +2,7 @@ from fastapi import APIRouter, Request, Form
 from fastapi.responses import RedirectResponse
 
 from python.core import auth
-from python.core import templates
+from python.core import render
 
 from python.models.home.live.history import history_edit as history_edit_model
 
@@ -36,7 +36,7 @@ async def history_edit(
             "memo": ""
         }
 
-    return templates.TemplateResponse(
+    return render(
         request=request,
         name="templates/home/live/history/history_edit.html",
         context={

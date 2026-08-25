@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Request
 from fastapi.responses import RedirectResponse
 
-from python.core import templates
+from python.core import render
 
 from python.models.home.meeting.guest import detail as detail_model
 
@@ -31,7 +31,7 @@ async def guest_detail(
         guest["guest_name"]
     )
 
-    return templates.TemplateResponse(
+    return render(
         request=request,
         name="templates/home/meeting/guest/detail.html",
         context={

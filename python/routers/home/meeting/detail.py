@@ -4,8 +4,7 @@ from dateutil.relativedelta import relativedelta
 from fastapi import APIRouter, Request
 from fastapi.responses import RedirectResponse
 
-from python.core import auth
-from python.core import templates
+from python.core import render, auth
 
 from python.models.home.meeting import detail as detail_model
 
@@ -80,7 +79,7 @@ async def meeting_detail(
         meeting["performance_type"]
     )
 
-    return templates.TemplateResponse(
+    return render(
         request=request,
         name="templates/home/meeting/detail.html",
         context={

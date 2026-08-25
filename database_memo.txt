@@ -47,6 +47,19 @@ create trigger update_m_user_updated_at BEFORE
 update on m_user for EACH row
 execute FUNCTION update_updated_at_column ();
 
+create table public.m_user_setting (
+  created_at timestamp without time zone not null default CURRENT_TIMESTAMP,
+  updated_at timestamp without time zone not null default CURRENT_TIMESTAMP,
+  user_id text not null,
+  font_id character varying(50) not null default 'hachi_maru_pop'::character varying,
+  constraint pk_m_user_setting primary key (user_id),
+  constraint fk_m_user_setting_user foreign KEY (user_id) references m_user (user_id) on delete CASCADE
+) TABLESPACE pg_default;
+
+create trigger trg_m_user_setting_updated_at BEFORE
+update on m_user_setting for EACH row
+execute FUNCTION update_updated_at_column ();
+
 create table public.m_user_public_setting (
   user_id character varying(50) not null,
   gender_public smallint not null default 0,

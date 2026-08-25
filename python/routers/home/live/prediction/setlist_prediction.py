@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Request, Body
 from fastapi.responses import RedirectResponse
 
-from python.core import templates
+from python.core import render
 from python.core import auth
 
 from python.models.home.live.prediction.setlist_prediction import (
@@ -54,7 +54,7 @@ async def setlist_prediction(
         keyword if keyword else None
     )
 
-    return templates.TemplateResponse(
+    return render(
         request=request,
         name="templates/home/live/prediction/setlist_prediction.html",
         context={
@@ -83,7 +83,7 @@ async def new_setlist_prediction(
         user_id
     )
 
-    return templates.TemplateResponse(
+    return render(
         request=request,
         name="templates/home/live/prediction/setlist_prediction_new.html",
         context={
@@ -118,7 +118,7 @@ async def new_setlist_prediction_live(
 
     song_groups = get_setlist_prediction_song_groups()
 
-    return templates.TemplateResponse(
+    return render(
         request=request,
         name="templates/home/live/prediction/setlist_prediction_edit.html",
         context={
@@ -194,7 +194,7 @@ async def setlist_prediction_detail(
             status_code=303
         )
 
-    return templates.TemplateResponse(
+    return render(
         request=request,
         name="templates/home/live/prediction/setlist_prediction_detail.html",
         context={
@@ -233,7 +233,7 @@ async def edit_setlist_prediction(
 
     song_groups = get_setlist_prediction_song_groups()
 
-    return templates.TemplateResponse(
+    return render(
         request=request,
         name="templates/home/live/prediction/setlist_prediction_edit.html",
         context={
@@ -337,7 +337,7 @@ async def share_setlist_prediction(
     )
 
     if not prediction:
-        return templates.TemplateResponse(
+        return render(
             request=request,
             name="templates/home/live/prediction/setlist_prediction_share.html",
             context={
@@ -348,7 +348,7 @@ async def share_setlist_prediction(
             status_code=404
         )
 
-    return templates.TemplateResponse(
+    return render(
         request=request,
         name="templates/home/live/prediction/setlist_prediction_share.html",
         context={

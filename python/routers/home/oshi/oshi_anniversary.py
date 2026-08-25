@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Request
 
-from python.core import templates
+from python.core import render
 
 from python.models.home.oshi import oshi_anniversary as oshi_anniversary_model
 
@@ -42,7 +42,7 @@ async def anniversary(
         )
     )
 
-    return templates.TemplateResponse(
+    return render(
         request=request,
         name="templates/home/oshi/anniversary.html",
         context={

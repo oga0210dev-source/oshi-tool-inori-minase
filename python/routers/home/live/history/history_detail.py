@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Request
 from fastapi.responses import RedirectResponse
 
-from python.core import templates
+from python.core import render
 from python.core import auth
 
 from python.models.home.live.history import history_detail as history_detail_model
@@ -46,7 +46,7 @@ async def history_detail(
         live_id
     )
 
-    return templates.TemplateResponse(
+    return render(
         request=request,
         name="templates/home/live/history/history_detail.html",
         context={

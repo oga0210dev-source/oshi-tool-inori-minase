@@ -3,7 +3,7 @@ from collections import OrderedDict
 from fastapi import APIRouter, Request, Form
 from fastapi.responses import RedirectResponse
 
-from python.core import templates, auth
+from python.core import render, auth
 
 from python.models.admin.master import meeting as meeting_model
 from python.models.admin.master.master import get_prefecture_list
@@ -47,7 +47,7 @@ async def meeting_list(
         sort
     )
 
-    return templates.TemplateResponse(
+    return render(
         request=request,
         name="templates/admin/master/meeting/index.html",
         context={
@@ -66,7 +66,7 @@ async def meeting_create_page(request: Request):
     if not auth.is_admin(request):
         return RedirectResponse("/home", status_code=303)
 
-    return templates.TemplateResponse(
+    return render(
         request=request,
         name="templates/admin/master/meeting/form.html",
         context={
@@ -105,7 +105,7 @@ async def meeting_create(
     }
 
     if not meeting_name.strip():
-        return templates.TemplateResponse(
+        return render(
             request=request,
             name="templates/admin/master/meeting/form.html",
             context={
@@ -116,7 +116,7 @@ async def meeting_create(
         )
 
     if not venue_name.strip():
-        return templates.TemplateResponse(
+        return render(
             request=request,
             name="templates/admin/master/meeting/form.html",
             context={
@@ -133,7 +133,7 @@ async def meeting_create(
         "PART2",
         "PART3"
     ]:
-        return templates.TemplateResponse(
+        return render(
             request=request,
             name="templates/admin/master/meeting/form.html",
             context={
@@ -144,7 +144,7 @@ async def meeting_create(
         )
 
     if not is_valid_url(official_url):
-        return templates.TemplateResponse(
+        return render(
             request=request,
             name="templates/admin/master/meeting/form.html",
             context={
@@ -185,7 +185,7 @@ async def meeting_edit_page(
             status_code=303
         )
 
-    return templates.TemplateResponse(
+    return render(
         request=request,
         name="templates/admin/master/meeting/form.html",
         context={
@@ -225,7 +225,7 @@ async def meeting_update(
     }
 
     if not meeting_name.strip():
-        return templates.TemplateResponse(
+        return render(
             request=request,
             name="templates/admin/master/meeting/form.html",
             context={
@@ -236,7 +236,7 @@ async def meeting_update(
         )
 
     if not venue_name.strip():
-        return templates.TemplateResponse(
+        return render(
             request=request,
             name="templates/admin/master/meeting/form.html",
             context={
@@ -253,7 +253,7 @@ async def meeting_update(
         "PART2",
         "PART3"
     ]:
-        return templates.TemplateResponse(
+        return render(
             request=request,
             name="templates/admin/master/meeting/form.html",
             context={
@@ -264,7 +264,7 @@ async def meeting_update(
         )
 
     if not is_valid_url(official_url):
-        return templates.TemplateResponse(
+        return render(
             request=request,
             name="templates/admin/master/meeting/form.html",
             context={
@@ -333,7 +333,7 @@ async def meeting_guest_list(
 
     next_display_order = len(guests) + 1
 
-    return templates.TemplateResponse(
+    return render(
         request=request,
         name="templates/admin/master/meeting/guest.html",
         context={

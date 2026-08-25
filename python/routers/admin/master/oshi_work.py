@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Request
 from fastapi.responses import RedirectResponse
 
-from python.core import templates
+from python.core import render
 from python.core import auth
 
 from python.models.admin.master import oshi_work as oshi_work_model
@@ -118,7 +118,7 @@ async def work_list(
         sort=sort
     )
 
-    return templates.TemplateResponse(
+    return render(
         request=request,
         name="templates/admin/master/oshi_work/index.html",
         context={
@@ -139,7 +139,7 @@ async def work_create(
             status_code=303
         )
 
-    return templates.TemplateResponse(
+    return render(
         request=request,
         name="templates/admin/master/oshi_work/form.html",
         context={
@@ -238,7 +238,7 @@ async def work_edit(
             status_code=303
         )
 
-    return templates.TemplateResponse(
+    return render(
         request=request,
         name="templates/admin/master/oshi_work/form.html",
         context={

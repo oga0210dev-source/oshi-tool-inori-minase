@@ -5,7 +5,7 @@ from python.models.mypage.public_setting import PublicSettingModel
 from python.core.security import Security
 import re
 
-from python.core import templates, auth
+from python.core import render, auth
 
 router = APIRouter()
 
@@ -14,7 +14,7 @@ router = APIRouter()
 def register(request: Request):
     registration_mode = str(auth.get_registration_mode()).strip()
 
-    return templates.TemplateResponse(
+    return render(
         request=request,
         name="templates/register/register.html",
         context={
@@ -39,7 +39,7 @@ def register_exec(
     # =========================================================
     # 登録停止
     if registration_mode == "0":
-        return templates.TemplateResponse(
+        return render(
             request=request,
             name="templates/register/register.html",
             context={
@@ -52,7 +52,7 @@ def register_exec(
     if registration_mode == "2":
         invitation_code = invitation_code.strip()
         if not invitation_code:
-            return templates.TemplateResponse(
+            return render(
                 request=request,
                 name="templates/register/register.html",
                 context={
@@ -62,7 +62,7 @@ def register_exec(
                 }
             )
         if not auth.is_valid_invitation_code(invitation_code):
-            return templates.TemplateResponse(
+            return render(
                 request=request,
                 name="templates/register/register.html",
                 context={
@@ -78,7 +78,7 @@ def register_exec(
     # 必須チェック
     # =========================================================
     if not user_id:
-        return templates.TemplateResponse(
+        return render(
             request=request,
             name="templates/mypage/password.html",
             context={
@@ -91,7 +91,7 @@ def register_exec(
         )
 
     if not user_name:
-        return templates.TemplateResponse(
+        return render(
             request=request,
             name="templates/mypage/password.html",
             context={
@@ -104,7 +104,7 @@ def register_exec(
         )
 
     if not password:
-        return templates.TemplateResponse(
+        return render(
             request=request,
             name="templates/mypage/password.html",
             context={
@@ -117,7 +117,7 @@ def register_exec(
         )
 
     if not password_confirm:
-        return templates.TemplateResponse(
+        return render(
             request=request,
             name="templates/mypage/password.html",
             context={
@@ -133,7 +133,7 @@ def register_exec(
     # ユーザID
     # =========================================================
     if len(user_id) < 4 or len(user_id) > 20:
-        return templates.TemplateResponse(
+        return render(
             request=request,
             name="templates/register/register.html",
             context={
@@ -143,7 +143,7 @@ def register_exec(
         )
 
     if not re.fullmatch(r"[a-zA-Z0-9_]+", user_id):
-        return templates.TemplateResponse(
+        return render(
             request=request,
             name="templates/register/register.html",
             context={
@@ -156,7 +156,7 @@ def register_exec(
     # 表示名
     # =========================================================
     if len(user_name) > 20:
-        return templates.TemplateResponse(
+        return render(
             request=request,
             name="templates/register/register.html",
             context={
@@ -169,7 +169,7 @@ def register_exec(
     # パスワード
     # =========================================================
     if len(password) < 8 or len(password) > 32:
-        return templates.TemplateResponse(
+        return render(
             request=request,
             name="templates/register/register.html",
             context={
@@ -179,7 +179,7 @@ def register_exec(
         )
 
     if not re.search(r"[a-z]", password):
-        return templates.TemplateResponse(
+        return render(
             request=request,
             name="templates/register/register.html",
             context={
@@ -189,7 +189,7 @@ def register_exec(
         )
 
     if not re.search(r"[A-Z]", password):
-        return templates.TemplateResponse(
+        return render(
             request=request,
             name="templates/register/register.html",
             context={
@@ -199,7 +199,7 @@ def register_exec(
         )
 
     if not re.search(r"\d", password):
-        return templates.TemplateResponse(
+        return render(
             request=request,
             name="templates/register/register.html",
             context={
@@ -212,7 +212,7 @@ def register_exec(
     # パスワード一致
     # =========================================================
     if password != password_confirm:
-        return templates.TemplateResponse(
+        return render(
             request=request,
             name="templates/register/register.html",
             context={
@@ -225,7 +225,7 @@ def register_exec(
     # 重複チェック
     # =========================================================
     if UserModel.exists_user_id(user_id):
-        return templates.TemplateResponse(
+        return render(
             request=request,
             name="templates/register/register.html",
             context={
@@ -247,7 +247,7 @@ def register_exec(
 
     if registration_mode == "2":
         if not auth.use_invitation_code(invitation_code):
-            return templates.TemplateResponse(
+            return render(
                 request=request,
                 name="templates/register/register.html",
                 context={

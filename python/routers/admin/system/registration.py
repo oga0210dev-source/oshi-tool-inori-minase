@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Request, Form
 from fastapi.responses import RedirectResponse
 
-from python.core import templates
+from python.core import render
 from python.core import auth
 
 from python.models.admin.system import registration as registration_model
@@ -27,7 +27,7 @@ async def registration_page(
 
     message = request.session.pop("message", None)
 
-    return templates.TemplateResponse(
+    return render(
         request=request,
         name="templates/admin/system/registration/form.html",
         context={

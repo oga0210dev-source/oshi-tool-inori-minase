@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Request
 
-from python.core import templates
+from python.core import render
 
 from python.models.home.meeting.guest import guest as guest_model
 
@@ -17,7 +17,7 @@ async def guest_list(
 ):
     guests = guest_model.get_guest_list()
 
-    return templates.TemplateResponse(
+    return render(
         request=request,
         name="templates/home/meeting/guest/index.html",
         context={

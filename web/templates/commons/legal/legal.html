@@ -1,14 +1,74 @@
 <!DOCTYPE html>
 <html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="/static/css/common.css">
-    <link rel="stylesheet" href="/static/css/home/legal/legal.css">
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet"
+          href="/static/css/common.css">
+
+    <link rel="stylesheet"
+          href="/static/css/home/legal/legal.css">
+
+    <style>
+
+    html {
+        margin: 0;
+        padding: 0;
+
+        width: 100%;
+        height: auto;
+        min-height: 100%;
+
+        overflow-x: hidden;
+        overflow-y: auto;
+
+        scrollbar-width: none;
+    }
+
+    html::-webkit-scrollbar {
+        display: none;
+    }
+
+
+    body {
+        margin: 0;
+        padding: 15px;
+
+        width: 100%;
+        min-height: 100%;
+
+        box-sizing: border-box;
+
+        overflow-x: hidden;
+        overflow-y: auto;
+
+        background: #ffffff;
+
+        scrollbar-width: none;
+    }
+
+    body::-webkit-scrollbar {
+        display: none;
+    }
+
+
+    .legal-modal-page {
+        width: 100%;
+        box-sizing: border-box;
+        overflow: visible;
+    }
+
+</style>
+
 </head>
 
-<body>
+
+<body class="{{ font_class }}">
 
 <div class="legal-modal-page">
 
@@ -21,4 +81,5 @@
 </div>
 
 </body>
+
 </html>

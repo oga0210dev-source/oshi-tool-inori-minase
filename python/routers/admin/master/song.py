@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Request, Form
 from fastapi.responses import RedirectResponse
 
-from python.core import templates
+from python.core import render
 from python.core import auth
 
 from python.models.admin.master import song as song_model
@@ -35,7 +35,7 @@ async def song_list(
 
     albums = util.group_by_album(songs)
 
-    return templates.TemplateResponse(
+    return render(
         request=request,
         name="templates/admin/master/song/index.html",
         context={
@@ -74,7 +74,7 @@ async def song_create_page(request: Request):
 
     song_groups = song_model.get_song_groups()
 
-    return templates.TemplateResponse(
+    return render(
         request=request,
         name="templates/admin/master/song/form.html",
         context={
@@ -129,7 +129,7 @@ async def song_create(
     song_groups = song_model.get_song_groups()
 
     if not song_name.strip():
-        return templates.TemplateResponse(
+        return render(
             request=request,
             name="templates/admin/master/song/form.html",
             context={
@@ -140,7 +140,7 @@ async def song_create(
         )
 
     if song_type not in ("INORI", "OTHER"):
-        return templates.TemplateResponse(
+        return render(
             request=request,
             name="templates/admin/master/song/form.html",
             context={
@@ -154,7 +154,7 @@ async def song_create(
             song_name,
             album_name
     ):
-        return templates.TemplateResponse(
+        return render(
             request=request,
             name="templates/admin/master/song/form.html",
             context={
@@ -165,7 +165,7 @@ async def song_create(
         )
 
     if display_order is not None and display_order < 1:
-        return templates.TemplateResponse(
+        return render(
             request=request,
             name="templates/admin/master/song/form.html",
             context={
@@ -183,7 +183,7 @@ async def song_create(
 
     for name, url in url_list:
         if not validator.is_valid_url(url):
-            return templates.TemplateResponse(
+            return render(
                 request=request,
                 name="templates/admin/master/song/form.html",
                 context={
@@ -215,7 +215,7 @@ async def song_edit_page(
     song = song_model.get_song(song_id)
     song_groups = song_model.get_song_groups()
 
-    return templates.TemplateResponse(
+    return render(
         request=request,
         name="templates/admin/master/song/form.html",
         context={
@@ -271,7 +271,7 @@ async def song_update(
     song_groups = song_model.get_song_groups()
 
     if not song_name.strip():
-        return templates.TemplateResponse(
+        return render(
             request=request,
             name="templates/admin/master/song/form.html",
             context={
@@ -282,7 +282,7 @@ async def song_update(
         )
 
     if song_type not in ("INORI", "OTHER"):
-        return templates.TemplateResponse(
+        return render(
             request=request,
             name="templates/admin/master/song/form.html",
             context={
@@ -301,7 +301,7 @@ async def song_update(
             album_name,
             song_id
     ):
-        return templates.TemplateResponse(
+        return render(
             request=request,
             name="templates/admin/master/song/form.html",
             context={
@@ -312,7 +312,7 @@ async def song_update(
         )
 
     if display_order is not None and display_order < 1:
-        return templates.TemplateResponse(
+        return render(
             request=request,
             name="templates/admin/master/song/form.html",
             context={
@@ -330,7 +330,7 @@ async def song_update(
 
     for name, url in url_list:
         if not validator.is_valid_url(url):
-            return templates.TemplateResponse(
+            return render(
                 request=request,
                 name="templates/admin/master/song/form.html",
                 context={
