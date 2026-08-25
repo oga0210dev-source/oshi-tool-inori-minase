@@ -2,11 +2,85 @@
  * セトリ予測共有ページ
  * ========================================================= */
 
+
+/* =========================================================
+ * コンテナ
+ * ========================================================= */
+
 .container{
     width:100%;
     max-width:430px;
+    height:100%;
+    min-height:0;
+
     margin:0 auto;
-    padding:20px 0 30px;
+    padding:10px 0 0;
+
+    display:flex;
+    flex-direction:column;
+}
+
+
+/* =========================================================
+ * タイトル
+ * ========================================================= */
+
+.section-title{
+    flex-shrink:0;
+
+    width:100%;
+    padding:0 20px;
+}
+
+
+.section-title h2{
+    margin:10px 0 15px;
+
+    text-align:center;
+
+    font-size:22px;
+    line-height:1.4;
+}
+
+
+/* =========================================================
+ * ライブ情報
+ *
+ * ここまでは固定
+ * ========================================================= */
+
+.live-card{
+    flex-shrink:0;
+}
+
+
+/* =========================================================
+ * スクロール領域
+ * ========================================================= */
+
+.page-scroll{
+    width:100%;
+
+    flex:1 1 0;
+    min-width:0;
+    min-height:0;
+
+    overflow-y:auto;
+    overflow-x:hidden;
+
+    padding-top:0;
+    padding-bottom:30px;
+
+    overscroll-behavior:contain;
+    -webkit-overflow-scrolling:touch;
+
+    scrollbar-width:none;
+    -ms-overflow-style:none;
+}
+
+
+.page-scroll::-webkit-scrollbar{
+    display:none;
 }
 
 
@@ -17,11 +91,15 @@
 .prediction-card{
     width:90%;
     max-width:390px;
+
     margin:0 auto 15px;
     padding:18px;
+
     box-sizing:border-box;
+
     background:white;
     border-radius:20px;
+
     box-shadow:0 3px 8px rgba(0,0,0,0.12);
 }
 
@@ -32,17 +110,21 @@
 
 .live-name{
     margin-bottom:6px;
+
     font-size:18px;
     font-weight:bold;
     line-height:1.5;
 }
 
+
 .tour-name{
     margin-bottom:12px;
+
     font-size:13px;
     color:#777;
     line-height:1.5;
 }
+
 
 .live-info{
     font-size:13px;
@@ -56,14 +138,20 @@
 
 .official-link{
     display:inline-block;
+
     margin-left:6px;
     padding:3px 7px;
+
     border-radius:7px;
+
     background:#ff8fb1;
     color:white;
+
     text-decoration:none;
+
     font-size:10px;
     font-weight:bold;
+
     vertical-align:middle;
 }
 
@@ -74,6 +162,7 @@
 
 .card-title{
     margin-bottom:12px;
+
     font-size:16px;
     font-weight:bold;
 }
@@ -97,12 +186,18 @@
 .setlist-item{
     width:100%;
     min-height:50px;
+
     padding:8px 10px;
+
     box-sizing:border-box;
+
     display:flex;
     align-items:center;
+
     gap:10px;
+
     background:#fff;
+
     border:1px solid #eee;
     border-radius:12px;
 }
@@ -115,7 +210,9 @@
 .song-order{
     width:28px;
     min-width:28px;
+
     text-align:center;
+
     font-size:13px;
     color:#777;
 }
@@ -135,15 +232,18 @@
     font-size:14px;
     font-weight:bold;
     line-height:1.4;
+
     word-break:break-word;
 }
 
 
 .album-name{
     margin-top:3px;
+
     font-size:11px;
     color:#999;
     line-height:1.4;
+
     word-break:break-word;
 }
 
@@ -154,14 +254,21 @@
 
 .medley-badge{
     display:block;
+
     width:max-content;
+
     margin-top:4px;
     margin-left:0;
+
     padding:2px 6px;
+
     box-sizing:border-box;
+
     border-radius:10px;
+
     background:#ff8fb1;
     color:white;
+
     font-size:10px;
     font-weight:normal;
 }
@@ -172,12 +279,13 @@
  * ========================================================= */
 
 .music-links{
-    width:85px;
     display:flex;
     flex-direction:column;
     gap:5px;
+
+    margin-left:8px;
+
     flex-shrink:0;
-    margin-top:0;
 }
 
 
@@ -185,42 +293,54 @@
     display:flex;
     align-items:center;
     justify-content:center;
-    width:85px;
-    height:24px;
-    padding:0;
+
+    min-width:76px;
+    min-height:30px;
+
+    padding:4px 7px;
+
     box-sizing:border-box;
-    border-radius:8px;
-    color:white;
-    text-decoration:none;
-    font-size:9px;
+
+    border-radius:7px;
+
+    font-size:10px;
     font-weight:bold;
-    line-height:1;
+
+    text-decoration:none;
+
+    transition:opacity .2s, transform .1s;
 }
 
 
 .music-btn:hover{
-    opacity:0.8;
+    opacity:.8;
 }
 
 
-/* YouTube */
+.music-btn:active{
+    transform:scale(.97);
+}
+
+
+/* =========================================================
+ * 配信サービス別
+ * ========================================================= */
 
 .music-btn.youtube{
-    background:#ff0000;
+    background:#fff0f0;
+    color:#e60000;
 }
 
-
-/* Apple Music */
 
 .music-btn.apple{
-    background:#fa4b8b;
+    background:#fff0f5;
+    color:#e83e8c;
 }
 
 
-/* Spotify */
-
 .music-btn.spotify{
-    background:#1db954;
+    background:#eefaf1;
+    color:#16833b;
 }
 
 
@@ -247,8 +367,11 @@
 .no-setlist,
 .no-prediction{
     padding:20px 10px;
+
     text-align:center;
+
     color:#777;
+
     font-size:13px;
 }
 
@@ -258,9 +381,12 @@
  * ========================================================= */
 
 .share-footer{
-    padding:15px 0 5px;
+    padding:15px 0 20px;
+
     text-align:center;
+
     color:#999;
+
     font-size:11px;
 }
 
@@ -273,6 +399,32 @@ html{
     scrollbar-width:none;
 }
 
+
 html::-webkit-scrollbar{
     display:none;
+}
+
+
+/* =========================================================
+ * スマートフォン
+ * ========================================================= */
+
+@media (max-width:600px){
+
+    .container{
+        height:100%;
+        min-height:0;
+    }
+
+
+    .page-scroll{
+        flex:1 1 0;
+        min-height:0;
+
+        overflow-y:auto;
+        overflow-x:hidden;
+
+        -webkit-overflow-scrolling:touch;
+    }
+
 }
