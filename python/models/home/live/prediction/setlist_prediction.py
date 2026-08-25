@@ -125,15 +125,15 @@ def get_setlist_prediction_song_groups():
             cur.execute(
                 """
                 SELECT
-                    s.song_group_id,
-                    MIN(s.song_name) AS song_name
+                    MIN(s.song_group_id) AS song_group_id,
+                    s.song_name
                 FROM m_song s
                 WHERE s.is_deleted = FALSE
                   AND s.is_public = TRUE
                   AND s.song_type = 'INORI'
-                    
+
                 GROUP BY
-                    s.song_group_id
+                    s.song_name
 
                 ORDER BY
                     MIN(s.release_date),
