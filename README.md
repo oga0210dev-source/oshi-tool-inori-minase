@@ -192,6 +192,37 @@ DB接続は `python.core.database.get_connection()` を使用する。
 
 `prefecture` は `m_prefecture.prefecture_code` を参照する。
 
+#### `m_user_setting`
+
+ユーザーごとの表示・利用設定を管理する。
+
+`m_user.user_id` と1対1で関連する。
+
+主な項目：
+
+* `user_id`
+* `font_id`
+* `created_at`
+* `updated_at`
+
+現在管理している設定：
+
+* UIフォント
+
+`font_id` により、ユーザーが選択したUIフォントを管理する。
+
+フォント未設定の場合はシステムのデフォルトフォントを使用する。
+
+ログインユーザーの設定は `m_user_setting` に保存し、
+ユーザーごとに独立して管理する。
+
+未ログインユーザー（ゲスト）の設定はDBには保存せず、
+セッション単位で管理する。
+
+そのため、ゲスト利用時のフォント設定が
+他のゲストユーザーや他のブラウザ・端末の設定によって
+上書きされることはない。
+
 ---
 
 #### `m_user_public_setting`
@@ -272,6 +303,12 @@ DB接続は `python.core.database.get_connection()` を使用する。
 既存の楽曲は `INORI` として扱う。
 
 `m_setlist` から楽曲を参照する際は、`song_id` を使用する。
+
+同一楽曲が複数の `m_song` レコードに存在する場合があるため、
+楽曲一覧等で同一楽曲を1件として扱う必要がある場合は、
+`song_name` を基準として重複をまとめる。
+
+特にセトリ予測では、同じ楽曲名が複数表示されないようにする。
 
 ---
 
@@ -661,6 +698,8 @@ DB接続は `python.core.database.get_connection()` を使用する。
 
 `user_id` と `live_id` の組み合わせは一意。
 
+予測セトリはライブを対象とし、町民集会を対象としない。
+
 ---
 
 #### `t_setlist_prediction_song`
@@ -678,6 +717,26 @@ DB接続は `python.core.database.get_connection()` を使用する。
 * `updated_at`
 
 `prediction_id` と `song_id` の組み合わせは一意。
+
+予測セトリで選択できる楽曲は、`m_song` の以下の条件を満たす楽曲を対象とする。
+
+* `is_deleted = FALSE`
+* `is_public = TRUE`
+* `song_type = 'INORI'`
+
+`OTHER` の楽曲はセトリ予測の選択対象から除外するため、
+町民集会等で使用される楽曲は対象外となる。
+
+`m_setlist` への登録有無は選択条件としないため、
+まだLIVEのセトリに登録されていない新曲も対象とする。
+
+同一楽曲について複数の `m_song` レコードが存在する場合は、
+`song_group_id` 単位でまとめて表示する。
+
+楽曲の表示順は、以下の順とする。
+
+1. `release_date` 昇順
+2. `display_order` 昇順
 
 ---
 
@@ -761,6 +820,26 @@ DB接続は `python.core.database.get_connection()` を使用する。
 * `updated_at`
 
 `INQUIRY` の場合はメールアドレスが必須。
+
+---
+
+### 4.7 セトリ予測
+
+ライブごとにユーザーが予測したセットリストを登録できる。
+
+#### 対象イベント
+
+セトリ予測の対象は `m_live` に登録されているライブのみとする。
+
+町民集会（`m_meeting`）はセトリ予測の対象外とする。
+
+#### 対象楽曲
+
+セトリ予測で選択できる楽曲は、
+`m_setlist` に以下の条件で登録されている楽曲とする。
+
+```text
+event_type = 'LIVE'
 
 ---
 
