@@ -20,8 +20,9 @@
 
         {% if prediction %}
 
-            <!-- ライブ情報 -->
-            <div class="prediction-card">
+            <!-- ライブ情報（固定） -->
+            <div class="prediction-card live-card">
+
                 <div class="live-name">
                     {{ prediction.live_name }}
                 </div>
@@ -49,103 +50,136 @@
                         {{ prediction.venue_name }}
                     </div>
                 </div>
+
             </div>
 
-            <!-- 予測結果 -->
-            <div class="prediction-card">
-                <div class="card-title">
-                    予測セトリ
-                </div>
 
-                {% if songs %}
-                    <div class="setlist">
-                        {% for song in songs %}
-                            <div class="setlist-item">
-                                <div class="song-order">
-                                    {{ loop.index }}
-                                </div>
+            <!-- ここからスクロール -->
+            <div class="page-scroll">
 
-                                <div class="song-info">
-                                    <div class="song-name">
-                                        {{ song.song_name }}
+                <!-- 予測結果 -->
+                <div class="prediction-card">
 
-                                        {% if song.is_medley %}
-                                            <span class="medley-badge">
-                                                メドレー{{ song.medley_order }}
-                                            </span>
-                                        {% endif %}
+                    <div class="card-title">
+                        予測セトリ
+                    </div>
+
+                    {% if songs %}
+
+                        <div class="setlist">
+
+                            {% for song in songs %}
+
+                                <div class="setlist-item">
+
+                                    <div class="song-order">
+                                        {{ loop.index }}
                                     </div>
 
-                                    {% if song.album_name %}
-                                        <div class="album-name">
-                                            {{ song.album_name }}
+                                    <div class="song-info">
+
+                                        <div class="song-name">
+                                            {{ song.song_name }}
+
+                                            {% if song.is_medley %}
+                                                <span class="medley-badge">
+                                                    メドレー{{ song.medley_order }}
+                                                </span>
+                                            {% endif %}
                                         </div>
-                                    {% endif %}
+
+                                        {% if song.album_name %}
+                                            <div class="album-name">
+                                                {{ song.album_name }}
+                                            </div>
+                                        {% endif %}
+
+                                    </div>
+
+
+                                    <div class="music-links">
+
+                                        {% if song.youtube_url %}
+                                            <a href="{{ song.youtube_url }}"
+                                               target="_blank"
+                                               rel="noopener noreferrer"
+                                               class="music-btn youtube">
+                                                YouTube
+                                            </a>
+                                        {% endif %}
+
+                                        {% if song.apple_music_url %}
+                                            <a href="{{ song.apple_music_url }}"
+                                               target="_blank"
+                                               rel="noopener noreferrer"
+                                               class="music-btn apple">
+                                                AppleMusic
+                                            </a>
+                                        {% endif %}
+
+                                        {% if song.spotify_url %}
+                                            <a href="{{ song.spotify_url }}"
+                                               target="_blank"
+                                               rel="noopener noreferrer"
+                                               class="music-btn spotify">
+                                                Spotify
+                                            </a>
+                                        {% endif %}
+
+                                    </div>
+
                                 </div>
 
-                                <div class="music-links">
-                                    {% if song.youtube_url %}
-                                        <a href="{{ song.youtube_url }}"
-                                           target="_blank"
-                                           rel="noopener noreferrer"
-                                           class="music-btn youtube">
-                                            YouTube
-                                        </a>
-                                    {% endif %}
+                            {% endfor %}
 
-                                    {% if song.apple_music_url %}
-                                        <a href="{{ song.apple_music_url }}"
-                                           target="_blank"
-                                           rel="noopener noreferrer"
-                                           class="music-btn apple">
-                                            AppleMusic
-                                        </a>
-                                    {% endif %}
+                        </div>
 
-                                    {% if song.spotify_url %}
-                                        <a href="{{ song.spotify_url }}"
-                                           target="_blank"
-                                           rel="noopener noreferrer"
-                                           class="music-btn spotify">
-                                            Spotify
-                                        </a>
-                                    {% endif %}
-                                </div>
+                    {% else %}
+
+                        <div class="no-setlist">
+                            予測セトリが登録されていません。
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- 一致率 -->
+                {% if prediction.is_finished %}
+
+                    {% if prediction.match_rate is not none %}
+
+                        <div class="prediction-card match-card">
+
+                            <div class="card-title">
+                                実際のセトリとの一致率
                             </div>
-                        {% endfor %}
-                    </div>
 
-                {% else %}
-                    <div class="no-setlist">
-                        予測セトリが登録されていません。
-                    </div>
-                {% endif %}
-            </div>
+                            <div class="match-rate">
+                                {{ prediction.match_rate }}%
+                            </div>
 
-            <!-- 一致率 -->
-            {% if prediction.is_finished %}
-                {% if prediction.match_rate is not none %}
-                    <div class="prediction-card match-card">
-                        <div class="card-title">
-                            実際のセトリとの一致率
                         </div>
 
-                        <div class="match-rate">
-                            {{ prediction.match_rate }}%
-                        </div>
-                    </div>
-                {% endif %}
-            {% endif %}
+                    {% endif %}
 
-            <!-- フッター -->
-            <div class="share-footer">
-                水瀬いのり セトリ予測
+                {% endif %}
+
+
+                <!-- フッター -->
+                <div class="share-footer">
+                    水瀬いのり セトリ予測
+                </div>
+
             </div>
 
         {% else %}
+
             <div class="no-prediction">
                 セトリ予測が見つかりません。
             </div>
+
         {% endif %}
 
     </div>
