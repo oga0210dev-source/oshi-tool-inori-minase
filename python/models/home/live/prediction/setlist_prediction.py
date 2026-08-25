@@ -125,30 +125,19 @@ def get_setlist_prediction_song_groups():
             cur.execute(
                 """
                 SELECT
-                    MIN(s.song_group_id) AS song_group_id,
+                    s.song_group_id,
                     MIN(s.song_name) AS song_name
                 FROM m_song s
                 WHERE s.is_deleted = FALSE
                   AND s.is_public = TRUE
-
-                  /*
-                   * LIVEのセトリに登録されている楽曲のみ対象
-                   *
-                   * 町民集会でしか使用されていない楽曲は除外する。
-                   */
-                  AND EXISTS (
-                      SELECT 1
-                      FROM m_setlist sl
-                      WHERE sl.song_id = s.song_id
-                        AND sl.event_type = 'LIVE'
-                  )
-
+                  AND s.song_type = 'INORI'
+                    
                 GROUP BY
-                    s.song_name
+                    s.song_group_id
 
                 ORDER BY
-                    MIN(s.display_order),
-                    MIN(s.song_id)
+                    MIN(s.release_date),
+                    MIN(s.display_order)
                 """
             )
 
