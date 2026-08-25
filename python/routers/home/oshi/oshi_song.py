@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Request
 from fastapi.responses import RedirectResponse
 
-from python.core import templates
+from python.core import render
 from python.models.home.oshi import oshi_song as song_model
 from python.utils import util
 
@@ -25,7 +25,7 @@ async def song_list(
 
     albums = util.group_by_album(songs)
 
-    return templates.TemplateResponse(
+    return render(
         request=request,
         name="templates/home/oshi/song.html",
         context={

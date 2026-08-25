@@ -1,7 +1,6 @@
 from fastapi import APIRouter, Request
 
-from python.core import templates
-from python.core import auth
+from python.core import render, auth
 
 from python.models.home.meeting import meeting as meeting_model
 
@@ -18,7 +17,7 @@ async def meeting_list(
     user_id = request.session.get("user_id")
     meetings = meeting_model.get_meeting_list(user_id)
 
-    return templates.TemplateResponse(
+    return render(
         request=request,
         name="templates/home/meeting/index.html",
         context={

@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Request
-from python.core import templates
+from python.core import render
 from python.models.admin.master import live as live_model, meeting as meeting_model
 from python.models.admin.master import setlist as setlist_model, song as song_model
 
@@ -48,7 +48,7 @@ async def setlist_list(
 
     song_groups = song_model.get_song_groups()
 
-    return templates.TemplateResponse(
+    return render(
         request,
         "templates/admin/master/setlist/list.html",
         {

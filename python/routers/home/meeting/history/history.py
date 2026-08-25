@@ -1,8 +1,7 @@
 from fastapi import APIRouter, Request
 from fastapi.responses import RedirectResponse
 
-from python.core import templates
-from python.core import auth
+from python.core import render, auth
 
 from python.models.home.meeting.history import history as history_model
 
@@ -29,7 +28,7 @@ async def meeting_history(
         user_id
     )
 
-    return templates.TemplateResponse(
+    return render(
         request=request,
         name="templates/home/meeting/history/history.html",
         context={

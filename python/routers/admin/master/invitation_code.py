@@ -4,7 +4,7 @@ import string
 from fastapi import APIRouter, Request, Form
 from fastapi.responses import RedirectResponse
 
-from python.core import templates
+from python.core import render
 from python.core import auth
 
 from python.models.admin.master import invitation_code as invitation_code_model
@@ -42,7 +42,7 @@ async def invitation_code_list(
 
     invitation_codes = invitation_code_model.get_invitation_code_list()
 
-    return templates.TemplateResponse(
+    return render(
         request=request,
         name="templates/admin/master/invitation_code/index.html",
         context={
@@ -65,7 +65,7 @@ async def invitation_code_create_page(
 
     invitation_code = generate_invitation_code()
 
-    return templates.TemplateResponse(
+    return render(
         request=request,
         name="templates/admin/master/invitation_code/form.html",
         context={
@@ -97,7 +97,7 @@ async def invitation_code_create(
     invitation_code = invitation_code.strip()
 
     if not invitation_code:
-        return templates.TemplateResponse(
+        return render(
             request=request,
             name="templates/admin/master/invitation_code/form.html",
             context={
@@ -112,7 +112,7 @@ async def invitation_code_create(
         )
 
     if len(invitation_code) > 100:
-        return templates.TemplateResponse(
+        return render(
             request=request,
             name="templates/admin/master/invitation_code/form.html",
             context={
@@ -127,7 +127,7 @@ async def invitation_code_create(
         )
 
     if max_usage is not None and max_usage < 1:
-        return templates.TemplateResponse(
+        return render(
             request=request,
             name="templates/admin/master/invitation_code/form.html",
             context={
@@ -142,7 +142,7 @@ async def invitation_code_create(
         )
 
     if invitation_code_model.get_invitation_code(invitation_code):
-        return templates.TemplateResponse(
+        return render(
             request=request,
             name="templates/admin/master/invitation_code/form.html",
             context={
@@ -191,7 +191,7 @@ async def invitation_code_edit_page(
             status_code=303
         )
 
-    return templates.TemplateResponse(
+    return render(
         request=request,
         name="templates/admin/master/invitation_code/form.html",
         context={
@@ -227,7 +227,7 @@ async def invitation_code_update(
         )
 
     if max_usage is not None and max_usage < 1:
-        return templates.TemplateResponse(
+        return render(
             request=request,
             name="templates/admin/master/invitation_code/form.html",
             context={

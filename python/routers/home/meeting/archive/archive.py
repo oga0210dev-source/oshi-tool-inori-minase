@@ -2,8 +2,7 @@ from fastapi import APIRouter, Request, Form
 from fastapi.responses import RedirectResponse
 from datetime import date
 
-from python.core import templates
-from python.core import auth
+from python.core import render, auth
 from python.models.home.meeting.archive import archive as archive_model
 
 router = APIRouter(
@@ -20,7 +19,7 @@ async def meeting_list(request: Request):
 
     meetings = archive_model.get_meeting_archive_list(user_id, keyword, sort)
 
-    return templates.TemplateResponse(
+    return render(
         request=request,
         name="templates/home/meeting/archive/archive.html",
         context={

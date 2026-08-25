@@ -5,7 +5,7 @@ from fastapi import APIRouter, Request
 from fastapi.responses import RedirectResponse
 
 from python.core import auth
-from python.core import templates
+from python.core import render
 
 from python.models.home.live import detail as detail_model
 
@@ -63,7 +63,7 @@ async def live_detail(
     else:
         day_status = "本日開催"
 
-    return templates.TemplateResponse(
+    return render(
         request=request,
         name="templates/home/live/detail.html",
         context={

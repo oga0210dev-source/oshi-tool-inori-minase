@@ -1,8 +1,7 @@
 from fastapi import APIRouter, Request
 from fastapi.responses import RedirectResponse
 
-from python.core import templates
-from python.core import auth
+from python.core import render, auth
 
 from python.models.home.oshi import oshi as oshi_model
 from python.models.home.oshi import oshi_work as oshi_work_model
@@ -20,7 +19,7 @@ async def oshi(
 ):
     oshi_basic = oshi_model.get_oshi_basic()
 
-    return templates.TemplateResponse(
+    return render(
         request=request,
         name="templates/home/oshi/oshi.html",
         context={
@@ -58,7 +57,7 @@ async def oshi_work(
         sort=sort
     )
 
-    return templates.TemplateResponse(
+    return render(
         request=request,
         name="templates/home/oshi/work.html",
         context={

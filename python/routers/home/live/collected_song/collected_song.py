@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Request
 
-from python.core import templates
+from python.core import render
 
 from python.services.collected_song_service import (
     get_song_collection_summary,
@@ -38,7 +38,7 @@ def collected_song(request: Request):
         mode="all"
     )
 
-    return templates.TemplateResponse(
+    return render(
         request=request,
         name="templates/home/live/collected_song/collected_song.html",
         context={
@@ -66,7 +66,7 @@ def collected_song_list(
         mode=mode
     )
 
-    return templates.TemplateResponse(
+    return render(
         request=request,
         name="templates/home/live/collected_song/collected.html",
         context={
@@ -93,7 +93,7 @@ def uncollected_song(
         mode=mode
     )
 
-    return templates.TemplateResponse(
+    return render(
         request=request,
         name="templates/home/live/collected_song/uncollected.html",
         context={
@@ -117,7 +117,7 @@ def appearance_song(
         mode=mode
     )
 
-    return templates.TemplateResponse(
+    return render(
         request=request,
         name="templates/home/live/collected_song/appearance.html",
         context={

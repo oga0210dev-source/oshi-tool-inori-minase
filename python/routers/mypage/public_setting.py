@@ -2,7 +2,7 @@ from python.core.database import get_connection
 from fastapi import APIRouter, Request, Form
 from fastapi.responses import RedirectResponse
 
-from python.core import templates, auth
+from python.core import render, auth
 
 router = APIRouter()
 
@@ -16,7 +16,7 @@ def public_setting(request: Request):
 
     setting = PublicSettingModel.get(user_id)
 
-    return templates.TemplateResponse(
+    return render(
         request=request,
         name="templates/mypage/public_setting.html",
         context={

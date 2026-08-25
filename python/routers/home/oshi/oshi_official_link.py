@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Request
 
-from python.core import templates
+from python.core import render
 
 from python.models.home.oshi import oshi_official_link as oshi_official_link_model
 
@@ -19,7 +19,7 @@ async def oshi_official_link(
         oshi_official_link_model.get_oshi_official_link_list()
     )
 
-    return templates.TemplateResponse(
+    return render(
         request=request,
         name="templates/home/oshi/official_link.html",
         context={

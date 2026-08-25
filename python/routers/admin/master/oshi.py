@@ -7,7 +7,7 @@ from fastapi import (
 )
 from fastapi.responses import RedirectResponse
 
-from python.core import templates
+from python.core import render
 from python.core import auth
 
 from python.models.admin.master import oshi as oshi_model
@@ -32,7 +32,7 @@ async def oshi_list(
 
     oshi = oshi_model.get_oshi()
 
-    return templates.TemplateResponse(
+    return render(
         request=request,
         name="templates/admin/master/oshi/index.html",
         context={
@@ -53,7 +53,7 @@ async def oshi_form(
 
     oshi = oshi_model.get_oshi()
 
-    return templates.TemplateResponse(
+    return render(
         request=request,
         name="templates/admin/master/oshi/form.html",
         context={

@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Request, Form
 from fastapi.responses import RedirectResponse
 
-from python.core import templates, database, auth
+from python.core import render, database, auth
 from python.services.inquiry_service import (
     get_inquiry_list,
     get_inquiry_detail,
@@ -37,7 +37,7 @@ async def inquiry_list(request: Request):
     finally:
         conn.close()
 
-    return templates.TemplateResponse(
+    return render(
         request=request,
         name="templates/admin/inquiry/inquiry.html",
         context={
@@ -73,7 +73,7 @@ async def inquiry_detail(
     if not inquiry:
         return RedirectResponse("/admin/inquiry", status_code=303)
 
-    return templates.TemplateResponse(
+    return render(
         request=request,
         name="templates/admin/inquiry/detail.html",
         context={

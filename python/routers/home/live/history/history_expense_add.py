@@ -2,7 +2,7 @@ from fastapi import APIRouter, Request, Form
 from fastapi.responses import RedirectResponse
 
 from python.core import auth
-from python.core import templates
+from python.core import render
 
 from python.models.home.live.history import history_expense_add as history_expense_add_model
 
@@ -25,7 +25,7 @@ async def expense_add(
 
     expense_types = history_expense_add_model.get_expense_type_list()
 
-    return templates.TemplateResponse(
+    return render(
         request=request,
         name="templates/home/live/history/history_expense_add.html",
         context={

@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Request
 from fastapi.responses import RedirectResponse
 from python.models.user import UserModel
-from python.core import templates, auth
+from python.core import render, auth
 from python.core.security import Security
 from fastapi import Form
 import re
@@ -11,7 +11,7 @@ router = APIRouter()
 
 @router.get("/password/change")
 def password_page(request: Request):
-    return templates.TemplateResponse(
+    return render(
         request=request,
         name="templates/mypage/password.html"
     )
@@ -31,7 +31,7 @@ def password_change(
         return RedirectResponse("/login", status_code=303)
 
     if not old_password:
-        return templates.TemplateResponse(
+        return render(
             request=request,
             name="templates/mypage/password.html",
             context={
@@ -41,7 +41,7 @@ def password_change(
             }
         )
     if not new_password:
-        return templates.TemplateResponse(
+        return render(
             request=request,
             name="templates/mypage/password.html",
             context={
@@ -51,7 +51,7 @@ def password_change(
             }
         )
     if not confirm_password:
-        return templates.TemplateResponse(
+        return render(
             request=request,
             name="templates/mypage/password.html",
             context={
@@ -67,7 +67,7 @@ def password_change(
             old_password,
             user["password"]
     ):
-        return templates.TemplateResponse(
+        return render(
             request=request,
             name="templates/mypage/password.html",
             context={
@@ -79,7 +79,7 @@ def password_change(
 
     # 新旧パスワード一致チェック
     if new_password != confirm_password:
-        return templates.TemplateResponse(
+        return render(
             request=request,
             name="templates/mypage/password.html",
             context={
@@ -94,7 +94,7 @@ def password_change(
             new_password,
             user["password"]
     ):
-        return templates.TemplateResponse(
+        return render(
             request=request,
             name="templates/mypage/password.html",
             context={
@@ -105,7 +105,7 @@ def password_change(
         )
 
     if len(new_password) < 8 or len(new_password) > 32:
-        return templates.TemplateResponse(
+        return render(
             request=request,
             name="templates/mypage/password.html",
             context={
@@ -116,7 +116,7 @@ def password_change(
         )
 
     if not re.search(r"[a-z]", new_password):
-        return templates.TemplateResponse(
+        return render(
             request=request,
             name="templates/mypage/password.html",
             context={
@@ -127,7 +127,7 @@ def password_change(
         )
 
     if not re.search(r"[A-Z]", new_password):
-        return templates.TemplateResponse(
+        return render(
             request=request,
             name="templates/mypage/password.html",
             context={
@@ -138,7 +138,7 @@ def password_change(
         )
 
     if not re.search(r"\d", new_password):
-        return templates.TemplateResponse(
+        return render(
             request=request,
             name="templates/mypage/password.html",
             context={

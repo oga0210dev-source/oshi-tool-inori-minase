@@ -8,7 +8,7 @@ from fastapi import (
 )
 from fastapi.responses import RedirectResponse
 
-from python.core import templates, auth
+from python.core import render, auth
 from python.models.user import UserModel
 from python.models.image import ImageModel
 from python.models.admin.master.master import get_prefecture_list
@@ -39,7 +39,7 @@ def mypage(
             prefecture_groups[area] = []
         prefecture_groups[area].append(prefecture)
 
-    return templates.TemplateResponse(
+    return render(
         request=request,
         name="templates/mypage/mypage.html",
         context={

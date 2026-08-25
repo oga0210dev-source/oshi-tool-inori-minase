@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Form, Request
 from fastapi.responses import RedirectResponse
-from python.core import templates, database
+from python.core import render, database
 
 from python.services.inquiry_service import create_inquiry
 
@@ -14,7 +14,7 @@ router = APIRouter(
 @router.get("")
 async def inquiry_page(request: Request):
 
-    return templates.TemplateResponse(
+    return render(
         request=request,
         name="templates/home/inquiry/inquiry.html"
     )
@@ -36,7 +36,7 @@ async def inquiry_submit(
         user_id = "GUEST"
 
     if inquiry_type == "INQUIRY" and not email.strip():
-        return templates.TemplateResponse(
+        return render(
             request=request,
             name="templates/home/inquiry/inquiry.html",
             context={
@@ -77,7 +77,7 @@ async def inquiry_complete(
 
     is_login = bool(request.session.get("user_id"))
 
-    return templates.TemplateResponse(
+    return render(
         request=request,
         name="templates/home/inquiry/complete.html",
         context={

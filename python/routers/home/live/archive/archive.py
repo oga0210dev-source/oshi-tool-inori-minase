@@ -2,7 +2,7 @@ from fastapi import APIRouter, Request, Form
 from fastapi.responses import RedirectResponse
 from datetime import date
 
-from python.core import templates
+from python.core import render
 from python.core import auth
 
 from python.models.home.live.archive import archive as archive_model
@@ -28,7 +28,7 @@ async def live_list(
         sort
     )
 
-    return templates.TemplateResponse(
+    return render(
         request=request,
         name="templates/home/live/archive/archive.html",
         context={

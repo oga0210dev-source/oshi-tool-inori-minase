@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Request
 from fastapi.responses import RedirectResponse
 
-from python.core import templates
+from python.core import render
 from python.core import auth
 
 from python.models.admin.master import oshi_anniversary as oshi_anniversary_model
@@ -59,7 +59,7 @@ async def anniversary_list(
         )
     )
 
-    return templates.TemplateResponse(
+    return render(
         request=request,
         name="templates/admin/master/oshi_anniversary/index.html",
         context={
@@ -80,7 +80,7 @@ async def anniversary_create(
             status_code=303
         )
 
-    return templates.TemplateResponse(
+    return render(
         request=request,
         name="templates/admin/master/oshi_anniversary/form.html",
         context={
@@ -157,7 +157,7 @@ async def anniversary_edit(
             status_code=303
         )
 
-    return templates.TemplateResponse(
+    return render(
         request=request,
         name="templates/admin/master/oshi_anniversary/form.html",
         context={

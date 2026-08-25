@@ -1,8 +1,7 @@
 from fastapi import APIRouter, Request
 from fastapi.responses import RedirectResponse
 
-from python.core import templates
-from python.core import auth
+from python.core import render, auth
 
 from python.models.home.live import setlist as setlist_model
 
@@ -37,7 +36,7 @@ async def live_setlist(
         "archive"
     )
 
-    return templates.TemplateResponse(
+    return render(
         request=request,
         name="templates/home/live/setlist.html",
         context={

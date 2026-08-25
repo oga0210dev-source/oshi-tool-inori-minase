@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Request
 from fastapi.responses import RedirectResponse
 
-from python.core import templates
+from python.core import render
 from python.core import auth
 from python.models.home.live.lost_item import lost_item as lost_item_model
 
@@ -40,7 +40,7 @@ async def lost_item_list(request: Request):
 
     items = lost_item_model.get_lost_item_list(user_id)
 
-    return templates.TemplateResponse(
+    return render(
         request=request,
         name="templates/home/live/lost_item/lost_item.html",
         context={

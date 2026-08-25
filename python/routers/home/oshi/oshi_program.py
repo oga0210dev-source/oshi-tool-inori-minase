@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Request
 from fastapi.responses import RedirectResponse
 
-from python.core import templates, auth
+from python.core import render, auth
 
 from python.models.home.oshi import oshi_program as program_model
 
@@ -26,7 +26,7 @@ async def program_list(
         sort
     )
 
-    return templates.TemplateResponse(
+    return render(
         request=request,
         name="templates/home/oshi/program.html",
         context={

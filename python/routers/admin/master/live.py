@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Request, Form
 from fastapi.responses import RedirectResponse
 
-from python.core import templates, auth
+from python.core import render, auth
 
 from python.models.admin.master import live as live_model
 from python.utils.validator import is_valid_url
@@ -70,7 +70,7 @@ async def live_list(
 
     tours = group_by_tour(lives)
 
-    return templates.TemplateResponse(
+    return render(
         request=request,
         name="templates/admin/master/live/index.html",
         context={
@@ -89,7 +89,7 @@ async def live_create_page(request: Request):
     if not auth.is_admin(request):
         return RedirectResponse("/home", status_code=303)
 
-    return templates.TemplateResponse(
+    return render(
         request=request,
         name="templates/admin/master/live/form.html",
         context={
@@ -134,7 +134,7 @@ async def live_create(
     }
 
     if not live_name.strip():
-        return templates.TemplateResponse(
+        return render(
             request=request,
             name="templates/admin/master/live/form.html",
             context={
@@ -146,7 +146,7 @@ async def live_create(
         )
 
     if not venue_name.strip():
-        return templates.TemplateResponse(
+        return render(
             request=request,
             name="templates/admin/master/live/form.html",
             context={
@@ -163,7 +163,7 @@ async def live_create(
     ]:
 
         if not is_valid_url(url):
-            return templates.TemplateResponse(
+            return render(
                 request=request,
                 name="templates/admin/master/live/form.html",
                 context={
@@ -197,7 +197,7 @@ async def live_edit_page(
 
     live = live_model.get_live(live_id)
 
-    return templates.TemplateResponse(
+    return render(
         request=request,
         name="templates/admin/master/live/form.html",
         context={
@@ -241,7 +241,7 @@ async def live_update(
     }
 
     if not live_name.strip():
-        return templates.TemplateResponse(
+        return render(
             request=request,
             name="templates/admin/master/live/form.html",
             context={
@@ -253,7 +253,7 @@ async def live_update(
         )
 
     if not venue_name.strip():
-        return templates.TemplateResponse(
+        return render(
             request=request,
             name="templates/admin/master/live/form.html",
             context={
@@ -269,7 +269,7 @@ async def live_update(
         ("公式サイトURL", official_url)
     ]:
         if not is_valid_url(url):
-            return templates.TemplateResponse(
+            return render(
                 request=request,
                 name="templates/admin/master/live/form.html",
                 context={

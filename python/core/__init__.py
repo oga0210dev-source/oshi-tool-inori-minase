@@ -1,1 +1,1 @@
-from .templates import templates
+from .templates import templates, render

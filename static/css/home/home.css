@@ -261,3 +261,94 @@
     margin:0 0 15px;
     padding-left:20px;
 }
+
+/* =========================================================
+   フォント設定
+   ========================================================= */
+
+#font-setting-modal {
+    display: none;
+}
+
+
+#font-test {
+    margin: 10px 0 20px;
+
+    padding: 15px;
+
+    border: 1px solid #ddd;
+    border-radius: 8px;
+
+    background: #fafafa;
+
+    font-size: 22px;
+    text-align: center;
+}
+
+
+/* =========================================================
+   フォント選択
+   ========================================================= */
+
+.font-option-list {
+    display: flex;
+    flex-direction: column;
+
+    gap: 8px;
+
+    margin-bottom: 15px;
+}
+
+
+.font-option {
+    width: 100%;
+
+    padding: 12px;
+
+    border: 1px solid #ddd;
+    border-radius: 8px;
+
+    background: #ffffff;
+
+    font-size: 16px;
+
+    cursor: pointer;
+}
+
+
+.font-option.selected {
+    border: 2px solid #333;
+    font-weight: bold;
+}
+
+
+/* =========================================================
+   保存・閉じる
+   ========================================================= */
+
+#font-save-button,
+#font-close-button {
+    width: 100%;
+
+    padding: 12px;
+
+    margin-top: 8px;
+
+    border: none;
+    border-radius: 8px;
+
+    cursor: pointer;
+
+    font-size: 16px;
+}
+
+
+#font-save-button {
+    background: #333;
+    color: #ffffff;
+}
+
+
+#font-close-button {
+    background: #eee;
+}

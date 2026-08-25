@@ -1,6 +1,64 @@
+/*==========================
+    フォント
+==========================*/
+
 @font-face {
     font-family:"HachiMaruPop-Regular";
     src:url("/static/fonts/HachiMaruPop-Regular.ttf");
+}
+
+@font-face {
+    font-family:"KiwiMaru-Regular";
+    src:url("/static/fonts/KiwiMaru-Regular.ttf");
+}
+
+@font-face {
+    font-family:"MPLUSRounded1c-ExtraBold";
+    src:url("/static/fonts/MPLUSRounded1c-ExtraBold.ttf");
+}
+
+@font-face {
+    font-family:"NotoSansJP-VariableFont_wght";
+    src:url("/static/fonts/NotoSansJP-VariableFont_wght.ttf");
+}
+
+@font-face {
+    font-family:"YuseiMagic-Regular";
+    src:url("/static/fonts/YuseiMagic-Regular.ttf");
+}
+
+
+/*==========================
+    フォント設定
+==========================*/
+
+:root{
+    --app-font:"HachiMaruPop-Regular";
+}
+
+
+/*==========================
+    フォント切り替え
+==========================*/
+
+body.font-hachi-maru-pop{
+    --app-font:"HachiMaruPop-Regular";
+}
+
+body.font-kiwi-maru{
+    --app-font:"KiwiMaru-Regular";
+}
+
+body.font-mplus-rounded{
+    --app-font:"MPLUSRounded1c-ExtraBold";
+}
+
+body.font-noto-sans-jp{
+    --app-font:"NotoSansJP-VariableFont_wght";
+}
+
+body.font-yusei-magic{
+    --app-font:"YuseiMagic-Regular";
 }
 
 
@@ -44,16 +102,31 @@ body{
 }
 
 
-body,
+/*==========================
+    フォント
+==========================*/
+
+body{
+    font-family:var(--app-font), sans-serif;
+}
+
+
+/* フォーム要素も共通フォントを使用 */
+
 label,
 button,
 input,
 textarea,
 select{
-    font-size:16px;
-    font-family:"HachiMaruPop-Regular", sans-serif;
+    font-family:inherit;
 }
 
+
+/* 子要素にもフォントを継承 */
+
+body *{
+    font-family:inherit;
+}
 
 /*==========================
     ヘッダー
