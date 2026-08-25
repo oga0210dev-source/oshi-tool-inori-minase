@@ -125,17 +125,16 @@ def get_setlist_prediction_song_groups():
             cur.execute(
                 """
                 SELECT
-                    s.song_group_id,
+                    MIN(s.song_group_id) AS song_group_id,
                     MIN(s.song_name) AS song_name
                 FROM m_song s
                 WHERE s.is_deleted = FALSE
                   AND s.is_public = TRUE
 
                   /*
-                   * 町民集会でのみ使用されている楽曲を除外
+                   * LIVEのセトリに登録されている楽曲のみ対象
                    *
-                   * LIVEのセトリに1件でも登録されている曲は
-                   * 町民集会にも登録されていても対象とする。
+                   * 町民集会でしか使用されていない楽曲は除外する。
                    */
                   AND EXISTS (
                       SELECT 1
@@ -145,7 +144,7 @@ def get_setlist_prediction_song_groups():
                   )
 
                 GROUP BY
-                    s.song_group_id
+                    s.song_name
 
                 ORDER BY
                     MIN(s.display_order),
