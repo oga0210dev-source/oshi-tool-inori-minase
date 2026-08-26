@@ -420,6 +420,7 @@ document.addEventListener(
  * ========================================================= */
 
 async function sharePrediction(predictionId){
+
     const shareUrl =
         `${window.location.origin}/home/live/prediction/share/${predictionId}`;
 
@@ -428,11 +429,29 @@ async function sharePrediction(predictionId){
         `${shareUrl}\n\n` +
         `#水瀬いのり #いのりまち`;
 
-    const xUrl =
-        `https://x.com/intent/post?text=${encodeURIComponent(responseText)}`;
+    const encodedText =
+        encodeURIComponent(responseText);
 
-    window.open(
-        xUrl,
-        "_blank"
-    );
+    const xWebUrl =
+        `https://x.com/intent/post?text=${encodedText}`;
+
+    /*
+     * Xアプリを起動
+     */
+    window.location.href =
+        `twitter://post?message=${encodedText}`;
+
+    /*
+     * Xアプリが起動しなかった場合は
+     * Web版Xへフォールバック
+     */
+    setTimeout(function(){
+
+        window.open(
+            xWebUrl,
+            "_blank",
+            "noopener,noreferrer"
+        );
+
+    }, 1000);
 }
