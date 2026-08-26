@@ -77,7 +77,7 @@
                     {% for song in songs %}
                     <div class="setlist-item"
                          data-song-id="{{ song.song_id }}"
-                         data-is-medley="{{ song.is_medley }}"
+                         data-is-medley="{{ 'true' if song.is_medley else 'false' }}"
                          data-medley-order="{{ song.medley_order or '' }}">
 
                         <div class="song-order">

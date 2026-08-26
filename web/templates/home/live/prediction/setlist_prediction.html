@@ -93,28 +93,34 @@
                             {% if prediction.is_finished %}
 
                                 {% if prediction.match_rate is not none %}
-                                    一致率：{{ prediction.match_rate }}%
+
+                                    <div>
+                                        完全一致率：{{ prediction.match_rate }}%
+                                    </div>
+
+                                    <div>
+                                        部分一致率：{{ prediction.partial_match_rate }}%
+                                    </div>
+
                                 {% endif %}
 
                             {% endif %}
 
                         </div>
 
-                        <a
-                            href="/home/live/prediction/detail/{{ prediction.prediction_id }}"
+                        <a href="/home/live/prediction/detail/{{ prediction.prediction_id }}"
                             class="detail-btn"
                             onclick="savePredictionState()">
                             詳細
                         </a>
 
                         {% if not prediction.is_finished %}
-
-                        <a
-                            href="/home/live/prediction/edit/{{ prediction.prediction_id }}"
+                        <a href="/home/live/prediction/edit/{{ prediction.prediction_id }}"
                             class="edit-btn"
                             onclick="savePredictionState()">
                             編集
                         </a>
+                        {% endif %}
 
                         <button
                             type="button"
@@ -123,8 +129,6 @@
                             aria-label="Xでシェア">
                             𝕏
                         </button>
-
-                        {% endif %}
 
                     </div>
 

@@ -148,21 +148,73 @@
                 <!-- 一致率 -->
                 {% if prediction.is_finished %}
 
-                    {% if prediction.match_rate is not none %}
+                    <div class="prediction-card match-card">
 
-                        <div class="prediction-card match-card">
-
-                            <div class="card-title">
-                                実際のセトリとの一致率
-                            </div>
-
-                            <div class="match-rate">
-                                {{ prediction.match_rate }}%
-                            </div>
-
+                        <div class="card-title">
+                            実際のセトリとの一致率
                         </div>
 
-                    {% endif %}
+                        {% if prediction.match_rate is not none %}
+
+                            <div class="match-rate-item">
+                                <div class="match-rate-label">
+                                    完全一致率
+                                </div>
+
+                                <div class="match-rate">
+                                    {{ prediction.match_rate }}%
+                                    {% if prediction.medley_match_rate is not none %}
+                                        <span class="medley-match-rate">
+                                            (メドレー {{ prediction.medley_match_rate }}%)
+                                        </span>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="match-rate-item">
+                                <div class="match-rate-label">
+                                    部分一致率
+                                </div>
+
+                                <div class="match-rate">
+                                    {{ prediction.partial_match_rate }}%
+                                    {% if prediction.medley_partial_match_rate is not none %}
+                                        <span class="medley-match-rate">
+                                            (メドレー {{ prediction.medley_partial_match_rate }}%)
+                                        </span>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                        {% else %}
+
+                            <div class="match-rate-item">
+                                <div class="match-rate-label">
+                                    完全一致率
+                                </div>
+
+                                <div class="match-rate">
+                                    ー
+                                </div>
+                            </div>
+
+                            <div class="match-rate-item">
+                                <div class="match-rate-label">
+                                    部分一致率
+                                </div>
+
+                                <div class="match-rate">
+                                    ー
+                                </div>
+                            </div>
+
+                            <div class="match-rate-note">
+                                ※本番のセトリがまだ反映されていません。
+                            </div>
+
+                        {% endif %}
+
+                    </div>
 
                 {% endif %}
 

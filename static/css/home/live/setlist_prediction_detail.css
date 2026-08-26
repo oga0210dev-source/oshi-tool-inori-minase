@@ -211,46 +211,68 @@
  * ========================================================= */
 
 .music-links{
-    width:85px;
     display:flex;
     flex-direction:column;
     gap:5px;
+
+    margin-left:8px;
+
     flex-shrink:0;
 }
 
 
 .music-btn{
-    display:block;
-    width:85px;
-    padding:4px 0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    min-width:76px;
+    min-height:30px;
+
+    padding:4px 7px;
+
     box-sizing:border-box;
-    border-radius:8px;
-    text-align:center;
-    color:white;
-    text-decoration:none;
+
+    border-radius:7px;
+
     font-size:10px;
     font-weight:bold;
+
+    text-decoration:none;
+
+    transition:opacity .2s, transform .1s;
 }
 
 
-/* YouTube */
+.music-btn:hover{
+    opacity:.8;
+}
+
+
+.music-btn:active{
+    transform:scale(.97);
+}
+
+
+/* =========================================================
+ * 配信サービス別
+ * ========================================================= */
 
 .music-btn.youtube{
-    background:#ff4b4b;
+    background:#fff0f0;
+    color:#e60000;
 }
 
-
-/* Apple Music */
 
 .music-btn.apple{
-    background:#fa4b8b;
+    background:#fff0f5;
+    color:#e83e8c;
 }
 
 
-/* Spotify */
-
 .music-btn.spotify{
-    background:#1db954;
+    background:#eefaf1;
+    color:#16833b;
 }
 
 

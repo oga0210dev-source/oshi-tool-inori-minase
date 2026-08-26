@@ -123,13 +123,13 @@
 
 .match-rate{
     flex:1;
+    flex-direction: column;
     min-height:40px;
     display:flex;
     align-items:center;
     font-size:13px;
     color:#777;
 }
-
 
 /* =========================================================
    詳細・編集・共有ボタン

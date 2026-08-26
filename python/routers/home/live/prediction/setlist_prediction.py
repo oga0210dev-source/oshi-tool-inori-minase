@@ -344,8 +344,7 @@ async def share_setlist_prediction(
                 "prediction": None,
                 "songs": [],
                 "not_found": True
-            },
-            status_code=404
+            }
         )
 
     return render(
