@@ -13,13 +13,15 @@ def get_meeting_detail(user_id, meeting_id):
                     m.meeting_name,
                     m.meeting_date,
                     m.performance_type,
-                    m.venue_name,
+                    v.venue_name,
                     p.prefecture_name,
                     m.official_url,
                     COALESCE(u.is_join, FALSE) AS is_join
                 FROM m_meeting m
+                LEFT JOIN m_venue v
+                    ON m.venue_id = v.venue_id
                 LEFT JOIN m_prefecture p
-                    ON m.prefecture_code = p.prefecture_code
+                    ON v.prefecture_code = p.prefecture_code
                 LEFT JOIN t_meeting_user u
                     ON m.meeting_id = u.meeting_id
                    AND u.user_id = %s

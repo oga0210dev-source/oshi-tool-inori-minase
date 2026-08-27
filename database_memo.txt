@@ -129,23 +129,44 @@ create trigger update_m_song_updated_at BEFORE
 update on m_song for EACH row
 execute FUNCTION update_updated_at_column ();
 
+create table public.m_meeting_guest (
+  created_at timestamp without time zone not null default CURRENT_TIMESTAMP,
+  updated_at timestamp without time zone not null default CURRENT_TIMESTAMP,
+  meeting_id bigint not null,
+  guest_id bigserial not null,
+  guest_name character varying(200) not null,
+  display_order integer not null default 0,
+  is_deleted boolean not null default false,
+  constraint m_meeting_guest_pkey primary key (guest_id),
+  constraint fk_meeting_guest_meeting foreign KEY (meeting_id) references m_meeting (meeting_id)
+) TABLESPACE pg_default;
+
+create index IF not exists idx_meeting_guest_meeting on public.m_meeting_guest using btree (meeting_id) TABLESPACE pg_default;
+
+create index IF not exists idx_meeting_guest_deleted on public.m_meeting_guest using btree (is_deleted) TABLESPACE pg_default;
+
+create trigger set_m_meeting_guest_updated_at BEFORE
+update on m_meeting_guest for EACH row
+execute FUNCTION update_updated_at_column ();
+
 create table public.m_live (
   live_id bigserial not null,
   live_name character varying(200) not null,
   tour_name character varying(200) null,
   tour_order integer null,
   live_date date not null,
-  venue_name character varying(200) not null,
-  prefecture_code smallint null,
   blu_ray_url text null,
   official_url text null,
   public_flag boolean not null default true,
   is_deleted boolean null default false,
   created_at timestamp without time zone null default CURRENT_TIMESTAMP,
   updated_at timestamp without time zone null default CURRENT_TIMESTAMP,
+  venue_id bigint not null,
   constraint m_live_pkey primary key (live_id),
-  constraint fk_live_prefecture foreign KEY (prefecture_code) references m_prefecture (prefecture_code)
+  constraint fk_live_venue foreign KEY (venue_id) references m_venue (venue_id)
 ) TABLESPACE pg_default;
+
+create index IF not exists idx_live_venue on public.m_live using btree (venue_id) TABLESPACE pg_default;
 
 create trigger update_m_live_updated_at BEFORE
 update on m_live for EACH row
@@ -158,13 +179,12 @@ create table public.m_meeting (
   meeting_name character varying(200) not null,
   meeting_date date not null,
   performance_type character varying(10) not null,
-  venue_name character varying(200) not null,
-  prefecture_code smallint null,
   official_url character varying(500) null,
   public_flag boolean not null default true,
   is_deleted boolean not null default false,
+  venue_id bigint not null,
   constraint m_meeting_pkey primary key (meeting_id),
-  constraint fk_meeting_prefecture foreign KEY (prefecture_code) references m_prefecture (prefecture_code),
+  constraint fk_meeting_venue foreign KEY (venue_id) references m_venue (venue_id),
   constraint chk_meeting_performance_type check (
     (
       (performance_type)::text = any (
@@ -184,9 +204,9 @@ create table public.m_meeting (
 
 create index IF not exists idx_meeting_date on public.m_meeting using btree (meeting_date) TABLESPACE pg_default;
 
-create index IF not exists idx_meeting_prefecture on public.m_meeting using btree (prefecture_code) TABLESPACE pg_default;
-
 create index IF not exists idx_meeting_deleted on public.m_meeting using btree (is_deleted) TABLESPACE pg_default;
+
+create index IF not exists idx_meeting_venue on public.m_meeting using btree (venue_id) TABLESPACE pg_default;
 
 create trigger set_m_meeting_updated_at BEFORE
 update on m_meeting for EACH row

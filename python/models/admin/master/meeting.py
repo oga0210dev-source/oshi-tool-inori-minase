@@ -35,8 +35,8 @@ def get_meeting_list(keyword=None, sort="date"):
             m_meeting.meeting_name,
             m_meeting.meeting_date,
             m_meeting.performance_type,
-            m_meeting.venue_name,
-            m_meeting.prefecture_code,
+            m_venue.venue_name,
+            m_venue.prefecture_code,
             m_prefecture.prefecture_name,
             m_meeting.official_url,
             m_meeting.public_flag,
@@ -45,8 +45,11 @@ def get_meeting_list(keyword=None, sort="date"):
 
         FROM m_meeting
 
+        LEFT JOIN m_venue
+        ON m_meeting.venue_id = m_venue.venue_id
+
         LEFT JOIN m_prefecture
-        ON m_meeting.prefecture_code = m_prefecture.prefecture_code
+        ON m_venue.prefecture_code = m_prefecture.prefecture_code
 
         WHERE
             m_meeting.is_deleted = FALSE
@@ -58,7 +61,7 @@ def get_meeting_list(keyword=None, sort="date"):
         sql += """
             AND (
                 m_meeting.meeting_name ILIKE %s
-                OR m_meeting.venue_name ILIKE %s
+                OR m_venue.venue_name ILIKE %s
             )
         """
 
@@ -93,12 +96,17 @@ def get_meeting(meeting_id):
                 """
                 SELECT
                     m_meeting.*,
+                    m_venue.venue_name,
+                    m_venue.prefecture_code,
                     m_prefecture.prefecture_name
 
                 FROM m_meeting
 
+                LEFT JOIN m_venue
+                ON m_meeting.venue_id = m_venue.venue_id
+
                 LEFT JOIN m_prefecture
-                ON m_meeting.prefecture_code = m_prefecture.prefecture_code
+                ON m_venue.prefecture_code = m_prefecture.prefecture_code
 
                 WHERE
                     m_meeting.meeting_id = %s
@@ -128,14 +136,13 @@ def create_meeting(meeting):
                     meeting_name,
                     meeting_date,
                     performance_type,
-                    venue_name,
-                    prefecture_code,
+                    venue_id,
                     official_url,
                     public_flag
                 )
 
                 VALUES(
-                    %s,%s,%s,%s,%s,%s,%s
+                    %s,%s,%s,%s,%s,%s
                 )
 
                 RETURNING meeting_id
@@ -144,8 +151,7 @@ def create_meeting(meeting):
                     meeting["meeting_name"],
                     meeting["meeting_date"],
                     meeting["performance_type"],
-                    meeting["venue_name"],
-                    meeting["prefecture_code"],
+                    meeting["venue_id"],
                     meeting["official_url"],
                     meeting["public_flag"]
                 )
@@ -177,8 +183,7 @@ def update_meeting(meeting_id, meeting):
                     meeting_name = %s,
                     meeting_date = %s,
                     performance_type = %s,
-                    venue_name = %s,
-                    prefecture_code = %s,
+                    venue_id = %s,
                     official_url = %s,
                     public_flag = %s,
                     updated_at = CURRENT_TIMESTAMP
@@ -190,8 +195,7 @@ def update_meeting(meeting_id, meeting):
                     meeting["meeting_name"],
                     meeting["meeting_date"],
                     meeting["performance_type"],
-                    meeting["venue_name"],
-                    meeting["prefecture_code"],
+                    meeting["venue_id"],
                     meeting["official_url"],
                     meeting["public_flag"],
                     meeting_id
@@ -265,6 +269,7 @@ def get_meeting_guests(meeting_id):
             )
 
             return cur.fetchall()
+
 
     finally:
         conn.close()

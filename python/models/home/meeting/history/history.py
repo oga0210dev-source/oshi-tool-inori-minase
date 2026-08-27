@@ -13,7 +13,7 @@ def get_meeting_history_list(user_id):
                     m.meeting_name,
                     m.meeting_date,
                     m.performance_type,
-                    m.venue_name,
+                    v.venue_name,
                     p.prefecture_name,
 
                     r.seat_info,
@@ -29,8 +29,11 @@ def get_meeting_history_list(user_id):
                 INNER JOIN t_meeting_user u
                     ON m.meeting_id = u.meeting_id
 
+                LEFT JOIN m_venue v
+                    ON m.venue_id = v.venue_id
+
                 LEFT JOIN m_prefecture p
-                    ON m.prefecture_code = p.prefecture_code
+                    ON v.prefecture_code = p.prefecture_code
 
                 LEFT JOIN t_meeting_record r
                     ON m.meeting_id = r.meeting_id
@@ -51,7 +54,7 @@ def get_meeting_history_list(user_id):
                     m.meeting_name,
                     m.meeting_date,
                     m.performance_type,
-                    m.venue_name,
+                    v.venue_name,
                     p.prefecture_name,
                     r.seat_info,
                     r.memo

@@ -1,12 +1,10 @@
-from collections import OrderedDict
-
 from fastapi import APIRouter, Request, Form
 from fastapi.responses import RedirectResponse
 
 from python.core import render, auth
 
 from python.models.admin.master import meeting as meeting_model
-from python.models.admin.master.master import get_prefecture_list
+from python.models.admin.master.master import get_venue_list
 from python.utils.validator import is_valid_url
 
 
@@ -14,20 +12,6 @@ router = APIRouter(
     prefix="/admin/master/meeting",
     tags=["admin_master_meeting"]
 )
-
-
-def get_prefecture_groups():
-    prefecture_groups = OrderedDict()
-
-    for prefecture in get_prefecture_list():
-        area = prefecture["area_name"]
-
-        if area not in prefecture_groups:
-            prefecture_groups[area] = []
-
-        prefecture_groups[area].append(prefecture)
-
-    return prefecture_groups
 
 
 @router.get("")
@@ -71,7 +55,7 @@ async def meeting_create_page(request: Request):
         name="templates/admin/master/meeting/form.html",
         context={
             "meeting": None,
-            "prefecture_groups": get_prefecture_groups()
+            "venues": get_venue_list()
         }
     )
 
@@ -83,8 +67,7 @@ async def meeting_create(
         meeting_name: str = Form(...),
         meeting_date: str = Form(...),
         performance_type: str = Form(...),
-        venue_name: str = Form(...),
-        prefecture_code: int = Form(None),
+        venue_id: int = Form(...),
         official_url: str = Form(None),
         public_flag: bool = Form(False)
 ):
@@ -98,8 +81,7 @@ async def meeting_create(
         "meeting_name": meeting_name,
         "meeting_date": meeting_date,
         "performance_type": performance_type,
-        "venue_name": venue_name,
-        "prefecture_code": prefecture_code,
+        "venue_id": venue_id,
         "official_url": official_url,
         "public_flag": public_flag
     }
@@ -111,18 +93,18 @@ async def meeting_create(
             context={
                 "error": "町民集会名を入力してください",
                 "meeting": meeting_data,
-                "prefecture_groups": get_prefecture_groups()
+                "venues": get_venue_list()
             }
         )
 
-    if not venue_name.strip():
+    if not venue_id:
         return render(
             request=request,
             name="templates/admin/master/meeting/form.html",
             context={
-                "error": "会場名を入力してください",
+                "error": "会場を選択してください",
                 "meeting": meeting_data,
-                "prefecture_groups": get_prefecture_groups()
+                "venues": get_venue_list()
             }
         )
 
@@ -139,7 +121,7 @@ async def meeting_create(
             context={
                 "error": "公演区分が正しくありません",
                 "meeting": meeting_data,
-                "prefecture_groups": get_prefecture_groups()
+                "venues": get_venue_list()
             }
         )
 
@@ -150,7 +132,7 @@ async def meeting_create(
             context={
                 "error": "公式サイトURLの形式が正しくありません",
                 "meeting": meeting_data,
-                "prefecture_groups": get_prefecture_groups()
+                "venues": get_venue_list()
             }
         )
 
@@ -190,7 +172,7 @@ async def meeting_edit_page(
         name="templates/admin/master/meeting/form.html",
         context={
             "meeting": meeting,
-            "prefecture_groups": get_prefecture_groups()
+            "venues": get_venue_list()
         }
     )
 
@@ -203,8 +185,7 @@ async def meeting_update(
         meeting_name: str = Form(...),
         meeting_date: str = Form(...),
         performance_type: str = Form(...),
-        venue_name: str = Form(...),
-        prefecture_code: int = Form(None),
+        venue_id: int = Form(...),
         official_url: str = Form(None),
         public_flag: bool = Form(False)
 ):
@@ -218,8 +199,7 @@ async def meeting_update(
         "meeting_name": meeting_name,
         "meeting_date": meeting_date,
         "performance_type": performance_type,
-        "venue_name": venue_name,
-        "prefecture_code": prefecture_code,
+        "venue_id": venue_id,
         "official_url": official_url,
         "public_flag": public_flag
     }
@@ -231,18 +211,18 @@ async def meeting_update(
             context={
                 "error": "町民集会名を入力してください",
                 "meeting": meeting_data,
-                "prefecture_groups": get_prefecture_groups()
+                "venues": get_venue_list()
             }
         )
 
-    if not venue_name.strip():
+    if not venue_id:
         return render(
             request=request,
             name="templates/admin/master/meeting/form.html",
             context={
-                "error": "会場名を入力してください",
+                "error": "会場を選択してください",
                 "meeting": meeting_data,
-                "prefecture_groups": get_prefecture_groups()
+                "venues": get_venue_list()
             }
         )
 
@@ -259,7 +239,7 @@ async def meeting_update(
             context={
                 "error": "公演区分が正しくありません",
                 "meeting": meeting_data,
-                "prefecture_groups": get_prefecture_groups()
+                "venues": get_venue_list()
             }
         )
 
@@ -270,7 +250,7 @@ async def meeting_update(
             context={
                 "error": "公式サイトURLの形式が正しくありません",
                 "meeting": meeting_data,
-                "prefecture_groups": get_prefecture_groups()
+                "venues": get_venue_list()
             }
         )
 

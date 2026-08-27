@@ -44,6 +44,7 @@
 
             <!-- 町民集会情報 -->
             <div class="form-group">
+
                 <h2 class="form-title">
                     町民集会情報
                 </h2>
@@ -80,7 +81,7 @@
                         value="DAY"
                         {% if not meeting or meeting.performance_type == "DAY" %}
                             selected
-                        {% endif %} >
+                        {% endif %}>
                         昼公演
                     </option>
 
@@ -88,7 +89,7 @@
                         value="NIGHT"
                         {% if meeting and meeting.performance_type == "NIGHT" %}
                             selected
-                        {% endif %} >
+                        {% endif %}>
                         夜公演
                     </option>
 
@@ -96,7 +97,7 @@
                         value="PART1"
                         {% if meeting and meeting.performance_type == "PART1" %}
                             selected
-                        {% endif %} >
+                        {% endif %}>
                         1部
                     </option>
 
@@ -104,7 +105,7 @@
                         value="PART2"
                         {% if meeting and meeting.performance_type == "PART2" %}
                             selected
-                        {% endif %} >
+                        {% endif %}>
                         2部
                     </option>
 
@@ -112,54 +113,29 @@
                         value="PART3"
                         {% if meeting and meeting.performance_type == "PART3" %}
                             selected
-                        {% endif %} >
+                        {% endif %}>
                         3部
                     </option>
 
                 </select>
 
                 <label>
-                    会場名
+                    会場
                 </label>
+                <select name="venue_id" required>
+                        <option value="">会場を選択してください</option>
 
-                <input
-                    type="text"
-                    name="venue_name"
-                    value="{{ meeting.venue_name or '' }}"
-                    required>
-
-                <label>
-                    都道府県
-                </label>
-
-                <select
-                    name="prefecture_code">
-
-                    <option value="">
-                        未設定
-                    </option>
-
-                    {% for area, prefectures in prefecture_groups.items() %}
-
-                    <optgroup label="{{ area }}">
-
-                        {% for prefecture in prefectures %}
-
+                        {% for venue in venues %}
                         <option
-                            value="{{ prefecture.prefecture_code }}"
-                            {% if meeting and meeting.prefecture_code == prefecture.prefecture_code %}
+                            value="{{ venue.venue_id }}"
+                            {% if meeting and meeting.venue_id == venue.venue_id %}
                                 selected
-                            {% endif %}>
-                            {{ prefecture.prefecture_name }}
+                            {% endif %}
+                        >
+                            {{ venue.prefecture_name }} {{ venue.venue_name }}
                         </option>
-
                         {% endfor %}
-
-                    </optgroup>
-
-                    {% endfor %}
-
-                </select>
+                    </select>
 
             </div>
 
@@ -198,6 +174,7 @@
                             checked
                         {% endif %}>
                     公開する
+
                 </label>
 
             </div>
@@ -205,16 +182,19 @@
             <button
                 type="submit"
                 class="action-btn">
+
                 {% if meeting and meeting.meeting_id %}
                     更新
                 {% else %}
                     登録
                 {% endif %}
+
             </button>
 
         </form>
 
-        <a href="/admin/master/meeting"
+        <a
+            href="/admin/master/meeting"
             class="back-btn">
             戻る
         </a>

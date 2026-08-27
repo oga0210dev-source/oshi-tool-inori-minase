@@ -3,7 +3,7 @@
 > このファイルは、推し活オールインワンの現在の実装状況・構成・仕様を記録する現行仕様書です。
 > 今後の開発では、このファイルの内容を現行仕様の基準とします。
 >
-> 最終更新日：2026-08-24
+> 最終更新日：2026-08-27
 
 ---
 
@@ -107,6 +107,7 @@ static/
 ├── css/
 ├── img/
 └── fonts/
+
 ```
 
 ---
@@ -125,10 +126,10 @@ DB接続は `python.core.database.get_connection()` を使用する。
 * 既存テーブルを利用できる場合は、新規テーブルを増やさない
 * 論理削除を使用するテーブルでは `is_deleted` を使用する
 * 公開・非公開を管理するデータでは `public_flag` または `is_public` を使用する
-* `created_at` / `updated_at` によって登録日時・更新日時を管理する
-* 更新日時は `update_updated_at_column()` トリガーを使用する
 * 外部キーによるテーブル間の関連を維持する
 * DB定義を変更する場合は、既存機能への影響を確認する
+* 会場情報は `m_venue` で一元管理する
+* ライブ・町民集会から会場情報を直接保持せず、`venue_id` によって `m_venue` を参照する
 
 ---
 
@@ -187,10 +188,10 @@ DB接続は `python.core.database.get_connection()` を使用する。
 * `discord_account`
 * `profile_message`
 * `is_active`
-* `created_at`
-* `updated_at`
 
 `prefecture` は `m_prefecture.prefecture_code` を参照する。
+
+---
 
 #### `m_user_setting`
 
@@ -266,6 +267,43 @@ DB接続は `python.core.database.get_connection()` を使用する。
 
 ---
 
+#### `m_venue`
+
+ライブ・町民集会などで使用する会場情報を管理する。
+
+会場情報はライブ・町民集会から分離して管理し、
+会場名・住所・都道府県・緯度・経度などを一元管理する。
+
+主な項目：
+
+* `venue_id`
+* `venue_name`
+* `address`
+* `prefecture_code`
+* `latitude`
+* `longitude`
+* `public_flag`
+* `is_deleted`
+
+`prefecture_code` は `m_prefecture.prefecture_code` を参照する。
+
+`is_deleted` により論理削除を管理する。
+
+`public_flag` により公開・非公開を管理する。
+
+会場情報を利用するテーブルでは `venue_id` を保持し、
+`m_venue.venue_id` を外部キーとして参照する。
+
+現在、以下のイベントで会場マスタを利用する。
+
+* `m_live`
+* `m_meeting`
+
+将来的に天気予報などの会場情報を利用する機能についても、
+`m_venue` に登録された住所・緯度・経度などを利用する。
+
+---
+
 #### `m_song`
 
 楽曲情報を管理する。
@@ -288,8 +326,6 @@ DB接続は `python.core.database.get_connection()` を使用する。
 * `spotify_music_url`
 * `is_public`
 * `is_deleted`
-* `created_at`
-* `updated_at`
 
 `album_name` と `song_name` の組み合わせは一意。
 
@@ -323,16 +359,17 @@ DB接続は `python.core.database.get_connection()` を使用する。
 * `tour_name`
 * `tour_order`
 * `live_date`
-* `venue_name`
-* `prefecture_code`
+* `venue_id`
 * `blu_ray_url`
 * `official_url`
 * `public_flag`
 * `is_deleted`
-* `created_at`
-* `updated_at`
 
-`prefecture_code` は `m_prefecture.prefecture_code` を参照する。
+`venue_id` は `m_venue.venue_id` を参照する。
+
+ライブの会場名・住所・都道府県などの情報は `m_venue` で管理する。
+
+ライブ自身には会場情報を重複して保持しない。
 
 ---
 
@@ -346,15 +383,16 @@ DB接続は `python.core.database.get_connection()` を使用する。
 * `meeting_name`
 * `meeting_date`
 * `performance_type`
-* `venue_name`
-* `prefecture_code`
+* `venue_id`
 * `official_url`
 * `public_flag`
 * `is_deleted`
-* `created_at`
-* `updated_at`
 
-`prefecture_code` は `m_prefecture.prefecture_code` を参照する。
+`venue_id` は `m_venue.venue_id` を参照する。
+
+町民集会の会場名・住所・都道府県などの情報は `m_venue` で管理する。
+
+町民集会自身には会場情報を重複して保持しない。
 
 `performance_type` は以下の値を使用する。
 
@@ -379,8 +417,6 @@ DB接続は `python.core.database.get_connection()` を使用する。
 * `guest_name`
 * `display_order`
 * `is_deleted`
-* `created_at`
-* `updated_at`
 
 `meeting_id` は `m_meeting.meeting_id` を参照する。
 
@@ -407,8 +443,6 @@ DB接続は `python.core.database.get_connection()` を使用する。
 * `song_order`
 * `is_medley`
 * `medley_order`
-* `created_at`
-* `updated_at`
 
 `event_type` と `event_id` により、ライブまたは町民集会のイベントを識別する。
 
@@ -418,18 +452,18 @@ DB接続は `python.core.database.get_connection()` を使用する。
 
 #### `m_expense_type`
 
-ライブ関連の費用種類を管理する。
+ライブ・町民集会関連の費用種類を管理する。
 
 現在の登録データ：
 
-| コード         | 名称    | 表示順 |
-| ----------- | ----- | --: |
-| `ticket`    | チケット代 |   1 |
-| `transport` | 交通費   |   2 |
-| `hotel`     | 宿泊費   |   3 |
-| `food`      | 食費    |   4 |
-| `goods`     | グッズ   |   5 |
-| `other`     | その他   |   6 |
+| コード | 名称 | 表示順 |
+|---|---|---:|
+| `ticket` | チケット代 | 1 |
+| `transport` | 交通費 | 2 |
+| `hotel` | 宿泊費 | 3 |
+| `food` | 食費 | 4 |
+| `goods` | グッズ | 5 |
+| `other` | その他 | 6 |
 
 ---
 
@@ -439,17 +473,17 @@ DB接続は `python.core.database.get_connection()` を使用する。
 
 現在の登録データ：
 
-| 表示順 | 項目      |
-| --: | ------- |
-|   1 | チケット    |
-|   2 | スマートフォン |
-|   3 | 財布      |
-|   4 | 身分証     |
-|   5 | ペンライト   |
-|   6 | タオル     |
-|   7 | 飲み物     |
-|   8 | 双眼鏡     |
-|   9 | 会員証     |
+| 表示順 | 項目 |
+|---:|---|
+| 1 | チケット |
+| 2 | スマートフォン |
+| 3 | 財布 |
+| 4 | 身分証 |
+| 5 | ペンライト |
+| 6 | タオル |
+| 7 | 飲み物 |
+| 8 | 双眼鏡 |
+| 9 | 会員証 |
 
 ---
 
@@ -470,8 +504,6 @@ DB接続は `python.core.database.get_connection()` を使用する。
 * `singer_debut_date`
 * `profile_image`
 * `profile_message`
-* `created_at`
-* `updated_at`
 
 ---
 
@@ -488,8 +520,6 @@ DB接続は `python.core.database.get_connection()` を使用する。
 * `display_order`
 * `public_flag`
 * `is_deleted`
-* `created_at`
-* `updated_at`
 
 ---
 
@@ -516,8 +546,6 @@ DB接続は `python.core.database.get_connection()` を使用する。
 * `display_order`
 * `public_flag`
 * `is_deleted`
-* `created_at`
-* `updated_at`
 
 ---
 
@@ -554,8 +582,6 @@ DB接続は `python.core.database.get_connection()` を使用する。
 * `is_deleted`
 * `broadcast_year`
 * `broadcast_season`
-* `created_at`
-* `updated_at`
 
 ---
 
@@ -573,8 +599,6 @@ DB接続は `python.core.database.get_connection()` を使用する。
 * `display_order`
 * `public_flag`
 * `is_deleted`
-* `created_at`
-* `updated_at`
 
 ---
 
@@ -595,17 +619,6 @@ DB接続は `python.core.database.get_connection()` を使用する。
   ↓
 セットリスト
 ```
-
-推し情報トップの「ライブ」メニューから、既存の `/home/live` へ遷移する。
-
-ライブ情報は既存の `m_live` およびライブ関連機能を利用する。
-
-推し情報とライブ情報をDB上で直接関連付けるテーブルは作成しない。
-
-ライブ一覧では既存の `t_live_user` を利用し、ログインユーザーの参加予定状態などを表示する。
-
-既存ライブ機能を流用することで、ライブ情報の重複管理を避ける。
-
 ---
 
 ### 4.6 トランザクションテーブル
@@ -621,8 +634,6 @@ DB接続は `python.core.database.get_connection()` を使用する。
 * `live_id`
 * `seat_info`
 * `memo`
-* `created_at`
-* `updated_at`
 
 `user_id` と `live_id` の組み合わせは一意。
 
@@ -640,8 +651,6 @@ DB接続は `python.core.database.get_connection()` を使用する。
 * `expense_type_id`
 * `amount`
 * `memo`
-* `created_at`
-* `updated_at`
 
 `amount` は0以上。
 
@@ -658,8 +667,6 @@ DB接続は `python.core.database.get_connection()` を使用する。
 * `meeting_id`
 * `seat_info`
 * `memo`
-* `created_at`
-* `updated_at`
 
 `user_id` と `meeting_id` の組み合わせは一意。
 
@@ -677,8 +684,6 @@ DB接続は `python.core.database.get_connection()` を使用する。
 * `expense_type_id`
 * `amount`
 * `memo`
-* `created_at`
-* `updated_at`
 
 `amount` は0以上。
 
@@ -693,8 +698,6 @@ DB接続は `python.core.database.get_connection()` を使用する。
 * `prediction_id`
 * `user_id`
 * `live_id`
-* `created_at`
-* `updated_at`
 
 `user_id` と `live_id` の組み合わせは一意。
 
@@ -713,8 +716,6 @@ DB接続は `python.core.database.get_connection()` を使用する。
 * `song_order`
 * `is_medley`
 * `medley_order`
-* `created_at`
-* `updated_at`
 
 `prediction_id` と `song_id` の組み合わせは一意。
 
@@ -749,8 +750,6 @@ DB接続は `python.core.database.get_connection()` を使用する。
 * `user_id`
 * `live_id`
 * `is_join`
-* `created_at`
-* `updated_at`
 
 `user_id` と `live_id` の組み合わせを主キーとする。
 
@@ -765,8 +764,6 @@ DB接続は `python.core.database.get_connection()` を使用する。
 * `user_id`
 * `meeting_id`
 * `is_join`
-* `created_at`
-* `updated_at`
 
 `user_id` と `meeting_id` の組み合わせを主キーとする。
 
@@ -783,8 +780,6 @@ DB接続は `python.core.database.get_connection()` を使用する。
 * `lost_item_id`
 * `item_name`
 * `is_checked`
-* `created_at`
-* `updated_at`
 
 `lost_item_id` は `m_lost_item.lost_item_id` を参照する。
 
@@ -816,8 +811,6 @@ DB接続は `python.core.database.get_connection()` を使用する。
 * `message`
 * `status`
 * `admin_memo`
-* `created_at`
-* `updated_at`
 
 `INQUIRY` の場合はメールアドレスが必須。
 
@@ -840,7 +833,7 @@ DB接続は `python.core.database.get_connection()` を使用する。
 
 ```text
 event_type = 'LIVE'
-
+```
 ---
 
 ## 5. Router構成
