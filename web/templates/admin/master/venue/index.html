@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/static/img/logo.png" type="image/png">
+
+    <title>推し活オールインワン</title>
+
+    <link rel="stylesheet" href="/static/css/common.css">
+    <link rel="stylesheet" href="/static/css/admin/master/admin-common.css">
+    <link rel="stylesheet" href="/static/css/admin/master/venue/venue.css">
+</head>
+
+<body class="{{ font_class }}">
+
+<div class="container">
+
+    <div class="page-header">
+
+        <a href="/admin/master" class="master-link">
+            ← 管理マスタ
+        </a>
+
+        <h1 class="page-title">
+            会場管理
+        </h1>
+
+    </div>
+
+    <a href="/admin/master/venue/create" class="action-btn">
+        新規登録
+    </a>
+
+    <!-- 検索・ソート -->
+    <div class="search-area">
+        <form method="get"
+              class="search-form"
+              onsubmit="clearArchiveState()">
+
+            <input type="text"
+                   name="keyword"
+                   placeholder="会場名・住所で検索"
+                   value="{{ keyword or '' }}">
+
+            <select name="sort">
+
+                <option value="name"
+                    {% if sort == "name" %}selected{% endif %}>
+                    会場名順
+                </option>
+
+                <option value="prefecture"
+                    {% if sort == "prefecture" %}selected{% endif %}>
+                    都道府県順
+                </option>
+
+                <option value="updated"
+                    {% if sort == "updated" %}selected{% endif %}>
+                    更新日順
+                </option>
+
+            </select>
+
+            <button type="submit" class="search-btn">
+                検索
+            </button>
+
+        </form>
+    </div>
+
+    <!-- 会場一覧 -->
+    <div class="page-scroll">
+
+        <div class="venue-list">
+
+            {% if venues %}
+
+            <div class="venue-block">
+
+                {% for venue in venues %}
+
+                <div class="venue-row">
+
+                    <div class="venue-info">
+
+                        <div class="venue-name">
+                            {{ venue.venue_name }}
+                        </div>
+
+                        {% if venue.prefecture_name %}
+                        <div class="venue-prefecture">
+                            {{ venue.prefecture_name }}
+                        </div>
+                        {% endif %}
+
+                        <div class="venue-address">
+                            {{ venue.address }}
+                        </div>
+
+                    </div>
+
+                    <div class="venue-action">
+
+                        <a href="/admin/master/venue/edit/{{ venue.venue_id }}"
+                           class="edit-btn"
+                           onclick="saveArchiveState()">
+                            編集
+                        </a>
+
+                        <a href="/admin/master/venue/delete/{{ venue.venue_id }}"
+                           class="delete-btn"
+                           onclick="return confirm('この会場を削除しますか？');">
+                            削除
+                        </a>
+
+                    </div>
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+            {% else %}
+
+            <p class="empty-message">
+                登録されている会場はありません。
+            </p>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+    // 詳細画面へ移動前
+    function saveArchiveState(){
+
+        const area =
+            document.querySelector(".page-scroll");
+
+        sessionStorage.setItem(
+            "master_venue_url",
+            window.location.href
+        );
+
+        sessionStorage.setItem(
+            "master_venue_scroll",
+            area.scrollTop
+        );
+    }
+
+
+    // 検索時
+    function clearArchiveState(){
+
+        sessionStorage.removeItem(
+            "master_venue_scroll"
+        );
+
+        sessionStorage.removeItem(
+            "master_venue_url"
+        );
+    }
+
+
+    // ページ復元
+    window.addEventListener("load", () => {
+
+        const params =
+            new URLSearchParams(window.location.search);
+
+        if (params.has("first")) {
+
+            sessionStorage.removeItem(
+                "master_venue_scroll"
+            );
+
+            sessionStorage.removeItem(
+                "master_venue_url"
+            );
+
+            window.history.replaceState(
+                {},
+                "",
+                "/admin/master/venue"
+            );
+
+            return;
+        }
+
+
+        const savedUrl =
+            sessionStorage.getItem("master_venue_url");
+
+        const currentUrl =
+            window.location.href;
+
+
+        // 編集画面から一覧に戻ってきた場合
+        if (savedUrl && currentUrl !== savedUrl) {
+
+            window.location.replace(savedUrl);
+
+            return;
+        }
+
+
+        const scroll =
+            sessionStorage.getItem("master_venue_scroll");
+
+        const area =
+            document.querySelector(".page-scroll");
+
+
+        if (area && scroll !== null) {
+
+            area.scrollTop =
+                Number(scroll);
+
+        }
+
+    });
+
+</script>
+
+</body>
+</html>

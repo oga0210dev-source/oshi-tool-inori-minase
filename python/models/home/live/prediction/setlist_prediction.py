@@ -13,7 +13,7 @@ def get_setlist_prediction_list(user_id, tour_name=None):
                     l.live_name,
                     l.tour_name,
                     l.live_date,
-                    l.venue_name,
+                    v.venue_name,
                     pref.prefecture_name,
                     CASE
                         WHEN l.live_date <= CURRENT_DATE THEN TRUE
@@ -22,8 +22,10 @@ def get_setlist_prediction_list(user_id, tour_name=None):
                 FROM t_setlist_prediction p
                 INNER JOIN m_live l
                     ON p.live_id = l.live_id
+                LEFT JOIN m_venue v
+                    ON l.venue_id = v.venue_id
                 LEFT JOIN m_prefecture pref
-                    ON l.prefecture_code = pref.prefecture_code
+                    ON v.prefecture_code = pref.prefecture_code
                 WHERE p.user_id = %s
                   AND l.is_deleted = FALSE
             """
@@ -72,11 +74,13 @@ def get_setlist_prediction_live_list(user_id):
                     l.live_name,
                     l.tour_name,
                     l.live_date,
-                    l.venue_name,
+                    v.venue_name,
                     pref.prefecture_name
                 FROM m_live l
+                LEFT JOIN m_venue v
+                    ON l.venue_id = v.venue_id
                 LEFT JOIN m_prefecture pref
-                    ON l.prefecture_code = pref.prefecture_code
+                    ON v.prefecture_code = pref.prefecture_code
                 WHERE l.is_deleted = FALSE
                   AND l.live_date >= CURRENT_DATE
                   AND NOT EXISTS (
@@ -111,13 +115,15 @@ def get_setlist_prediction_live(live_id):
                     l.tour_name,
                     l.tour_order,
                     l.live_date,
-                    l.venue_name,
-                    l.prefecture_code,
+                    v.venue_name,
+                    v.prefecture_code,
                     l.official_url,
                     pref.prefecture_name
                 FROM m_live l
+                LEFT JOIN m_venue v
+                    ON l.venue_id = v.venue_id
                 LEFT JOIN m_prefecture pref
-                    ON l.prefecture_code = pref.prefecture_code
+                    ON v.prefecture_code = pref.prefecture_code
                 WHERE l.live_id = %s
                   AND l.is_deleted = FALSE
                 """,
@@ -256,15 +262,17 @@ def get_setlist_prediction(prediction_id, user_id):
                     l.tour_name,
                     l.tour_order,
                     l.live_date,
-                    l.venue_name,
-                    l.prefecture_code,
+                    v.venue_name,
+                    v.prefecture_code,
                     l.official_url,
                     pref.prefecture_name
                 FROM t_setlist_prediction p
                 INNER JOIN m_live l
                     ON p.live_id = l.live_id
+                LEFT JOIN m_venue v
+                    ON l.venue_id = v.venue_id
                 LEFT JOIN m_prefecture pref
-                    ON l.prefecture_code = pref.prefecture_code
+                    ON v.prefecture_code = pref.prefecture_code
                 WHERE p.prediction_id = %s
                   AND p.user_id = %s
                   AND l.is_deleted = FALSE
@@ -436,8 +444,8 @@ def get_public_setlist_prediction(prediction_id):
                     l.tour_name,
                     l.tour_order,
                     l.live_date,
-                    l.venue_name,
-                    l.prefecture_code,
+                    v.venue_name,
+                    v.prefecture_code,
                     l.official_url,
                     pref.prefecture_name,
                     CASE
@@ -447,8 +455,10 @@ def get_public_setlist_prediction(prediction_id):
                 FROM t_setlist_prediction p
                 INNER JOIN m_live l
                     ON p.live_id = l.live_id
+                LEFT JOIN m_venue v
+                    ON l.venue_id = v.venue_id
                 LEFT JOIN m_prefecture pref
-                    ON l.prefecture_code = pref.prefecture_code
+                    ON v.prefecture_code = pref.prefecture_code
                 WHERE p.prediction_id = %s
                   AND l.is_deleted = FALSE
                 """,
@@ -579,10 +589,6 @@ def get_setlist_prediction_match_rate(prediction_id):
             if not predicted_songs:
                 return 0, 0, 0, 0
 
-            # --------------------------------
-            # セトリを項目単位にグループ化
-            # --------------------------------
-
             def group_setlist(songs):
                 items = []
                 medley = None
@@ -616,7 +622,6 @@ def get_setlist_prediction_match_rate(prediction_id):
             predicted_items = group_setlist(predicted_songs)
             actual_items = group_setlist(actual_songs)
 
-            # 実際のセトリを song_order で検索できるようにする
             actual_by_order = {
                 item["song_order"]: item
                 for item in actual_items
@@ -631,7 +636,6 @@ def get_setlist_prediction_match_rate(prediction_id):
             )
             partial_match_song_count = 0
 
-            # メドレーのみ
             total_medley_count = sum(
                 1
                 for item in predicted_items
@@ -648,20 +652,7 @@ def get_setlist_prediction_match_rate(prediction_id):
 
             partial_match_medley_song_count = 0
 
-            # --------------------------------
-            # 比較
-            # --------------------------------
-
-            # --------------------------------
             # 完全一致率
-            #
-            # 曲順を含めて比較
-            # メドレーはメドレー内の順番も比較
-            #
-            # 通常曲：1項目としてカウント
-            # メドレー：1つのメドレーを1項目としてカウント
-            # --------------------------------
-
             for predicted_item in predicted_items:
 
                 actual_item = actual_by_order.get(
@@ -674,26 +665,18 @@ def get_setlist_prediction_match_rate(prediction_id):
                 predicted_item_songs = predicted_item["songs"]
                 actual_item_songs = actual_item["songs"]
 
-                # --------------------------------
-                # 通常曲
-                # --------------------------------
-
                 if not predicted_item["is_medley"]:
 
                     predicted_song = predicted_item_songs[0]
                     actual_song = actual_item_songs[0]
 
                     if (
-                            predicted_song["song_group_id"]
-                            == actual_song["song_group_id"]
+                        predicted_song["song_group_id"]
+                        == actual_song["song_group_id"]
                     ):
                         match_item_count += 1
 
                     continue
-
-                # --------------------------------
-                # メドレー
-                # --------------------------------
 
                 predicted_groups = [
                     song["song_group_id"]
@@ -705,27 +688,11 @@ def get_setlist_prediction_match_rate(prediction_id):
                     for song in actual_item_songs
                 ]
 
-                # 曲とメドレー内の順番がすべて一致
                 if predicted_groups == actual_groups:
                     match_item_count += 1
                     match_medley_count += 1
 
-            # --------------------------------
             # 部分一致率
-            #
-            # 曲順は無視して比較
-            # 同じ曲が存在すれば一致
-            # 重複曲にも対応
-            #
-            # メドレーも中の曲を1曲ずつカウント
-            # --------------------------------
-
-            predicted_groups = [
-                song["song_group_id"]
-                for item in predicted_items
-                for song in item["songs"]
-            ]
-
             actual_groups = [
                 song["song_group_id"]
                 for item in actual_items
@@ -749,10 +716,6 @@ def get_setlist_prediction_match_rate(prediction_id):
 
                         remaining_actual.remove(song_group_id)
 
-            # --------------------------------
-            # 一致率
-            # --------------------------------
-
             if total_item_count == 0:
                 match_rate = 0
             else:
@@ -768,10 +731,6 @@ def get_setlist_prediction_match_rate(prediction_id):
                     partial_match_song_count / total_song_count * 100,
                     1
                 )
-
-            # --------------------------------
-            # メドレー一致率
-            # --------------------------------
 
             if total_medley_count == 0:
                 medley_match_rate = None

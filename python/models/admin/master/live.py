@@ -41,8 +41,8 @@ def get_live_list(keyword=None, sort="tour"):
             m_live.tour_name,
             m_live.tour_order,
             m_live.live_date,
-            m_live.venue_name,
-            m_live.prefecture_code,
+            m_venue.venue_name,
+            m_venue.prefecture_code,
             m_prefecture.prefecture_name,
             m_live.blu_ray_url,
             m_live.official_url,
@@ -52,8 +52,11 @@ def get_live_list(keyword=None, sort="tour"):
 
         FROM m_live
 
+        LEFT JOIN m_venue
+        ON m_live.venue_id = m_venue.venue_id
+
         LEFT JOIN m_prefecture
-        ON m_live.prefecture_code = m_prefecture.prefecture_code
+        ON m_venue.prefecture_code = m_prefecture.prefecture_code
 
         WHERE
             m_live.is_deleted = FALSE
@@ -66,7 +69,7 @@ def get_live_list(keyword=None, sort="tour"):
             AND (
                 m_live.live_name ILIKE %s
                 OR m_live.tour_name ILIKE %s
-                OR m_live.venue_name ILIKE %s
+                OR m_venue.venue_name ILIKE %s
             )
         """
 
@@ -100,15 +103,20 @@ def get_live(live_id):
                 """
                 SELECT
                     m_live.*,
+                    m_venue.venue_name,
+                    m_venue.prefecture_code,
                     m_prefecture.prefecture_name
                 FROM m_live
 
+                LEFT JOIN m_venue
+                ON m_live.venue_id = m_venue.venue_id
+
                 LEFT JOIN m_prefecture
-                ON m_live.prefecture_code = m_prefecture.prefecture_code
+                ON m_venue.prefecture_code = m_prefecture.prefecture_code
 
                 WHERE
-                    live_id = %s
-                    AND is_deleted = FALSE
+                    m_live.live_id = %s
+                    AND m_live.is_deleted = FALSE
                 """,
                 (live_id,)
             )
@@ -132,8 +140,7 @@ def create_live(live):
                     tour_name,
                     tour_order,
                     live_date,
-                    venue_name,
-                    prefecture_code,
+                    venue_id,
                     blu_ray_url,
                     official_url,
                     public_flag
@@ -141,7 +148,7 @@ def create_live(live):
 
                 VALUES(
                     %s,%s,%s,%s,%s,
-                    %s,%s,%s,%s
+                    %s,%s,%s
                 )
 
                 RETURNING live_id
@@ -151,8 +158,7 @@ def create_live(live):
                     live["tour_name"],
                     live["tour_order"],
                     live["live_date"],
-                    live["venue_name"],
-                    live["prefecture_code"],
+                    live["venue_id"],
                     live["blu_ray_url"],
                     live["official_url"],
                     live["public_flag"]
@@ -181,8 +187,7 @@ def update_live(live_id, live):
                     tour_name = %s,
                     tour_order = %s,
                     live_date = %s,
-                    venue_name = %s,
-                    prefecture_code = %s,
+                    venue_id = %s,
                     blu_ray_url = %s,
                     official_url = %s,
                     public_flag = %s,
@@ -196,8 +201,7 @@ def update_live(live_id, live):
                     live["tour_name"],
                     live["tour_order"],
                     live["live_date"],
-                    live["venue_name"],
-                    live["prefecture_code"],
+                    live["venue_id"],
                     live["blu_ray_url"],
                     live["official_url"],
                     live["public_flag"],

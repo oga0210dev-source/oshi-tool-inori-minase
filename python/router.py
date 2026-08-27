@@ -54,6 +54,7 @@ from python.routers.admin.master import (
     master,
     invitation_code,
     song as song_master,
+    venue as venue_master,
     live as live_master,
     meeting as meeting_master,
     setlist as setlist_master,
@@ -87,6 +88,7 @@ def register_router(app: FastAPI):
     app.include_router(invitation_code.router)
     app.include_router(admin_inquiry.router)
     app.include_router(song_master.router)
+    app.include_router(venue_master.router)
     app.include_router(live_master.router)
     app.include_router(meeting_master.router)
     app.include_router(setlist_master.router)

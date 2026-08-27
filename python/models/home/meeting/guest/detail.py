@@ -45,13 +45,15 @@ def get_guest_meeting_list(guest_name):
                     m.meeting_id,
                     m.meeting_name,
                     m.meeting_date,
-                    m.venue_name,
+                    v.venue_name,
                     p.prefecture_name
                 FROM m_meeting_guest g
                 INNER JOIN m_meeting m
                     ON g.meeting_id = m.meeting_id
+                LEFT JOIN m_venue v
+                    ON m.venue_id = v.venue_id
                 LEFT JOIN m_prefecture p
-                    ON m.prefecture_code = p.prefecture_code
+                    ON v.prefecture_code = p.prefecture_code
                 WHERE
                     g.guest_name = %s
                     AND g.is_deleted = FALSE

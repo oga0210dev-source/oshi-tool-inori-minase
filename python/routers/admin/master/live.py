@@ -5,9 +5,13 @@ from python.core import render, auth
 
 from python.models.admin.master import live as live_model
 from python.utils.validator import is_valid_url
-from python.models.admin.master.master import get_prefecture_list
+from python.models.admin.master.master import (
+    get_prefecture_list,
+    get_venue_list
+)
 
 from collections import OrderedDict
+
 
 router = APIRouter(
     prefix="/admin/master/live",
@@ -20,8 +24,10 @@ def get_prefecture_groups():
 
     for prefecture in get_prefecture_list():
         area = prefecture["area_name"]
+
         if area not in prefecture_groups:
             prefecture_groups[area] = []
+
         prefecture_groups[area].append(prefecture)
 
     return prefecture_groups
@@ -95,7 +101,7 @@ async def live_create_page(request: Request):
         context={
             "live": None,
             "tour_list": live_model.get_tour_list(),
-            "prefecture_groups": get_prefecture_groups()
+            "venue_list": get_venue_list()
         }
     )
 
@@ -108,12 +114,10 @@ async def live_create(
         tour_name: str = Form(None),
         tour_order: int = Form(None),
         live_date: str = Form(...),
-        venue_name: str = Form(...),
-        prefecture_code: int = Form(None),
+        venue_id: int = Form(None),
         blu_ray_url: str = Form(None),
         official_url: str = Form(None),
         public_flag: bool = Form(False)
-
 ):
     if not auth.is_login(request):
         return RedirectResponse("/login", status_code=303)
@@ -126,8 +130,7 @@ async def live_create(
         "tour_name": tour_name,
         "tour_order": tour_order,
         "live_date": live_date,
-        "venue_name": venue_name,
-        "prefecture_code": prefecture_code,
+        "venue_id": venue_id,
         "blu_ray_url": blu_ray_url,
         "official_url": official_url,
         "public_flag": public_flag
@@ -141,19 +144,19 @@ async def live_create(
                 "error": "ライブ名を入力してください",
                 "live": live_data,
                 "tour_list": live_model.get_tour_list(),
-                "prefecture_groups": get_prefecture_groups()
+                "venue_list": get_venue_list()
             }
         )
 
-    if not venue_name.strip():
+    if not venue_id:
         return render(
             request=request,
             name="templates/admin/master/live/form.html",
             context={
-                "error": "会場名を入力してください",
+                "error": "会場を選択してください",
                 "live": live_data,
                 "tour_list": live_model.get_tour_list(),
-                "prefecture_groups": get_prefecture_groups()
+                "venue_list": get_venue_list()
             }
         )
 
@@ -170,7 +173,7 @@ async def live_create(
                     "error": f"{name}の形式が正しくありません",
                     "live": live_data,
                     "tour_list": live_model.get_tour_list(),
-                    "prefecture_groups": get_prefecture_groups()
+                    "venue_list": get_venue_list()
                 }
             )
 
@@ -197,13 +200,19 @@ async def live_edit_page(
 
     live = live_model.get_live(live_id)
 
+    if not live:
+        return RedirectResponse(
+            "/admin/master/live",
+            status_code=303
+        )
+
     return render(
         request=request,
         name="templates/admin/master/live/form.html",
         context={
             "live": live,
             "tour_list": live_model.get_tour_list(),
-            "prefecture_groups": get_prefecture_groups()
+            "venue_list": get_venue_list()
         }
     )
 
@@ -212,12 +221,12 @@ async def live_edit_page(
 async def live_update(
         request: Request,
         live_id: int,
+
         live_name: str = Form(...),
         tour_name: str = Form(None),
         tour_order: int = Form(None),
         live_date: str = Form(...),
-        venue_name: str = Form(...),
-        prefecture_code: int = Form(None),
+        venue_id: int = Form(None),
         blu_ray_url: str = Form(None),
         official_url: str = Form(None),
         public_flag: bool = Form(False)
@@ -233,8 +242,7 @@ async def live_update(
         "tour_name": tour_name,
         "tour_order": tour_order,
         "live_date": live_date,
-        "venue_name": venue_name,
-        "prefecture_code": prefecture_code,
+        "venue_id": venue_id,
         "blu_ray_url": blu_ray_url,
         "official_url": official_url,
         "public_flag": public_flag
@@ -248,19 +256,19 @@ async def live_update(
                 "error": "ライブ名を入力してください",
                 "live": live_data,
                 "tour_list": live_model.get_tour_list(),
-                "prefecture_groups": get_prefecture_groups()
+                "venue_list": get_venue_list()
             }
         )
 
-    if not venue_name.strip():
+    if not venue_id:
         return render(
             request=request,
             name="templates/admin/master/live/form.html",
             context={
-                "error": "会場名を入力してください",
+                "error": "会場を選択してください",
                 "live": live_data,
                 "tour_list": live_model.get_tour_list(),
-                "prefecture_groups": get_prefecture_groups()
+                "venue_list": get_venue_list()
             }
         )
 
@@ -268,6 +276,7 @@ async def live_update(
         ("Blu-ray URL", blu_ray_url),
         ("公式サイトURL", official_url)
     ]:
+
         if not is_valid_url(url):
             return render(
                 request=request,
@@ -276,7 +285,7 @@ async def live_update(
                     "error": f"{name}の形式が正しくありません",
                     "live": live_data,
                     "tour_list": live_model.get_tour_list(),
-                    "prefecture_groups": get_prefecture_groups()
+                    "venue_list": get_venue_list()
                 }
             )
 

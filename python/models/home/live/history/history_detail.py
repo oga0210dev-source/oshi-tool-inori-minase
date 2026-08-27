@@ -13,7 +13,7 @@ def get_live_history_detail(user_id, live_id):
                     l.live_name,
                     l.tour_name,
                     l.live_date,
-                    l.venue_name,
+                    v.venue_name,
                     p.prefecture_name,
 
                     r.seat_info,
@@ -21,8 +21,11 @@ def get_live_history_detail(user_id, live_id):
 
                 FROM m_live l
 
+                LEFT JOIN m_venue v
+                    ON l.venue_id = v.venue_id
+
                 LEFT JOIN m_prefecture p
-                    ON l.prefecture_code = p.prefecture_code
+                    ON v.prefecture_code = p.prefecture_code
 
                 LEFT JOIN t_live_record r
                     ON l.live_id = r.live_id
