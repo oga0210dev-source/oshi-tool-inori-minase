@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Request, Form
-from fastapi.responses import RedirectResponse
+from fastapi.responses import RedirectResponse, JSONResponse
 
 from python.core import render, auth
 
@@ -9,11 +9,116 @@ from python.utils.validator import is_valid_url
 
 from collections import OrderedDict
 
+import urllib.parse
+import urllib.request
+import json
+
 
 router = APIRouter(
     prefix="/admin/master/venue",
     tags=["admin_master_venue"]
 )
+
+
+@router.get("/geocode")
+async def venue_geocode(
+        request: Request,
+        address: str
+):
+    if not auth.is_login(request):
+        return JSONResponse(
+            {
+                "success": False,
+                "message": "ログインしてください"
+            },
+            status_code=401
+        )
+
+    if not auth.is_admin(request):
+        return JSONResponse(
+            {
+                "success": False,
+                "message": "権限がありません"
+            },
+            status_code=403
+        )
+
+    address = address.strip()
+
+    if not address:
+        return JSONResponse(
+            {
+                "success": False,
+                "message": "住所を入力してください"
+            },
+            status_code=400
+        )
+
+    try:
+        params = urllib.parse.urlencode({
+            "q": address
+        })
+
+        url = (
+            "https://msearch.gsi.go.jp/"
+            "address-search/AddressSearch?"
+            + params
+        )
+
+        req = urllib.request.Request(
+            url,
+            headers={
+                "User-Agent": "oshi-tool-inori-minase"
+            }
+        )
+
+        with urllib.request.urlopen(
+                req,
+                timeout=10
+        ) as response:
+
+            data = json.loads(
+                response.read().decode("utf-8")
+            )
+
+        if not data:
+            return JSONResponse({
+                "success": False,
+                "message": "住所から座標を取得できませんでした"
+            })
+
+        result = data[0]
+
+        coordinates = (
+            result
+            .get("geometry", {})
+            .get("coordinates", [])
+        )
+
+        if len(coordinates) < 2:
+            return JSONResponse({
+                "success": False,
+                "message": "座標情報を取得できませんでした"
+            })
+
+        # 国土地理院APIは [経度, 緯度]
+        longitude = coordinates[0]
+        latitude = coordinates[1]
+
+        return JSONResponse({
+            "success": True,
+            "latitude": latitude,
+            "longitude": longitude,
+            "title": result.get(
+                "properties", {}
+            ).get("title")
+        })
+
+    except Exception:
+        return JSONResponse({
+            "success": False,
+            "message": "座標の取得に失敗しました"
+        })
 
 
 def get_prefecture_groups():

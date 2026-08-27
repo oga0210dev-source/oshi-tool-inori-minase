@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="icon"
+          href="/static/img/logo.png"
+          type="image/png">
+
+    <title>推し活オールインワン</title>
+
+    <link rel="stylesheet"
+          href="/static/css/common.css">
+
+    <link rel="stylesheet"
+          href="/static/css/admin/master/admin-common.css">
+
+    <link rel="stylesheet"
+          href="/static/css/admin/master/venue/venue.css">
+</head>
+
+<body class="{{ font_class }}">
+
+<div class="container">
+
+    <h1 class="page-title">
+        {% if venue and venue.venue_id %}
+            会場編集
+        {% else %}
+            会場登録
+        {% endif %}
+    </h1>
+
+
+    <div class="form-scroll">
+
+        {% if error %}
+
+        <p class="error-message">
+            {{ error }}
+        </p>
+
+        {% endif %}
+
+
+        <form
+            {% if venue and venue.venue_id %}
+                action="/admin/master/venue/update/{{ venue.venue_id }}"
+            {% else %}
+                action="/admin/master/venue/create"
+            {% endif %}
+            method="post"
+            class="venue-form"
+        >
+
+
+            <!-- 基本情報 -->
+            <div class="form-group">
+
+                <h2 class="form-title">
+                    会場情報
+                </h2>
+
+
+                <label>
+                    会場名
+                </label>
+
+                <input
+                    type="text"
+                    name="venue_name"
+                    value="{{ venue.venue_name or '' }}"
+                    required>
+
+                <label>住所</label>
+
+                <div class="address-input-area">
+                    <input
+                        type="text"
+                        id="address"
+                        name="address"
+                        value="{{ venue.address or '' }}"
+                        required
+                    >
+
+                    <button
+                        type="button"
+                        id="geocode-btn"
+                        class="geocode-btn"
+                    >
+                        住所から座標を取得
+                    </button>
+                </div>
+
+                <p id="geocode-message" class="form-help"></p>
+
+
+                <label>
+                    都道府県
+                </label>
+
+                <select
+                    name="prefecture_code"
+                >
+
+                    <option value="">
+                        都道府県を選択してください
+                    </option>
+
+
+                    {% for area, prefectures in prefecture_groups.items() %}
+
+                    <optgroup label="{{ area }}">
+
+                        {% for prefecture in prefectures %}
+
+                        <option
+                            value="{{ prefecture.prefecture_code }}"
+
+                            {% if venue
+                                  and venue.prefecture_code
+                                  == prefecture.prefecture_code %}
+
+                                selected
+
+                            {% endif %}
+                        >
+
+                            {{ prefecture.prefecture_name }}
+
+                        </option>
+
+                        {% endfor %}
+
+                    </optgroup>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+
+            <!-- 位置情報 -->
+            <div class="form-group">
+
+                <h2 class="form-title">
+                    位置情報
+                </h2>
+
+
+                <label>緯度</label>
+
+                <input
+                    type="number"
+                    name="latitude"
+                    id="latitude"
+                    step="any"
+                    value="{{ venue.latitude or '' }}">
+
+                <label>経度</label>
+
+                <input
+                    type="number"
+                    name="longitude"
+                    id="longitude"
+                    step="any"
+                    value="{{ venue.longitude or '' }}">
+
+                <p class="form-help">
+                    天気予報などで会場位置を利用する場合に使用します。
+                </p>
+
+            </div>
+
+
+            <!-- 公開設定 -->
+            <div class="form-group">
+
+                <h2 class="form-title">
+                    公開設定
+                </h2>
+
+
+                <label class="checkbox">
+
+                    <input
+                        type="checkbox"
+                        name="public_flag"
+                        value="true"
+
+                        {% if not venue
+                              or venue.public_flag %}
+
+                            checked
+
+                        {% endif %}
+                    >
+
+                    公開する
+
+                </label>
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="action-btn"
+            >
+
+                {% if venue and venue.venue_id %}
+                    更新
+                {% else %}
+                    登録
+                {% endif %}
+
+            </button>
+
+        </form>
+
+
+        <a
+            href="/admin/master/venue"
+            class="back-btn"
+        >
+            戻る
+        </a>
+
+    </div>
+
+</div>
+<script>
+
+const geocodeButton =
+    document.getElementById("geocode-btn");
+
+const addressInput =
+    document.getElementById("address");
+
+const latitudeInput =
+    document.getElementById("latitude");
+
+const longitudeInput =
+    document.getElementById("longitude");
+
+const geocodeMessage =
+    document.getElementById("geocode-message");
+
+
+geocodeButton.addEventListener("click", async () => {
+
+    const address =
+        addressInput.value.trim();
+
+    if (!address) {
+
+        geocodeMessage.textContent =
+            "住所を入力してください。";
+
+        return;
+    }
+
+
+    geocodeButton.disabled = true;
+
+    geocodeButton.textContent =
+        "取得中...";
+
+    geocodeMessage.textContent = "";
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/admin/master/venue/geocode?address="
+                + encodeURIComponent(address)
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (!response.ok || !data.success) {
+
+            geocodeMessage.textContent =
+                data.message ||
+                "座標を取得できませんでした。";
+
+            return;
+        }
+
+
+        latitudeInput.value =
+            data.latitude ?? "";
+
+        longitudeInput.value =
+            data.longitude ?? "";
+
+
+        geocodeMessage.textContent =
+            "座標を取得しました。";
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        geocodeMessage.textContent =
+            "座標の取得に失敗しました。";
+
+    } finally {
+
+        geocodeButton.disabled = false;
+
+        geocodeButton.textContent =
+            "住所から座標を取得";
+    }
+
+});
+
+</script>
+</body>
+</html>
