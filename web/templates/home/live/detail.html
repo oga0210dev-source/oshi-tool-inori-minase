@@ -54,6 +54,15 @@
                         {{ live.venue_name }}
                     </div>
 
+                    {% if live.venue_name %}
+                    <a href="https://www.google.com/maps/dir/?api=1&destination={{ (live.venue_name ~ ' ' ~ live.address) | urlencode }}"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="departure-btn">
+                        🚗 出発する
+                    </a>
+                    {% endif %}
+
                     {% if is_login %}
 
                         {% if live.live_date >= today %}
