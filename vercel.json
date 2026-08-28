@@ -3,6 +3,10 @@
         {
             "path": "/batch/todo-reminder",
             "schedule": "0 23 * * *"
+        },
+        {
+            "path": "/batch/weather-forecast",
+            "schedule": "0 21 * * *"
         }
     ]
 }

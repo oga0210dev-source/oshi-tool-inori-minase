@@ -6,6 +6,7 @@ from fastapi.responses import JSONResponse
 from python.core import database, auth
 from python.services.inquiry_service import get_active_todos
 from python.services.discord_service import send_todo_reminder
+from python.services.weather_service import update_weather_forecast
 
 
 router = APIRouter(
@@ -14,8 +15,7 @@ router = APIRouter(
 )
 
 
-@router.get("/todo-reminder")
-async def todo_reminder(request: Request):
+def check_cron_secret(request: Request):
     cron_secret = os.getenv("CRON_SECRET")
 
     if cron_secret:
@@ -26,6 +26,17 @@ async def todo_reminder(request: Request):
                 status_code=401,
                 content={"message": "Unauthorized"}
             )
+
+    return None
+
+
+@router.get("/todo-reminder")
+async def todo_reminder(request: Request):
+
+    unauthorized = check_cron_secret(request)
+
+    if unauthorized:
+        return unauthorized
 
     conn = database.get_connection()
 
@@ -49,3 +60,29 @@ async def todo_reminder(request: Request):
 
     finally:
         conn.close()
+
+
+@router.get("/weather-forecast")
+async def weather_forecast(request: Request):
+
+    unauthorized = check_cron_secret(request)
+
+    if unauthorized:
+        return unauthorized
+
+    try:
+        update_weather_forecast()
+
+        return {
+            "success": True,
+            "message": "天気予報を更新しました。"
+        }
+
+    except Exception as e:
+        return JSONResponse(
+            status_code=500,
+            content={
+                "success": False,
+                "message": f"天気予報の更新に失敗しました: {str(e)}"
+            }
+        )
