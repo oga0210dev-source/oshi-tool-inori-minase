@@ -58,7 +58,9 @@ def get_weather(latitude, longitude, target_date):
         target_date = date.fromisoformat(target_date)
 
     today = date.today()
-    max_forecast_date = today + timedelta(days=FORECAST_DAYS)
+
+    # Open-Meteoの予報取得範囲
+    max_forecast_date = today + timedelta(days=FORECAST_DAYS - 1)
 
     if target_date < today or target_date > max_forecast_date:
         return None

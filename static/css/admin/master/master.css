@@ -68,6 +68,14 @@
     opacity:.85;
 }
 
+.master-form {
+    margin: 0;
+    padding: 0;
+}
+
+.master-form .master-btn {
+    width: 100%;
+}
 
 /* =========================
    スマートフォン
