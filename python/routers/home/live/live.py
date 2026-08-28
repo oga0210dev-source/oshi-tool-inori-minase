@@ -4,6 +4,8 @@ from python.core import render
 from python.core import auth
 
 from python.models.home.live import live as live_model
+from python.services import weather_service
+
 
 router = APIRouter(
     prefix="/home/live",
@@ -17,6 +19,11 @@ async def live_list(
 ):
     user_id = request.session.get("user_id")
     lives = live_model.get_live_list(user_id)
+
+    weather_service.add_weather_from_work_table(
+        lives,
+        "live_date"
+    )
 
     return render(
         request=request,
