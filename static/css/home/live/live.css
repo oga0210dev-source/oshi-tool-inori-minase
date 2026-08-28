@@ -15,22 +15,17 @@
 ========================== */
 
 .live-slider{
-    width:100%;
-    min-width:0;
-
     display:flex;
     gap:20px;
-
+    width:100%;
+    min-width:0;
+    padding:0 20px;
+    box-sizing:border-box;
     overflow-x:auto;
     overflow-y:hidden;
-
     scroll-snap-type:x mandatory;
-
     scrollbar-width:none;
     -ms-overflow-style:none;
-
-    padding:0 20px;
-
     overscroll-behavior-x:contain;
 }
 
@@ -40,23 +35,24 @@
 
 
 /* ==========================
-   ライブスライド
+   ライブカード
 ========================== */
 
 .live-card{
     flex:0 0 100%;
-    width:85%;
+    width:100%;
     max-width:390px;
     min-height:150px;
     margin:0 auto;
-    scroll-snap-align:center;
-    background:white;
-    border-radius:20px;
     padding:15px;
-    box-shadow:0 3px 8px rgba(0,0,0,0.12);
+    box-sizing:border-box;
+    scroll-snap-align:center;
     display:flex;
     flex-direction:column;
     justify-content:space-between;
+    background:#fff;
+    border-radius:20px;
+    box-shadow:0 3px 8px rgba(0,0,0,.12);
 }
 
 
@@ -65,22 +61,159 @@
 ========================== */
 
 .live-name{
+    margin-bottom:8px;
     font-size:16px;
     font-weight:bold;
-    margin-bottom:4px;
 }
-
 
 .tour-name{
-    font-size:13px;
-    color:#777;
     margin-bottom:8px;
+    color:#777;
+    font-size:13px;
+    line-height:1.4;
 }
-
 
 .live-info{
     font-size:13px;
     line-height:1.7;
+}
+
+
+/* ==========================
+   天気予報ボタン
+========================== */
+
+.weather-btn{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
+    width:100%;
+    height:40px;
+    margin-top:10px;
+    padding:0 15px;
+    border:0;
+    border-radius:10px;
+    background:#e8f5ff;
+    color:#333;
+    font-family:inherit;
+    font-size:14px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+
+/* ==========================
+   天気予報モーダル
+========================== */
+
+.weather-modal{
+    position:fixed;
+    inset:0;
+    z-index:2147483647;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:60px 16px 20px;
+    box-sizing:border-box;
+}
+
+.weather-modal.active{
+    display:flex;
+}
+
+.weather-modal-overlay{
+    position:absolute;
+    inset:0;
+    z-index:0;
+    background:rgba(0,0,0,.5);
+}
+
+.weather-modal-content{
+    position:relative;
+    z-index:1;
+    width:100%;
+    max-width:400px;
+    max-height:calc(100vh - 80px);
+    padding:20px;
+    box-sizing:border-box;
+    overflow-y:auto;
+    background:#fff;
+    border-radius:18px;
+    box-shadow:0 5px 20px rgba(0,0,0,.2);
+    -webkit-overflow-scrolling:touch;
+}
+
+.weather-modal-title{
+    margin-bottom:15px;
+    text-align:center;
+    font-size:17px;
+    font-weight:bold;
+}
+
+
+/* ==========================
+   天気情報
+========================== */
+
+.weather-day{
+    padding:12px 0;
+    border-bottom:1px solid #eee;
+    text-align:center;
+}
+
+.weather-day:last-of-type{
+    border-bottom:0;
+}
+
+.weather-day-title{
+    margin-bottom:8px;
+    font-size:14px;
+    font-weight:bold;
+    line-height:1.6;
+}
+
+.weather-icon{
+    margin-right:4px;
+    font-size:24px;
+}
+
+.weather-name{
+    margin-bottom:5px;
+    font-size:14px;
+    font-weight:bold;
+}
+
+.weather-temperature{
+    margin-bottom:5px;
+    font-size:13px;
+}
+
+.weather-rain{
+    font-size:13px;
+}
+
+
+/* ==========================
+   閉じるボタン
+========================== */
+
+.weather-close{
+    width:100%;
+    height:40px;
+    margin-top:15px;
+    border:0;
+    border-radius:10px;
+    background:#ff8fb1;
+    color:#fff;
+    font-family:inherit;
+    font-size:14px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+body.weather-modal-open{
+    overflow:hidden;
 }
 
 
@@ -90,55 +223,43 @@
 
 .join-status{
     display:inline-flex;
+    align-items:center;
     width:max-content;
     margin-top:10px;
     padding:5px 12px;
     border-radius:20px;
     background:#8bc34a;
-    color:white;
+    color:#fff;
     font-size:13px;
     font-weight:bold;
-    align-items:center;
 }
 
 
 /* ==========================
-   記録ボタン
+   記録・詳細ボタン
 ========================== */
+
+.add-history,
+.detail-btn{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:100%;
+    height:40px;
+    margin-top:10px;
+    border-radius:10px;
+    text-decoration:none;
+    font-size:14px;
+}
 
 .add-history{
     background:#eee;
     color:#666;
-    width:100%;
-    height:40px;
-    margin-top:10px;
-    border-radius:10px;
-    border:none;
-    text-decoration:none;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:14px;
 }
-
-
-/* ==========================
-   詳細ボタン
-========================== */
 
 .detail-btn{
     background:#ff8fb1;
-    width:100%;
-    height:40px;
-    margin-top:10px;
-    border-radius:10px;
-    border:none;
-    color:white;
-    text-decoration:none;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:14px;
+    color:#fff;
 }
 
 
@@ -150,36 +271,41 @@
     width:90%;
     max-width:400px;
     margin:30px auto;
-    text-align:center;
     color:#777;
+    text-align:center;
 }
 
 
 /* ==========================
-   メニューボタン共通
+   メニューボタン
 ========================== */
 
 .menu-btn,
 .wide-btn{
+    display:flex;
+    align-items:center;
+    justify-content:center;
     background:rgba(255,255,255,.88);
     border-radius:15px;
-    display:flex;
-    justify-content:center;
-    align-items:center;
     text-decoration:none;
     box-shadow:0 2px 6px rgba(0,0,0,.12);
-    transition:.2s;
+    transition:transform .2s;
 }
-
 
 .menu-btn:hover,
 .wide-btn:hover{
     transform:scale(1.03);
 }
 
+.menu-btn span{
+    color:#333;
+    font-size:14px;
+    font-weight:bold;
+}
+
 
 /* ==========================
-   横長ボタン
+   横長メニュー
 ========================== */
 
 .wide-btn{
@@ -189,12 +315,11 @@
     margin:10px auto;
 }
 
-
 .wide-btn img{
     width:45px;
     height:45px;
-    object-fit:contain;
     margin-right:15px;
+    object-fit:contain;
 }
 
 
@@ -203,32 +328,23 @@
 ========================== */
 
 .menu-grid{
-    width:80%;
-    max-width:400px;
-    margin:10px auto;
     display:grid;
     grid-template-columns:1fr 1fr;
     gap:10px;
+    width:80%;
+    max-width:400px;
+    margin:10px auto;
 }
-
 
 .menu-grid .menu-btn{
     height:70px;
 }
 
-
 .menu-btn img{
     width:35px;
     height:35px;
-    object-fit:contain;
     margin-right:10px;
-}
-
-
-.menu-btn span{
-    font-size:14px;
-    font-weight:bold;
-    color:#333;
+    object-fit:contain;
 }
 
 
@@ -238,12 +354,11 @@
 
 .live-slider-dots{
     display:flex;
-    justify-content:center;
     align-items:center;
+    justify-content:center;
     gap:8px;
     margin:10px 0 16px;
 }
-
 
 .live-slider-dot{
     display:block;
@@ -251,8 +366,8 @@
     height:8px;
     border-radius:50%;
     background:#ccc;
+    transition:transform .15s ease;
 }
-
 
 .live-slider-dot.active{
     background:#ff8fb1;
@@ -266,15 +381,17 @@
 
 @media (max-width:600px){
 
-    .container{
-        width:100%;
-        max-width:430px;
-        padding:15px 0 30px;
+    .live-slider{
+        padding:0 20px;
     }
 
-    .live-slider{
-        width:100%;
-        padding:0 20px;
+    .weather-modal{
+        padding:60px 12px 16px;
+    }
+
+    .weather-modal-content{
+        max-height:calc(100vh - 76px);
+        padding:18px;
     }
 
 }
