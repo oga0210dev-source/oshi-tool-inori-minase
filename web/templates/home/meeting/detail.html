@@ -17,17 +17,21 @@
     </a>
 
     {% elif request.query_params.get('from') == 'history' %}
-
     <a href="/home/meeting/history"
        class="back-link">
         ← 参加履歴
     </a>
 
     {% elif request.query_params.get('from') == 'venue_events' %}
-
     <a href="/home/oshi/venue/{{ request.query_params.get('venue_id') }}/events"
        class="back-link">
         ← 利用イベント
+    </a>
+
+    {% elif request.query_params.get('from') == 'meeting' %}
+    <a href="/home/meeting"
+       class="back-link">
+        ← 町民集会
     </a>
 
     {% else %}
@@ -67,9 +71,15 @@
                         {{ day_status }}
                     </div>
 
-                    <div>
+                    <div class="venue-link">
                         📍 {{ meeting.prefecture_name }}
-                        {{ meeting.venue_name }}
+
+                        {% if meeting.venue_name %}
+                        <a href="/home/oshi/venue/{{ meeting.venue_id }}/events?from=meeting_detail&event_id={{ meeting.meeting_id }}"
+                           class="venue-link">
+                            {{ meeting.venue_name }}
+                        </a>
+                        {% endif %}
                     </div>
 
                     {% if is_login %}
