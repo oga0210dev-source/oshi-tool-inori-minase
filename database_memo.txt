@@ -149,6 +149,39 @@ create trigger set_m_meeting_guest_updated_at BEFORE
 update on m_meeting_guest for EACH row
 execute FUNCTION update_updated_at_column ();
 
+create table public.m_venue (
+  created_at timestamp without time zone not null default CURRENT_TIMESTAMP,
+  updated_at timestamp without time zone not null default CURRENT_TIMESTAMP,
+  venue_id bigserial not null,
+  venue_name character varying(200) not null,
+  address character varying(500) not null,
+  prefecture_code smallint null,
+  latitude double precision null,
+  longitude double precision null,
+  public_flag boolean not null default true,
+  is_deleted boolean not null default false,
+  capacity integer null,
+  official_url character varying(500) null,
+  constraint m_venue_pkey primary key (venue_id),
+  constraint fk_venue_prefecture foreign KEY (prefecture_code) references m_prefecture (prefecture_code),
+  constraint chk_venue_capacity check (
+    (
+      (capacity is null)
+      or (capacity >= 0)
+    )
+  )
+) TABLESPACE pg_default;
+
+create index IF not exists idx_venue_name on public.m_venue using btree (venue_name) TABLESPACE pg_default;
+
+create index IF not exists idx_venue_prefecture on public.m_venue using btree (prefecture_code) TABLESPACE pg_default;
+
+create index IF not exists idx_venue_deleted on public.m_venue using btree (is_deleted) TABLESPACE pg_default;
+
+create trigger set_m_venue_updated_at BEFORE
+update on m_venue for EACH row
+execute FUNCTION update_updated_at_column ();
+
 create table public.m_live (
   live_id bigserial not null,
   live_name character varying(200) not null,

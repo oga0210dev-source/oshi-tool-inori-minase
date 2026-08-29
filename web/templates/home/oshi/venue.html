@@ -1,0 +1,520 @@
+{% extends "templates/commons/base.html" %}
+
+{% block title %}イベント会場{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="/static/css/home/oshi/oshi.css">
+{% endblock %}
+
+{% block content %}
+
+<main class="oshi-page oshi-venue-page">
+    <!-- ページヘッダー -->
+    <section class="oshi-page-header">
+        <a href="/home/oshi"
+           class="oshi-back-btn">
+            ← 推し情報
+        </a>
+
+        <h1>
+            イベント会場
+        </h1>
+    </section>
+
+    <!-- 検索・ソート -->
+    <section class="oshi-venue-search">
+        <form method="get" class="oshi-venue-search-form">
+
+            <input type="text"
+                name="keyword"
+                value="{{ keyword or '' }}"
+                placeholder="会場名・住所で検索">
+
+            <select name="sort">
+                <option value="name"
+                    {% if sort == "name" %}
+                    selected
+                    {% endif %} >
+                    会場名順
+                </option>
+
+                <option value="prefecture"
+                    {% if sort == "prefecture" %}
+                    selected
+                    {% endif %} >
+                    都道府県順
+                </option>
+
+                <option value="capacity"
+                    {% if sort == "capacity" %}
+                    selected
+                    {% endif %} >
+                    キャパ順
+                </option>
+            </select>
+
+            <button
+                type="submit"
+                class="oshi-venue-search-btn">
+                検索
+            </button>
+        </form>
+    </section>
+
+    <!-- 会場一覧 -->
+    <section class="oshi-venue-list">
+        {% for venue in venues %}
+        <article
+            class="oshi-venue-card"
+            data-venue-name="{{ venue.venue_name }}"
+            data-prefecture="{{ venue.prefecture_name or '' }}"
+            data-address="{{ venue.address or '' }}"
+            data-capacity="{{ venue.capacity if venue.capacity is not none else '' }}"
+            data-official-url="{{ venue.official_url or '' }}">
+
+            <h2 class="oshi-venue-name">
+                {{ venue.venue_name }}
+            </h2>
+
+            <div class="oshi-venue-meta">
+                {% if venue.prefecture_name %}
+                <span>
+                    🗾 {{ venue.prefecture_name }}
+                </span>
+                {% endif %}
+            </div>
+
+            {% if venue.address %}
+            <p class="oshi-venue-address">
+                📍 {{ venue.address }}
+            </p>
+            {% endif %}
+
+            {% if venue.capacity is not none %}
+            <p class="oshi-venue-capacity">
+                👥 キャパ：
+                {{ "{:,}".format(venue.capacity) }}人
+            </p>
+            {% endif %}
+
+            <div class="oshi-venue-actions">
+                <!-- 詳細：ポップアップ -->
+                <button type="button"
+                    class="oshi-venue-link"
+                    onclick="openVenueDetail(this)">
+                    詳細
+                </button>
+
+                <!-- 利用イベント：別ページ -->
+                <a href="/home/oshi/venue/{{ venue.venue_id }}/events?return_keyword={{ keyword | urlencode }}&return_sort={{ sort | urlencode }}"
+                    class="oshi-venue-link oshi-venue-events-link"
+                    onclick="saveVenueListState()">
+                    利用イベント
+                </a>
+            </div>
+        </article>
+
+        {% else %}
+        <p class="oshi-empty">
+            {% if keyword %}
+            「{{ keyword }}」に一致するイベント会場はありません。
+            {% else %}
+            イベント会場が登録されていません。
+            {% endif %}
+        </p>
+        {% endfor %}
+    </section>
+</main>
+
+
+<!-- ==========================
+     会場詳細ポップアップ
+========================== -->
+
+<div id="oshi-venue-modal" class="oshi-venue-modal">
+    <!-- 背景 -->
+    <div class="oshi-venue-modal-overlay" onclick="closeVenueDetail()"></div>
+
+    <!-- ポップアップ -->
+    <div class="oshi-venue-modal-content">
+        <!-- 閉じる -->
+        <button type="button"
+            class="oshi-venue-modal-close"
+            onclick="closeVenueDetail()">
+            ×
+        </button>
+
+        <!-- 会場名 -->
+        <h2 id="oshi-venue-modal-name" class="oshi-venue-modal-name"></h2>
+
+        <div class="oshi-venue-modal-info">
+            <!-- 都道府県 -->
+            <div class="oshi-venue-modal-row">
+                <span>
+                    都道府県
+                </span>
+
+                <strong
+                    id="oshi-venue-modal-prefecture"></strong>
+            </div>
+
+            <!-- 住所 -->
+            <div class="oshi-venue-modal-row">
+                <span>
+                    住所
+                </span>
+
+                <div class="oshi-venue-modal-address">
+                    <span id="oshi-venue-modal-address"></span>
+
+                    <!-- Google Map -->
+                    <a id="oshi-venue-modal-map"
+                        class="oshi-venue-map-btn"
+                        target="_blank"
+                        rel="noopener noreferrer">
+                        🗺️ Google Map
+                    </a>
+                </div>
+            </div>
+
+            <!-- キャパ -->
+            <div class="oshi-venue-modal-row">
+                <span>
+                    キャパ
+                </span>
+
+                <strong id="oshi-venue-modal-capacity"></strong>
+            </div>
+        </div>
+
+        <!-- 公式サイト -->
+        <a id="oshi-venue-modal-official"
+            class="oshi-venue-detail-link"
+            target="_blank"
+            rel="noopener noreferrer">
+            公式サイト
+        </a>
+    </div>
+</div>
+
+
+<script>
+
+    /*
+     * ==========================
+     * 会場詳細ポップアップ
+     * ==========================
+     */
+
+    function openVenueDetail(button) {
+
+        const card = button.closest(
+            ".oshi-venue-card"
+        );
+
+        const name = card.dataset.venueName;
+        const prefecture = card.dataset.prefecture;
+        const address = card.dataset.address;
+        const capacity = card.dataset.capacity;
+        const officialUrl = card.dataset.officialUrl;
+
+
+        /*
+         * 会場名
+         */
+        document.getElementById(
+            "oshi-venue-modal-name"
+        ).textContent = name;
+
+
+        /*
+         * 都道府県
+         */
+        document.getElementById(
+            "oshi-venue-modal-prefecture"
+        ).textContent = prefecture || "ー";
+
+
+        /*
+         * 住所
+         */
+        document.getElementById(
+            "oshi-venue-modal-address"
+        ).textContent = address || "ー";
+
+
+        /*
+         * キャパ
+         */
+        document.getElementById(
+            "oshi-venue-modal-capacity"
+        ).textContent = capacity
+            ? Number(capacity).toLocaleString() + "人"
+            : "ー";
+
+
+        /*
+         * Google Map
+         *
+         * 会場名 + 住所で検索
+         */
+        const mapButton = document.getElementById(
+            "oshi-venue-modal-map"
+        );
+
+        if (address) {
+
+            const query = encodeURIComponent(
+                name + " " + address
+            );
+
+            mapButton.href =
+                "https://www.google.com/maps/search/?api=1&query="
+                + query;
+
+            mapButton.style.display = "flex";
+
+        } else {
+
+            mapButton.style.display = "none";
+
+        }
+
+
+        /*
+         * 公式サイト
+         */
+        const officialButton = document.getElementById(
+            "oshi-venue-modal-official"
+        );
+
+        if (officialUrl) {
+
+            officialButton.href = officialUrl;
+            officialButton.style.display = "flex";
+
+        } else {
+
+            officialButton.style.display = "none";
+
+        }
+
+
+        /*
+         * ポップアップ表示
+         */
+        document.getElementById(
+            "oshi-venue-modal"
+        ).classList.add("active");
+
+    }
+
+
+    function closeVenueDetail() {
+
+        document.getElementById(
+            "oshi-venue-modal"
+        ).classList.remove("active");
+
+    }
+
+
+    /*
+     * ==========================
+     * 会場一覧の状態保存・復元
+     * ==========================
+     */
+
+    const venueList = document.querySelector(
+        ".oshi-venue-list"
+    );
+
+
+    /*
+     * ?first の有無
+     *
+     * 推し情報TOPから開いた場合は
+     * 一覧を初期状態にする。
+     */
+    const venueFirstOpen =
+        new URLSearchParams(
+            window.location.search
+        ).has("first");
+
+
+    /*
+     * 現在の検索条件を含めた保存キーを作成
+     */
+    function getVenueListStateKey() {
+
+        const params = new URLSearchParams(
+            window.location.search
+        );
+
+        const keyword = params.get("keyword") || "";
+        const sort = params.get("sort") || "name";
+
+        return (
+            "oshi_venue_list_state_"
+            + encodeURIComponent(keyword)
+            + "_"
+            + encodeURIComponent(sort)
+        );
+    }
+
+
+    /*
+     * ==========================
+     * ?first の場合
+     * 保存状態をクリア
+     * ==========================
+     */
+
+    if (venueFirstOpen) {
+
+        Object.keys(sessionStorage)
+            .filter(function(key) {
+
+                return key.startsWith(
+                    "oshi_venue_list_state_"
+                );
+
+            })
+            .forEach(function(key) {
+
+                sessionStorage.removeItem(key);
+
+            });
+
+    }
+
+
+    /*
+     * ==========================
+     * スクロール位置を保存
+     * ==========================
+     */
+
+    if (venueList) {
+
+        venueList.addEventListener(
+            "scroll",
+            function() {
+
+                /*
+                 * ?first の初期表示中は
+                 * 先頭位置を保存する。
+                 */
+                sessionStorage.setItem(
+                    getVenueListStateKey(),
+                    venueList.scrollTop
+                );
+
+            }
+        );
+
+    }
+
+
+    /*
+     * ==========================
+     * ページ表示時
+     * スクロール位置を復元
+     * ==========================
+     */
+
+    window.addEventListener(
+        "DOMContentLoaded",
+        function() {
+
+            if (!venueList) {
+                return;
+            }
+
+
+            /*
+             * ?first の場合は
+             * 復元しない
+             */
+            if (venueFirstOpen) {
+
+                venueList.scrollTop = 0;
+
+            } else {
+
+                const key =
+                    getVenueListStateKey();
+
+                const savedPosition =
+                    sessionStorage.getItem(key);
+
+                if (savedPosition !== null) {
+
+                    venueList.scrollTop =
+                        Number(savedPosition);
+
+                }
+
+            }
+
+
+            /*
+             * ?first をURLから削除
+             *
+             * 例：
+             * /home/oshi/venue?first
+             * ↓
+             * /home/oshi/venue
+             */
+            if (venueFirstOpen) {
+
+                const params =
+                    new URLSearchParams(
+                        window.location.search
+                    );
+
+                params.delete("first");
+
+                const query =
+                    params.toString();
+
+                const newUrl =
+                    window.location.pathname
+                    + (query ? "?" + query : "")
+                    + window.location.hash;
+
+                window.history.replaceState(
+                    {},
+                    "",
+                    newUrl
+                );
+
+            }
+
+        }
+    );
+
+
+    /*
+     * ==========================
+     * 利用イベントへ移動する前に
+     * 現在位置を保存
+     * ==========================
+     */
+
+    function saveVenueListState() {
+
+        if (!venueList) {
+            return;
+        }
+
+        sessionStorage.setItem(
+            getVenueListStateKey(),
+            venueList.scrollTop
+        );
+
+    }
+
+</script>
+
+{% endblock %}
