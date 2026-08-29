@@ -4,21 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <link rel="icon"
-          href="/static/img/logo.png"
-          type="image/png">
+    <link rel="icon" href="/static/img/logo.png" type="image/png">
 
     <title>推し活オールインワン</title>
 
-    <link rel="stylesheet"
-          href="/static/css/common.css">
-
-    <link rel="stylesheet"
-          href="/static/css/admin/master/admin-common.css">
-
-    <link rel="stylesheet"
-          href="/static/css/admin/master/venue/venue.css">
+    <link rel="stylesheet" href="/static/css/common.css">
+    <link rel="stylesheet" href="/static/css/admin/master/admin-common.css">
+    <link rel="stylesheet" href="/static/css/admin/master/venue/venue.css">
 </head>
 
 <body class="{{ font_class }}">
@@ -33,17 +25,12 @@
         {% endif %}
     </h1>
 
-
     <div class="form-scroll">
-
         {% if error %}
-
         <p class="error-message">
             {{ error }}
         </p>
-
         {% endif %}
-
 
         <form
             {% if venue and venue.venue_id %}
@@ -52,118 +39,105 @@
                 action="/admin/master/venue/create"
             {% endif %}
             method="post"
-            class="venue-form"
-        >
-
+            class="venue-form">
 
             <!-- 基本情報 -->
             <div class="form-group">
-
                 <h2 class="form-title">
                     会場情報
                 </h2>
-
 
                 <label>
                     会場名
                 </label>
 
-                <input
-                    type="text"
+                <input type="text"
                     name="venue_name"
                     value="{{ venue.venue_name or '' }}"
                     required>
 
                 <label>住所</label>
-
                 <div class="address-input-area">
-                    <input
-                        type="text"
+                    <input type="text"
                         id="address"
                         name="address"
                         value="{{ venue.address or '' }}"
-                        required
-                    >
+                        required>
 
-                    <button
-                        type="button"
+                    <button type="button"
                         id="geocode-btn"
-                        class="geocode-btn"
-                    >
+                        class="geocode-btn">
                         住所から座標を取得
                     </button>
                 </div>
 
                 <p id="geocode-message" class="form-help"></p>
 
-
                 <label>
                     都道府県
                 </label>
 
-                <select
-                    name="prefecture_code"
-                >
-
+                <select name="prefecture_code">
                     <option value="">
                         都道府県を選択してください
                     </option>
-
-
                     {% for area, prefectures in prefecture_groups.items() %}
-
                     <optgroup label="{{ area }}">
-
                         {% for prefecture in prefectures %}
-
-                        <option
-                            value="{{ prefecture.prefecture_code }}"
-
-                            {% if venue
-                                  and venue.prefecture_code
-                                  == prefecture.prefecture_code %}
-
+                        <option value="{{ prefecture.prefecture_code }}"
+                            {% if venue and venue.prefecture_code == prefecture.prefecture_code %}
                                 selected
-
-                            {% endif %}
-                        >
-
+                            {% endif %}>
                             {{ prefecture.prefecture_name }}
-
                         </option>
-
                         {% endfor %}
-
                     </optgroup>
-
                     {% endfor %}
-
                 </select>
 
-            </div>
+                <label>
+                    キャパ
+                </label>
 
+                <input type="number"
+                    name="capacity"
+                    min="0"
+                    step="1"
+                    value="{{ venue.capacity if venue and venue.capacity is not none else '' }}">
+
+                <p class="form-help">
+                    会場の最大収容人数を入力してください。
+                </p>
+
+                <label>
+                    公式サイトURL
+                </label>
+
+                <input type="url"
+                    name="official_url"
+                    value="{{ venue.official_url or '' }}"
+                    placeholder="https://example.com">
+
+                <p class="form-help">
+                    会場の公式サイトなどのURLを入力してください。
+                </p>
+            </div>
 
             <!-- 位置情報 -->
             <div class="form-group">
-
                 <h2 class="form-title">
                     位置情報
                 </h2>
 
-
                 <label>緯度</label>
-
-                <input
-                    type="number"
+                <input type="number"
                     name="latitude"
                     id="latitude"
                     step="any"
                     value="{{ venue.latitude or '' }}">
 
                 <label>経度</label>
-
-                <input
-                    type="number"
+                <input type="number"
                     name="longitude"
                     id="longitude"
                     step="any"
@@ -172,65 +146,39 @@
                 <p class="form-help">
                     天気予報などで会場位置を利用する場合に使用します。
                 </p>
-
             </div>
-
 
             <!-- 公開設定 -->
             <div class="form-group">
-
                 <h2 class="form-title">
                     公開設定
                 </h2>
 
-
                 <label class="checkbox">
-
-                    <input
-                        type="checkbox"
+                    <input type="checkbox"
                         name="public_flag"
                         value="true"
-
-                        {% if not venue
-                              or venue.public_flag %}
-
+                        {% if not venue or venue.public_flag %}
                             checked
-
-                        {% endif %}
-                    >
-
+                        {% endif %}>
                     公開する
-
                 </label>
-
             </div>
 
-
-            <button
-                type="submit"
-                class="action-btn"
-            >
-
+            <button type="submit" class="action-btn">
                 {% if venue and venue.venue_id %}
                     更新
                 {% else %}
                     登録
                 {% endif %}
-
             </button>
-
         </form>
 
-
-        <a
-            href="/admin/master/venue"
-            class="back-btn"
-        >
+        <a href="/admin/master/venue"
+            class="back-btn">
             戻る
         </a>
-
     </div>
-
 </div>
 <script>
 

@@ -47,7 +47,8 @@ from python.routers.home.oshi import (
     oshi_anniversary,
     oshi_official_link,
     oshi_song,
-    oshi_program
+    oshi_program,
+    oshi_venue
 )
 from python.routers.mypage import mypage, password, public_setting
 from python.routers.admin.master import (
@@ -133,3 +134,4 @@ def register_router(app: FastAPI):
     app.include_router(oshi_official_link.router)
     app.include_router(oshi_song.router)
     app.include_router(oshi_program.router)
+    app.include_router(oshi_venue.router)

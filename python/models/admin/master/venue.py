@@ -23,6 +23,8 @@ def get_venue_list(keyword=None, sort="name"):
             p.prefecture_name,
             v.latitude,
             v.longitude,
+            v.capacity,
+            v.official_url,
             v.public_flag,
             v.created_at,
             v.updated_at
@@ -105,10 +107,12 @@ def create_venue(venue):
                     prefecture_code,
                     latitude,
                     longitude,
+                    capacity,
+                    official_url,
                     public_flag
                 )
                 VALUES (
-                    %s, %s, %s, %s, %s, %s
+                    %s, %s, %s, %s, %s, %s, %s, %s
                 )
                 RETURNING venue_id
                 """,
@@ -118,6 +122,8 @@ def create_venue(venue):
                     venue["prefecture_code"],
                     venue["latitude"],
                     venue["longitude"],
+                    venue["capacity"],
+                    venue["official_url"],
                     venue["public_flag"]
                 )
             )
@@ -146,9 +152,10 @@ def update_venue(venue_id, venue):
                     prefecture_code = %s,
                     latitude = %s,
                     longitude = %s,
+                    capacity = %s,
+                    official_url = %s,
                     public_flag = %s,
                     updated_at = CURRENT_TIMESTAMP
-
                 WHERE
                     venue_id = %s
                 """,
@@ -158,6 +165,8 @@ def update_venue(venue_id, venue):
                     venue["prefecture_code"],
                     venue["latitude"],
                     venue["longitude"],
+                    venue["capacity"],
+                    venue["official_url"],
                     venue["public_flag"],
                     venue_id
                 )

@@ -192,6 +192,8 @@ async def venue_create(
         prefecture_code: int = Form(None),
         latitude: float = Form(None),
         longitude: float = Form(None),
+        capacity: int = Form(None),
+        official_url: str = Form(None),
         public_flag: bool = Form(False)
 ):
     if not auth.is_login(request):
@@ -206,6 +208,8 @@ async def venue_create(
         "prefecture_code": prefecture_code,
         "latitude": latitude,
         "longitude": longitude,
+        "capacity": capacity,
+        "official_url": official_url,
         "public_flag": public_flag
     }
 
@@ -282,6 +286,8 @@ async def venue_update(
         prefecture_code: int = Form(None),
         latitude: float = Form(None),
         longitude: float = Form(None),
+        capacity: int = Form(None),
+        official_url: str = Form(None),
         public_flag: bool = Form(False)
 ):
     if not auth.is_login(request):
@@ -296,6 +302,8 @@ async def venue_update(
         "prefecture_code": prefecture_code,
         "latitude": latitude,
         "longitude": longitude,
+        "capacity": capacity,
+        "official_url": official_url,
         "public_flag": public_flag
     }
 
@@ -316,6 +324,17 @@ async def venue_update(
             name="templates/admin/master/venue/form.html",
             context={
                 "error": "住所を入力してください",
+                "venue": venue_data,
+                "prefecture_groups": get_prefecture_groups()
+            }
+        )
+
+    if official_url and not is_valid_url(official_url):
+        return render(
+            request=request,
+            name="templates/admin/master/venue/form.html",
+            context={
+                "error": "正しいURLを入力してください",
                 "venue": venue_data,
                 "prefecture_groups": get_prefecture_groups()
             }

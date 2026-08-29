@@ -23,6 +23,13 @@
         ← 参加履歴
     </a>
 
+    {% elif request.query_params.get('from') == 'venue_events' %}
+
+    <a href="/home/oshi/venue/{{ request.query_params.get('venue_id') }}/events"
+       class="back-link">
+        ← 利用イベント
+    </a>
+
     {% else %}
 
     <a href="/home/meeting/archive"

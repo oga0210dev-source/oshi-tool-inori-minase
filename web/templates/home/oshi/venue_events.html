@@ -1,0 +1,234 @@
+{% extends "templates/commons/base.html" %}
+
+{% block title %}利用イベント{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="/static/css/home/oshi/oshi.css">
+{% endblock %}
+
+{% block content %}
+
+<main class="oshi-page oshi-venue-events-page">
+    <section class="oshi-page-header">
+        <a href="/home/oshi/venue?keyword={{ return_keyword | urlencode }}&sort={{ return_sort | urlencode }}" class="oshi-back-btn">
+            ← イベント会場
+        </a>
+        <h1>利用イベント</h1>
+        <p class="oshi-venue-events-venue-name">{{ venue.venue_name }}</p>
+    </section>
+
+    <section class="oshi-venue-events-list">
+        {% for event in events %}
+        <article class="oshi-venue-event-card">
+
+            <div class="oshi-venue-event-type">
+                {% if event.event_type == "LIVE" %}
+                <span class="oshi-venue-event-type-live">🎤 ライブ</span>
+                {% elif event.event_type == "MEETING" %}
+                <span class="oshi-venue-event-type-meeting">🏠 町民集会</span>
+                {% endif %}
+            </div>
+
+            <h2 class="oshi-venue-event-name">{{ event.event_name }}</h2>
+
+            {% if event.event_date %}
+            <p class="oshi-venue-event-date">
+                📅 {{ event.event_date.year }}年{{ event.event_date.month }}月{{ event.event_date.day }}日
+            </p>
+            {% endif %}
+
+            <p class="oshi-venue-event-venue">
+                📍 開催地：{{ venue.venue_name }}
+            </p>
+
+            <p class="oshi-venue-event-capacity">
+                👥 キャパ：
+                {% if event.capacity is not none %}
+                    {{ "{:,}".format(event.capacity) }}人
+                {% else %}
+                    未登録
+                {% endif %}
+            </p>
+
+            {% if event.event_type == "LIVE" %}
+
+                {% if event.tour_name %}
+                <p class="oshi-venue-event-tour">
+                    🎤 ツアー：{{ event.tour_name }}
+                </p>
+                {% endif %}
+
+                <div class="oshi-venue-event-actions">
+                    <a href="/home/live/detail/{{ event.event_id }}?from=venue_events&venue_id={{ venue.venue_id }}" class="oshi-venue-event-detail-btn">
+                        ライブ詳細
+                    </a>
+
+                    {% if event.tour_name and tour_capacity_map.get(event.tour_name) %}
+                    <button type="button"
+                        class="oshi-venue-event-capacity-btn"
+                        onclick="openCapacity('LIVE', '{{ event.tour_name | e }}')">
+                        ツアーキャパ
+                    </button>
+                    {% endif %}
+                </div>
+
+            {% elif event.event_type == "MEETING" %}
+
+                <p class="oshi-venue-event-tour">
+                    🏠 町民集会：{{ event.event_name }}
+                </p>
+
+                <p class="oshi-venue-event-performance">
+                    {% if event.performance_type == "DAY" %}
+                        ☀️ 昼公演
+                    {% elif event.performance_type == "NIGHT" %}
+                        🌙 夜公演
+                    {% elif event.performance_type == "PART1" %}
+                        ① 第1部
+                    {% elif event.performance_type == "PART2" %}
+                        ② 第2部
+                    {% elif event.performance_type == "PART3" %}
+                        ③ 第3部
+                    {% else %}
+                        {{ event.performance_type or "公演" }}
+                    {% endif %}
+                </p>
+
+                <div class="oshi-venue-event-actions">
+                    <a href="/home/meeting/detail/{{ event.event_id }}?from=venue_events&venue_id={{ venue.venue_id }}"
+                       class="oshi-venue-event-detail-btn">
+                        町民集会詳細
+                    </a>
+
+                    {% if event.event_name and meeting_capacity_map.get(event.event_name) %}
+                    <button type="button"
+                        class="oshi-venue-event-capacity-btn"
+                        onclick="openCapacity('MEETING', '{{ event.event_name | e }}')">
+                        町民集会キャパ
+                    </button>
+                    {% endif %}
+                </div>
+
+            {% endif %}
+
+        </article>
+        {% else %}
+        <p class="oshi-empty">この会場を利用したイベントはありません。</p>
+        {% endfor %}
+    </section>
+</main>
+
+<div id="oshi-capacity-modal" class="oshi-tour-capacity-modal">
+    <div class="oshi-tour-capacity-modal-overlay" onclick="closeCapacity()"></div>
+
+    <div class="oshi-tour-capacity-modal-content">
+        <button type="button" class="oshi-tour-capacity-modal-close" onclick="closeCapacity()">×</button>
+
+        <h2 id="oshi-capacity-modal-title" class="oshi-tour-capacity-modal-title"></h2>
+
+        <div class="oshi-tour-capacity-total">
+            <span id="oshi-capacity-total-label"></span>
+            <strong id="oshi-capacity-total-value"></strong>
+            <small>※各公演の会場キャパを合計した概算です</small>
+        </div>
+
+        <div class="oshi-tour-capacity-lives">
+            <h3>公演一覧</h3>
+            <div id="oshi-capacity-event-list"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const tourCapacityMap = {{ tour_capacity_map | tojson }};
+    const meetingCapacityMap = {{ meeting_capacity_map | tojson }};
+
+    function openCapacity(type, name) {
+        const data = type === "LIVE"
+            ? tourCapacityMap[name]
+            : meetingCapacityMap[name];
+
+        if (!data) {
+            return;
+        }
+
+        document.getElementById("oshi-capacity-modal-title").textContent =
+            type === "LIVE" ? data.tour_name : data.name;
+
+        document.getElementById("oshi-capacity-total-label").textContent =
+            type === "LIVE" ? "ツアー全体のキャパ" : "町民集会全体のキャパ";
+
+        const totalCapacity = data.total_capacity;
+
+        document.getElementById("oshi-capacity-total-value").textContent =
+            totalCapacity > 0
+                ? "約 " + Number(totalCapacity).toLocaleString() + " 人"
+                : "ー";
+
+        const list = document.getElementById("oshi-capacity-event-list");
+        list.innerHTML = "";
+
+        const events = type === "LIVE" ? data.lives : data.events;
+
+        events.forEach(function(event) {
+            const item = document.createElement("div");
+            item.className = "oshi-tour-capacity-live";
+
+            let dateText = "";
+
+            if (event.live_date || event.event_date) {
+                const date = new Date(event.live_date || event.event_date);
+
+                dateText =
+                    date.getFullYear()
+                    + "年"
+                    + (date.getMonth() + 1)
+                    + "月"
+                    + date.getDate()
+                    + "日";
+            }
+
+            let nameText = event.live_name || "";
+
+            if (type === "MEETING") {
+                if (event.performance_type === "DAY") {
+                    nameText = "☀️ 昼公演";
+                } else if (event.performance_type === "NIGHT") {
+                    nameText = "🌙 夜公演";
+                } else if (event.performance_type === "PART1") {
+                    nameText = "① 第1部";
+                } else if (event.performance_type === "PART2") {
+                    nameText = "② 第2部";
+                } else if (event.performance_type === "PART3") {
+                    nameText = "③ 第3部";
+                } else {
+                    nameText = event.performance_type || "公演";
+                }
+            }
+
+            const capacityText =
+                event.capacity !== null
+                    ? Number(event.capacity).toLocaleString() + "人"
+                    : "未登録";
+
+            item.innerHTML = `
+                <div class="oshi-tour-capacity-live-info">
+                    <strong>${dateText}</strong>
+                    <span>${nameText}</span>
+                    <small>${event.venue_name || "会場未登録"}</small>
+                </div>
+                <div class="oshi-tour-capacity-live-value">${capacityText}</div>
+            `;
+
+            list.appendChild(item);
+        });
+
+        document.getElementById("oshi-capacity-modal").classList.add("active");
+    }
+
+    function closeCapacity() {
+        document.getElementById("oshi-capacity-modal").classList.remove("active");
+    }
+</script>
+
+{% endblock %}
