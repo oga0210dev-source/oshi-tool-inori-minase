@@ -112,9 +112,7 @@
 
         <!-- タイトル -->
         <div class="logo-area">
-            <img src="/static/img/title_logo.png"
-                 class="logo"
-                 alt="タイトルロゴ">
+            <h1>推し活オールインワン</h1>
         </div>
 
         <!-- 説明 -->
@@ -128,24 +126,45 @@
         <!-- ボタン -->
         <div class="button-area">
 
-            <a href="/login">
-                <img src="/static/img/login_button.png"
-                     class="button-image"
-                     alt="ログイン">
+            <a href="/login" class="top-menu-btn">
+
+                <span class="top-menu-icon">🔑</span>
+
+                <span class="top-menu-text">
+                    <strong>ログイン</strong>
+                    <small>アカウントにログインする</small>
+                </span>
+
+                <span class="top-menu-arrow">›</span>
+
             </a>
 
-            <a href="/register">
-                <img src="/static/img/register_button.png"
-                     class="button-image"
-                     alt="新規登録">
+
+            <a href="/register" class="top-menu-btn">
+
+                <span class="top-menu-icon">📝</span>
+
+                <span class="top-menu-text">
+                    <strong>新規登録</strong>
+                    <small>アカウントを新しく作成する</small>
+                </span>
+                <span class="top-menu-arrow">›</span>
             </a>
+
 
             <a href="/home"
                onclick="return enterGuestHome();"
-               class="guest-home-link">
-                ログインせずにホームへ
-            </a>
+               class="top-menu-btn">
 
+                <span class="top-menu-icon">🏠</span>
+
+                <span class="top-menu-text">
+                    <strong>ゲストで利用する</strong>
+                    <small>ログインせずにホームへ</small>
+                </span>
+
+                <span class="top-menu-arrow">›</span>
+            </a>
         </div>
 
         <!-- 利用規約等 -->

@@ -2,1067 +2,250 @@
 
 {% block title %}ホーム - 推し活オールインワン{% endblock %}
 
-
 {% block css %}
-
-<link rel="stylesheet"
-      href="/static/css/home/home.css">
-
-<style>
-
-    /* =========================================================
-       法的情報・問い合わせモーダル共通
-       ========================================================= */
-
-    .home-modal {
-        display: none;
-        position: fixed;
-        z-index: 1000;
-        inset: 0;
-
-        background: rgba(0, 0, 0, 0.5);
-
-        align-items: center;
-        justify-content: center;
-
-        padding: 20px;
-        box-sizing: border-box;
-    }
-
-
-    .home-modal-content {
-        width: 100%;
-        max-width: 430px;
-        max-height: 85dvh;
-
-        background: #ffffff;
-        border-radius: 12px;
-
-        display: flex;
-        flex-direction: column;
-
-        overflow: hidden;
-    }
-
-
-    /* =========================================================
-       モーダルヘッダー
-       ========================================================= */
-
-    .home-modal-header {
-        height: 50px;
-        flex-shrink: 0;
-
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-
-        padding: 0 15px;
-        box-sizing: border-box;
-
-        border-bottom: 1px solid #ddd;
-    }
-
-
-    .home-modal-title {
-        font-size: 18px;
-        font-weight: bold;
-    }
-
-
-    .home-modal-close {
-        border: none;
-        background: none;
-
-        font-size: 28px;
-        line-height: 1;
-
-        cursor: pointer;
-        padding: 0 5px;
-    }
-
-
-    /* =========================================================
-       法的情報本文
-       ========================================================= */
-
-    .home-modal-body {
-        min-height: 0;
-
-        padding: 15px;
-
-        overflow-y: auto;
-        overflow-x: hidden;
-
-        box-sizing: border-box;
-
-        font-size: 13px;
-        line-height: 1.8;
-        text-align: left;
-
-        /* スクロールバーを非表示 */
-        scrollbar-width: none;
-        -ms-overflow-style: none;
-    }
-
-
-    /* Chrome / Edge / Safari */
-
-    .home-modal-body::-webkit-scrollbar {
-        display: none;
-    }
-
-
-    /* =========================================================
-       共通 legal.html 読み込み用
-       ========================================================= */
-
-    .legal-modal-page {
-        width: 100%;
-    }
-
-
-    .legal-modal-page .update-date {
-        margin: 0 0 20px;
-        font-size: 12px;
-        color: #666;
-    }
-
-
-    .legal-modal-page .legal-section {
-        margin-bottom: 20px;
-    }
-
-
-    .legal-modal-page .legal-section:last-child {
-        margin-bottom: 0;
-    }
-
-
-    .legal-modal-page h2 {
-        margin: 0 0 8px;
-        font-size: 15px;
-    }
-
-
-    .legal-modal-page p {
-        margin: 0 0 12px;
-    }
-
-
-    .legal-modal-page ul {
-        margin: 0 0 12px;
-        padding-left: 22px;
-    }
-
-
-    .legal-modal-page li {
-        margin-bottom: 6px;
-    }
-
-
-    /* =========================================================
-       問い合わせモーダル
-       ========================================================= */
-
-    .home-inquiry-body {
-        flex: 1;
-        min-height: 0;
-
-        overflow: hidden;
-
-        padding: 0;
-    }
-
-
-    .home-inquiry-body iframe {
-        width: 100%;
-        height: 100%;
-
-        border: none;
-    }
-
-
-    /* =========================================================
-       フォント確認
-       ========================================================= */
-
-    .font-preview {
-        width: 100%;
-
-        margin: 15px 0 20px;
-        padding: 15px;
-
-        border: 1px solid #ddd;
-        border-radius: 10px;
-
-        background: #fafafa;
-
-        text-align: center;
-        font-size: 20px;
-
-        transition: font-family 0.15s ease;
-    }
-
-
-    .font-preview.font-hachi-maru-pop {
-        font-family: "HachiMaruPop-Regular", sans-serif;
-    }
-
-
-    .font-preview.font-kiwi-maru {
-        font-family: "KiwiMaru-Regular", sans-serif;
-    }
-
-
-    .font-preview.font-mplus-rounded {
-        font-family: "MPLUSRounded1c-ExtraBold", sans-serif;
-    }
-
-
-    .font-preview.font-noto-sans-jp {
-        font-family: "NotoSansJP-VariableFont_wght", sans-serif;
-    }
-
-
-    .font-preview.font-yusei-magic {
-        font-family: "YuseiMagic-Regular", sans-serif;
-    }
-
-
-    /* =========================================================
-       フォント選択ボタン
-       ========================================================= */
-
-    .font-option {
-        display: block;
-
-        width: 100%;
-
-        margin-bottom: 8px;
-        padding: 10px;
-
-        border: 1px solid #ddd;
-        border-radius: 8px;
-
-        background: #fff;
-
-        cursor: pointer;
-    }
-
-
-    .font-option.selected {
-        border: 2px solid #333;
-        background: #f5f5f5;
-    }
-
-
-    /* =========================================================
-       フォント保存ボタン
-       ========================================================= */
-
-    #font-save-button {
-        display: block;
-
-        width: 100%;
-
-        margin-top: 15px;
-        padding: 12px;
-
-        border: none;
-        border-radius: 8px;
-
-        background: #333;
-        color: #fff;
-
-        cursor: pointer;
-    }
-
-</style>
-
+    <link rel="stylesheet" href="/static/css/home/home.css">
+    <style>
+        .home-modal{display:none;position:fixed;z-index:1000;inset:0;background:rgba(0,0,0,.5);align-items:center;justify-content:center;padding:20px;box-sizing:border-box}
+        .home-modal-content{width:100%;max-width:430px;max-height:85dvh;background:#fff;border-radius:12px;display:flex;flex-direction:column;overflow:hidden}
+        .home-modal-header{height:50px;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:0 15px;box-sizing:border-box;border-bottom:1px solid #ddd}
+        .home-modal-title{font-size:18px;font-weight:bold}
+        .home-modal-close{border:none;background:none;font-size:28px;line-height:1;cursor:pointer;padding:0 5px}
+        .home-modal-body{min-height:0;padding:15px;overflow-y:auto;overflow-x:hidden;box-sizing:border-box;font-size:13px;line-height:1.8;text-align:left;scrollbar-width:none;-ms-overflow-style:none}
+        .home-modal-body::-webkit-scrollbar{display:none}
+        .legal-modal .home-modal-content,.legal-modal .home-modal-content *{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP","Yu Gothic","Hiragino Kaku Gothic ProN",sans-serif!important}
+        .legal-modal-page{width:100%}
+        .legal-modal-page .update-date{margin:0 0 20px;font-size:12px;color:#666}
+        .legal-modal-page .legal-section{margin-bottom:20px}
+        .legal-modal-page .legal-section:last-child{margin-bottom:0}
+        .legal-modal-page h2{margin:0 0 8px;font-size:15px}
+        .legal-modal-page p{margin:0 0 12px}
+        .legal-modal-page ul{margin:0 0 12px;padding-left:22px}
+        .legal-modal-page li{margin-bottom:6px}
+        .home-inquiry-body{flex:1;min-height:0;overflow:hidden;padding:0}
+        .home-inquiry-body iframe{display:block;width:100%;height:100%;min-height:0;border:none}
+        .font-preview{width:100%;margin:15px 0 20px;padding:15px;border:1px solid #ddd;border-radius:10px;background:#fafafa;text-align:center;font-size:20px;transition:font-family .15s ease}
+        .font-preview.font-hachi-maru-pop{font-family:"HachiMaruPop-Regular",sans-serif}
+        .font-preview.font-kiwi-maru{font-family:"KiwiMaru-Regular",sans-serif}
+        .font-preview.font-mplus-rounded{font-family:"MPLUSRounded1c-ExtraBold",sans-serif}
+        .font-preview.font-noto-sans-jp{font-family:"NotoSansJP-VariableFont_wght",sans-serif}
+        .font-preview.font-yusei-magic{font-family:"YuseiMagic-Regular",sans-serif}
+        .font-option{display:block;width:100%;margin-bottom:8px;padding:10px;border:1px solid #ddd;border-radius:8px;background:#fff;cursor:pointer}
+        .font-option.selected{border:2px solid #333;background:#f5f5f5}
+        #font-save-button{display:block;width:100%;margin-top:15px;padding:12px;border:none;border-radius:8px;background:#333;color:#fff;cursor:pointer}
+    </style>
 {% endblock %}
-
-
 
 {% block content %}
-
-<div class="background">
-
-    <div class="page-scroll">
-
-        <div class="container">
-
-
-            <!-- =================================================
-                 プロフィール
-                 ================================================= -->
-
-            <div class="profile-card">
-
-                {% if is_guest %}
-
-                    <div class="profile-image">
-
-                        <img src="/static/img/profile/default.png"
-                             alt="ゲスト">
-
-                    </div>
-
-
-                    <div class="profile-info">
-
-                        <div class="profile-name">
-                            ゲスト
-                        </div>
-
-                        <div class="member-history">
-                            ログインすると町民歴を確認できます
-                        </div>
-
-                    </div>
-
-                {% else %}
-
-                    <div class="profile-image">
-
-                        <img src="{{ user.profile_image or '/static/img/profile/default.png' }}"
-                             alt="プロフィール画像">
-
-                    </div>
-
-
-                    <div class="profile-info">
-
-                        <div class="profile-name">
-                            {{ user.user_name }}
-                        </div>
-
-                        <div class="member-history">
-                            町民歴 {{ member_period }}
-                        </div>
-
-                    </div>
-
-                {% endif %}
-
-            </div>
-
-
-
-            <!-- =================================================
-                 ボタンエリア
-                 ================================================= -->
-
-            <div class="home-scroll">
-
-
-                <!-- マイページ -->
-
-                {% if is_guest %}
-
-                <a href="/login"
-                   class="menu-btn wide-btn"
-                   onclick="return requireLogin();">
-
-                    <img src="/static/img/home/mypage.svg"
-                         alt="マイページ">
-
-                    <span>マイページ</span>
-
-                </a>
-
-                {% else %}
-
-                <a href="/mypage"
-                   class="menu-btn wide-btn">
-
-                    <img src="/static/img/home/mypage.svg"
-                         alt="マイページ">
-
-                    <span>マイページ</span>
-
-                </a>
-
-                {% endif %}
-
-
-
-                <!-- =================================================
-                     メニュー
-                     ================================================= -->
-
-                <div class="menu-grid">
-
-
-                    <!-- ライブ -->
-
-                    <a href="/home/live"
-                       class="menu-btn">
-
-                        <img src="/static/img/home/live.svg"
-                             alt="ライブ">
-
-                        <span>ライブ</span>
-
-                    </a>
-
-
-
-                    <!-- 町民集会 -->
-
-                    <a href="/home/meeting"
-                       class="menu-btn">
-
-                        <img src="/static/img/home/meeting.svg"
-                             alt="町民集会">
-
-                        <span>町民集会</span>
-
-                    </a>
-
-
-
-                    <!-- イベント -->
-
-                    <a href="#"
-                       class="menu-btn not-implemented">
-
-                        <img src="/static/img/home/event.svg"
-                             alt="イベント">
-
-                        <span>イベント</span>
-
-                    </a>
-
-
-
-                    <!-- グッズ -->
-
-                    <a href="#"
-                       class="menu-btn not-implemented">
-
-                        <img src="/static/img/home/goods.svg"
-                             alt="グッズ">
-
-                        <span>グッズ</span>
-
-                    </a>
-
-
-
-                    <!-- エンカ -->
-
-                    <a href="#"
-                       class="menu-btn not-implemented">
-
-                        <img src="/static/img/home/encounter.svg"
-                             alt="エンカ">
-
-                        <span>エンカ</span>
-
-                    </a>
-
-
-
-                    <!-- メロフラ -->
-
-                    <a href="#"
-                       class="menu-btn not-implemented">
-
-                        <img src="/static/img/home/radio.svg"
-                             alt="メロフラ">
-
-                        <span>メロフラ</span>
-
-                    </a>
-
+    <div class="background">
+        <div class="page-scroll">
+            <div class="container">
+                <div class="profile-card">
+                    {% if is_guest %}
+                        <div class="profile-image"><img src="/static/img/profile/default.png" alt="ゲスト"></div>
+                        <div class="profile-info"><div class="profile-name">ゲスト</div><div class="member-history">ログインすると町民歴を確認できます</div></div>
+
+                    {% else %}
+                        <div class="profile-image"><img src="{{ user.profile_image or '/static/img/profile/default.png' }}" alt="プロフィール画像"></div>
+                        <div class="profile-info"><div class="profile-name">{{ user.user_name }}</div><div class="member-history">町民歴 {{ member_period }}</div></div>
+                    {% endif %}
                 </div>
 
-
-
-                <!-- =================================================
-                     推し情報
-                     ================================================= -->
-
-                <a href="/home/oshi"
-                   class="menu-btn wide-btn">
-
-                    <img src="/static/img/home/info.svg"
-                         alt="推し情報">
-
-                    <span>推し情報</span>
-
-                </a>
-
-
-
-                <!-- =================================================
-                     設定
-                     ================================================= -->
-
-                <a href="#"
-                   id="setting-button"
-                   class="menu-btn wide-btn">
-
-                    <img src="/static/img/home/setting.svg"
-                         alt="設定">
-
-                    <span>設定</span>
-
-                </a>
-
-
-
-                <!-- =================================================
-                     設定モーダル
-                     ================================================= -->
-
-                <div id="setting-modal"
-                     class="setting-modal">
-
-                    <div class="setting-box">
-
-                        <h2>設定</h2>
-
-
-                        <!-- アカウント -->
-
-                        <h3>アカウント</h3>
-
-
-                        {% if is_guest %}
-
-                            <a href="/login"
-                               onclick="return requireLogin();">
-                                マイページ
-                            </a>
-
-                            <a href="/login"
-                               onclick="return requireLogin();">
-                                公開設定
-                            </a>
-
-                            <a href="/login"
-                               onclick="return requireLogin();">
-                                メール変更
-                            </a>
-
-                            <a href="/login"
-                               onclick="return requireLogin();">
-                                パスワード変更
-                            </a>
-
-                        {% else %}
-
-                            <a href="/mypage">
-                                マイページ
-                            </a>
-
-                            <a href="/mypage/public-setting"
-                               class="not-implemented">
-                                公開設定
-                            </a>
-
-                            <a href="#"
-                               class="not-implemented">
-                                メール変更
-                            </a>
-
-                            <a href="/password/change">
-                                パスワード変更
-                            </a>
-
-                        {% endif %}
-
-
-
-                        <!-- 表示設定 -->
-
-                        <h3>表示設定</h3>
-
-                        <a href="#"
-                           id="font-setting-button">
-                            フォント設定
-                        </a>
-
-
-
-                        <!-- サポート -->
-
-                        <h3>サポート</h3>
-
-
-                        <a href="/home/inquiry">
-                            お問い合わせ
-                        </a>
-
-
-                        <a href="#"
-                           onclick="openLegalModal('terms'); return false;">
-                            利用規約
-                        </a>
-
-
-                        <a href="#"
-                           onclick="openLegalModal('privacy'); return false;">
-                            プライバシー
-                        </a>
-
-
-
-                        <!-- 管理 -->
-
-                        {% if not is_guest and user.role == "admin" %}
-
-                            <h3>管理</h3>
-
-                            <a href="/admin/master">
-                                マスタ管理
-                            </a>
-
-                            <a href="/admin/inquiry">
-                                お問い合わせ管理
-                            </a>
-
-                        {% endif %}
-
-
-
-                        <!-- その他 -->
-
-                        {% if not is_guest %}
-
-                            <h3>その他</h3>
-
-                            <a href="/logout">
-                                ログアウト
-                            </a>
-
-                        {% endif %}
-
+                <div class="home-scroll">
+                    {% if is_guest %}
+                        <a href="/login" class="menu-btn wide-btn" onclick="return requireLogin();"><img src="/static/img/home/mypage.svg" alt="マイページ"><span>マイページ</span></a>
+                    {% else %}
+                        <a href="/mypage" class="menu-btn wide-btn"><img src="/static/img/home/mypage.svg" alt="マイページ"><span>マイページ</span></a>
+                    {% endif %}
+
+                    <div class="menu-grid">
+                        <a href="/home/live" class="menu-btn"><img src="/static/img/home/live.svg" alt="ライブ"><span>ライブ</span></a>
+                        <a href="/home/meeting" class="menu-btn"><img src="/static/img/home/meeting.svg" alt="町民集会"><span>町民集会</span></a>
+                        <a href="#" class="menu-btn not-implemented"><img src="/static/img/home/event.svg" alt="イベント"><span>イベント</span></a>
+                        <a href="#" class="menu-btn not-implemented"><img src="/static/img/home/goods.svg" alt="グッズ"><span>グッズ</span></a>
+                        <a href="#" class="menu-btn not-implemented"><img src="/static/img/home/encounter.svg" alt="エンカ"><span>エンカ</span></a>
+                        <a href="#" class="menu-btn not-implemented"><img src="/static/img/home/radio.svg" alt="メロフラ"><span>メロフラ</span></a>
                     </div>
 
+                    <a href="/home/oshi" class="menu-btn wide-btn"><img src="/static/img/home/info.svg" alt="推し情報"><span>推し情報</span></a>
+                    <a href="#" id="setting-button" class="menu-btn wide-btn"><img src="/static/img/home/setting.svg" alt="設定"><span>設定</span></a>
+
+                    <div id="setting-modal" class="setting-modal">
+                        <div class="setting-box">
+                            <h2>設定</h2>
+                            <h3>アカウント</h3>
+                            {% if is_guest %}
+                                <a href="/login" onclick="return requireLogin();">マイページ</a>
+                                <a href="/login" onclick="return requireLogin();">公開設定</a>
+                                <a href="/login" onclick="return requireLogin();">メール変更</a>
+                                <a href="/login" onclick="return requireLogin();">パスワード変更</a>
+
+                            {% else %}
+                                <a href="/mypage">マイページ</a>
+                                <a href="/mypage/public-setting" class="not-implemented">公開設定</a>
+                                <a href="#" class="not-implemented">メール変更</a>
+                                <a href="/password/change">パスワード変更</a>
+                            {% endif %}
+
+                            <h3>表示設定</h3>
+                            <a href="#" id="font-setting-button">フォント設定</a>
+
+                            <h3>サポート</h3>
+                            <a href="/home/inquiry">お問い合わせ</a>
+                            <a href="#" onclick="openLegalModal('terms');return false;">利用規約</a>
+                            <a href="#" onclick="openLegalModal('privacy');return false;">プライバシー</a>
+
+                            {% if not is_guest and user.role == "admin" %}
+                                <h3>管理</h3>
+                                <a href="/admin/master">マスタ管理</a>
+                                <a href="/admin/inquiry">お問い合わせ管理</a>
+                            {% endif %}
+
+                            {% if not is_guest %}
+                                <h3>その他</h3>
+                                <a href="/logout">ログアウト</a>
+                            {% endif %}
+                        </div>
+                    </div>
                 </div>
+            </div>
+        </div>
+    </div>
 
+    <div id="font-setting-modal" class="setting-modal">
+        <div class="setting-box">
+            <h2>フォント設定</h2>
+            <div id="font-test" class="font-preview {{ font_class }}">推し活オールインワン</div>
+
+            {% for font in font_list %}
+                <button type="button" class="font-option {% if font.id == current_font_id %}selected{% endif %}" data-font-id="{{ font.id }}" data-font-class="{{ font.css_class }}">{{ font.name }}</button>
+            {% endfor %}
+
+            <button type="button" id="font-save-button">保存</button>
+        </div>
+    </div>
+
+    <div id="legalModal" class="home-modal legal-modal" onclick="closeLegalModal(event)">
+        <div class="home-modal-content" onclick="event.stopPropagation()">
+            <div class="home-modal-header">
+                <div id="legalModalTitle" class="home-modal-title"></div>
+                <button type="button" class="home-modal-close" onclick="closeLegalModal()">×</button>
+            </div>
+            <div id="legalModalBody" class="home-modal-body"></div>
+        </div>
+    </div>
+
+    <div id="inquiryModal" class="home-modal inquiry-modal" onclick="closeInquiryModal(event)">
+        <div class="home-modal-content" onclick="event.stopPropagation()">
+            <div class="home-modal-header">
+                <div class="home-modal-title">お問い合わせ</div>
+                <button type="button" class="home-modal-close" onclick="closeInquiryModal()">×</button>
             </div>
 
-        </div>
-
-    </div>
-
-</div>
-
-
-
-<!-- =========================================================
-     フォント設定モーダル
-     ========================================================= -->
-
-<div id="font-setting-modal"
-     class="setting-modal">
-
-    <div class="setting-box">
-
-        <h2>フォント設定</h2>
-
-
-        <div id="font-test"
-             class="font-preview {{ font_class }}">
-
-            推し活オールインワン
-
-        </div>
-
-
-        {% for font in font_list %}
-
-            <button type="button"
-                    class="font-option {% if font.id == current_font_id %}selected{% endif %}"
-                    data-font-id="{{ font.id }}"
-                    data-font-class="{{ font.css_class }}">
-
-                {{ font.name }}
-
-            </button>
-
-        {% endfor %}
-
-
-        <button type="button"
-                id="font-save-button">
-
-            保存
-
-        </button>
-
-    </div>
-
-</div>
-
-
-
-<!-- =========================================================
-     法的情報モーダル
-     ========================================================= -->
-
-<div id="legalModal"
-     class="home-modal"
-     onclick="closeLegalModal(event)">
-
-    <div class="home-modal-content"
-         onclick="event.stopPropagation()">
-
-        <div class="home-modal-header">
-
-            <div id="legalModalTitle"
-                 class="home-modal-title">
+            <div class="home-inquiry-body">
+                <iframe id="inquiryFrame" src=""></iframe>
             </div>
-
-            <button type="button"
-                    class="home-modal-close"
-                    onclick="closeLegalModal()">
-                ×
-            </button>
-
         </div>
-
-
-        <div id="legalModalBody"
-             class="home-modal-body">
-        </div>
-
     </div>
-
-</div>
-
-
-
-<!-- =========================================================
-     問い合わせモーダル
-     ========================================================= -->
-
-<div id="inquiryModal"
-     class="home-modal"
-     onclick="closeInquiryModal(event)">
-
-    <div class="home-modal-content"
-         onclick="event.stopPropagation()">
-
-        <div class="home-modal-header">
-
-            <div class="home-modal-title">
-                お問い合わせ
-            </div>
-
-            <button type="button"
-                    class="home-modal-close"
-                    onclick="closeInquiryModal()">
-                ×
-            </button>
-
-        </div>
-
-
-        <div class="home-inquiry-body">
-
-            <iframe id="inquiryFrame"
-                    src="">
-            </iframe>
-
-        </div>
-
-    </div>
-
-</div>
-
 {% endblock %}
 
-
-
 {% block script %}
+    <script src="/static/js/common.js"></script>
 
-<script src="/static/js/common.js"></script>
+    {% if message %}
+        <script>showToast("{{ message }}");</script>
+    {% endif %}
 
+    <script>
+        const settingButton=document.getElementById("setting-button");
+        const settingModal=document.getElementById("setting-modal");
 
-{% if message %}
-
-<script>
-
-    showToast("{{ message }}");
-
-</script>
-
-{% endif %}
-
-
-
-<script>
-
-    /* =========================================================
-       設定
-       ========================================================= */
-
-    const settingButton =
-        document.getElementById("setting-button");
-
-    const settingModal =
-        document.getElementById("setting-modal");
-
-
-    if(settingButton && settingModal){
-
-        settingButton.addEventListener(
-            "click",
-            function(event){
-
+        if(settingButton&&settingModal){
+            settingButton.addEventListener("click",function(event){
                 event.preventDefault();
-
-                settingModal.style.display =
-                    "block";
-
-            }
-        );
-
-
-        settingModal.addEventListener(
-            "click",
-            function(event){
-
-                if(event.target === settingModal){
-
-                    settingModal.style.display =
-                        "none";
-
-                }
-
-            }
-        );
-
-    }
-
-
-
-    /* =========================================================
-       ログイン確認
-       ========================================================= */
-
-    function requireLogin(){
-
-        return confirm(
-            "この機能を利用するにはログインが必要です。\n\n" +
-            "ログイン画面へ移動しますか？"
-        );
-
-    }
-
-
-
-    /* =========================================================
-       フォント設定
-       ========================================================= */
-
-    const fontSettingButton =
-        document.getElementById(
-            "font-setting-button"
-        );
-
-
-    const fontSettingModal =
-        document.getElementById(
-            "font-setting-modal"
-        );
-
-
-    const fontTest =
-        document.getElementById(
-            "font-test"
-        );
-
-
-    const fontOptions =
-        document.querySelectorAll(
-            ".font-option"
-        );
-
-
-    const fontSaveButton =
-        document.getElementById(
-            "font-save-button"
-        );
-
-
-    let selectedFontId = null;
-
-    let selectedFontClass = null;
-
-
-
-    if(
-        fontSettingButton &&
-        fontSettingModal
-    ){
-
-        fontSettingButton.addEventListener(
-            "click",
-            function(event){
-
-                event.preventDefault();
-
-                fontSettingModal.style.display =
-                    "block";
-
-            }
-        );
-
-    }
-
-
-
-    if(fontSettingModal){
-
-        fontSettingModal.addEventListener(
-            "click",
-            function(event){
-
-                if(event.target === fontSettingModal){
-
-                    fontSettingModal.style.display =
-                        "none";
-
-                }
-
-            }
-        );
-
-    }
-
-
-
-    fontOptions.forEach(
-        function(button){
-
-            button.addEventListener(
-                "click",
-                function(){
-
-                    selectedFontId =
-                        button.dataset.fontId;
-
-                    selectedFontClass =
-                        button.dataset.fontClass;
-
-
-                    if(fontTest){
-
-                        fontTest.classList.remove(
-                            "font-hachi-maru-pop",
-                            "font-kiwi-maru",
-                            "font-mplus-rounded",
-                            "font-noto-sans-jp",
-                            "font-yusei-magic"
-                        );
-
-
-                        fontTest.classList.add(
-                            selectedFontClass
-                        );
-
-                    }
-
-
-                    fontOptions.forEach(
-                        function(option){
-
-                            option.classList.remove(
-                                "selected"
-                            );
-
-                        }
-                    );
-
-
-                    button.classList.add(
-                        "selected"
-                    );
-
-                }
-            );
-
+                settingModal.style.display="block";
+            });
+            settingModal.addEventListener("click",function(event){
+                if(event.target===settingModal) settingModal.style.display="none";
+            });
         }
-    );
 
+        function requireLogin(){
+            return confirm(
+                "この機能を利用するにはログインが必要です。\n\n"+
+                "ログイン画面へ移動しますか？"
+            );
+        }
 
+        const fontSettingButton=document.getElementById("font-setting-button");
+        const fontSettingModal=document.getElementById("font-setting-modal");
+        const fontTest=document.getElementById("font-test");
+        const fontOptions=document.querySelectorAll(".font-option");
+        const fontSaveButton=document.getElementById("font-save-button");
 
-    if(fontSaveButton){
+        let selectedFontId=null;
+        let selectedFontClass=null;
 
-        fontSaveButton.addEventListener(
-            "click",
-            async function(){
+        if(fontSettingButton&&fontSettingModal){
+            fontSettingButton.addEventListener("click",function(event){
+                event.preventDefault();
+                fontSettingModal.style.display="block";
+            });
+        }
 
-                if(!selectedFontId){
+        if(fontSettingModal){
+            fontSettingModal.addEventListener("click",function(event){
+                if(event.target===fontSettingModal) fontSettingModal.style.display="none";
+            });
+        }
 
-                    const selectedButton =
-                        document.querySelector(
-                            ".font-option.selected"
-                        );
+        fontOptions.forEach(function(button){
+            button.addEventListener("click",function(){
+                selectedFontId=button.dataset.fontId;
+                selectedFontClass=button.dataset.fontClass;
 
-
-                    if(selectedButton){
-
-                        selectedFontId =
-                            selectedButton.dataset.fontId;
-
-                    }
-
-                }
-
-
-                if(!selectedFontId){
-
-                    alert(
-                        "フォントを選択してください。"
+                if(fontTest){
+                    fontTest.classList.remove(
+                        "font-hachi-maru-pop",
+                        "font-kiwi-maru",
+                        "font-mplus-rounded",
+                        "font-noto-sans-jp",
+                        "font-yusei-magic"
                     );
-
-                    return;
-
+                    fontTest.classList.add(selectedFontClass);
                 }
 
+                fontOptions.forEach(function(option){
+                    option.classList.remove("selected");
+                });
+                button.classList.add("selected");
+            });
+        });
+
+        if(fontSaveButton){
+            fontSaveButton.addEventListener("click",async function(){
+                if(!selectedFontId){
+                    const selectedButton=document.querySelector(".font-option.selected");
+                    if(selectedButton) selectedFontId=selectedButton.dataset.fontId;
+                }
+
+                if(!selectedFontId){
+                    alert("フォントを選択してください。");
+                    return;
+                }
 
                 try{
+                    const formData=new FormData();
+                    formData.append("font_id",selectedFontId);
 
-                    const formData =
-                        new FormData();
+                    const response=await fetch("/home/font",{
+                        method:"POST",
+                        body:formData,
+                        redirect:"follow"
+                    });
 
-
-                    formData.append(
-                        "font_id",
-                        selectedFontId
-                    );
-
-
-                    const response =
-                        await fetch(
-                            "/home/font",
-                            {
-                                method: "POST",
-                                body: formData,
-                                redirect: "follow"
-                            }
-                        );
-
-
-                    if(!response.ok){
-
-                        throw new Error(
-                            "HTTP " +
-                            response.status
-                        );
-
-                    }
-
+                    if(!response.ok) throw new Error("HTTP "+response.status);
 
                     if(selectedFontClass){
-
                         document.body.classList.remove(
                             "font-hachi-maru-pop",
                             "font-kiwi-maru",
@@ -1070,421 +253,91 @@
                             "font-noto-sans-jp",
                             "font-yusei-magic"
                         );
-
-
-                        document.body.classList.add(
-                            selectedFontClass
-                        );
-
+                        document.body.classList.add(selectedFontClass);
                     }
 
-
-                    if(fontSettingModal){
-
-                        fontSettingModal.style.display =
-                            "none";
-
-                    }
-
-
+                    if(fontSettingModal) fontSettingModal.style.display="none";
                     window.location.reload();
-
+                }catch(error){
+                    console.error("フォント保存エラー:",error);
+                    alert("フォントの保存に失敗しました。");
                 }
-                catch(error){
+            });
+        }
 
-                    console.error(
-                        "フォント保存エラー:",
-                        error
-                    );
+        async function openLegalModal(type){
+            if(type!=="terms"&&type!=="privacy") return;
 
+            const modal=document.getElementById("legalModal");
+            const title=document.getElementById("legalModalTitle");
+            const body=document.getElementById("legalModalBody");
 
-                    alert(
-                        "フォントの保存に失敗しました。"
-                    );
+            if(!modal||!title||!body) return;
 
-                }
+            title.textContent=type==="terms"?"利用規約":"プライバシーポリシー";
+            body.innerHTML='<p style="text-align:center;">読み込み中...</p>';
+            modal.style.display="flex";
+            body.scrollTop=0;
 
+            try{
+                const response=await fetch("/home/legal/"+type,{
+                    method:"GET",
+                    headers:{"X-Requested-With":"XMLHttpRequest"}
+                });
+
+                if(!response.ok) throw new Error("HTTP "+response.status);
+
+                const html=await response.text();
+                if(!html) throw new Error("HTMLが空です。");
+
+                const parser=new DOMParser();
+                const documentHtml=parser.parseFromString(html,"text/html");
+                const legalPage=documentHtml.querySelector(".legal-modal-page");
+
+                if(!legalPage) throw new Error("法律情報の本文が見つかりません。");
+
+                body.innerHTML=legalPage.innerHTML;
+                body.scrollTop=0;
+            }catch(error){
+                console.error("利用規約・プライバシーポリシー読み込みエラー:",error);
+                body.innerHTML='<p style="text-align:center;">利用規約・プライバシーポリシーの読み込みに失敗しました。</p>';
             }
-        );
-
-    }
-
-
-
-    /* =========================================================
-       利用規約・プライバシーポリシー
-       共通テンプレートを読み込む
-       ========================================================= */
-
-    async function openLegalModal(type){
-
-        /*
-         * 許可するページだけを受け付ける
-         */
-
-        if(
-            type !== "terms" &&
-            type !== "privacy"
-        ){
-
-            return;
-
         }
 
-
-        const modal =
-            document.getElementById(
-                "legalModal"
-            );
-
-
-        const title =
-            document.getElementById(
-                "legalModalTitle"
-            );
-
-
-        const body =
-            document.getElementById(
-                "legalModalBody"
-            );
-
-
-        if(!modal || !title || !body){
-
-            return;
-
+        function closeLegalModal(event){
+            if(event&&event.target!==event.currentTarget) return;
+            const modal=document.getElementById("legalModal");
+            if(modal) modal.style.display="none";
         }
 
-
-        /*
-         * タイトル
-         */
-
-        title.textContent =
-            type === "terms"
-                ? "利用規約"
-                : "プライバシーポリシー";
-
-
-        /*
-         * 読み込み中
-         */
-
-        body.innerHTML = `
-            <p style="text-align:center;">
-                読み込み中...
-            </p>
-        `;
-
-
-        modal.style.display =
-            "flex";
-
-
-        body.scrollTop =
-            0;
-
-
-        try{
-
-            /*
-             * 共通の legal router から取得
-             */
-
-            const response =
-                await fetch(
-                    "/home/legal/" + type,
-                    {
-                        method: "GET",
-                        headers: {
-                            "X-Requested-With": "XMLHttpRequest"
-                        }
-                    }
-                );
-
-
-            if(!response.ok){
-
-                throw new Error(
-                    "HTTP " +
-                    response.status
-                );
-
-            }
-
-
-            /*
-             * HTMLを取得
-             */
-
-            const html =
-                await response.text();
-
-
-            if(!html){
-
-                throw new Error(
-                    "HTMLが空です。"
-                );
-
-            }
-
-
-            /*
-             * 取得したHTMLを解析
-             */
-
-            const parser =
-                new DOMParser();
-
-
-            const documentHtml =
-                parser.parseFromString(
-                    html,
-                    "text/html"
-                );
-
-
-            /*
-             * legal.html の
-             * .legal-modal-page を取得
-             */
-
-            const legalPage =
-                documentHtml.querySelector(
-                    ".legal-modal-page"
-                );
-
-
-            if(!legalPage){
-
-                throw new Error(
-                    "法律情報の本文が見つかりません。"
-                );
-
-            }
-
-
-            /*
-             * 共通テンプレートの
-             * 本文だけを表示
-             */
-
-            body.innerHTML =
-                legalPage.innerHTML;
-
-
-            body.scrollTop =
-                0;
-
-        }
-        catch(error){
-
-            console.error(
-                "利用規約・プライバシーポリシー読み込みエラー:",
-                error
-            );
-
-
-            body.innerHTML = `
-                <p style="text-align:center;">
-                    利用規約・プライバシーポリシーの
-                    読み込みに失敗しました。
-                </p>
-            `;
-
+        function openInquiryModal(){
+            const modal=document.getElementById("inquiryModal");
+            const frame=document.getElementById("inquiryFrame");
+            if(!modal||!frame) return;
+            frame.src="/home/inquiry";
+            modal.style.display="flex";
         }
 
-    }
-
-
-
-    /* =========================================================
-       法的情報モーダルを閉じる
-       ========================================================= */
-
-    function closeLegalModal(event){
-
-        if(
-            event &&
-            event.target !== event.currentTarget
-        ){
-
-            return;
-
+        function closeInquiryModal(event){
+            if(event&&event.target!==event.currentTarget) return;
+            const modal=document.getElementById("inquiryModal");
+            const frame=document.getElementById("inquiryFrame");
+            if(!modal||!frame) return;
+            modal.style.display="none";
+            frame.src="";
         }
 
-
-        const modal =
-            document.getElementById(
-                "legalModal"
-            );
-
-
-        if(!modal){
-
-            return;
-
-        }
-
-
-        modal.style.display =
-            "none";
-
-    }
-
-
-
-    /* =========================================================
-       問い合わせモーダル
-       ========================================================= */
-
-    function openInquiryModal(){
-
-        const modal =
-            document.getElementById(
-                "inquiryModal"
-            );
-
-
-        const frame =
-            document.getElementById(
-                "inquiryFrame"
-            );
-
-
-        if(!modal || !frame){
-
-            return;
-
-        }
-
-
-        frame.src =
-            "/home/inquiry";
-
-
-        modal.style.display =
-            "flex";
-
-    }
-
-
-
-    function closeInquiryModal(event){
-
-        if(
-            event &&
-            event.target !== event.currentTarget
-        ){
-
-            return;
-
-        }
-
-
-        const modal =
-            document.getElementById(
-                "inquiryModal"
-            );
-
-
-        const frame =
-            document.getElementById(
-                "inquiryFrame"
-            );
-
-
-        if(!modal || !frame){
-
-            return;
-
-        }
-
-
-        modal.style.display =
-            "none";
-
-
-        frame.src =
-            "";
-
-    }
-
-
-
-    /* =========================================================
-       ESCキー
-       ========================================================= */
-
-    document.addEventListener(
-        "keydown",
-        function(event){
-
-            if(event.key !== "Escape"){
-
-                return;
-
-            }
-
-
+        document.addEventListener("keydown",function(event){
+            if(event.key!=="Escape") return;
             closeLegalModal();
-
             closeInquiryModal();
+            if(settingModal) settingModal.style.display="none";
+            if(fontSettingModal) fontSettingModal.style.display="none";
+        });
 
-
-            if(settingModal){
-
-                settingModal.style.display =
-                    "none";
-
-            }
-
-
-            if(fontSettingModal){
-
-                fontSettingModal.style.display =
-                    "none";
-
-            }
-
-        }
-    );
-
-
-
-    /* =========================================================
-       問い合わせ完了時
-       ========================================================= */
-
-    window.addEventListener(
-        "message",
-        function(event){
-
-            if(
-                event.origin !==
-                window.location.origin
-            ){
-
-                return;
-
-            }
-
-
-            if(
-                event.data &&
-                event.data.type ===
-                    "closeInquiryModal"
-            ){
-
-                closeInquiryModal();
-
-            }
-
-        }
-    );
-
-</script>
-
+        window.addEventListener("message",function(event){
+            if(event.origin!==window.location.origin) return;
+            if(event.data&&event.data.type==="closeInquiryModal") closeInquiryModal();
+        });
+    </script>
 {% endblock %}

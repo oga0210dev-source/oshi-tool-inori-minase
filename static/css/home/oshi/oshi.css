@@ -2257,11 +2257,17 @@ body:has(.oshi-home-page) .page-scroll{
     transform:translate(-50%,-50%);
 
     overflow-y:auto;
+    scrollbar-width:none;
+    -ms-overflow-style:none;
 
     background:#fff;
     border-radius:16px;
 
     box-shadow:0 5px 20px rgba(0,0,0,.2);
+}
+
+.oshi-tour-capacity-modal-content::-webkit-scrollbar{
+    display:none;
 }
 
 
