@@ -2,25 +2,6 @@
 マスターテーブル
 /////////////////////////////////
 
-0 : 登録不可　1 : 登録可能（通常）　2 : 登録可能（招待限定）
-create table public.m_system_setting (
-  setting_key character varying(100) not null,
-  setting_value character varying(255) not null,
-  updated_at timestamp without time zone not null default CURRENT_TIMESTAMP,
-  constraint m_system_setting_pkey primary key (setting_key)
-) TABLESPACE pg_default;
-
-create table public.m_invitation_code (
-  invitation_code character varying(100) not null,
-  is_active boolean not null default true,
-  max_usage integer null,
-  usage_count integer not null default 0,
-  expires_at timestamp without time zone null,
-  created_at timestamp without time zone not null default CURRENT_TIMESTAMP,
-  updated_at timestamp without time zone not null default CURRENT_TIMESTAMP,
-  constraint m_invitation_code_pkey primary key (invitation_code)
-) TABLESPACE pg_default;
-
 create table public.m_user (
   user_id text not null,
   user_name text not null,
