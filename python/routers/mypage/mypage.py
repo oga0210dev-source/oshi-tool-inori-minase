@@ -318,3 +318,76 @@ def _get_prefecture_groups():
         prefecture_groups[area].append(prefecture)
 
     return prefecture_groups
+
+
+@router.post("/mypage/withdraw")
+async def withdraw_mypage(request: Request):
+    """退会予約"""
+
+    user_id = request.session.get("user_id")
+
+    # =====================================================
+    # ログイン確認
+    # =====================================================
+
+    if not auth.is_login(request):
+        return RedirectResponse(
+            "/login",
+            status_code=303
+        )
+
+    # =====================================================
+    # 現在のユーザー情報取得
+    # =====================================================
+
+    user = UserModel.get_user(user_id)
+
+    if not user:
+        request.session.clear()
+
+        return RedirectResponse(
+            "/login",
+            status_code=303
+        )
+
+    # =====================================================
+    # 通常ユーザー以外は退会対象外
+    # =====================================================
+
+    if user["role"] != "user":
+        return RedirectResponse(
+            "/mypage",
+            status_code=303
+        )
+
+    # =====================================================
+    # 退会予約
+    # =====================================================
+
+    success = UserModel.withdraw_user(
+        user_id=user_id
+    )
+
+    if not success:
+        return RedirectResponse(
+            "/mypage",
+            status_code=303
+        )
+
+    # =====================================================
+    # 退会予約完了
+    # =====================================================
+
+    request.session.clear()
+
+    # トップページ側で表示するメッセージ
+    request.session["message"] = (
+        "退会予約を受け付けました。"
+        "同一アカウントでアクセスすることで、"
+        "30日以内は退会を取り消すことができます。"
+    )
+
+    return RedirectResponse(
+        "/",
+        status_code=303
+    )

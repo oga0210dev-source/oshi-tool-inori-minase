@@ -7,6 +7,7 @@ from python.core import database, auth
 from python.services.inquiry_service import get_active_todos
 from python.services.discord_service import send_todo_reminder
 from python.services.weather_service import update_weather_forecast
+from python.services.user_cleanup_service import delete_expired_users
 
 
 router = APIRouter(
@@ -84,5 +85,40 @@ async def weather_forecast(request: Request):
             content={
                 "success": False,
                 "message": f"天気予報の更新に失敗しました: {str(e)}"
+            }
+        )
+
+
+@router.get("/delete-expired-users")
+async def delete_expired_users_batch(request: Request):
+
+    unauthorized = check_cron_secret(request)
+
+    if unauthorized:
+        return unauthorized
+
+    try:
+        result = delete_expired_users()
+
+        return {
+            "success": True,
+            "message": "期限切れユーザーを削除しました。",
+            "withdrawal_deleted_count": result[
+                "withdrawal_deleted_count"
+            ],
+            "guest_deleted_count": result[
+                "guest_deleted_count"
+            ]
+        }
+
+    except Exception as e:
+        return JSONResponse(
+            status_code=500,
+            content={
+                "success": False,
+                "message": (
+                    "期限切れユーザーの削除に失敗しました: "
+                    f"{str(e)}"
+                )
             }
         )
