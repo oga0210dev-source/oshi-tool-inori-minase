@@ -580,3 +580,207 @@ class UserModel:
 
         finally:
             conn.close()
+
+    @staticmethod
+    def get_all_users_for_admin(
+            user_name=None,
+            login_id=None,
+            role=None,
+            is_active=None,
+            withdrawal=None
+    ):
+        """管理者用ユーザー一覧取得"""
+
+        conn = get_connection()
+
+        try:
+            cursor = conn.cursor()
+
+            sql = """
+                SELECT
+                    USER_ID,
+                    LOGIN_ID,
+                    USER_NAME,
+                    ROLE,
+                    IS_ACTIVE,
+                    CREATED_AT,
+                    LAST_ACCESS_AT,
+                    WITHDRAWAL_AT
+                FROM M_USER
+                WHERE 1 = 1
+            """
+
+            params = []
+
+            # =====================================================
+            # 名前
+            # =====================================================
+
+            if user_name:
+                sql += """
+                    AND USER_NAME ILIKE %s
+                """
+                params.append(f"%{user_name}%")
+
+            # =====================================================
+            # ユーザーID
+            # =====================================================
+
+            if login_id:
+                sql += """
+                    AND LOGIN_ID ILIKE %s
+                """
+                params.append(f"%{login_id}%")
+
+            # =====================================================
+            # 権限
+            # =====================================================
+
+            if role:
+                sql += """
+                    AND ROLE = %s
+                """
+                params.append(role)
+
+            # =====================================================
+            # BAN状態
+            # =====================================================
+
+            if is_active == "active":
+                sql += """
+                    AND IS_ACTIVE = TRUE
+                """
+
+            elif is_active == "banned":
+                sql += """
+                    AND IS_ACTIVE = FALSE
+                """
+
+            # =====================================================
+            # 削除予約
+            # =====================================================
+
+            if withdrawal == "reserved":
+                sql += """
+                    AND WITHDRAWAL_AT IS NOT NULL
+                """
+
+            elif withdrawal == "none":
+                sql += """
+                    AND WITHDRAWAL_AT IS NULL
+                """
+
+            # =====================================================
+            # 並び順
+            # =====================================================
+
+            sql += """
+                ORDER BY CREATED_AT DESC
+            """
+
+            cursor.execute(sql, params)
+
+            return cursor.fetchall()
+
+        finally:
+            conn.close()
+
+    @staticmethod
+    def set_active(
+            user_id,
+            is_active
+    ):
+        """ユーザーの有効・BAN状態を変更する"""
+
+        conn = get_connection()
+
+        try:
+            cursor = conn.cursor()
+
+            cursor.execute("""
+                UPDATE M_USER
+                SET
+                    IS_ACTIVE = %s
+                WHERE
+                    USER_ID = %s
+            """, (
+                is_active,
+                user_id
+            ))
+
+            updated = cursor.rowcount > 0
+
+            conn.commit()
+
+            return updated
+
+        except Exception:
+            conn.rollback()
+            raise
+
+        finally:
+            conn.close()
+
+    @staticmethod
+    def cancel_withdrawal(
+            user_id
+    ):
+        """退会予約を解除する"""
+
+        conn = get_connection()
+
+        try:
+            cursor = conn.cursor()
+
+            cursor.execute("""
+                UPDATE M_USER
+                SET
+                    WITHDRAWAL_AT = NULL
+                WHERE
+                    USER_ID = %s
+            """, (
+                user_id,
+            ))
+
+            updated = cursor.rowcount > 0
+
+            conn.commit()
+
+            return updated
+
+        except Exception:
+            conn.rollback()
+            raise
+
+        finally:
+            conn.close()
+
+    @staticmethod
+    def get_user_for_admin(user_id: str):
+        """管理者用ユーザー取得"""
+
+        conn = get_connection()
+
+        try:
+            cursor = conn.cursor()
+
+            cursor.execute("""
+                SELECT
+                    USER_ID,
+                    LOGIN_ID,
+                    USER_NAME,
+                    ROLE,
+                    IS_ACTIVE,
+                    CREATED_AT,
+                    LAST_ACCESS_AT,
+                    WITHDRAWAL_AT
+                FROM M_USER
+                WHERE USER_ID = %s
+            """, (
+                user_id,
+            ))
+
+            return cursor.fetchone()
+
+        finally:
+            conn.close()

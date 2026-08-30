@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="icon" href="/static/img/logo.png" type="image/png">
+        <title>ユーザー管理 - 推し活オールインワン</title>
+        <link rel="stylesheet" href="/static/css/common.css">
+        <link rel="stylesheet" href="/static/css/admin/master/admin-common.css">
+        <link rel="stylesheet" href="/static/css/admin/master/user/user.css">
+    </head>
+
+    <body class="{{ font_class }}">
+        <div class="container">
+            <div class="page-header">
+                <a href="/admin/master" class="master-link">← 管理マスタ</a>
+                <h1 class="page-title">ユーザー管理</h1>
+            </div>
+
+            <!-- 検索 -->
+            <div class="search-area">
+                <form method="get" class="search-form">
+                    <div class="search-row search-row-input">
+                        <div class="search-item">
+                            <label>ユーザー名</label>
+                            <input type="text" name="user_name" placeholder="ユーザー名" value="{{ request.query_params.get('user_name', '') }}">
+                        </div>
+                        <div class="search-item">
+                            <label>ユーザーID</label>
+                            <input type="text" name="login_id" placeholder="ユーザーID" value="{{ request.query_params.get('login_id', '') }}">
+                        </div>
+                    </div>
+
+                    <div class="search-row search-row-select">
+                        <div class="search-item">
+                            <label>権限</label>
+                            <select name="role">
+                                <option value="">すべて</option>
+                                <option value="user" {% if request.query_params.get('role') == "user" %}selected{% endif %}>ユーザー</option>
+                                <option value="guest" {% if request.query_params.get('role') == "guest" %}selected{% endif %}>ゲスト</option>
+                                <option value="admin" {% if request.query_params.get('role') == "admin" %}selected{% endif %}>管理者</option>
+                            </select>
+                        </div>
+
+                        <div class="search-item">
+                            <label>BAN状態</label>
+                            <select name="is_active">
+                                <option value="">すべて</option>
+                                <option value="active" {% if request.query_params.get('is_active') == "active" %}selected{% endif %}>有効</option>
+                                <option value="banned" {% if request.query_params.get('is_active') == "banned" %}selected{% endif %}>BAN</option>
+                            </select>
+                        </div>
+
+                        <div class="search-item">
+                            <label>削除予約</label>
+                            <select name="withdrawal">
+                                <option value="">すべて</option>
+                                <option value="reserved" {% if request.query_params.get('withdrawal') == "reserved" %}selected{% endif %}>予約中</option>
+                                <option value="none" {% if request.query_params.get('withdrawal') == "none" %}selected{% endif %}>予約なし</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="search-button-area">
+                        <button type="submit" class="search-btn">検索</button>
+                        <a href="/admin/user" class="clear-btn">クリア</a>
+                    </div>
+                </form>
+            </div>
+
+            <!-- ユーザー一覧 -->
+            <div class="user-scroll">
+                <div class="user-list">
+                    {% if users %}
+                        {% for user in users %}
+                        <div class="user-item">
+                            <div class="user-info">
+                                <div class="user-name">{{ user.user_name }}</div>
+
+                                <div class="user-detail">
+                                    ユーザーID：{{ user.login_id or "ゲスト" }}
+                                </div>
+
+                                <div class="user-detail">
+                                    権限：{{ user.role }}
+                                </div>
+
+                                <div class="user-detail">
+                                    登録日時：{{ user.created_at.strftime("%Y/%m/%d %H:%M:%S") if user.created_at else "―" }}
+                                </div>
+
+                                <div class="user-detail">
+                                    最終アクセス：{{ user.last_access_at.strftime("%Y/%m/%d %H:%M:%S") if user.last_access_at else "―" }}
+                                </div>
+
+                                {% if user.withdrawal_at %}
+                                <div class="user-status withdrawal">退会予約中</div>
+                                {% elif not user.is_active %}
+                                <div class="user-status banned">BAN</div>
+                                {% else %}
+                                <div class="user-status active">有効</div>
+                                {% endif %}
+
+                                {% if user.role == "user" or user.role == "guest" %}
+                                <div class="user-action">
+                                    {% if user.is_active %}
+                                    <form action="/admin/user/{{ user.user_id }}/ban" method="post" onsubmit="return confirm('このユーザーをBANしますか？');">
+                                        <button type="submit" class="user-action-btn ban-btn">BAN</button>
+                                    </form>
+                                    {% else %}
+                                    <form action="/admin/user/{{ user.user_id }}/unban" method="post" onsubmit="return confirm('このユーザーのBANを解除しますか？');">
+                                        <button type="submit" class="user-action-btn unban-btn">BAN解除</button>
+                                    </form>
+                                    {% endif %}
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <p class="empty-message">ユーザーが存在しません。</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <script src="/static/js/common.js"></script>
+
+        {% if message %}
+            <script>
+                showToast("{{ message }}");
+            </script>
+        {% endif %}
+
+    </body>
+</html>

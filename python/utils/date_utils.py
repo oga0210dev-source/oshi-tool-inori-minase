@@ -1,4 +1,16 @@
-from datetime import date, datetime
+from datetime import date, datetime, timezone, timedelta
+
+JST = timezone(timedelta(hours=9))
+
+
+def to_jst(dt):
+    if dt is None:
+        return None
+
+    if dt.tzinfo is None:
+        dt = dt.replace(tzinfo=timezone.utc)
+
+    return dt.astimezone(JST)
 
 
 def calculate_member_period(member_since):
