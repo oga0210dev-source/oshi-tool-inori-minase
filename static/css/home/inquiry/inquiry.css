@@ -1,95 +1,195 @@
-.inquiry-page {
-    width: 100%;
-    max-width: 430px;
-    margin: 0 auto;
-    padding: 24px 16px 40px;
-    box-sizing: border-box;
+/*==========================
+    お問い合わせ
+==========================*/
+
+html{
+    width:100%;
+    height:auto;
+    min-height:100%;
+    margin:0;
+    padding:0;
+    overflow-x:hidden;
+    overflow-y:auto;
+    scrollbar-width:none;
+    -ms-overflow-style:none;
 }
 
-.inquiry-page h1 {
-    margin: 0 0 12px;
-    text-align: center;
-    font-size: 24px;
+html::-webkit-scrollbar{
+    display:none;
 }
 
-.inquiry-description {
-    margin: 0 0 24px;
-    font-size: 14px;
-    line-height: 1.7;
-    text-align: center;
+
+body{
+    position:static;
+    width:100%;
+    height:auto;
+    min-height:100%;
+    margin:0;
+    padding:0;
+    overflow-x:hidden;
+    overflow-y:auto;
+    scrollbar-width:none;
+    -ms-overflow-style:none;
 }
 
-.inquiry-error {
-    margin-bottom: 20px;
-    padding: 12px;
-    border-radius: 8px;
-    background: #ffe8e8;
-    color: #d33;
-    font-size: 14px;
+body::-webkit-scrollbar{
+    display:none;
 }
 
-.inquiry-form {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+/*==========================
+    お問い合わせ
+==========================*/
+.inquiry-page,
+.inquiry-page *,
+.inquiry-page *::before,
+.inquiry-page *::after{
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        "Noto Sans JP",
+        "Yu Gothic",
+        "Hiragino Kaku Gothic ProN",
+        sans-serif !important;
 }
 
-.form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
+
+/*==========================
+    ページ
+==========================*/
+
+.inquiry-page{
+    width:100%;
+    max-width:430px;
+    margin:0 auto;
+    padding:24px 16px 40px;
+    box-sizing:border-box;
 }
 
-.form-group label {
-    font-size: 15px;
-    font-weight: bold;
+
+/*==========================
+    タイトル
+==========================*/
+
+.inquiry-page h1{
+    margin:0 0 12px;
+    text-align:center;
+    font-size:24px;
 }
 
-.required {
-    margin-left: 4px;
-    font-size: 11px;
-    font-weight: normal;
+
+/*==========================
+    説明
+==========================*/
+
+.inquiry-description{
+    margin:0 0 24px;
+    font-size:14px;
+    line-height:1.7;
+    text-align:center;
 }
+
+
+/*==========================
+    エラー
+==========================*/
+
+.inquiry-error{
+    margin-bottom:20px;
+    padding:12px;
+    border-radius:8px;
+    background:#ffe8e8;
+    color:#d33;
+    font-size:14px;
+}
+
+
+/*==========================
+    フォーム
+==========================*/
+
+.inquiry-form{
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+}
+
+
+.form-group{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+}
+
+
+.form-group label{
+    font-size:15px;
+    font-weight:bold;
+}
+
+
+.required{
+    margin-left:4px;
+    font-size:11px;
+    font-weight:normal;
+}
+
+
+/*==========================
+    入力
+==========================*/
 
 .form-group input,
 .form-group select,
-.form-group textarea {
-    width: 100%;
-    padding: 11px 12px;
-    box-sizing: border-box;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    background: #fff;
-    font-family: inherit;
-    font-size: 14px;
+.form-group textarea{
+    width:100%;
+    padding:11px 12px;
+    box-sizing:border-box;
+    border:1px solid #ccc;
+    border-radius:8px;
+    background:#fff;
+    font-size:14px;
 }
 
-.form-group textarea {
-    min-height: 180px;
-    resize: vertical;
-    line-height: 1.6;
+
+.form-group textarea{
+    min-height:180px;
+    resize:vertical;
+    line-height:1.6;
 }
+
 
 .form-group input:focus,
 .form-group select:focus,
-.form-group textarea:focus {
-    outline: none;
-    border-color: #888;
+.form-group textarea:focus{
+    outline:none;
+    border-color:#888;
 }
 
-.form-note {
-    margin: 0;
-    font-size: 12px;
-    line-height: 1.5;
+
+/*==========================
+    注記
+==========================*/
+
+.form-note{
+    margin:0;
+    font-size:12px;
+    line-height:1.5;
 }
 
-.submit-button {
-    width: 100%;
-    padding: 13px;
-    border: none;
-    border-radius: 8px;
-    font-family: inherit;
-    font-size: 15px;
-    font-weight: bold;
-    cursor: pointer;
+
+/*==========================
+    送信ボタン
+==========================*/
+
+.submit-button{
+    width:100%;
+    padding:13px;
+    border:none;
+    border-radius:8px;
+    background:#333;
+    color:#fff;
+    font-size:15px;
+    font-weight:bold;
+    cursor:pointer;
 }

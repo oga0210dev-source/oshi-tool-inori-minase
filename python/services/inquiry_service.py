@@ -1,4 +1,22 @@
+from datetime import timezone
+from zoneinfo import ZoneInfo
+
 from python.services.discord_service import send_inquiry_notification
+
+
+JST = ZoneInfo("Asia/Tokyo")
+
+
+def format_datetime_jst(value):
+    if not value:
+        return ""
+
+    if value.tzinfo is None:
+        value = value.replace(tzinfo=timezone.utc)
+
+    return value.astimezone(JST).strftime(
+        "%Y/%m/%d %H:%M:%S"
+    )
 
 
 def create_inquiry(
@@ -92,7 +110,18 @@ def get_inquiry_list(conn, status="", inquiry_type=""):
 
     with conn.cursor() as cur:
         cur.execute(sql, params)
-        return cur.fetchall()
+        inquiries = cur.fetchall()
+
+    for inquiry in inquiries:
+        inquiry["created_at"] = format_datetime_jst(
+            inquiry["created_at"]
+        )
+
+        inquiry["updated_at"] = format_datetime_jst(
+            inquiry["updated_at"]
+        )
+
+    return inquiries
 
 
 def get_inquiry_detail(conn, inquiry_id):
@@ -117,7 +146,20 @@ def get_inquiry_detail(conn, inquiry_id):
 
     with conn.cursor() as cur:
         cur.execute(sql, (inquiry_id,))
-        return cur.fetchone()
+        inquiry = cur.fetchone()
+
+    if not inquiry:
+        return None
+
+    inquiry["created_at"] = format_datetime_jst(
+        inquiry["created_at"]
+    )
+
+    inquiry["updated_at"] = format_datetime_jst(
+        inquiry["updated_at"]
+    )
+
+    return inquiry
 
 
 def update_inquiry(
@@ -170,4 +212,11 @@ def get_active_todos(conn):
 
     with conn.cursor() as cur:
         cur.execute(sql)
-        return cur.fetchall()
+        todos = cur.fetchall()
+
+    for todo in todos:
+        todo["created_at"] = format_datetime_jst(
+            todo["created_at"]
+        )
+
+    return todos

@@ -75,6 +75,22 @@
     font-size:12px;
 }
 
+/* ==========================
+   会場リンク
+========================== */
+
+.venue-link{
+    color:#333;
+    font-weight:bold;
+    text-decoration:underline;
+    text-decoration-color:#ff8fb1;
+    text-underline-offset:3px;
+}
+
+
+.venue-link:hover{
+    opacity:.7;
+}
 
 /* 参加状態 */
 

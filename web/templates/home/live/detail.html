@@ -10,21 +10,24 @@
 <div class="background">
 
     {% if request.query_params.get('from') == 'history' %}
-
     <a href="/home/live/history"
        class="back-link">
         ← 参加履歴
     </a>
 
     {% elif request.query_params.get('from') == 'venue_events' %}
-
     <a href="/home/oshi/venue/{{ request.query_params.get('venue_id') }}/events"
        class="back-link">
         ← 利用イベント
     </a>
 
-    {% else %}
+    {% elif request.query_params.get('from') == 'live' %}
+    <a href="/home/live"
+       class="back-link">
+        ← ライブ
+    </a>
 
+    {% else %}
     <a href="/home/live/archive"
        class="back-link">
         ← ライブ一覧
@@ -60,9 +63,17 @@
                         {{ day_status }}
                     </div>
 
-                    <div>
+                    <div class="venue-link">
                         📍 {{ live.prefecture_name }}
-                        {{ live.venue_name }}
+
+                        {% if live.venue_id and live.venue_name %}
+                        <a href="/home/oshi/venue/{{ live.venue_id }}/events?from=live_detail&event_id={{ live.live_id }}"
+                           class="venue-link">
+                            {{ live.venue_name }}
+                        </a>
+                        {% else %}
+                            {{ live.venue_name }}
+                        {% endif %}
                     </div>
 
                     {% if live.venue_name %}

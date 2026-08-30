@@ -1,8 +1,12 @@
 from fastapi import APIRouter, Form, Request
 from fastapi.responses import RedirectResponse
-from python.core import render, database
+from fastapi.templating import Jinja2Templates
 
+from python.core import database
 from python.services.inquiry_service import create_inquiry
+
+
+templates = Jinja2Templates(directory="web")
 
 
 router = APIRouter(
@@ -14,7 +18,7 @@ router = APIRouter(
 @router.get("")
 async def inquiry_page(request: Request):
 
-    return render(
+    return templates.TemplateResponse(
         request=request,
         name="templates/home/inquiry/inquiry.html"
     )
@@ -36,7 +40,8 @@ async def inquiry_submit(
         user_id = "GUEST"
 
     if inquiry_type == "INQUIRY" and not email.strip():
-        return render(
+
+        return templates.TemplateResponse(
             request=request,
             name="templates/home/inquiry/inquiry.html",
             context={
@@ -52,6 +57,7 @@ async def inquiry_submit(
     conn = database.get_connection()
 
     try:
+
         inquiry_id = create_inquiry(
             conn=conn,
             user_id=user_id,
@@ -60,7 +66,9 @@ async def inquiry_submit(
             email=email.strip(),
             message=message.strip()
         )
+
     finally:
+
         conn.close()
 
     return RedirectResponse(
@@ -75,9 +83,11 @@ async def inquiry_complete(
     inquiry_id: int
 ):
 
-    is_login = bool(request.session.get("user_id"))
+    is_login = bool(
+        request.session.get("user_id")
+    )
 
-    return render(
+    return templates.TemplateResponse(
         request=request,
         name="templates/home/inquiry/complete.html",
         context={

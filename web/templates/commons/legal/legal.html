@@ -2,84 +2,17 @@
 <html lang="ja">
 
 <head>
-
     <meta charset="UTF-8">
-
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
-
-    <link rel="stylesheet"
-          href="/static/css/common.css">
-
-    <link rel="stylesheet"
-          href="/static/css/home/legal/legal.css">
-
-    <style>
-
-    html {
-        margin: 0;
-        padding: 0;
-
-        width: 100%;
-        height: auto;
-        min-height: 100%;
-
-        overflow-x: hidden;
-        overflow-y: auto;
-
-        scrollbar-width: none;
-    }
-
-    html::-webkit-scrollbar {
-        display: none;
-    }
-
-
-    body {
-        margin: 0;
-        padding: 15px;
-
-        width: 100%;
-        min-height: 100%;
-
-        box-sizing: border-box;
-
-        overflow-x: hidden;
-        overflow-y: auto;
-
-        background: #ffffff;
-
-        scrollbar-width: none;
-    }
-
-    body::-webkit-scrollbar {
-        display: none;
-    }
-
-
-    .legal-modal-page {
-        width: 100%;
-        box-sizing: border-box;
-        overflow: visible;
-    }
-
-</style>
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/common.css">
+    <link rel="stylesheet" href="/static/css/home/legal/legal.css?v=3">
 </head>
 
-
-<body class="{{ font_class }}">
-
+<body>
 <div class="legal-modal-page">
-
-    <p class="update-date">
-        最終更新日：2026年8月15日
-    </p>
-
+    <p class="update-date">最終更新日：2026年8月15日</p>
     {% block legal_content %}{% endblock %}
-
 </div>
-
 </body>
 
 </html>

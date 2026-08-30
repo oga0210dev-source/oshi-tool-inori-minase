@@ -81,125 +81,105 @@
    お問い合わせ詳細
    ============================== */
 
-.inquiry-detail-page {
-    max-width: 430px;
-    margin: 0 auto;
-    padding: 20px 16px 40px;
+.inquiry-detail-page{
+    width:100%;
+    max-width:430px;
+    height:calc(100dvh - 70px);
+    margin:0 auto;
+    padding:20px 16px 40px;
+    box-sizing:border-box;
+    overflow-y:auto;
+    overflow-x:hidden;
+    scrollbar-width:none;
+    -ms-overflow-style:none;
 }
 
-.inquiry-detail-page .page-header {
-    margin-bottom: 20px;
+.inquiry-detail-page::-webkit-scrollbar{
+    display:none;
 }
 
-.inquiry-detail-page .page-title {
-    margin: 10px 0 0;
+.inquiry-detail-page .page-header{
+    margin-bottom:20px;
 }
 
-.back-link {
-    display: inline-block;
-    color: inherit;
-    text-decoration: none;
-    font-size: 14px;
+.inquiry-detail-page .page-title{
+    margin:10px 0 0;
 }
 
-.inquiry-detail {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
+.back-link{
+    display:inline-block;
+    color:inherit;
+    text-decoration:none;
+    font-size:14px;
 }
 
-.detail-item {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
+.inquiry-detail{
+    display:flex;
+    flex-direction:column;
+    gap:16px;
 }
 
-.detail-label {
-    font-size: 13px;
-    font-weight: bold;
+.detail-item{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
 }
 
-.detail-value {
-    padding: 10px 12px;
-    background: #fff;
-    border-radius: 8px;
-    word-break: break-word;
+.detail-label{
+    font-size:13px;
+    font-weight:bold;
 }
 
-.detail-message {
-    padding: 12px;
-    background: #fff;
-    border-radius: 8px;
-    min-height: 120px;
-    white-space: pre-wrap;
-    word-break: break-word;
-    text-align: left;
-    line-height: 1.6;
+.detail-value{
+    padding:10px 12px;
+    background:#fff;
+    border-radius:8px;
+    word-break:break-word;
+}
+
+.detail-message{
+    padding:12px;
+    background:#fff;
+    border-radius:8px;
+    min-height:120px;
+    white-space:pre-wrap;
+    word-break:break-word;
+    text-align:left;
+    line-height:1.6;
 }
 
 .detail-select,
-.detail-textarea {
-    width: 100%;
-    box-sizing: border-box;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    padding: 10px 12px;
-    font-family: inherit;
-    font-size: 14px;
-    background: #fff;
+.detail-textarea{
+    width:100%;
+    box-sizing:border-box;
+    border:1px solid #ccc;
+    border-radius:8px;
+    padding:10px 12px;
+    font-family:inherit;
+    font-size:14px;
+    background:#fff;
 }
 
-.detail-textarea {
-    resize: vertical;
-    min-height: 150px;
+.detail-textarea{
+    resize:vertical;
+    min-height:150px;
 }
 
-.inquiry-update-form {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    margin-top: 8px;
+.inquiry-update-form{
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+    margin-top:8px;
 }
 
-.update-button {
-    width: 100%;
-    border: none;
-    border-radius: 8px;
-    padding: 12px;
-    font-family: inherit;
-    font-size: 15px;
-    cursor: pointer;
-}
-
-.inquiry-filter {
-    margin-bottom: 16px;
-}
-
-.inquiry-filter form {
-    display: flex;
-    gap: 8px;
-}
-
-.inquiry-filter select {
-    flex: 1;
-    min-width: 0;
-    padding: 10px 8px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    background: #fff;
-    font-family: inherit;
-    font-size: 14px;
-}
-
-.inquiry-filter button {
-    padding: 10px 16px;
-    border: none;
-    border-radius: 8px;
-    background: #666;
-    color: #fff;
-    font-family: inherit;
-    font-size: 14px;
-    cursor: pointer;
+.update-button{
+    width:100%;
+    border:none;
+    border-radius:8px;
+    padding:12px;
+    font-family:inherit;
+    font-size:15px;
+    cursor:pointer;
 }
 
 

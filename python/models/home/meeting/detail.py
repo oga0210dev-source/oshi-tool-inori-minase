@@ -13,6 +13,7 @@ def get_meeting_detail(user_id, meeting_id):
                     m.meeting_name,
                     m.meeting_date,
                     m.performance_type,
+                    v.venue_id,
                     v.venue_name,
                     p.prefecture_name,
                     m.official_url,

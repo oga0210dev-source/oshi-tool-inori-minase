@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Request
 from fastapi.responses import PlainTextResponse
-from python.core import render
+
+from python.core import templates
 
 
 router = APIRouter(
@@ -21,7 +22,8 @@ async def legal(
             status_code=404
         )
 
-    return render(
+    return templates.TemplateResponse(
         request=request,
-        name=f"templates/commons/legal/{legal_type}.html"
+        name=f"templates/commons/legal/{legal_type}.html",
+        context={}
     )
