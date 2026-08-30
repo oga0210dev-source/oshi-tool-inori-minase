@@ -7,6 +7,10 @@
         {
             "path": "/batch/weather-forecast",
             "schedule": "0 21 * * *"
+        },
+        {
+            "path": "/batch/delete-expired-users",
+            "schedule": "0 22 * * *"
         }
     ]
 }

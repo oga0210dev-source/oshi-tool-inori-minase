@@ -270,9 +270,17 @@
                         退会
                     ==========================-->
                     <div class="cansel-area">
-                        <a href="#" class="setting-button withdraw-button not-implemented">
+                        <button type="submit"
+                            class="setting-button withdraw-button"
+                            formaction="/mypage/withdraw"
+                            formmethod="post"
+                            onclick="return confirm(
+                                '退会予約を行いますか？\n\n' +
+                                '退会予約後30日間は、同じアカウントでログインすることで退会を取り消せます。\n' +
+                                '30日間アクセスがない場合、アカウントと関連データが削除されます。'
+                            );">
                             退会する
-                        </a>
+                        </button>
                     </div>
                     {% endif %}
                 </div>

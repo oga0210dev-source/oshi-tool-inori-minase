@@ -4,6 +4,30 @@ from python.core.database import get_connection
 class UserModel:
 
     @staticmethod
+    def update_last_access_at(user_id: str) -> None:
+        """最終アクセス日時更新"""
+
+        conn = get_connection()
+
+        try:
+            cursor = conn.cursor()
+
+            cursor.execute("""
+                UPDATE M_USER
+                SET
+                    LAST_ACCESS_AT = CURRENT_TIMESTAMP
+                WHERE
+                    USER_ID = %s
+            """, (
+                user_id,
+            ))
+
+            conn.commit()
+
+        finally:
+            conn.close()
+
+    @staticmethod
     def exists_user_id(user_id: str) -> bool:
         """ユーザーIDが存在するか"""
 
@@ -515,6 +539,37 @@ class UserModel:
                 """, (
                 user_id,
                 email
+            ))
+
+            updated_count = cursor.rowcount
+
+            conn.commit()
+
+            return updated_count > 0
+
+        finally:
+            conn.close()
+
+    @staticmethod
+    def withdraw_user(user_id: str) -> bool:
+        """ユーザーの退会予約"""
+
+        conn = get_connection()
+
+        try:
+            cursor = conn.cursor()
+
+            cursor.execute("""
+                UPDATE M_USER
+                SET
+                    WITHDRAWAL_AT = CURRENT_TIMESTAMP
+                WHERE
+                    USER_ID = %s
+                    AND ROLE = 'user'
+                    AND IS_ACTIVE = TRUE
+                    AND WITHDRAWAL_AT IS NULL
+            """, (
+                user_id,
             ))
 
             updated_count = cursor.rowcount
