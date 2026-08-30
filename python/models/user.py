@@ -212,6 +212,65 @@ class UserModel:
             conn.close()
 
     @staticmethod
+    def get_user_by_email(email: str):
+        """メールアドレスからユーザー取得"""
+
+        conn = get_connection()
+
+        try:
+            cursor = conn.cursor()
+
+            cursor.execute("""
+                SELECT
+                    U.*,
+                    P.PREFECTURE_NAME
+                FROM M_USER U
+                LEFT JOIN M_PREFECTURE P
+                    ON U.PREFECTURE = P.PREFECTURE_CODE
+                WHERE
+                    U.EMAIL = %s
+                AND U.IS_ACTIVE = TRUE
+            """, (email,))
+
+            return cursor.fetchone()
+
+        finally:
+            conn.close()
+
+    @staticmethod
+    def get_user_by_login_id_and_email(
+            login_id: str,
+            email: str
+    ):
+        """ログインIDとメールアドレスからユーザー取得"""
+
+        conn = get_connection()
+
+        try:
+            cursor = conn.cursor()
+
+            cursor.execute("""
+                SELECT
+                    U.*,
+                    P.PREFECTURE_NAME
+                FROM M_USER U
+                LEFT JOIN M_PREFECTURE P
+                    ON U.PREFECTURE = P.PREFECTURE_CODE
+                WHERE
+                    U.LOGIN_ID = %s
+                AND U.EMAIL = %s
+                AND U.IS_ACTIVE = TRUE
+            """, (
+                login_id,
+                email
+            ))
+
+            return cursor.fetchone()
+
+        finally:
+            conn.close()
+
+    @staticmethod
     def get_user_by_guest_uuid(guest_uuid: str):
         """ゲストUUIDからゲストユーザー取得"""
 

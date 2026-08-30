@@ -1,0 +1,74 @@
+{% extends "templates/commons/base.html" %}
+
+{% block title %}ログインIDを忘れた方 - 推し活オールインワン{% endblock %}
+
+{% block header %}{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="/static/css/login/id_forgot.css">
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="content">
+            <div class="logo-area">
+                <h1>ログインIDを忘れた方</h1>
+            </div>
+
+            <a href="/login" class="login-link">
+                🔑 ログイン画面へ戻る
+            </a>
+
+            <div class="description">
+                <p>
+                    登録しているメールアドレスと<br>
+                    パスワードを入力してください。
+                </p>
+                <p>
+                    確認後、ログインIDを<br>
+                    メールでお知らせします。
+                </p>
+            </div>
+
+            <form action="/login/id-forgot"
+                method="post"
+                class="forgotForm-area"
+                autocomplete="off">
+
+                <div class="input-area">
+                    <input type="email"
+                        name="email"
+                        value="{{ email or '' }}"
+                        autocomplete="email"
+                        placeholder="メールアドレスを入力してください。"
+                        required>
+                </div>
+
+                <div class="input-area">
+                    <input type="password"
+                        name="password"
+                        autocomplete="current-password"
+                        placeholder="パスワードを入力してください。"
+                        required>
+                </div>
+
+                <div class="button-area">
+                    <button type="submit" class="forgot-button">
+                        <span class="forgot-button-icon">📧</span>
+                        <span>ログインIDを確認する</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script src="/static/js/common.js"></script>
+
+    {% if message %}
+        <script>
+            showToast("{{ message }}");
+        </script>
+    {% endif %}
+{% endblock %}
