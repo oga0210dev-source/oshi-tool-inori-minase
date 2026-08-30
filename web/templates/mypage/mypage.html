@@ -18,22 +18,39 @@
                     プロフィール
                 ==========================-->
                 <div class="profile-area">
-                    <img
-                        id="profile-preview"
-                        class="profile-image"
-                        src="{{ user.profile_image or '/static/img/profile/default.png' }}">
+                    <div class="profile-image-wrapper">
+                        {% if user.profile_image %}
+                        <img id="profile-preview"
+                            class="profile-image"
+                            src="{{ user.profile_image }}"
+                            alt="プロフィール画像">
+
+                        {% else %}
+                            <div id="profile-default"
+                                class="profile-default"
+                                role="img"
+                                aria-label="プロフィール画像未設定">
+                                👤
+                            </div>
+                        {% endif %}
+
+                        <div id="profile-image-edit" class="profile-image-edit hidden">
+                            画像を変更
+                        </div>
+                    </div>
+
                     <input
                         id="profile-image"
                         name="profile_image"
                         type="file"
                         accept="image/*"
                         class="hidden">
-                </div>
 
+                </div>
                 <div class="info-list">
                     <div class="info-item">
                         <div class="label">ユーザーID</div>
-                        <div class="display-value">{{ user.user_id }}</div>
+                        <div class="display-value">{{ user.login_id or "未登録"}}</div>
                     </div>
 
                     <div class="info-item">
@@ -59,6 +76,12 @@
                         <div class="label">メールアドレス</div>
                         <div id="email_text" class="display-value">
                             {{ user.email or "未設定" }}
+
+                            {% if user.email and user.email_verified %}
+                                <span class="email-verified">
+                                    ✓ 認証済み
+                                </span>
+                            {% endif %}
                         </div>
                         <input
                             id="email"
@@ -214,7 +237,17 @@
                 </div>
 
                 <div id="withdraw-area" class="withdraw-area">
+                    {% if user.role == "guest" %}
+                    <!--==========================
+                        本登録
+                    ==========================-->
+                    <div class="security-area">
+                        <a href="/register" class="setting-button register-button">
+                            本登録する
+                        </a>
+                    </div>
 
+                    {% else %}
                     <!--==========================
                         公開設定
                     ==========================-->
@@ -241,7 +274,7 @@
                             退会する
                         </a>
                     </div>
-
+                    {% endif %}
                 </div>
             </form>
         </div>
@@ -250,12 +283,22 @@
 {% endblock %}
 
 {% block script %}
-<script src="/static/js/mypage/mypage.js"></script>
-<script src="/static/js/common.js"></script>
+    <script src="/static/js/mypage/mypage.js"></script>
+    <script src="/static/js/common.js"></script>
 
-{% if message %}
-<script>
-    showToast("{{ message }}");
-</script>
-{% endif %}
+    {% if message %}
+    <script>
+        showToast("{{ message }}");
+    </script>
+    {% endif %}
+
+    {% if email_verification_sent_to %}
+        <script>
+            alert(
+                "メールアドレス認証メールを送信しました。\n\n" +
+                "送信先：{{ email_verification_sent_to }}\n\n" +
+                "メールが届かない場合は、迷惑メールフォルダもご確認ください。"
+            );
+        </script>
+    {% endif %}
 {% endblock %}

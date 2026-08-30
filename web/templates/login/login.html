@@ -24,9 +24,9 @@
 
             <div class="input-area">
                 <input type="text"
-                       name="user_id"
+                       name="login_id"
                        autocomplete="username"
-                       placeholder="ユーザIDを入力してください。"
+                       placeholder="ログインIDを入力してください。"
                        required>
             </div>
 
@@ -46,6 +46,20 @@
             </div>
 
         </form>
+
+        <div class="forgot-link-area">
+
+            <a href="/login/id-forgot" class="forgot-link">
+                ログインIDを忘れた方
+            </a>
+
+            <span class="forgot-link-separator">｜</span>
+
+            <a href="/login/password-forgot" class="forgot-link">
+                パスワードを忘れた方
+            </a>
+
+        </div>
 
         <div class="register-link-area">
             <a href="/register" class="register-link">

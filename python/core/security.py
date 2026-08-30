@@ -1,4 +1,7 @@
+import os
 import bcrypt
+
+from itsdangerous import URLSafeTimedSerializer
 
 
 class Security:
@@ -15,10 +18,121 @@ class Security:
         return hashed.decode("utf-8")
 
     @staticmethod
-    def verify_password(password: str, hashed_password: str) -> bool:
+    def verify_password(
+            password: str,
+            hashed_password: str
+    ) -> bool:
         """パスワードを照合する"""
 
         return bcrypt.checkpw(
             password.encode("utf-8"),
             hashed_password.encode("utf-8")
         )
+
+    # =====================================================
+    # メール認証
+    # =====================================================
+
+    @staticmethod
+    def _get_email_token_serializer():
+        """メール認証トークン用Serializerを取得"""
+
+        secret = os.getenv("EMAIL_TOKEN_SECRET")
+
+        if not secret:
+            raise RuntimeError(
+                "EMAIL_TOKEN_SECRETが設定されていません。"
+            )
+
+        return URLSafeTimedSerializer(secret)
+
+    @staticmethod
+    def generate_email_verification_token(
+            user_id: str,
+            email: str
+    ) -> str:
+        """メール認証トークンを生成"""
+
+        serializer = Security._get_email_token_serializer()
+
+        return serializer.dumps({
+            "user_id": user_id,
+            "email": email
+        })
+
+    @staticmethod
+    def verify_email_verification_token(
+            token: str,
+            max_age: int = 86400
+    ):
+        """
+        メール認証トークンを検証
+
+        max_age:
+            86400秒 = 24時間
+        """
+
+        serializer = Security._get_email_token_serializer()
+
+        try:
+            return serializer.loads(
+                token,
+                max_age=max_age
+            )
+
+        except Exception:
+            return None
+
+    # =====================================================
+    # パスワード再設定
+    # =====================================================
+
+    @staticmethod
+    def _get_password_reset_token_serializer():
+        """パスワード再設定トークン用Serializerを取得"""
+
+        secret = os.getenv("PASSWORD_RESET_TOKEN_SECRET")
+
+        if not secret:
+            raise RuntimeError(
+                "PASSWORD_RESET_TOKEN_SECRETが設定されていません。"
+            )
+
+        return URLSafeTimedSerializer(secret)
+
+    @staticmethod
+    def generate_password_reset_token(
+            user_id: str,
+            email: str
+    ) -> str:
+        """パスワード再設定トークンを生成"""
+
+        serializer = Security._get_password_reset_token_serializer()
+
+        return serializer.dumps({
+            "user_id": user_id,
+            "email": email
+        })
+
+    @staticmethod
+    def verify_password_reset_token(
+            token: str,
+            max_age: int = 3600
+    ):
+        """
+        パスワード再設定トークンを検証
+
+        max_age:
+            3600秒 = 1時間
+        """
+
+        serializer = Security._get_password_reset_token_serializer()
+
+        try:
+            return serializer.loads(
+                token,
+                max_age=max_age
+            )
+
+        except Exception:
+            return None

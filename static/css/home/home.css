@@ -68,6 +68,38 @@
     background:#fff;
 }
 
+/* ==========================
+   未設定プロフィールアイコン
+========================== */
+
+/*
+   絵文字などを表示する場合。
+   例：
+   <div class="profile-image profile-default">👤</div>
+*/
+.profile-default{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    width:80px;
+    height:80px;
+
+    flex:0 0 80px;
+
+    box-sizing:border-box;
+
+    border:3px solid #ffb5ca;
+    border-radius:50%;
+
+    background:#fff7fa;
+
+    font-size:42px;
+    line-height:1;
+
+    text-align:center;
+}
+
 .profile-info{
     min-width:0;
     margin-left:15px;
