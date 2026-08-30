@@ -24,7 +24,7 @@ create table public.m_invitation_code (
 create table public.m_user (
   user_id text not null,
   user_name text not null,
-  password text not null,
+  password text null,
   role text not null default 'user'::text,
   profile_image text null,
   member_since date null,
@@ -39,9 +39,14 @@ create table public.m_user (
   is_active boolean not null default true,
   created_at timestamp with time zone not null default now(),
   updated_at timestamp with time zone not null default now(),
+  login_id text null,
+  guest_uuid uuid null,
+  email_verified boolean not null default false,
   constraint m_user_pkey1 primary key (user_id),
   constraint m_user_prefecture_fkey foreign KEY (prefecture) references m_prefecture (prefecture_code)
 ) TABLESPACE pg_default;
+
+create unique INDEX IF not exists m_user_login_id_unique on public.m_user using btree (login_id) TABLESPACE pg_default;
 
 create trigger update_m_user_updated_at BEFORE
 update on m_user for EACH row

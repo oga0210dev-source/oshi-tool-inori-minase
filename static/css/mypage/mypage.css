@@ -4,8 +4,8 @@
 
 body{
     margin:0;
-    overflow:hidden;
     width:100%;
+    overflow:hidden;
 }
 
 .background{
@@ -25,8 +25,9 @@ body{
     width:100%;
     flex:1;
     min-height:0;
-    overflow-y:auto;
     overflow-x:hidden;
+    overflow-y:auto;
+
     scrollbar-width:none;
     -ms-overflow-style:none;
 }
@@ -51,14 +52,61 @@ body{
 .mypage h1{
     margin:10px 0 20px;
     text-align:center;
-    font-size:25px;
     color:#333;
+    font-size:25px;
 }
 
 .mypage h2{
     margin:25px 5px 10px;
-    font-size:18px;
     color:#555;
+    font-size:18px;
+}
+
+
+/* ==========================
+   プロフィールエリア
+========================== */
+
+.profile-area{
+    position:relative;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    width:100%;
+    height:160px;
+
+    margin:0 0 20px;
+    padding:16px;
+
+    box-sizing:border-box;
+
+    border-radius:20px;
+    background:#fff;
+    box-shadow:0 3px 8px rgba(0,0,0,.12);
+
+    overflow:hidden;
+}
+
+
+/* ==========================
+   プロフィール画像ラッパー
+========================== */
+
+.profile-image-wrapper{
+    position:relative;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    width:128px;
+    height:128px;
+
+    flex:0 0 128px;
+
+    box-sizing:border-box;
 }
 
 
@@ -66,45 +114,110 @@ body{
    プロフィール画像
 ========================== */
 
-.profile-area{
+.profile-area .profile-image{
+    display:block;
+
+    width:120px;
+    height:120px;
+
+    flex:0 0 120px;
+
+    margin:0;
+    padding:4px;
+
+    box-sizing:border-box;
+
+    object-fit:cover;
+    object-position:center;
+
+    border:4px solid #ffb5ca;
+    border-radius:50%;
+
+    background:#fff;
+
+    cursor:pointer;
+}
+
+
+/* ==========================
+   未設定プロフィールアイコン
+========================== */
+
+/*
+   絵文字などを表示する場合。
+   例：
+   <div class="profile-image profile-default">👤</div>
+*/
+
+.profile-area .profile-default{
     display:flex;
     align-items:center;
     justify-content:center;
-    width:100%;
-    margin:0 0 20px;
-    padding:20px;
-    box-sizing:border-box;
-    border-radius:20px;
-    background:#fff;
-    box-shadow:0 3px 8px rgba(0,0,0,.12);
-}
 
-.profile-area .profile-image{
-    position:relative;
-    display:block;
     width:120px;
     height:120px;
-    padding:4px;
+
+    flex:0 0 120px;
+
     box-sizing:border-box;
-    object-fit:cover;
-    cursor:pointer;
+
+    border:4px solid #ffb5ca;
     border-radius:50%;
-    background:linear-gradient(
-        135deg,
-        #ff8fb1,
-        #ffc86b,
-        #8fd8ff,
-        #b99cff
-    );
+
+    background:#fff7fa;
+
+    font-size:64px;
+    line-height:1;
+
+    text-align:center;
+
+    cursor:pointer;
 }
 
-.profile-area .profile-image::after{
-    content:"";
+
+/* ==========================
+   画像変更表示
+========================== */
+
+.profile-image-edit{
     position:absolute;
-    inset:4px;
-    z-index:-1;
-    border-radius:50%;
-    background:#fff;
+
+    left:50%;
+    bottom:-2px;
+
+    transform:translateX(-50%);
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    min-width:90px;
+    height:28px;
+
+    padding:0 10px;
+
+    box-sizing:border-box;
+
+    border-radius:14px;
+
+    background:rgba(255,255,255,.95);
+    box-shadow:0 2px 6px rgba(0,0,0,.15);
+
+    color:#777;
+    font-size:11px;
+    font-weight:bold;
+
+    white-space:nowrap;
+    pointer-events:none;
+}
+
+
+/* ==========================
+   ファイル入力
+========================== */
+
+#profile-image{
+    display:none;
 }
 
 
@@ -114,10 +227,14 @@ body{
 
 .info-list{
     width:100%;
+
     margin:0 0 20px;
     padding:8px 18px;
+
     box-sizing:border-box;
+
     border-radius:20px;
+
     background:#fff;
     box-shadow:0 3px 8px rgba(0,0,0,.12);
 }
@@ -126,9 +243,13 @@ body{
     display:flex;
     align-items:center;
     justify-content:space-between;
+
     gap:12px;
+
     min-width:0;
+
     padding:14px 0;
+
     border-bottom:1px solid #eee;
 }
 
@@ -142,8 +263,10 @@ body{
 ========================== */
 
 .label{
-    flex-shrink:0;
     width:120px;
+
+    flex-shrink:0;
+
     color:#777;
     font-size:13px;
     font-weight:bold;
@@ -158,10 +281,13 @@ body{
 .display-value{
     flex:1;
     min-width:0;
+
     color:#333;
     font-size:14px;
     line-height:1.6;
+
     text-align:right;
+
     word-break:break-word;
 }
 
@@ -171,17 +297,25 @@ body{
 ========================== */
 
 .edit-item{
-    flex:1;
-    min-width:0;
     width:100%;
     height:42px;
+
+    flex:1;
+    min-width:0;
+
     padding:0 12px;
+
     box-sizing:border-box;
+
     border:1px solid #ddd;
     border-radius:12px;
+
     outline:none;
+
     background:#fff;
+
     color:#333;
+
     font-family:inherit;
     font-size:14px;
 }
@@ -194,8 +328,11 @@ body{
 textarea.edit-item{
     width:100%;
     height:150px;
+
     padding:10px 12px;
+
     resize:none;
+
     line-height:1.6;
 }
 
@@ -217,18 +354,21 @@ select.edit-item{
     flex-direction:column;
     align-items:stretch;
     justify-content:flex-start;
+
     gap:10px;
 }
 
 .profile-message-area .display-value{
     width:100%;
+
     text-align:left;
 }
 
 .profile-message-area .edit-item{
-    flex:none;
     width:100%;
     height:150px;
+
+    flex:none;
 }
 
 
@@ -240,25 +380,37 @@ select.edit-item{
     display:flex;
     justify-content:center;
     flex-wrap:wrap;
+
     gap:10px;
+
     margin:25px 0 30px;
 }
 
 .button-area button{
     min-width:100px;
     height:44px;
+
     padding:0 22px;
+
     box-sizing:border-box;
+
     border:none;
     border-radius:22px;
+
     background:#fff;
     box-shadow:0 3px 8px rgba(0,0,0,.10);
+
     color:#555;
+
     font-family:inherit;
     font-size:14px;
     font-weight:bold;
+
     cursor:pointer;
-    transition:opacity .2s,transform .1s;
+
+    transition:
+        opacity .2s,
+        transform .1s;
 }
 
 .button-area button:hover{
@@ -271,7 +423,7 @@ select.edit-item{
 
 
 /* ==========================
-   保存ボタン
+   保存・キャンセル
 ========================== */
 
 #save-btn{
@@ -282,6 +434,16 @@ select.edit-item{
 #cancel-btn{
     background:#f5f5f5;
     color:#777;
+}
+
+
+/* ==========================
+   本登録
+========================== */
+
+.register-button{
+    background:#f0fff5;
+    color:#5ca878;
 }
 
 
@@ -303,18 +465,29 @@ select.edit-item{
     display:flex;
     align-items:center;
     justify-content:center;
+
     width:100%;
     min-height:52px;
+
     padding:10px 15px;
+
     box-sizing:border-box;
+
     border-radius:15px;
+
     background:#fff;
     box-shadow:0 3px 8px rgba(0,0,0,.10);
+
     color:#555;
+
     text-decoration:none;
+
     font-size:14px;
     font-weight:bold;
-    transition:opacity .2s,transform .1s;
+
+    transition:
+        opacity .2s,
+        transform .1s;
 }
 
 .setting-button:hover{
@@ -350,9 +523,12 @@ select.edit-item{
 }
 
 .withdraw-button{
-    background:#fff5f5;
     border:1px solid #f0b5b5;
+
+    background:#fff5f5;
+
     box-shadow:none;
+
     color:#d9534f;
 }
 
@@ -386,18 +562,67 @@ select.edit-item{
         font-size:17px;
     }
 
+
+    /* ==========================
+       プロフィール
+    ========================== */
+
     .profile-area{
-        padding:18px;
+        height:141px;
+
+        padding:12px;
+
         margin-bottom:18px;
+
+        border-radius:18px;
+    }
+
+    .profile-image-wrapper{
+        width:113px;
+        height:113px;
+
+        flex:0 0 113px;
     }
 
     .profile-area .profile-image{
         width:105px;
         height:105px;
+
+        flex:0 0 105px;
+
+        padding:4px;
+
+        border-width:4px;
     }
+
+    .profile-area .profile-default{
+        width:105px;
+        height:105px;
+
+        flex:0 0 105px;
+
+        border-width:4px;
+
+        font-size:58px;
+    }
+
+    .profile-image-edit{
+        min-width:82px;
+        height:26px;
+
+        padding:0 8px;
+
+        font-size:10px;
+    }
+
+
+    /* ==========================
+       情報カード
+    ========================== */
 
     .info-list{
         padding:6px 15px;
+
         border-radius:18px;
     }
 
@@ -408,6 +633,7 @@ select.edit-item{
 
     .label{
         width:105px;
+
         font-size:12px;
     }
 
@@ -415,15 +641,27 @@ select.edit-item{
         font-size:13px;
     }
 
+
+    /* ==========================
+       編集入力
+    ========================== */
+
     .edit-item{
         height:40px;
+
         padding:0 10px;
+
         font-size:13px;
     }
 
     textarea.edit-item{
         height:140px;
     }
+
+
+    /* ==========================
+       ボタン
+    ========================== */
 
     .button-area{
         margin:22px 0 25px;
@@ -432,12 +670,20 @@ select.edit-item{
     .button-area button{
         min-width:95px;
         height:42px;
+
         font-size:13px;
     }
 
+
+    /* ==========================
+       設定
+    ========================== */
+
     .setting-button{
         min-height:50px;
+
         border-radius:15px;
+
         font-size:13px;
     }
 }

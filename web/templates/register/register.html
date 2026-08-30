@@ -1,146 +1,351 @@
 {% extends "templates/commons/base.html" %}
 
-{% block title %}新規登録 - 推し活オールインワン{% endblock %}
+{% block title %}
+    {% if is_guest_registration %}
+        本登録 - 推し活オールインワン
+    {% else %}
+        新規登録 - 推し活オールインワン
+    {% endif %}
+{% endblock %}
 
 {% block header %}{% endblock %}
 
 {% block css %}
-<link rel="stylesheet" href="/static/css/register/register.css">
-<style>
-.legal-links{margin-top:15px;text-align:center;font-size:13px}.legal-links a{text-decoration:none;cursor:pointer}.legal-links span{margin:0 5px}.top-modal{display:none;position:fixed;z-index:1000;inset:0;background:rgba(0,0,0,.5);align-items:center;justify-content:center;padding:20px;box-sizing:border-box}.top-modal-content{width:100%;max-width:430px;height:85dvh;max-height:85dvh;background:#fff;border-radius:12px;display:flex;flex-direction:column;overflow:hidden}.top-modal-header{height:50px;min-height:50px;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:0 15px;box-sizing:border-box;border-bottom:1px solid #ddd}.top-modal-title{font-size:18px;font-weight:bold}.top-modal-close{border:none;background:none;font-size:28px;line-height:1;cursor:pointer;padding:0 5px}.top-modal-body{width:100%;height:calc(85dvh - 50px);min-height:0;flex:1 1 auto;padding:0;margin:0;overflow:hidden;box-sizing:border-box}.top-modal-body iframe{display:block;width:100%;height:100%;min-height:0;margin:0;padding:0;border:none;overflow:auto}
-</style>
+    <link rel="stylesheet" href="/static/css/register/register.css">
+
+    <style>
+        .legal-links{
+            margin-top:15px;
+            text-align:center;
+            font-size:13px
+        }
+
+        .legal-links a{
+            text-decoration:none;
+            cursor:pointer
+        }
+
+        .legal-links span{
+            margin:0 5px
+        }
+
+        .top-modal{
+            display:none;
+            position:fixed;
+            z-index:1000;
+            inset:0;
+            background:rgba(0,0,0,.5);
+            align-items:center;
+            justify-content:center;
+            padding:20px;
+            box-sizing:border-box
+        }
+
+        .top-modal-content{
+            width:100%;
+            max-width:430px;
+            height:85dvh;
+            max-height:85dvh;
+            background:#fff;
+            border-radius:12px;
+            display:flex;
+            flex-direction:column;
+            overflow:hidden
+        }
+
+        .top-modal-header{
+            height:50px;
+            min-height:50px;
+            flex-shrink:0;
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            padding:0 15px;
+            box-sizing:border-box;
+            border-bottom:1px solid #ddd
+        }
+
+        .top-modal-title{
+            font-size:18px;
+            font-weight:bold
+        }
+
+        .top-modal-close{
+            border:none;
+            background:none;
+            font-size:28px;
+            line-height:1;
+            cursor:pointer;
+            padding:0 5px
+        }
+
+        .top-modal-body{
+            width:100%;
+            height:calc(85dvh - 50px);
+            min-height:0;
+            flex:1 1 auto;
+            padding:0;
+            margin:0;
+            overflow:hidden;
+            box-sizing:border-box
+        }
+
+        .top-modal-body iframe{
+            display:block;
+            width:100%;
+            height:100%;
+            min-height:0;
+            margin:0;
+            padding:0;
+            border:none;
+            overflow:auto
+        }
+
+        .register-description{
+            text-align:center;
+            margin:10px 0 20px;
+            font-size:14px;
+            line-height:1.6;
+        }
+    </style>
 {% endblock %}
 
 {% block content %}
-<div class="container">
-    <div class="content">
-
-        <div class="logo-area">
-            <h1>推し活オールインワン</h1>
-        </div>
-
-        <a href="/" class="register-top-link">
-            🏠 TOPへ戻る
-        </a>
-
-        {% if registration_mode == "0" %}
-
-        <div class="register-closed">
-            現在、新規ユーザー登録を停止しています。
-        </div>
-
-        {% else %}
-
-        <form action="/register" method="post" class="registerForm-area" autocomplete="off">
-
-            {% if registration_mode == "2" %}
-            <div class="input-area">
-                <input type="text" name="invitation_code" autocomplete="off" placeholder="招待コードを入力してください。" required>
+    <div class="container">
+        <div class="content">
+            <div class="logo-area">
+                <h1>推し活オールインワン</h1>
             </div>
+
+            {% if is_guest_registration %}
+                <a href="/home" class="register-top-link">
+                    🏠 ホームへ戻る
+                </a>
+            {% else %}
+                <a href="/" class="register-top-link">
+                    🏠 TOPへ戻る
+                </a>
             {% endif %}
 
-            <div class="input-area">
-                <input type="text" name="user_name" autocomplete="nickname" placeholder="表示名を入力してください。" value="{{ user_name | default('') }}" required>
+
+            {% if is_guest_registration %}
+            <div class="register-description">
+                現在のゲストデータを引き継いで<br>
+                本登録することができます。
             </div>
 
-            <div class="input-area">
-                <input type="text" name="user_id" autocomplete="username" placeholder="ユーザIDを入力してください。" value="{{ user_id | default('') }}" required>
-            </div>
+            <form action="/register" method="post" class="registerForm-area" autocomplete="off">
+                <div class="input-area">
+                    <input type="text"
+                        name="user_name"
+                        autocomplete="nickname"
+                        placeholder="表示名を入力してください。"
+                        value="{{ user_name | default('') }}"
+                        required>
+                </div>
 
-            <div class="input-area">
-                <input type="password" name="password" autocomplete="new-password" placeholder="パスワードを入力してください。" required>
-            </div>
+                <div class="input-area">
+                    <input type="text"
+                        name="user_id"
+                        autocomplete="username"
+                        placeholder="ユーザIDを入力してください。"
+                        value="{{ user_id | default('') }}"
+                        required>
+                </div>
 
-            <div class="input-area">
-                <input type="password" name="password_confirm" autocomplete="new-password" placeholder="パスワード（確認）を入力してください。" required>
-            </div>
+                <div class="input-area">
+                    <input type="password"
+                        name="password"
+                        autocomplete="new-password"
+                        placeholder="パスワードを入力してください。"
+                        required>
+                </div>
 
-            <div class="button-area">
-                <button type="submit" class="register-button">
-                    <span class="register-button-icon">📝</span>
-                    <span>新規登録</span>
+                <div class="input-area">
+                    <input type="password"
+                        name="password_confirm"
+                        autocomplete="new-password"
+                        placeholder="パスワード（確認）を入力してください。"
+                        required>
+                </div>
+
+                <div class="button-area">
+                    <button type="submit" class="register-button">
+                        <span class="register-button-icon">📝</span>
+                        <span>本登録</span>
+                    </button>
+                </div>
+
+                <div class="legal-links">
+                    <a href="#" onclick="openLegalModal('terms'); return false;">
+                        利用規約
+                    </a>
+
+                    <span>｜</span>
+
+                    <a href="#" onclick="openLegalModal('privacy'); return false;">
+                        プライバシーポリシー
+                    </a>
+                </div>
+            </form>
+
+            {% else %}
+                <form action="/register" method="post" class="registerForm-area" autocomplete="off">
+                    <div class="input-area">
+                        <input type="text"
+                               name="user_name"
+                               autocomplete="nickname"
+                               placeholder="表示名を入力してください。"
+                               value="{{ user_name | default('') }}"
+                               required>
+                    </div>
+
+                    <div class="input-area">
+                        <input type="text"
+                               name="user_id"
+                               autocomplete="username"
+                               placeholder="ユーザIDを入力してください。"
+                               value="{{ user_id | default('') }}"
+                               required>
+                    </div>
+
+                    <div class="input-area">
+                        <input type="password"
+                               name="password"
+                               autocomplete="new-password"
+                               placeholder="パスワードを入力してください。"
+                               required>
+                    </div>
+
+                    <div class="input-area">
+                        <input type="password"
+                               name="password_confirm"
+                               autocomplete="new-password"
+                               placeholder="パスワード（確認）を入力してください。"
+                               required>
+                    </div>
+
+                    <div class="button-area">
+                        <button type="submit" class="register-button">
+                            <span class="register-button-icon">📝</span>
+                            <span>新規登録</span>
+                        </button>
+                    </div>
+
+                    <div class="legal-links">
+                        <a href="#" onclick="openLegalModal('terms'); return false;">
+                            利用規約
+                        </a>
+
+                        <span>｜</span>
+
+                        <a href="#" onclick="openLegalModal('privacy'); return false;">
+                            プライバシーポリシー
+                        </a>
+                    </div>
+
+                    <div class="login-link-area">
+                        <a href="/login" class="login-link">
+                            <span class="login-link-icon">🔑</span>
+
+                            <span class="login-link-text">
+                                <strong>ログインはこちら</strong>
+                                <small>すでにアカウントをお持ちの方</small>
+                            </span>
+
+                            <span class="login-link-arrow">›</span>
+                        </a>
+                    </div>
+
+                </form>
+            {% endif %}
+        </div>
+    </div>
+
+
+    <div id="legalModal" class="top-modal" onclick="closeLegalModal(event)">
+        <div class="top-modal-content" onclick="event.stopPropagation()">
+            <div class="top-modal-header">
+                <div id="legalModalTitle" class="top-modal-title"></div>
+
+                <button type="button"
+                    class="top-modal-close"
+                    onclick="closeLegalModal()">
+                    ×
                 </button>
             </div>
 
-            <div class="legal-links">
-                <a href="#" onclick="openLegalModal('terms'); return false;">利用規約</a>
-                <span>｜</span>
-                <a href="#" onclick="openLegalModal('privacy'); return false;">プライバシーポリシー</a>
+            <div class="top-modal-body">
+                <iframe id="legalFrame" src="" title="法的情報"></iframe>
             </div>
-
-            <div class="login-link-area">
-                <a href="/login" class="login-link">
-                    <span class="login-link-icon">🔑</span>
-                    <span class="login-link-text">
-                        <strong>ログインはこちら</strong>
-                        <small>すでにアカウントをお持ちの方</small>
-                    </span>
-                    <span class="login-link-arrow">›</span>
-                </a>
-            </div>
-
-        </form>
-
-        {% endif %}
-
-    </div>
-</div>
-
-<div id="legalModal" class="top-modal" onclick="closeLegalModal(event)">
-    <div class="top-modal-content" onclick="event.stopPropagation()">
-        <div class="top-modal-header">
-            <div id="legalModalTitle" class="top-modal-title"></div>
-            <button type="button" class="top-modal-close" onclick="closeLegalModal()">×</button>
-        </div>
-        <div class="top-modal-body">
-            <iframe id="legalFrame" src="" title="法的情報" scrolling="yes"></iframe>
         </div>
     </div>
-</div>
 {% endblock %}
 
 {% block script %}
-<script src="/static/js/common.js"></script>
-
-<script>
-    const legalPages={terms:{title:"利用規約",url:"/home/legal/terms"},privacy:{title:"プライバシーポリシー",url:"/home/legal/privacy"}};
-
-    function openLegalModal(type){
-        const content=legalPages[type];
-        if(!content)return;
-
-        const modal=document.getElementById("legalModal");
-        const title=document.getElementById("legalModalTitle");
-        const frame=document.getElementById("legalFrame");
-
-        if(!modal||!title||!frame)return;
-
-        title.textContent=content.title;
-        frame.src=content.url;
-        modal.style.display="flex";
-    }
-
-    function closeLegalModal(event){
-        if(event&&event.target!==event.currentTarget)return;
-
-        const modal=document.getElementById("legalModal");
-        const frame=document.getElementById("legalFrame");
-
-        if(!modal)return;
-
-        modal.style.display="none";
-
-        if(frame)frame.src="";
-    }
-
-    document.addEventListener("keydown",function(event){
-        if(event.key==="Escape")closeLegalModal();
-    });
-</script>
-
-{% if message %}
+    <script src="/static/js/common.js"></script>
     <script>
-        showToast("{{ message }}");
+        const legalPages = {
+            terms: {
+                title: "利用規約",
+                url: "/home/legal/terms"
+            },
+            privacy: {
+                title: "プライバシーポリシー",
+                url: "/home/legal/privacy"
+            }
+        };
+
+        function openLegalModal(type){
+            const content = legalPages[type];
+
+            if(!content){
+                return;
+            }
+
+            const modal = document.getElementById("legalModal");
+            const title = document.getElementById("legalModalTitle");
+            const frame = document.getElementById("legalFrame");
+
+            if(!modal || !title || !frame){
+                return;
+            }
+
+            title.textContent = content.title;
+            frame.src = content.url;
+
+            modal.style.display = "flex";
+        }
+
+        function closeLegalModal(event){
+            if(event && event.target !== event.currentTarget){
+                return;
+            }
+
+            const modal = document.getElementById("legalModal");
+            const frame = document.getElementById("legalFrame");
+
+            if(!modal){
+                return;
+            }
+
+            modal.style.display = "none";
+
+            if(frame){
+                frame.src = "";
+            }
+        }
+
+        document.addEventListener("keydown", function(event){
+            if(event.key === "Escape"){
+                closeLegalModal();
+            }
+        });
     </script>
-{% endif %}
+
+    {% if message %}
+        <script>
+            showToast({{ message | tojson }});
+        </script>
+    {% endif %}
 {% endblock %}

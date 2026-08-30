@@ -38,18 +38,18 @@ def logout(request: Request):
 @router.post("/login")
 def login_exec(
         request: Request,
-        user_id: str = Form(...),
+        login_id: str = Form(...),
         password: str = Form(...)
 ):
 
-    user = UserModel.get_user(user_id)
+    user = UserModel.get_user_by_login_id(login_id)
 
     if user is None or not Security.verify_password(password, user["password"]):
         return render(
             request=request,
             name="templates/login/login.html",
             context={
-                "message": "ユーザIDまたはパスワードが一致しません。"
+                "message": "ログインIDまたはパスワードが一致しません。"
             }
         )
 
