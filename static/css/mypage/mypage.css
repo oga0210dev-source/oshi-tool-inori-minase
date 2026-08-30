@@ -344,6 +344,34 @@ select.edit-item{
     appearance:auto;
 }
 
+/* =========================================================
+   メールアドレス認証済み
+========================================================= */
+
+.email-display {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+
+.email-verified {
+    display: inline-flex;
+    align-items: center;
+
+    padding: 3px 8px;
+
+    border-radius: 999px;
+
+    background: #e8f7ed;
+    color: #4caf50;
+
+    font-size: 12px;
+    font-weight: bold;
+
+    white-space: nowrap;
+}
 
 /* ==========================
    自己紹介

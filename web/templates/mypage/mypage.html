@@ -76,6 +76,12 @@
                         <div class="label">メールアドレス</div>
                         <div id="email_text" class="display-value">
                             {{ user.email or "未設定" }}
+
+                            {% if user.email and user.email_verified %}
+                                <span class="email-verified">
+                                    ✓ 認証済み
+                                </span>
+                            {% endif %}
                         </div>
                         <input
                             id="email"
@@ -277,12 +283,22 @@
 {% endblock %}
 
 {% block script %}
-<script src="/static/js/mypage/mypage.js"></script>
-<script src="/static/js/common.js"></script>
+    <script src="/static/js/mypage/mypage.js"></script>
+    <script src="/static/js/common.js"></script>
 
-{% if message %}
-<script>
-    showToast("{{ message }}");
-</script>
-{% endif %}
+    {% if message %}
+    <script>
+        showToast("{{ message }}");
+    </script>
+    {% endif %}
+
+    {% if email_verification_sent_to %}
+        <script>
+            alert(
+                "メールアドレス認証メールを送信しました。\n\n" +
+                "送信先：{{ email_verification_sent_to }}\n\n" +
+                "メールが届かない場合は、迷惑メールフォルダもご確認ください。"
+            );
+        </script>
+    {% endif %}
 {% endblock %}

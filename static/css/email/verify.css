@@ -1,0 +1,139 @@
+/* =========================================================
+   メールアドレス認証
+========================================================= */
+
+.email-verify-scroll {
+    min-height: calc(100vh - 60px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 24px 16px;
+    box-sizing: border-box;
+
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        "Noto Sans JP",
+        "Yu Gothic",
+        "Hiragino Kaku Gothic ProN",
+        sans-serif;
+}
+
+
+.email-verify {
+    width: 100%;
+    max-width: 430px;
+    box-sizing: border-box;
+
+    padding: 40px 24px;
+
+    text-align: center;
+
+    background: #ffffff;
+    border-radius: 20px;
+}
+
+
+/* =========================================================
+   アイコン
+========================================================= */
+
+.verify-icon {
+    width: 72px;
+    height: 72px;
+
+    margin: 0 auto 24px;
+
+    border-radius: 50%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 42px;
+    font-weight: bold;
+}
+
+
+.verify-icon.success {
+    background: #e8f7ed;
+    color: #4caf50;
+}
+
+
+.verify-icon.error {
+    background: #fff1f1;
+    color: #e57373;
+}
+
+
+/* =========================================================
+   タイトル
+========================================================= */
+
+.email-verify h1 {
+    margin: 0 0 24px;
+
+    font-size: 26px;
+}
+
+
+/* =========================================================
+   メッセージ
+========================================================= */
+
+.verify-message {
+    margin: 0 0 20px;
+
+    font-size: 17px;
+    line-height: 1.8;
+}
+
+
+.verify-description {
+    margin: 0 0 32px;
+
+    font-size: 14px;
+    line-height: 1.8;
+}
+
+
+/* =========================================================
+   ボタン
+========================================================= */
+
+.verify-button {
+    display: block;
+
+    width: 100%;
+
+    padding: 14px 20px;
+
+    box-sizing: border-box;
+
+    border-radius: 12px;
+
+    text-decoration: none;
+
+    font-size: 16px;
+    font-weight: bold;
+
+    background: #ffffff;
+    border: 2px solid #333333;
+    color: #333333;
+
+    transition:
+        opacity 0.2s,
+        transform 0.1s;
+}
+
+
+.verify-button:hover {
+    opacity: 0.8;
+}
+
+
+.verify-button:active {
+    transform: scale(0.98);
+}

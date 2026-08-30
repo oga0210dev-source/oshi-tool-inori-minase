@@ -48,6 +48,76 @@ class UserModel:
             conn.close()
 
     @staticmethod
+    def exists_email(
+            email: str,
+            exclude_user_id: str = None
+    ) -> bool:
+        """メールアドレスが存在するか"""
+
+        conn = get_connection()
+
+        try:
+            cursor = conn.cursor()
+
+            if exclude_user_id:
+
+                cursor.execute("""
+                        SELECT 1
+                        FROM M_USER
+                        WHERE EMAIL = %s
+                        AND USER_ID <> %s
+                    """, (
+                    email,
+                    exclude_user_id
+                ))
+
+            else:
+
+                cursor.execute("""
+                        SELECT 1
+                        FROM M_USER
+                        WHERE EMAIL = %s
+                    """, (
+                    email,
+                ))
+
+            result = cursor.fetchone()
+
+            return result is not None
+
+        finally:
+            conn.close()
+
+    @staticmethod
+    def update_email(
+            user_id: str,
+            email: str
+    ) -> None:
+        """メールアドレス更新"""
+
+        conn = get_connection()
+
+        try:
+            cursor = conn.cursor()
+
+            cursor.execute("""
+                    UPDATE M_USER
+                    SET
+                        EMAIL = %s,
+                        EMAIL_VERIFIED = FALSE
+                    WHERE
+                        USER_ID = %s
+                """, (
+                email,
+                user_id
+            ))
+
+            conn.commit()
+
+        finally:
+            conn.close()
+
+    @staticmethod
     def create_user(
             user_id: str,
             user_name: str,
@@ -352,6 +422,40 @@ class UserModel:
                 password,
                 login_id,
                 user_id
+            ))
+
+            updated_count = cursor.rowcount
+
+            conn.commit()
+
+            return updated_count > 0
+
+        finally:
+            conn.close()
+
+    @staticmethod
+    def verify_email(
+            user_id: str,
+            email: str
+    ) -> bool:
+        """メールアドレスを認証済みにする"""
+
+        conn = get_connection()
+
+        try:
+            cursor = conn.cursor()
+
+            cursor.execute("""
+                    UPDATE M_USER
+                    SET
+                        EMAIL_VERIFIED = TRUE
+                    WHERE
+                        USER_ID = %s
+                    AND EMAIL = %s
+                    AND IS_ACTIVE = TRUE
+                """, (
+                user_id,
+                email
             ))
 
             updated_count = cursor.rowcount

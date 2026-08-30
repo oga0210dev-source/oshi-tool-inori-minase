@@ -1,6 +1,13 @@
 from fastapi import FastAPI
 
-from python.routers import login, register, batch, font, user_setting
+from python.routers import (
+    login,
+    register,
+    batch,
+    font,
+    user_setting,
+    email
+)
 from python.routers.home import (
     home,
     legal,
@@ -78,6 +85,7 @@ def register_router(app: FastAPI):
     app.include_router(register.router)
     app.include_router(font.router)
     app.include_router(user_setting.router)
+    app.include_router(email.router)
 
     app.include_router(batch.router)
 
