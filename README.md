@@ -152,9 +152,12 @@ DB接続は `python.core.database.get_connection()` を使用する。
 * `user_name`
 * `password`
 * `role`
+* `login_id`
+* `guest_uuid`
 * `profile_image`
 * `member_since`
 * `email`
+* `email_verified`
 * `gender`
 * `birthday`
 * `prefecture`
@@ -163,8 +166,64 @@ DB接続は `python.core.database.get_connection()` を使用する。
 * `discord_account`
 * `profile_message`
 * `is_active`
+* `created_at`
+* `updated_at`
+* `last_access_at`
+* `withdrawal_at`
 
 `prefecture` は `m_prefecture.prefecture_code` を参照する。
+
+`role` はユーザー種別を管理する。
+
+* `admin`：管理者
+* `user`：通常ユーザー
+* `guest`：ゲストユーザー
+
+`is_active` はアカウントの有効状態を管理する。
+
+* `TRUE`：有効
+* `FALSE`：BAN等により無効
+
+`email_verified` はメールアドレスの認証状態を管理する。
+
+`withdrawal_at` は退会予約日時を管理する。退会予約後30日間は同一アカウントでアクセスすることで退会を取り消すことができ、30日間アクセスがないユーザーはバッチ処理によりアカウントおよび関連データを削除する。
+
+ゲストユーザーは `guest_uuid` を使用して識別する。
+
+---
+
+### ユーザー管理
+
+管理者向けユーザー管理画面を提供する。
+
+主な機能：
+
+* ユーザー一覧表示
+* ユーザー名による検索
+* ユーザーIDによる検索
+* 権限による検索
+* BAN状態による検索
+* 退会予約状態による検索
+* ユーザーのBAN
+* ユーザーのBAN解除
+* 退会予約状態の確認
+
+登録日時・最終アクセス日時は日本時間（JST）で表示する。
+
+管理者ユーザーはBAN操作の対象外とする。
+
+---
+
+### 退会処理
+
+通常ユーザーはマイページから退会予約を行うことができる。
+
+退会予約後30日間はアカウントを保持し、同一アカウントでログインすることで退会予約を取り消すことができる。
+
+30日間アクセスがない退会予約ユーザーは、定期バッチ処理によりアカウントおよび関連データを削除する。
+
+ゲストユーザーについても、一定期間アクセスがない場合にバッチ処理による削除対象となる。
+
 
 ### ユーザー登録
 

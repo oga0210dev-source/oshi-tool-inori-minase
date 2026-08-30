@@ -3,12 +3,11 @@ import os
 from fastapi import APIRouter, Request
 from fastapi.responses import JSONResponse
 
-from python.core import database, auth
-from python.services.inquiry_service import get_active_todos
+from python.core import database
 from python.services.discord_service import send_todo_reminder
-from python.services.weather_service import update_weather_forecast
+from python.services.inquiry_service import get_active_todos
 from python.services.user_cleanup_service import delete_expired_users
-
+from python.services.weather_service import update_weather_forecast
 
 router = APIRouter(
     prefix="/batch",

@@ -1,10 +1,10 @@
 import json
-from datetime import date, timedelta, timezone
+from datetime import date, timedelta
 
 import requests
 
 from python.core import database
-
+from python.utils.date_utils import to_jst
 
 OPEN_METEO_URL = "https://api.open-meteo.com/v1/forecast"
 
@@ -13,8 +13,6 @@ FORECAST_DAYS = 15
 
 # JMAモデルを使用する範囲
 JMA_FORECAST_DAYS = 10
-
-JST = timezone(timedelta(hours=9))
 
 
 WEATHER_MAP = {
@@ -47,17 +45,6 @@ WEATHER_MAP = {
     96: ("⛈️", "雷雨・ひょう"),
     99: ("⛈️", "雷雨・ひょう"),
 }
-
-
-def to_jst(dt):
-    """UTCのdatetimeを日本時間へ変換する。"""
-
-    if dt is None:
-        return None
-
-    return dt.replace(
-        tzinfo=timezone.utc
-    ).astimezone(JST)
 
 
 def get_forecast_limit():
