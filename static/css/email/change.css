@@ -1,0 +1,224 @@
+/* =========================================================
+   メールアドレス変更
+========================================================= */
+
+.email-change-scroll {
+    min-height: calc(100vh - 60px);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 24px 16px;
+
+    box-sizing: border-box;
+}
+
+
+.email-change {
+    width: 100%;
+    max-width: 430px;
+
+    box-sizing: border-box;
+
+    padding: 40px 24px;
+
+    background: #ffffff;
+
+    border-radius: 20px;
+}
+
+
+/* =========================================================
+   タイトル
+========================================================= */
+
+.email-change h1 {
+    margin: 0 0 32px;
+
+    text-align: center;
+
+    font-size: 26px;
+}
+
+
+/* =========================================================
+   現在のメールアドレス
+========================================================= */
+
+.current-email-area {
+    margin-bottom: 28px;
+
+    padding: 16px;
+
+    background: #f7f7f7;
+
+    border-radius: 12px;
+}
+
+
+.current-email-area .label {
+    margin-bottom: 8px;
+
+    font-size: 13px;
+}
+
+
+.current-email {
+    font-size: 15px;
+
+    word-break: break-all;
+}
+
+
+/* =========================================================
+   フォーム
+========================================================= */
+
+.form-item {
+    margin-bottom: 24px;
+}
+
+
+.form-item label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    font-size: 15px;
+    font-weight: bold;
+}
+
+
+.form-item input {
+    width: 100%;
+
+    box-sizing: border-box;
+
+    padding: 13px 14px;
+
+    border: 1px solid #cccccc;
+    border-radius: 10px;
+
+    background: #ffffff;
+
+    font-size: 16px;
+
+    outline: none;
+}
+
+
+.form-item input:focus {
+    border-color: #666666;
+}
+
+
+/* =========================================================
+   変更ボタン
+========================================================= */
+
+.change-button {
+    display: block;
+
+    width: 100%;
+
+    padding: 14px 20px;
+
+    box-sizing: border-box;
+
+    border: 2px solid #333333;
+    border-radius: 12px;
+
+    background: #333333;
+    color: #ffffff;
+
+    font-size: 16px;
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition:
+        opacity 0.2s,
+        transform 0.1s;
+}
+
+
+.change-button:hover {
+    opacity: 0.8;
+}
+
+
+.change-button:active {
+    transform: scale(0.98);
+}
+
+
+/* =========================================================
+   注意事項
+========================================================= */
+
+.notice {
+    margin-top: 28px;
+
+    padding: 16px;
+
+    border-radius: 12px;
+
+    background: #fff8e8;
+
+    font-size: 13px;
+
+    line-height: 1.8;
+}
+
+
+.notice p {
+    margin: 0 0 10px;
+}
+
+
+.notice p:last-child {
+    margin-bottom: 0;
+}
+
+
+/* =========================================================
+   戻るボタン
+========================================================= */
+
+.back-button {
+    display: block;
+
+    margin-top: 24px;
+
+    padding: 13px 20px;
+
+    box-sizing: border-box;
+
+    border: 2px solid #333333;
+    border-radius: 12px;
+
+    background: #ffffff;
+    color: #333333;
+
+    text-align: center;
+
+    text-decoration: none;
+
+    font-size: 15px;
+    font-weight: bold;
+
+    transition:
+        opacity 0.2s,
+        transform 0.1s;
+}
+
+
+.back-button:hover {
+    opacity: 0.8;
+}
+
+
+.back-button:active {
+    transform: scale(0.98);
+}

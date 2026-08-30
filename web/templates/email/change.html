@@ -1,0 +1,106 @@
+{% extends "templates/commons/base.html" %}
+
+{% block title %}メールアドレス変更 - 推し活オールインワン{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="/static/css/email/change.css">
+{% endblock %}
+
+{% block content %}
+    <div class="background">
+        <div class="email-change-scroll">
+            <div class="email-change">
+                <h1>メールアドレス変更</h1>
+                <!--==========================
+                    現在のメールアドレス
+                ==========================-->
+                <div class="current-email-area">
+                    <div class="label">
+                        現在のメールアドレス
+                    </div>
+
+                    <div class="current-email">
+                        {{ user.email or "未設定" }}
+                    </div>
+                </div>
+
+                <!--==========================
+                    メールアドレス変更
+                ==========================-->
+                <form action="/email/change"
+                    method="post"
+                    data-unsaved-check="true">
+                    <div class="form-item">
+                        <label for="email">
+                            新しいメールアドレス
+                        </label>
+
+                        <input id="email"
+                            name="email"
+                            type="email"
+                            placeholder="example@example.com"
+                            autocomplete="email"
+                            required>
+                    </div>
+
+                    <button type="submit"
+                        class="change-button">
+                        メールアドレスを変更する
+                    </button>
+                </form>
+
+                <!--==========================
+                    注意事項
+                ==========================-->
+                <div class="notice">
+                    <p>
+                        メールアドレスを変更すると、
+                        新しいメールアドレス宛に
+                        認証メールを送信します。
+                    </p>
+
+                    <p>
+                        認証メールに記載されているリンクから
+                        メールアドレスの認証を完了してください。
+                    </p>
+
+                    <p>
+                        メールが届かない場合は、
+                        迷惑メールフォルダもご確認ください。
+                    </p>
+                </div>
+
+                <!--==========================
+                    戻る
+                ==========================-->
+                <a href="/"
+                    class="back-button">
+                    ホームへ戻る
+                </a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block script %}
+
+    <script src="/static/js/common.js"></script>
+
+    {% if email_verification_sent_to %}
+        <script>
+            alert(
+                "メールアドレス認証メールを送信しました。\n\n" +
+                "送信先：{{ email_verification_sent_to }}\n\n" +
+                "メールが届かない場合は、迷惑メールフォルダもご確認ください。"
+            );
+        </script>
+    {% endif %}
+
+    {% if message %}
+        <script>
+            showToast("{{ message }}");
+        </script>
+    {% endif %}
+
+{% endblock %}
