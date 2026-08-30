@@ -1,6 +1,7 @@
-/*==========================
-    レイアウト
-==========================*/
+/* ==========================
+   マイページ
+========================== */
+
 body{
     margin:0;
     overflow:hidden;
@@ -15,7 +16,11 @@ body{
     align-items:center;
 }
 
-/* スクロール領域 */
+
+/* ==========================
+   スクロール
+========================== */
+
 .mypage-scroll{
     width:100%;
     flex:1;
@@ -23,130 +28,175 @@ body{
     overflow-y:auto;
     overflow-x:hidden;
     scrollbar-width:none;
+    -ms-overflow-style:none;
 }
 
 .mypage-scroll::-webkit-scrollbar{
     display:none;
 }
 
-/* 中身 */
+
+/* ==========================
+   メイン
+========================== */
+
 .mypage{
     width:100%;
     max-width:430px;
     margin:0 auto;
-    padding:10px 20px 80px;
+    padding:10px 15px 80px;
     box-sizing:border-box;
 }
 
-h1{
+.mypage h1{
     margin:10px 0 20px;
     text-align:center;
     font-size:25px;
     color:#333;
 }
 
-h2{
-    margin:25px 0 10px;
-    padding-left:5px;
-    font-size:20px;
-    color:#333;
+.mypage h2{
+    margin:25px 5px 10px;
+    font-size:18px;
+    color:#555;
 }
 
-/*==========================
-    プロフィール画像
-==========================*/
+
+/* ==========================
+   プロフィール画像
+========================== */
+
 .profile-area{
+    display:flex;
+    align-items:center;
+    justify-content:center;
     width:100%;
-    margin:10px auto 20px;
-    padding:18px;
+    margin:0 0 20px;
+    padding:20px;
     box-sizing:border-box;
-    background:#fff;
     border-radius:20px;
+    background:#fff;
     box-shadow:0 3px 8px rgba(0,0,0,.12);
-    text-align:center;
 }
 
-.profile-image{
+.profile-area .profile-image{
+    position:relative;
+    display:block;
     width:120px;
     height:120px;
+    padding:4px;
+    box-sizing:border-box;
     object-fit:cover;
     cursor:pointer;
+    border-radius:50%;
+    background:linear-gradient(
+        135deg,
+        #ff8fb1,
+        #ffc86b,
+        #8fd8ff,
+        #b99cff
+    );
 }
 
-/*==========================
-    情報カード
-==========================*/
+.profile-area .profile-image::after{
+    content:"";
+    position:absolute;
+    inset:4px;
+    z-index:-1;
+    border-radius:50%;
+    background:#fff;
+}
+
+
+/* ==========================
+   情報カード
+========================== */
+
 .info-list{
     width:100%;
-    margin:20px auto;
-    padding:18px;
+    margin:0 0 20px;
+    padding:8px 18px;
     box-sizing:border-box;
-    background:#fff;
     border-radius:20px;
+    background:#fff;
     box-shadow:0 3px 8px rgba(0,0,0,.12);
 }
 
 .info-item{
     display:flex;
-    flex-direction:row;
     align-items:center;
     justify-content:space-between;
-    gap:10px;
-    padding:12px 0;
-    border-bottom:1px solid #eee;
+    gap:12px;
     min-width:0;
+    padding:14px 0;
+    border-bottom:1px solid #eee;
 }
 
 .info-item:last-child{
     border-bottom:none;
 }
 
-/* ラベル */
+
+/* ==========================
+   ラベル
+========================== */
+
 .label{
     flex-shrink:0;
     width:120px;
-    font-size:14px;
+    color:#777;
+    font-size:13px;
     font-weight:bold;
-    color:#555;
+    line-height:1.5;
 }
 
-/* 表示値 */
+
+/* ==========================
+   表示値
+========================== */
+
 .display-value{
     flex:1;
     min-width:0;
-    text-align:right;
-    font-size:16px;
     color:#333;
+    font-size:14px;
+    line-height:1.6;
+    text-align:right;
     word-break:break-word;
 }
 
-/*==========================
-    編集入力
-==========================*/
+
+/* ==========================
+   編集入力
+========================== */
+
 .edit-item{
     flex:1;
     min-width:0;
     width:100%;
-    height:45px;
+    height:42px;
     padding:0 12px;
     box-sizing:border-box;
     border:1px solid #ddd;
     border-radius:12px;
+    outline:none;
     background:#fff;
-    font-size:16px;
+    color:#333;
+    font-family:inherit;
+    font-size:14px;
 }
 
 .edit-item:focus{
-    border-color:#66aaff;
-    outline:none;
+    border-color:#ff9fbd;
+    box-shadow:0 0 0 2px rgba(255,159,189,.15);
 }
 
 textarea.edit-item{
     width:100%;
     height:150px;
-    padding:10px;
-    box-sizing:border-box;
+    padding:10px 12px;
     resize:none;
+    line-height:1.6;
 }
 
 input[type="date"].edit-item{
@@ -157,14 +207,22 @@ select.edit-item{
     appearance:auto;
 }
 
-/*==========================
-    自己紹介専用
- ==========================*/
+
+/* ==========================
+   自己紹介
+========================== */
+
 .info-item.profile-message-area{
     display:flex;
     flex-direction:column;
     align-items:stretch;
     justify-content:flex-start;
+    gap:10px;
+}
+
+.profile-message-area .display-value{
+    width:100%;
+    text-align:left;
 }
 
 .profile-message-area .edit-item{
@@ -173,39 +231,72 @@ select.edit-item{
     height:150px;
 }
 
-/*==========================
-    編集ボタン
-==========================*/
+
+/* ==========================
+   編集ボタン
+========================== */
+
 .button-area{
     display:flex;
     justify-content:center;
     flex-wrap:wrap;
-    gap:15px;
-    margin:30px 0;
+    gap:10px;
+    margin:25px 0 30px;
 }
 
 .button-area button{
     min-width:100px;
-    height:42px;
-    padding:0 20px;
+    height:44px;
+    padding:0 22px;
+    box-sizing:border-box;
     border:none;
-    border-radius:21px;
-    font-size:15px;
+    border-radius:22px;
+    background:#fff;
+    box-shadow:0 3px 8px rgba(0,0,0,.10);
+    color:#555;
+    font-family:inherit;
+    font-size:14px;
     font-weight:bold;
     cursor:pointer;
+    transition:opacity .2s,transform .1s;
 }
 
-/*==========================
-    設定エリア
-==========================*/
+.button-area button:hover{
+    opacity:.9;
+}
+
+.button-area button:active{
+    transform:scale(.97);
+}
+
+
+/* ==========================
+   保存ボタン
+========================== */
+
+#save-btn{
+    background:#fff0f5;
+    color:#e83e8c;
+}
+
+#cancel-btn{
+    background:#f5f5f5;
+    color:#777;
+}
+
+
+/* ==========================
+   設定エリア
+========================== */
+
 .withdraw-area{
-    margin-top:30px;
+    margin-top:10px;
 }
 
 .public-setting-area,
 .security-area,
 .cansel-area{
-    margin-top:20px;
+    margin-top:12px;
 }
 
 .setting-button{
@@ -213,32 +304,140 @@ select.edit-item{
     align-items:center;
     justify-content:center;
     width:100%;
-    height:50px;
+    min-height:52px;
+    padding:10px 15px;
     box-sizing:border-box;
-    border-radius:25px;
+    border-radius:15px;
     background:#fff;
-    border:1px solid #ddd;
-    color:#333;
+    box-shadow:0 3px 8px rgba(0,0,0,.10);
+    color:#555;
     text-decoration:none;
-    font-size:16px;
+    font-size:14px;
     font-weight:bold;
+    transition:opacity .2s,transform .1s;
 }
 
 .setting-button:hover{
-    opacity:.8;
+    opacity:.9;
 }
 
-/*==========================
-    退会
-==========================*/
+.setting-button:active{
+    transform:scale(.98);
+}
+
+
+/* ==========================
+   設定項目カラー
+========================== */
+
+.public-setting-area .setting-button{
+    background:#f4efff;
+    color:#8064c8;
+}
+
+.security-area .setting-button{
+    background:#f0f8ff;
+    color:#5b8fd9;
+}
+
+
+/* ==========================
+   退会
+========================== */
+
+.cansel-area{
+    margin-top:25px;
+}
+
 .withdraw-button{
+    background:#fff5f5;
+    border:1px solid #f0b5b5;
+    box-shadow:none;
     color:#d9534f;
-    border-color:#d9534f;
 }
 
-/*==========================
-    非表示
-==========================*/
+
+/* ==========================
+   非表示
+========================== */
+
 .hidden{
     display:none!important;
+}
+
+
+/* ==========================
+   スマートフォン
+========================== */
+
+@media(max-width:600px){
+
+    .mypage{
+        padding:10px 15px 60px;
+    }
+
+    .mypage h1{
+        margin:8px 0 18px;
+        font-size:23px;
+    }
+
+    .mypage h2{
+        margin:22px 5px 9px;
+        font-size:17px;
+    }
+
+    .profile-area{
+        padding:18px;
+        margin-bottom:18px;
+    }
+
+    .profile-area .profile-image{
+        width:105px;
+        height:105px;
+    }
+
+    .info-list{
+        padding:6px 15px;
+        border-radius:18px;
+    }
+
+    .info-item{
+        padding:13px 0;
+        gap:8px;
+    }
+
+    .label{
+        width:105px;
+        font-size:12px;
+    }
+
+    .display-value{
+        font-size:13px;
+    }
+
+    .edit-item{
+        height:40px;
+        padding:0 10px;
+        font-size:13px;
+    }
+
+    textarea.edit-item{
+        height:140px;
+    }
+
+    .button-area{
+        margin:22px 0 25px;
+    }
+
+    .button-area button{
+        min-width:95px;
+        height:42px;
+        font-size:13px;
+    }
+
+    .setting-button{
+        min-height:50px;
+        border-radius:15px;
+        font-size:13px;
+    }
 }

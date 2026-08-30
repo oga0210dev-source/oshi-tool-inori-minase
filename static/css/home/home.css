@@ -1,145 +1,288 @@
 /* ==========================
-   スクロール領域
+   ホーム
 ========================== */
+
 .home-scroll{
     width:100%;
-    flex:1;
+    max-width:430px;
+    height:100%;
     min-height:0;
+    margin:0 auto;
+    padding:15px 0 30px;
+    box-sizing:border-box;
     overflow-y:auto;
     overflow-x:hidden;
-    padding-bottom:80px;
     scrollbar-width:none;
+    -ms-overflow-style:none;
 }
 
 .home-scroll::-webkit-scrollbar{
     display:none;
 }
+
+
 /* ==========================
    プロフィール
 ========================== */
+
 .profile-card{
-    width:80%;
-    max-width:400px;
-    height:70px;
-    margin:10px auto;
-    padding:5px 15px;
     display:flex;
     align-items:center;
-    border-radius:15px;
-    background:rgba(255,255,255,.85);
+    width:auto;
+    min-height:70px;
+    margin:0 15px 20px;
+    padding:8px 15px;
     box-sizing:border-box;
+    border-radius:15px;
+    background:#fff;
+    box-shadow:0 3px 8px rgba(0,0,0,.12);
+}
+
+.profile-image{
+    position:relative;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-shrink:0;
+    width:55px;
+    height:55px;
+    padding:3px;
+    box-sizing:border-box;
+    overflow:hidden;
+    border-radius:50%;
+    background:linear-gradient(
+        135deg,
+        #ff8fb1,
+        #ffc86b,
+        #8fd8ff,
+        #b99cff
+    );
 }
 
 .profile-image img{
-    width:55px;
-    height:55px;
+    display:block;
+    width:100%;
+    height:100%;
     object-fit:cover;
+    border-radius:50%;
+    background:#fff;
 }
 
 .profile-info{
+    min-width:0;
     margin-left:15px;
 }
 
 .profile-name{
+    margin:0;
     font-size:18px;
     font-weight:bold;
+    line-height:1.5;
+    word-break:break-word;
 }
 
 .member-history{
-    margin-top:5px;
+    margin-top:3px;
+    color:#777;
     font-size:12px;
+    line-height:1.5;
 }
 
+
 /* ==========================
-   ボタン共通
+   共通メニュー
 ========================== */
-.menu-btn,
-.wide-btn{
-    background:rgba(255,255,255,.88);
-    border-radius:15px;
-    display:flex;
-    justify-content:center;
-    align-items:center;
+
+.home-menu-btn{
+    color:#333;
     text-decoration:none;
-    box-shadow:0 2px 6px rgba(0,0,0,.12);
-    transition:.2s;
+    transition:opacity .2s,transform .1s;
 }
 
-.menu-btn:hover,
-.wide-btn:hover{
-    transform:scale(1.03);
+.home-menu-btn:hover{
+    opacity:.9;
 }
+
+.home-menu-btn:active{
+    transform:scale(.98);
+}
+
 
 /* ==========================
-   横長ボタン
+   ワイドメニュー
 ========================== */
-.wide-btn{
-    width:80%;
-    max-width:400px;
-    height:70px;
-    margin:10px auto;
+
+.home-menu-btn.wide{
+    display:flex;
+    align-items:center;
+    width:auto;
+    min-height:70px;
+    margin:0 15px 16px;
+    padding:12px 16px;
+    box-sizing:border-box;
+    border-radius:15px;
+    background:#fff;
+    box-shadow:0 3px 8px rgba(0,0,0,.12);
 }
 
-.wide-btn img{
-    width:45px;
-    height:45px;
-    object-fit:contain;
-    margin-right:15px;
+
+/* ==========================
+   メニューアイコン
+========================== */
+
+.home-menu-icon{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-shrink:0;
+    width:42px;
+    height:42px;
+    margin-right:12px;
+    border-radius:12px;
+    font-size:22px;
+    line-height:1;
 }
+
+
+/* ==========================
+   ワイドメニューカラー
+========================== */
+
+.home-menu-icon.mypage{
+    background:#fff0f5;
+    color:#ff6f9f;
+}
+
+.home-menu-icon.oshi{
+    background:#fff0f5;
+    color:#e83e8c;
+}
+
+.home-menu-icon.setting{
+    background:#f2f2f2;
+    color:#777;
+}
+
 
 /* ==========================
    2列メニュー
 ========================== */
-.menu-grid{
-    width:80%;
-    max-width:400px;
-    margin:10px auto;
+
+.home-menu-grid{
     display:grid;
     grid-template-columns:1fr 1fr;
-    gap:10px;
+    gap:12px;
+    margin:0 15px 16px;
 }
 
-.menu-grid .menu-btn{
-    height:70px;
+.home-menu-grid .home-menu-btn{
+    display:flex;
+    align-items:center;
+    min-height:70px;
+    padding:12px;
+    box-sizing:border-box;
+    border-radius:15px;
+    background:#fff;
+    box-shadow:0 3px 8px rgba(0,0,0,.12);
 }
 
-.menu-btn img{
-    width:35px;
-    height:35px;
-    object-fit:contain;
-    margin-right:10px;
+
+/* ==========================
+   2列メニューアイコン
+========================== */
+
+.home-menu-grid .home-menu-icon{
+    width:40px;
+    height:40px;
+    margin-right:9px;
+    font-size:21px;
 }
 
-.menu-btn span{
-    font-size:14px;
+
+/* ==========================
+   メニューテキスト
+========================== */
+
+.home-menu-text{
+    min-width:0;
+    font-size:13px;
     font-weight:bold;
-    color:#333;
+    line-height:1.5;
+    word-break:break-word;
 }
+
+
+/* ==========================
+   メニュー別カラー
+========================== */
+
+.home-menu-icon.live{
+    background:#fff0f0;
+    color:#e85b5b;
+}
+
+.home-menu-icon.meeting{
+    background:#f0f8ff;
+    color:#5b8fd9;
+}
+
+.home-menu-icon.event{
+    background:#fff5e8;
+    color:#e69a3a;
+}
+
+.home-menu-icon.goods{
+    background:#f4efff;
+    color:#8064c8;
+}
+
+.home-menu-icon.encounter{
+    background:#eefaf1;
+    color:#5d9b70;
+}
+
+.home-menu-icon.radio{
+    background:#fff0f5;
+    color:#e83e8c;
+}
+
+
+/* ==========================
+   未実装メニュー
+========================== */
+
+.not-implemented{
+    cursor:default;
+}
+
 
 /* ==========================
    設定モーダル
 ========================== */
+
 .setting-modal{
     display:none;
     position:fixed;
     inset:0;
-    background:rgba(0,0,0,.45);
     z-index:1000;
+    background:rgba(0,0,0,.45);
 }
 
 .setting-box{
-    width:80%;
-    max-width:350px;
-    max-height:80vh;
-    overflow-y:auto;
-    scrollbar-width:none;
-    background:white;
-    border-radius:20px;
-    padding:20px;
     position:absolute;
     top:50%;
     left:50%;
+    width:80%;
+    max-width:350px;
+    max-height:80dvh;
+    padding:20px;
+    box-sizing:border-box;
     transform:translate(-50%,-50%);
+    overflow-y:auto;
+    border-radius:20px;
+    background:#fff;
+    scrollbar-width:none;
+    -ms-overflow-style:none;
 }
 
 .setting-box::-webkit-scrollbar{
@@ -147,208 +290,288 @@
 }
 
 .setting-box h2{
+    margin:0 0 20px;
     text-align:center;
-    margin-bottom:20px;
+    font-size:20px;
 }
 
 .setting-box h3{
-    font-size:14px;
     margin:20px 0 5px;
     color:#888;
+    font-size:14px;
 }
 
 .setting-box a{
     display:block;
     padding:15px;
-    border-bottom:1px solid #ddd;
+    border-bottom:1px solid #eee;
     color:#333;
     text-decoration:none;
+    font-size:14px;
 }
 
+.setting-box a:hover{
+    background:#fafafa;
+}
+
+
 /* ==========================
-   法的情報モーダル
+   フォント設定
 ========================== */
-.legal-modal{
+
+#font-setting-modal{
+    display:none;
+}
+
+#font-test{
+    width:100%;
+    margin:10px 0 20px;
+    padding:15px;
+    box-sizing:border-box;
+    border:1px solid #ddd;
+    border-radius:10px;
+    background:#fafafa;
+    font-size:22px;
+    text-align:center;
+}
+
+.font-preview{
+    transition:font-family .15s ease;
+}
+
+.font-preview.font-hachi-maru-pop{
+    font-family:"HachiMaruPop-Regular",sans-serif;
+}
+
+.font-preview.font-kiwi-maru{
+    font-family:"KiwiMaru-Regular",sans-serif;
+}
+
+.font-preview.font-mplus-rounded{
+    font-family:"MPLUSRounded1c-ExtraBold",sans-serif;
+}
+
+.font-preview.font-noto-sans-jp{
+    font-family:"NotoSansJP-VariableFont_wght",sans-serif;
+}
+
+.font-preview.font-yusei-magic{
+    font-family:"YuseiMagic-Regular",sans-serif;
+}
+
+.font-option-list{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+}
+
+.font-option{
+    display:block;
+    width:100%;
+    padding:12px;
+    box-sizing:border-box;
+    border:1px solid #ddd;
+    border-radius:8px;
+    background:#fff;
+    font-family:inherit;
+    font-size:15px;
+    cursor:pointer;
+}
+
+.font-option.selected{
+    border:2px solid #ff8fb1;
+    background:#fff5f8;
+    font-weight:bold;
+}
+
+#font-save-button{
+    display:block;
+    width:100%;
+    margin-top:15px;
+    padding:12px;
+    box-sizing:border-box;
+    border:none;
+    border-radius:8px;
+    background:#333;
+    color:#fff;
+    font-family:inherit;
+    font-size:15px;
+    cursor:pointer;
+}
+
+#font-save-button:hover{
+    opacity:.9;
+}
+
+
+/* ==========================
+   共通モーダル
+========================== */
+
+.home-modal{
     display:none;
     position:fixed;
     inset:0;
-    z-index:1100;
-    background:rgba(0,0,0,.5);
-
+    z-index:1000;
     align-items:center;
     justify-content:center;
-
     padding:20px;
     box-sizing:border-box;
+    background:rgba(0,0,0,.5);
 }
 
-.legal-modal-content{
+.home-modal-content{
+    display:flex;
+    flex-direction:column;
     width:100%;
     max-width:430px;
     max-height:85dvh;
-
-    background:#fff;
-    border-radius:12px;
-
-    display:flex;
-    flex-direction:column;
-
     overflow:hidden;
+    border-radius:12px;
+    background:#fff;
 }
 
-.legal-modal-header{
-    height:50px;
-    flex-shrink:0;
-
+.home-modal-header{
     display:flex;
     align-items:center;
     justify-content:space-between;
-
+    height:50px;
+    flex-shrink:0;
     padding:0 15px;
     box-sizing:border-box;
-
     border-bottom:1px solid #ddd;
 }
 
-.legal-modal-title{
+.home-modal-title{
     font-size:18px;
     font-weight:bold;
 }
 
-.legal-modal-close{
+.home-modal-close{
+    padding:0 5px;
     border:none;
     background:none;
-
+    font-family:inherit;
     font-size:28px;
     line-height:1;
-
     cursor:pointer;
-    padding:0 5px;
 }
 
-.legal-modal-body{
+.home-modal-body{
+    min-height:0;
     padding:15px;
-
+    box-sizing:border-box;
     overflow-y:auto;
-    scrollbar-width:none;
-
+    overflow-x:hidden;
     font-size:13px;
     line-height:1.8;
     text-align:left;
-
-    box-sizing:border-box;
+    scrollbar-width:none;
+    -ms-overflow-style:none;
 }
 
-.legal-modal-body::-webkit-scrollbar{
+.home-modal-body::-webkit-scrollbar{
     display:none;
 }
 
-.legal-modal-body h3{
-    margin-top:20px;
-    margin-bottom:8px;
+
+/* ==========================
+   法的情報
+========================== */
+
+.legal-modal .home-modal-content,
+.legal-modal .home-modal-content *{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP","Yu Gothic","Hiragino Kaku Gothic ProN",sans-serif!important;
+}
+
+.legal-modal-page{
+    width:100%;
+}
+
+.legal-modal-page .update-date{
+    margin:0 0 20px;
+    color:#666;
+    font-size:12px;
+}
+
+.legal-modal-page .legal-section{
+    margin-bottom:20px;
+}
+
+.legal-modal-page .legal-section:last-child{
+    margin-bottom:0;
+}
+
+.legal-modal-page h2{
+    margin:0 0 8px;
     font-size:15px;
 }
 
-.legal-modal-body h3:first-child{
-    margin-top:0;
-}
-
-.legal-modal-body p{
+.legal-modal-page p{
     margin:0 0 12px;
 }
 
-.legal-modal-body ul{
-    margin:0 0 15px;
-    padding-left:20px;
+.legal-modal-page ul{
+    margin:0 0 12px;
+    padding-left:22px;
 }
 
-/* =========================================================
-   フォント設定
-   ========================================================= */
-
-#font-setting-modal {
-    display: none;
+.legal-modal-page li{
+    margin-bottom:6px;
 }
 
 
-#font-test {
-    margin: 10px 0 20px;
+/* ==========================
+   お問い合わせ
+========================== */
 
-    padding: 15px;
+.home-inquiry-body{
+    flex:1;
+    min-height:0;
+    overflow:hidden;
+    padding:0;
+}
 
-    border: 1px solid #ddd;
-    border-radius: 8px;
-
-    background: #fafafa;
-
-    font-size: 22px;
-    text-align: center;
+.home-inquiry-body iframe{
+    display:block;
+    width:100%;
+    height:100%;
+    min-height:0;
+    border:none;
 }
 
 
-/* =========================================================
-   フォント選択
-   ========================================================= */
+/* ==========================
+   スマートフォン
+========================== */
 
-.font-option-list {
-    display: flex;
-    flex-direction: column;
+@media(max-width:600px){
 
-    gap: 8px;
+    .home-scroll{
+        padding-top:10px;
+    }
 
-    margin-bottom: 15px;
-}
+    .profile-card{
+        margin-bottom:16px;
+    }
 
+    .home-menu-grid{
+        gap:10px;
+    }
 
-.font-option {
-    width: 100%;
+    .home-menu-grid .home-menu-btn{
+        min-height:68px;
+        padding:10px;
+    }
 
-    padding: 12px;
+    .home-menu-grid .home-menu-icon{
+        width:38px;
+        height:38px;
+        margin-right:8px;
+        font-size:20px;
+    }
 
-    border: 1px solid #ddd;
-    border-radius: 8px;
-
-    background: #ffffff;
-
-    font-size: 16px;
-
-    cursor: pointer;
-}
-
-
-.font-option.selected {
-    border: 2px solid #333;
-    font-weight: bold;
-}
-
-
-/* =========================================================
-   保存・閉じる
-   ========================================================= */
-
-#font-save-button,
-#font-close-button {
-    width: 100%;
-
-    padding: 12px;
-
-    margin-top: 8px;
-
-    border: none;
-    border-radius: 8px;
-
-    cursor: pointer;
-
-    font-size: 16px;
-}
-
-
-#font-save-button {
-    background: #333;
-    color: #ffffff;
-}
-
-
-#font-close-button {
-    background: #eee;
+    .home-menu-text{
+        font-size:12px;
+    }
 }

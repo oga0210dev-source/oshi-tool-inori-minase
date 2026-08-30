@@ -4,86 +4,89 @@
 
 {% block css %}
     <link rel="stylesheet" href="/static/css/home/home.css">
-    <style>
-        .home-modal{display:none;position:fixed;z-index:1000;inset:0;background:rgba(0,0,0,.5);align-items:center;justify-content:center;padding:20px;box-sizing:border-box}
-        .home-modal-content{width:100%;max-width:430px;max-height:85dvh;background:#fff;border-radius:12px;display:flex;flex-direction:column;overflow:hidden}
-        .home-modal-header{height:50px;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:0 15px;box-sizing:border-box;border-bottom:1px solid #ddd}
-        .home-modal-title{font-size:18px;font-weight:bold}
-        .home-modal-close{border:none;background:none;font-size:28px;line-height:1;cursor:pointer;padding:0 5px}
-        .home-modal-body{min-height:0;padding:15px;overflow-y:auto;overflow-x:hidden;box-sizing:border-box;font-size:13px;line-height:1.8;text-align:left;scrollbar-width:none;-ms-overflow-style:none}
-        .home-modal-body::-webkit-scrollbar{display:none}
-        .legal-modal .home-modal-content,.legal-modal .home-modal-content *{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP","Yu Gothic","Hiragino Kaku Gothic ProN",sans-serif!important}
-        .legal-modal-page{width:100%}
-        .legal-modal-page .update-date{margin:0 0 20px;font-size:12px;color:#666}
-        .legal-modal-page .legal-section{margin-bottom:20px}
-        .legal-modal-page .legal-section:last-child{margin-bottom:0}
-        .legal-modal-page h2{margin:0 0 8px;font-size:15px}
-        .legal-modal-page p{margin:0 0 12px}
-        .legal-modal-page ul{margin:0 0 12px;padding-left:22px}
-        .legal-modal-page li{margin-bottom:6px}
-        .home-inquiry-body{flex:1;min-height:0;overflow:hidden;padding:0}
-        .home-inquiry-body iframe{display:block;width:100%;height:100%;min-height:0;border:none}
-        .font-preview{width:100%;margin:15px 0 20px;padding:15px;border:1px solid #ddd;border-radius:10px;background:#fafafa;text-align:center;font-size:20px;transition:font-family .15s ease}
-        .font-preview.font-hachi-maru-pop{font-family:"HachiMaruPop-Regular",sans-serif}
-        .font-preview.font-kiwi-maru{font-family:"KiwiMaru-Regular",sans-serif}
-        .font-preview.font-mplus-rounded{font-family:"MPLUSRounded1c-ExtraBold",sans-serif}
-        .font-preview.font-noto-sans-jp{font-family:"NotoSansJP-VariableFont_wght",sans-serif}
-        .font-preview.font-yusei-magic{font-family:"YuseiMagic-Regular",sans-serif}
-        .font-option{display:block;width:100%;margin-bottom:8px;padding:10px;border:1px solid #ddd;border-radius:8px;background:#fff;cursor:pointer}
-        .font-option.selected{border:2px solid #333;background:#f5f5f5}
-        #font-save-button{display:block;width:100%;margin-top:15px;padding:12px;border:none;border-radius:8px;background:#333;color:#fff;cursor:pointer}
-    </style>
 {% endblock %}
 
 {% block content %}
     <div class="background">
         <div class="page-scroll">
             <div class="container">
+
                 <div class="profile-card">
                     {% if is_guest %}
-                        <div class="profile-image"><img src="/static/img/profile/default.png" alt="ゲスト"></div>
-                        <div class="profile-info"><div class="profile-name">ゲスト</div><div class="member-history">ログインすると町民歴を確認できます</div></div>
-
+                    <div class="profile-image"><img src="/static/img/profile/default.png" alt="ゲスト"></div>
+                    <div class="profile-info"><div class="profile-name">ゲスト</div><div class="member-history">ログインすると町民歴を確認できます</div></div>
                     {% else %}
-                        <div class="profile-image"><img src="{{ user.profile_image or '/static/img/profile/default.png' }}" alt="プロフィール画像"></div>
-                        <div class="profile-info"><div class="profile-name">{{ user.user_name }}</div><div class="member-history">町民歴 {{ member_period }}</div></div>
+                    <div class="profile-image"><img src="{{ user.profile_image or '/static/img/profile/default.png' }}" alt="プロフィール画像"></div>
+                    <div class="profile-info"><div class="profile-name">{{ user.user_name }}</div><div class="member-history">町民歴 {{ member_period }}</div></div>
                     {% endif %}
                 </div>
 
                 <div class="home-scroll">
+
                     {% if is_guest %}
-                        <a href="/login" class="menu-btn wide-btn" onclick="return requireLogin();"><img src="/static/img/home/mypage.svg" alt="マイページ"><span>マイページ</span></a>
+                    <a href="/login" class="home-menu-btn wide" onclick="return requireLogin();">
+                        <span class="home-menu-icon mypage">👤</span>
+                        <span class="home-menu-text">マイページ</span>
+                    </a>
                     {% else %}
-                        <a href="/mypage" class="menu-btn wide-btn"><img src="/static/img/home/mypage.svg" alt="マイページ"><span>マイページ</span></a>
+                    <a href="/mypage" class="home-menu-btn wide">
+                        <span class="home-menu-icon mypage">👤</span>
+                        <span class="home-menu-text">マイページ</span>
+                    </a>
                     {% endif %}
 
-                    <div class="menu-grid">
-                        <a href="/home/live" class="menu-btn"><img src="/static/img/home/live.svg" alt="ライブ"><span>ライブ</span></a>
-                        <a href="/home/meeting" class="menu-btn"><img src="/static/img/home/meeting.svg" alt="町民集会"><span>町民集会</span></a>
-                        <a href="#" class="menu-btn not-implemented"><img src="/static/img/home/event.svg" alt="イベント"><span>イベント</span></a>
-                        <a href="#" class="menu-btn not-implemented"><img src="/static/img/home/goods.svg" alt="グッズ"><span>グッズ</span></a>
-                        <a href="#" class="menu-btn not-implemented"><img src="/static/img/home/encounter.svg" alt="エンカ"><span>エンカ</span></a>
-                        <a href="#" class="menu-btn not-implemented"><img src="/static/img/home/radio.svg" alt="メロフラ"><span>メロフラ</span></a>
+                    <div class="home-menu-grid">
+                        <a href="/home/live" class="home-menu-btn">
+                            <span class="home-menu-icon live">🎤</span>
+                            <span class="home-menu-text">ライブ</span>
+                        </a>
+                        <a href="/home/meeting" class="home-menu-btn">
+                            <span class="home-menu-icon meeting">🏘️</span>
+                            <span class="home-menu-text">町民集会</span>
+                        </a>
+                        <a href="#" class="home-menu-btn not-implemented">
+                            <span class="home-menu-icon event">🎪</span>
+                            <span class="home-menu-text">イベント</span>
+                        </a>
+                        <a href="#" class="home-menu-btn not-implemented">
+                            <span class="home-menu-icon goods">🎁</span>
+                            <span class="home-menu-text">グッズ</span>
+                        </a>
+                        <a href="#" class="home-menu-btn not-implemented">
+                            <span class="home-menu-icon encounter">🤝</span>
+                            <span class="home-menu-text">エンカ</span>
+                        </a>
+                        <a href="#" class="home-menu-btn not-implemented">
+                            <span class="home-menu-icon radio">📻</span>
+                            <span class="home-menu-text">メロフラ</span>
+                        </a>
                     </div>
 
-                    <a href="/home/oshi" class="menu-btn wide-btn"><img src="/static/img/home/info.svg" alt="推し情報"><span>推し情報</span></a>
-                    <a href="#" id="setting-button" class="menu-btn wide-btn"><img src="/static/img/home/setting.svg" alt="設定"><span>設定</span></a>
+                    <a href="/home/oshi" class="home-menu-btn wide">
+                        <span class="home-menu-icon oshi">♡</span>
+                        <span class="home-menu-text">推し情報</span>
+                    </a>
+
+                    <a href="#" id="setting-button" class="home-menu-btn wide">
+                        <span class="home-menu-icon setting">⚙</span>
+                        <span class="home-menu-text">設定</span>
+                    </a>
 
                     <div id="setting-modal" class="setting-modal">
                         <div class="setting-box">
                             <h2>設定</h2>
+
                             <h3>アカウント</h3>
                             {% if is_guest %}
-                                <a href="/login" onclick="return requireLogin();">マイページ</a>
-                                <a href="/login" onclick="return requireLogin();">公開設定</a>
-                                <a href="/login" onclick="return requireLogin();">メール変更</a>
-                                <a href="/login" onclick="return requireLogin();">パスワード変更</a>
-
+                            <a href="/login" onclick="return requireLogin();">マイページ</a>
+                            <a href="/login" onclick="return requireLogin();">公開設定</a>
+                            <a href="/login" onclick="return requireLogin();">メール変更</a>
+                            <a href="/login" onclick="return requireLogin();">パスワード変更</a>
                             {% else %}
-                                <a href="/mypage">マイページ</a>
-                                <a href="/mypage/public-setting" class="not-implemented">公開設定</a>
-                                <a href="#" class="not-implemented">メール変更</a>
-                                <a href="/password/change">パスワード変更</a>
+                            <a href="/mypage">マイページ</a>
+                            <a href="/mypage/public-setting" class="not-implemented">公開設定</a>
+                            <a href="#" class="not-implemented">メール変更</a>
+                            <a href="/password/change">パスワード変更</a>
                             {% endif %}
 
                             <h3>表示設定</h3>
@@ -91,21 +94,22 @@
 
                             <h3>サポート</h3>
                             <a href="/home/inquiry">お問い合わせ</a>
-                            <a href="#" onclick="openLegalModal('terms');return false;">利用規約</a>
-                            <a href="#" onclick="openLegalModal('privacy');return false;">プライバシー</a>
+                            <a href="#" onclick="openLegalModal('terms'); return false;">利用規約</a>
+                            <a href="#" onclick="openLegalModal('privacy'); return false;">プライバシー</a>
 
                             {% if not is_guest and user.role == "admin" %}
-                                <h3>管理</h3>
-                                <a href="/admin/master">マスタ管理</a>
-                                <a href="/admin/inquiry">お問い合わせ管理</a>
+                            <h3>管理</h3>
+                            <a href="/admin/master">マスタ管理</a>
+                            <a href="/admin/inquiry">お問い合わせ管理</a>
                             {% endif %}
 
                             {% if not is_guest %}
-                                <h3>その他</h3>
-                                <a href="/logout">ログアウト</a>
+                            <h3>その他</h3>
+                            <a href="/logout">ログアウト</a>
                             {% endif %}
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -116,9 +120,11 @@
             <h2>フォント設定</h2>
             <div id="font-test" class="font-preview {{ font_class }}">推し活オールインワン</div>
 
-            {% for font in font_list %}
+            <div class="font-option-list">
+                {% for font in font_list %}
                 <button type="button" class="font-option {% if font.id == current_font_id %}selected{% endif %}" data-font-id="{{ font.id }}" data-font-class="{{ font.css_class }}">{{ font.name }}</button>
-            {% endfor %}
+                {% endfor %}
+            </div>
 
             <button type="button" id="font-save-button">保存</button>
         </div>
@@ -140,10 +146,7 @@
                 <div class="home-modal-title">お問い合わせ</div>
                 <button type="button" class="home-modal-close" onclick="closeInquiryModal()">×</button>
             </div>
-
-            <div class="home-inquiry-body">
-                <iframe id="inquiryFrame" src=""></iframe>
-            </div>
+            <div class="home-inquiry-body"><iframe id="inquiryFrame" src="" title="お問い合わせ"></iframe></div>
         </div>
     </div>
 {% endblock %}
@@ -152,28 +155,36 @@
     <script src="/static/js/common.js"></script>
 
     {% if message %}
-        <script>showToast("{{ message }}");</script>
+        <script>showToast({{ message | tojson }});</script>
     {% endif %}
 
     <script>
+        const FONT_CLASSES=["font-hachi-maru-pop","font-kiwi-maru","font-mplus-rounded","font-noto-sans-jp","font-yusei-magic"];
+
+        function removeFontClasses(element){
+            if(element) element.classList.remove(...FONT_CLASSES);
+        }
+
+        function setModalDisplay(modal,display){
+            if(modal) modal.style.display=display;
+        }
+
+        function requireLogin(){
+            return confirm("この機能を利用するにはログインが必要です。\n\nログイン画面へ移動しますか？");
+        }
+
         const settingButton=document.getElementById("setting-button");
         const settingModal=document.getElementById("setting-modal");
 
         if(settingButton&&settingModal){
             settingButton.addEventListener("click",function(event){
                 event.preventDefault();
-                settingModal.style.display="block";
+                setModalDisplay(settingModal,"block");
             });
-            settingModal.addEventListener("click",function(event){
-                if(event.target===settingModal) settingModal.style.display="none";
-            });
-        }
 
-        function requireLogin(){
-            return confirm(
-                "この機能を利用するにはログインが必要です。\n\n"+
-                "ログイン画面へ移動しますか？"
-            );
+            settingModal.addEventListener("click",function(event){
+                if(event.target===settingModal) setModalDisplay(settingModal,"none");
+            });
         }
 
         const fontSettingButton=document.getElementById("font-setting-button");
@@ -188,13 +199,13 @@
         if(fontSettingButton&&fontSettingModal){
             fontSettingButton.addEventListener("click",function(event){
                 event.preventDefault();
-                fontSettingModal.style.display="block";
+                setModalDisplay(fontSettingModal,"block");
             });
         }
 
         if(fontSettingModal){
             fontSettingModal.addEventListener("click",function(event){
-                if(event.target===fontSettingModal) fontSettingModal.style.display="none";
+                if(event.target===fontSettingModal) setModalDisplay(fontSettingModal,"none");
             });
         }
 
@@ -204,19 +215,14 @@
                 selectedFontClass=button.dataset.fontClass;
 
                 if(fontTest){
-                    fontTest.classList.remove(
-                        "font-hachi-maru-pop",
-                        "font-kiwi-maru",
-                        "font-mplus-rounded",
-                        "font-noto-sans-jp",
-                        "font-yusei-magic"
-                    );
-                    fontTest.classList.add(selectedFontClass);
+                    removeFontClasses(fontTest);
+                    if(selectedFontClass) fontTest.classList.add(selectedFontClass);
                 }
 
                 fontOptions.forEach(function(option){
                     option.classList.remove("selected");
                 });
+
                 button.classList.add("selected");
             });
         });
@@ -225,7 +231,11 @@
             fontSaveButton.addEventListener("click",async function(){
                 if(!selectedFontId){
                     const selectedButton=document.querySelector(".font-option.selected");
-                    if(selectedButton) selectedFontId=selectedButton.dataset.fontId;
+
+                    if(selectedButton){
+                        selectedFontId=selectedButton.dataset.fontId;
+                        selectedFontClass=selectedButton.dataset.fontClass;
+                    }
                 }
 
                 if(!selectedFontId){
@@ -246,18 +256,13 @@
                     if(!response.ok) throw new Error("HTTP "+response.status);
 
                     if(selectedFontClass){
-                        document.body.classList.remove(
-                            "font-hachi-maru-pop",
-                            "font-kiwi-maru",
-                            "font-mplus-rounded",
-                            "font-noto-sans-jp",
-                            "font-yusei-magic"
-                        );
+                        removeFontClasses(document.body);
                         document.body.classList.add(selectedFontClass);
                     }
 
-                    if(fontSettingModal) fontSettingModal.style.display="none";
+                    setModalDisplay(fontSettingModal,"none");
                     window.location.reload();
+
                 }catch(error){
                     console.error("フォント保存エラー:",error);
                     alert("フォントの保存に失敗しました。");
@@ -275,8 +280,8 @@
             if(!modal||!title||!body) return;
 
             title.textContent=type==="terms"?"利用規約":"プライバシーポリシー";
-            body.innerHTML='<p style="text-align:center;">読み込み中...</p>';
-            modal.style.display="flex";
+            body.innerHTML='<p class="legal-loading">読み込み中...</p>';
+            setModalDisplay(modal,"flex");
             body.scrollTop=0;
 
             try{
@@ -288,6 +293,7 @@
                 if(!response.ok) throw new Error("HTTP "+response.status);
 
                 const html=await response.text();
+
                 if(!html) throw new Error("HTMLが空です。");
 
                 const parser=new DOMParser();
@@ -298,46 +304,56 @@
 
                 body.innerHTML=legalPage.innerHTML;
                 body.scrollTop=0;
+
             }catch(error){
                 console.error("利用規約・プライバシーポリシー読み込みエラー:",error);
-                body.innerHTML='<p style="text-align:center;">利用規約・プライバシーポリシーの読み込みに失敗しました。</p>';
+                body.innerHTML='<p class="legal-error">利用規約・プライバシーポリシーの読み込みに失敗しました。</p>';
             }
         }
 
         function closeLegalModal(event){
             if(event&&event.target!==event.currentTarget) return;
-            const modal=document.getElementById("legalModal");
-            if(modal) modal.style.display="none";
+            setModalDisplay(document.getElementById("legalModal"),"none");
         }
 
         function openInquiryModal(){
             const modal=document.getElementById("inquiryModal");
             const frame=document.getElementById("inquiryFrame");
+
             if(!modal||!frame) return;
+
             frame.src="/home/inquiry";
-            modal.style.display="flex";
+            setModalDisplay(modal,"flex");
         }
 
         function closeInquiryModal(event){
             if(event&&event.target!==event.currentTarget) return;
+
             const modal=document.getElementById("inquiryModal");
             const frame=document.getElementById("inquiryFrame");
+
             if(!modal||!frame) return;
-            modal.style.display="none";
+
+            setModalDisplay(modal,"none");
             frame.src="";
         }
 
         document.addEventListener("keydown",function(event){
             if(event.key!=="Escape") return;
+
+            setModalDisplay(settingModal,"none");
+            setModalDisplay(fontSettingModal,"none");
+
             closeLegalModal();
             closeInquiryModal();
-            if(settingModal) settingModal.style.display="none";
-            if(fontSettingModal) fontSettingModal.style.display="none";
         });
 
         window.addEventListener("message",function(event){
             if(event.origin!==window.location.origin) return;
-            if(event.data&&event.data.type==="closeInquiryModal") closeInquiryModal();
+
+            if(event.data&&event.data.type==="closeInquiryModal"){
+                closeInquiryModal();
+            }
         });
     </script>
 {% endblock %}
