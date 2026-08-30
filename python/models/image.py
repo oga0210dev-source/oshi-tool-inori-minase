@@ -1,17 +1,14 @@
 from PIL import Image
 import pillow_heif
 
-from python.core.supabase_client import supabase
-
+from python.core.supabase_client import supabase, supabase_admin
 
 pillow_heif.register_heif_opener()
-
 
 BUCKET_NAME = "profile"
 
 
 class ImageModel:
-
     ALLOWED_EXTENSIONS = [
         ".png",
         ".jpg",
@@ -27,7 +24,7 @@ class ImageModel:
             file_data,
             content_type
     ):
-        file_path = f"{user_id}.png"
+        file_path = f"user/{user_id}.png"
 
         supabase.storage.from_(
             BUCKET_NAME
@@ -53,7 +50,7 @@ class ImageModel:
             file_data,
             content_type
     ):
-        file_path = "oshi.png"
+        file_path = "oshi/oshi.png"
 
         supabase.storage.from_(
             BUCKET_NAME
@@ -73,3 +70,32 @@ class ImageModel:
         )
 
         return url
+
+    @staticmethod
+    def delete_profile_image(user_id):
+        file_path = f"user/{user_id}.png"
+
+        try:
+            result = supabase_admin.storage.from_(
+                BUCKET_NAME
+            ).remove([
+                file_path
+            ])
+
+            print(
+                f"[Profile Image Delete] "
+                f"path={file_path} "
+                f"result={result}"
+            )
+
+            return True
+
+        except Exception as e:
+            print(
+                f"[Profile Image Delete] "
+                f"削除失敗 "
+                f"path={file_path} "
+                f"error={repr(e)}"
+            )
+
+            return False
