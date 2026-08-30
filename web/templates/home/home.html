@@ -12,13 +12,24 @@
             <div class="container">
 
                 <div class="profile-card">
-                    {% if is_guest %}
-                    <div class="profile-image"><img src="/static/img/profile/default.png" alt="ゲスト"></div>
-                    <div class="profile-info"><div class="profile-name">ゲスト</div><div class="member-history">ログインすると町民歴を確認できます</div></div>
-                    {% else %}
-                    <div class="profile-image"><img src="{{ user.profile_image or '/static/img/profile/default.png' }}" alt="プロフィール画像"></div>
+                    <div class="profile-image">
+                        {% if user.profile_image %}
+                            <img id="profile-preview"
+                                 class="profile-image"
+                                 src="{{ user.profile_image }}"
+                                 alt="プロフィール画像">
+
+                        {% else %}
+                            <div id="profile-default"
+                                 class="profile-default"
+                                 role="img"
+                                 aria-label="プロフィール画像未設定">
+                                👤
+                            </div>
+                        {% endif %}
+
+                    </div>
                     <div class="profile-info"><div class="profile-name">{{ user.user_name }}</div><div class="member-history">町民歴 {{ member_period }}</div></div>
-                    {% endif %}
                 </div>
 
                 <div class="home-scroll">
