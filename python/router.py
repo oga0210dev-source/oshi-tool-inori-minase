@@ -70,7 +70,8 @@ from python.routers.admin.master import (
     oshi_anniversary as oshi_anniversary_master,
     oshi_official_link as oshi_official_link_master,
     oshi_program as oshi_program_master,
-    user as user_master
+    user as user_master,
+    access as access_master
 )
 from python.routers.admin import inquiry as admin_inquiry
 
@@ -105,6 +106,7 @@ def register_router(app: FastAPI):
     app.include_router(oshi_official_link_master.router)
     app.include_router(oshi_program_master.router)
     app.include_router(user_master.router)
+    app.include_router(access_master.router)
 
     app.include_router(live.router)
     app.include_router(live_archive.router)
