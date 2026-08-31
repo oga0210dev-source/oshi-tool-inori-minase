@@ -1,3 +1,5 @@
+from datetime import date
+
 from fastapi import APIRouter, Request
 
 from python.core import render
@@ -30,6 +32,7 @@ async def live_list(
         name="templates/home/live/index.html",
         context={
             "lives": lives,
-            "is_login": auth.is_login(request)
+            "is_login": auth.is_login(request),
+            "today": date.today()
         }
     )

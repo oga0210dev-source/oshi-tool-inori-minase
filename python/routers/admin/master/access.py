@@ -7,10 +7,13 @@ from python.core import render, auth
 from python.models.daily_access import DailyAccessModel
 
 
-router = APIRouter()
+router = APIRouter(
+    prefix="/admin/master/access",
+    tags=["admin_master_access"]
+)
 
 
-@router.get("/admin/master/access")
+@router.get("")
 async def access(request: Request):
 
     # ログイン確認

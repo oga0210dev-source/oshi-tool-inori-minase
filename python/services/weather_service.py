@@ -14,6 +14,10 @@ FORECAST_DAYS = 15
 # JMAモデルを使用する範囲
 JMA_FORECAST_DAYS = 10
 
+# 当日の時間別天気予報の対象時間
+HOURLY_START = 9
+HOURLY_END = 21
+
 
 WEATHER_MAP = {
     0: ("☀️", "晴れ"),
@@ -27,7 +31,7 @@ WEATHER_MAP = {
     55: ("🌧️", "強い霧雨"),
     56: ("🌧️", "弱い凍雨"),
     57: ("🌧️", "強い凍雨"),
-    61: ("🌧️", "弱い雨"),
+    61: ("🌦️", "弱い雨"),
     63: ("🌧️", "雨"),
     65: ("🌧️", "強い雨"),
     66: ("🌧️", "弱い凍雨"),
@@ -75,6 +79,11 @@ def _request_weather(
             "temperature_2m_min",
             "precipitation_probability_max"
         ]),
+        "hourly": ",".join([
+            "weather_code",
+            "temperature_2m",
+            "precipitation_probability"
+        ]),
         "timezone": "auto",
         "start_date": start_date.isoformat(),
         "end_date": end_date.isoformat(),
@@ -101,6 +110,54 @@ def _request_weather(
     if data.get("error"):
         raise RuntimeError(
             f"天気予報APIエラー: "
+            f"{data.get('reason')}"
+        )
+
+    return data
+
+
+def _request_hourly_weather(
+    latitude,
+    longitude,
+    target_date,
+    use_jma=False
+):
+    """Open-Meteo APIから指定日の時間別天気予報を取得する。"""
+
+    params = {
+        "latitude": latitude,
+        "longitude": longitude,
+        "hourly": ",".join([
+            "weather_code",
+            "temperature_2m",
+            "precipitation_probability"
+        ]),
+        "timezone": "auto",
+        "start_date": target_date.isoformat(),
+        "end_date": target_date.isoformat(),
+        "cell_selection": "nearest"
+    }
+
+    if use_jma:
+        params["models"] = "jma_seamless"
+
+    response = requests.get(
+        OPEN_METEO_URL,
+        params=params,
+        timeout=30
+    )
+
+    if not response.ok:
+        raise RuntimeError(
+            f"時間別天気予報の取得に失敗しました: "
+            f"HTTP {response.status_code} / {response.text}"
+        )
+
+    data = response.json()
+
+    if data.get("error"):
+        raise RuntimeError(
+            f"時間別天気予報APIエラー: "
             f"{data.get('reason')}"
         )
 
@@ -163,6 +220,57 @@ def _convert_daily_weather(data):
     return weather_map
 
 
+def _convert_hourly_weather(data):
+    """Open-Meteoのhourlyデータを9時～21時に絞って辞書化する。"""
+
+    hourly = data.get("hourly")
+
+    if not hourly or not hourly.get("time"):
+        return []
+
+    weather_list = []
+
+    for index, datetime_value in enumerate(
+        hourly["time"]
+    ):
+        hour = int(
+            datetime_value[11:13]
+        )
+
+        if (
+            hour < HOURLY_START
+            or hour > HOURLY_END
+        ):
+            continue
+
+        weather_code = hourly["weather_code"][index]
+
+        if weather_code is None:
+            continue
+
+        icon, weather_name = WEATHER_MAP.get(
+            weather_code,
+            ("🌤️", "不明")
+        )
+
+        weather_list.append({
+            "time": f"{hour:02d}:00",
+            "hour": hour,
+            "icon": icon,
+            "weather_name": weather_name,
+            "temperature": (
+                hourly["temperature_2m"][index]
+            ),
+            "precipitation_probability": (
+                hourly[
+                    "precipitation_probability"
+                ][index]
+            )
+        })
+
+    return weather_list
+
+
 def get_weather(
     latitude,
     longitude,
@@ -171,6 +279,9 @@ def get_weather(
     """
     指定会場・開催日の前日、当日、翌日の
     天気予報を取得する。
+
+    開催日が当日の場合は、
+    9:00～21:00の時間別天気予報も取得する。
     """
 
     if latitude is None or longitude is None:
@@ -184,7 +295,6 @@ def get_weather(
     today = date.today()
     max_forecast_date = get_forecast_limit()
 
-    # 対象日が予報範囲外
     if (
         target_date < today
         or target_date > max_forecast_date
@@ -205,13 +315,11 @@ def get_weather(
         target_date - today
     ).days
 
-    # 10日先まではJMA
     use_jma = (
         days_ahead <= JMA_FORECAST_DAYS
     )
 
     try:
-
         data = _request_weather(
             latitude,
             longitude,
@@ -226,7 +334,6 @@ def get_weather(
 
     except Exception as e:
 
-        # JMAで失敗した場合は通常モデルへ
         if use_jma:
 
             print(
@@ -286,8 +393,66 @@ def get_weather(
     if not weather_list:
         return None
 
+    hourly_weather = None
+
+    # 当日の場合のみ時間別予報を取得
+    if target_date == today:
+
+        try:
+
+            hourly_data = _request_hourly_weather(
+                latitude,
+                longitude,
+                target_date,
+                use_jma=use_jma
+            )
+
+            hourly_weather = (
+                _convert_hourly_weather(
+                    hourly_data
+                )
+            )
+
+        except Exception as e:
+
+            if use_jma:
+
+                print(
+                    f"[Weather Hourly Fallback] "
+                    f"JMA取得失敗 → 通常モデルへ "
+                    f"latitude={latitude}, "
+                    f"longitude={longitude}, "
+                    f"target_date={target_date}, "
+                    f"error={e}"
+                )
+
+                hourly_data = (
+                    _request_hourly_weather(
+                        latitude,
+                        longitude,
+                        target_date,
+                        use_jma=False
+                    )
+                )
+
+                hourly_weather = (
+                    _convert_hourly_weather(
+                        hourly_data
+                    )
+                )
+
+            else:
+                print(
+                    f"[Weather Hourly Error] "
+                    f"latitude={latitude}, "
+                    f"longitude={longitude}, "
+                    f"target_date={target_date}, "
+                    f"error={e}"
+                )
+
     return {
         "weather": weather_list,
+        "hourly_weather": hourly_weather,
         "timezone": data.get("timezone"),
         "updated_at": None
     }
@@ -317,10 +482,6 @@ def update_weather_forecast():
             f"{today} ～ "
             f"{max_forecast_date}"
         )
-
-        # --------------------------------------------------
-        # 対象イベント取得
-        # --------------------------------------------------
 
         cursor.execute(
             """
@@ -375,14 +536,12 @@ def update_weather_forecast():
         )
 
         if not events:
+
             print(
                 "天気予報取得対象の開催予定はありません。"
             )
-            return
 
-        # --------------------------------------------------
-        # ワークテーブルクリア
-        # --------------------------------------------------
+            return
 
         cursor.execute(
             """
@@ -394,10 +553,6 @@ def update_weather_forecast():
             "[Weather Batch] "
             "ワークテーブルをクリアしました。"
         )
-
-        # --------------------------------------------------
-        # 会場単位でキャッシュ
-        # --------------------------------------------------
 
         venue_map = {}
 
@@ -421,10 +576,6 @@ def update_weather_forecast():
 
         insert_count = 0
 
-        # --------------------------------------------------
-        # 会場ごとに天気取得
-        # --------------------------------------------------
-
         for venue_id, venue in venue_map.items():
 
             latitude = venue["latitude"]
@@ -437,7 +588,6 @@ def update_weather_forecast():
                 f"longitude={longitude}"
             )
 
-            # 開催日の中で最も早い日・遅い日
             event_dates = sorted(
                 venue["dates"]
             )
@@ -524,10 +674,6 @@ def update_weather_forecast():
 
                     continue
 
-            # --------------------------------------------------
-            # 対象日だけワークテーブルへ登録
-            # --------------------------------------------------
-
             for event_date in event_dates:
 
                 for offset in [-1, 0, 1]:
@@ -542,12 +688,14 @@ def update_weather_forecast():
                     )
 
                     if weather_data is None:
+
                         print(
                             f"[Weather Skip] "
                             f"天気データなし "
                             f"venue_id={venue_id}, "
                             f"forecast_date={forecast_date}"
                         )
+
                         continue
 
                     weather_json = dict(
@@ -555,9 +703,7 @@ def update_weather_forecast():
                     )
 
                     weather_json["date"] = (
-                        weather_json[
-                            "date"
-                        ].isoformat()
+                        weather_json["date"].isoformat()
                     )
 
                     cursor.execute(
@@ -588,6 +734,71 @@ def update_weather_forecast():
                     )
 
                     insert_count += 1
+
+                # 当日の時間別天気予報
+                if event_date == today:
+
+                    try:
+
+                        hourly_data = (
+                            _request_hourly_weather(
+                                latitude,
+                                longitude,
+                                event_date,
+                                use_jma=use_jma
+                            )
+                        )
+
+                        hourly_weather = (
+                            _convert_hourly_weather(
+                                hourly_data
+                            )
+                        )
+
+                        if hourly_weather:
+
+                            hourly_json = {
+                                "hourly": hourly_weather
+                            }
+
+                            cursor.execute(
+                                """
+                                INSERT INTO w_weather_forecast (
+                                    venue_id,
+                                    forecast_date,
+                                    weather
+                                )
+                                VALUES (%s, %s, %s)
+                                ON CONFLICT (
+                                    venue_id,
+                                    forecast_date
+                                )
+                                DO UPDATE SET
+                                    weather = (
+                                        w_weather_forecast.weather
+                                        || EXCLUDED.weather
+                                    ),
+                                    updated_at =
+                                        CURRENT_TIMESTAMP
+                                """,
+                                (
+                                    venue_id,
+                                    event_date,
+                                    json.dumps(
+                                        hourly_json,
+                                        ensure_ascii=False
+                                    )
+                                )
+                            )
+
+                    except Exception as e:
+
+                        print(
+                            f"[Weather Hourly Error] "
+                            f"venue_id={venue_id}, "
+                            f"date={event_date}, "
+                            f"error={e}"
+                        )
 
         conn.commit()
 
@@ -692,6 +903,7 @@ def add_weather_from_work_table(
 
             weather_list = []
             updated_at_list = []
+            hourly_weather = None
 
             for offset, label in [
                 (-1, "前日"),
@@ -714,8 +926,23 @@ def add_weather_from_work_table(
                 if weather_info is None:
                     continue
 
+                weather_json = weather_info[
+                    "weather"
+                ]
+
+                if not isinstance(
+                    weather_json,
+                    dict
+                ):
+                    continue
+
                 weather_data = dict(
-                    weather_info["weather"]
+                    weather_json
+                )
+
+                weather_data.pop(
+                    "hourly",
+                    None
                 )
 
                 weather_data["label"] = label
@@ -732,6 +959,17 @@ def add_weather_from_work_table(
                         weather_info["updated_at"]
                     )
 
+                # 当日の時間別天気
+                if (
+                    offset == 0
+                    and target_date == date.today()
+                ):
+                    hourly_weather = (
+                        weather_json.get(
+                            "hourly"
+                        )
+                    )
+
             if weather_list:
 
                 updated_at = (
@@ -744,10 +982,12 @@ def add_weather_from_work_table(
 
                 event["weather"] = {
                     "weather": weather_list,
+                    "hourly_weather": hourly_weather,
                     "updated_at": updated_at
                 }
 
             else:
+
                 event["weather"] = None
 
         return events
