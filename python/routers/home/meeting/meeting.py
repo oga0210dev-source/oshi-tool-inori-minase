@@ -1,3 +1,5 @@
+from datetime import date
+
 from fastapi import APIRouter, Request
 
 from python.core import render, auth
@@ -29,7 +31,7 @@ async def meeting_list(
         name="templates/home/meeting/index.html",
         context={
             "meetings": meetings,
-            "is_login": auth.is_login(request)
+            "is_login": auth.is_login(request),
+            "today": date.today()
         }
     )
-
