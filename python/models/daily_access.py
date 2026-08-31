@@ -42,10 +42,6 @@ class DailyAccessModel:
         try:
             cursor = conn.cursor()
 
-            # =====================================================
-            # アクセスユーザー記録
-            # =====================================================
-
             cursor.execute("""
                 INSERT INTO T_DAILY_ACCESS_USER (
                     ACCESS_DATE,
@@ -64,10 +60,6 @@ class DailyAccessModel:
             ))
 
             result = cursor.fetchone()
-
-            # =====================================================
-            # 初回アクセス
-            # =====================================================
 
             if result:
 
@@ -98,10 +90,6 @@ class DailyAccessModel:
                     else 0
                 )
 
-            # =====================================================
-            # 既にアクセス済み
-            # =====================================================
-
             else:
 
                 cursor.execute("""
@@ -116,14 +104,12 @@ class DailyAccessModel:
                 count_result = cursor.fetchone()
 
                 if count_result:
+
                     unique_user_count = count_result[
                         "unique_user_count"
                     ]
 
                 else:
-                    # =================================================
-                    # T_DAILY_ACCESSが存在しない場合は再集計
-                    # =================================================
 
                     cursor.execute("""
                         SELECT
@@ -159,10 +145,6 @@ class DailyAccessModel:
                     ))
 
             conn.commit()
-
-            # =====================================================
-            # 通知対象閾値取得
-            # =====================================================
 
             reached_thresholds = (
                 DailyAccessModel.get_reached_thresholds(
@@ -242,6 +224,95 @@ class DailyAccessModel:
             ))
 
             conn.commit()
+
+        finally:
+            conn.close()
+
+    @staticmethod
+    def get_daily_access_list(
+            days: int = 7,
+            date_from=None,
+            date_to=None
+    ) -> list[dict]:
+        """日別ユニークアクセス数と前日比を取得"""
+
+        access_date = datetime.strptime(
+            DailyAccessModel.get_access_date(),
+            "%Y-%m-%d"
+        ).date()
+
+        if date_to:
+            end_date = date_to
+        else:
+            end_date = access_date
+
+        if date_from:
+            start_date = date_from
+        else:
+            start_date = end_date - timedelta(days=days - 1)
+
+        compare_start_date = start_date - timedelta(days=1)
+
+        conn = get_connection()
+
+        try:
+            cursor = conn.cursor()
+
+            cursor.execute("""
+                SELECT
+                    ACCESS_DATE AS access_date,
+                    UNIQUE_USER_COUNT AS unique_user_count
+                FROM T_DAILY_ACCESS
+                WHERE ACCESS_DATE BETWEEN %s AND %s
+                ORDER BY ACCESS_DATE DESC
+            """, (
+                compare_start_date,
+                end_date
+            ))
+
+            rows = cursor.fetchall()
+
+            access_map = {
+                row["access_date"].strftime("%Y-%m-%d"):
+                    row["unique_user_count"]
+                for row in rows
+            }
+
+            result = []
+
+            current_date = end_date
+
+            while current_date >= start_date:
+                date_key = current_date.strftime("%Y-%m-%d")
+
+                unique_user_count = access_map.get(
+                    date_key,
+                    0
+                )
+
+                previous_date = current_date - timedelta(days=1)
+                previous_date_key = previous_date.strftime("%Y-%m-%d")
+
+                previous_count = access_map.get(
+                    previous_date_key
+                )
+
+                difference = (
+                    unique_user_count - previous_count
+                    if previous_count is not None
+                    else None
+                )
+
+                result.append({
+                    "access_date": current_date,
+                    "unique_user_count": unique_user_count,
+                    "previous_count": previous_count,
+                    "difference": difference
+                })
+
+                current_date -= timedelta(days=1)
+
+            return result
 
         finally:
             conn.close()

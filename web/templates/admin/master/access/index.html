@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="icon" href="/static/img/logo.png" type="image/png">
+        <title>アクセス管理 - 推し活オールインワン</title>
+        <link rel="stylesheet" href="/static/css/common.css">
+        <link rel="stylesheet" href="/static/css/admin/master/admin-common.css">
+        <link rel="stylesheet" href="/static/css/admin/master/access/access.css">
+    </head>
+
+    <body class="{{ font_class }}">
+        <div class="container">
+            <div class="page-header">
+                <a href="/admin/master" class="master-link">← 管理マスタ</a>
+                <h1 class="page-title">アクセス管理</h1>
+            </div>
+
+            <!-- 検索 -->
+            <div class="search-area">
+                <form method="get" class="search-form" onsubmit="clearArchiveState()">
+                    <input type="date"
+                           name="date_from"
+                           value="{{ request.query_params.get('date_from', '') }}">
+
+                    <input type="date"
+                           name="date_to"
+                           value="{{ request.query_params.get('date_to', '') }}">
+
+                    <button type="submit" class="search-btn">
+                        検索
+                    </button>
+                </form>
+            </div>
+
+            <!-- 一覧 -->
+            <div class="page-scroll">
+                <div class="access-list">
+                    {% for access in access_list %}
+                    <div class="access-row">
+                        <div class="access-info">
+                            <div class="access-date">
+                                {{ access.access_date }}
+                            </div>
+
+                            <div class="access-count">
+                                ユニークアクセス：<strong>{{ access.unique_user_count }}</strong>人
+                            </div>
+                            <div class="access-difference">
+                                前日比：
+                                {% if access.difference is none %}
+                                －
+                                {% elif access.difference > 0 %}
+                                + {{ access.difference }} 人
+                                {% elif access.difference < 0 %}
+                                {{ access.difference }}人
+                                {% else %}
+                                ±0人
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    {% else %}
+                    <p class="empty-message">アクセスデータはありません。</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <script>
+            function clearArchiveState(){
+                sessionStorage.removeItem("master_access_scroll");
+                sessionStorage.removeItem("master_access_url");
+            }
+
+            window.addEventListener("load",()=>{
+                const params=new URLSearchParams(window.location.search);
+                if(params.has("first")){
+                    sessionStorage.removeItem("master_access_scroll");
+                    sessionStorage.removeItem("master_access_url");
+                    window.history.replaceState({}, "", "/admin/master/access");
+                    return;
+                }
+                const scroll=sessionStorage.getItem("master_access_scroll");
+                const area=document.querySelector(".page-scroll");
+                if(area&&scroll!==null)area.scrollTop=Number(scroll);
+            });
+        </script>
+    </body>
+</html>
+
