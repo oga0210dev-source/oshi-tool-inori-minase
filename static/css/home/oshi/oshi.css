@@ -1304,15 +1304,18 @@ body:has(.oshi-home-page) .page-scroll{
 }
 
 .oshi-song-modal-link.youtube{
-    background:#ff4b4b;
+    background:#fff0f0;
+    color:#e60000;
 }
 
 .oshi-song-modal-link.apple-music{
-    background:#fa4b8b;
+    background:#fff0f5;
+    color:#e83e8c;
 }
 
 .oshi-song-modal-link.spotify{
-    background:#1db954;
+    background:#eefaf1;
+    color:#16833b;
 }
 
 
