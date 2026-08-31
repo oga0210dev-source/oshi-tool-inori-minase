@@ -1,10 +1,8 @@
 from datetime import datetime, timedelta
-from zoneinfo import ZoneInfo
 
 from python.core.database import get_connection
+from python.utils.date_utils import get_now
 
-
-JST = ZoneInfo("Asia/Tokyo")
 
 DAILY_ACCESS_THRESHOLDS = [
     10,
@@ -24,7 +22,7 @@ class DailyAccessModel:
     def get_access_date() -> str:
         """6:00区切りのアクセス日を取得"""
 
-        now = datetime.now(JST)
+        now = get_now()
 
         if now.hour < 6:
             now -= timedelta(days=1)

@@ -1,6 +1,5 @@
 import os
 from datetime import datetime, timedelta
-from zoneinfo import ZoneInfo
 
 from fastapi import APIRouter, Request
 from fastapi.responses import JSONResponse
@@ -14,13 +13,12 @@ from python.services.discord_service import (
 from python.services.inquiry_service import get_active_todos
 from python.services.user_cleanup_service import delete_expired_users
 from python.services.weather_service import update_weather_forecast
+from python.utils.date_utils import get_now
 
 router = APIRouter(
     prefix="/batch",
     tags=["batch"]
 )
-
-JST = ZoneInfo("Asia/Tokyo")
 
 
 def check_cron_secret(request: Request):
@@ -136,7 +134,7 @@ async def daily_access(request: Request):
         return unauthorized
 
     try:
-        now = datetime.now(JST)
+        now = get_now()
 
         # 6:00区切りで現在のアクセス日を取得
         if now.hour < 6:

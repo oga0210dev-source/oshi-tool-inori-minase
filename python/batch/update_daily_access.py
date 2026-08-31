@@ -1,16 +1,13 @@
-from datetime import datetime, timedelta
-from zoneinfo import ZoneInfo
+from datetime import timedelta
 
 from python.models.daily_access import DailyAccessModel
-
-
-JST = ZoneInfo("Asia/Tokyo")
+from python.utils.date_utils import get_now
 
 
 def get_previous_access_date():
     """6:00区切りで前日のアクセス日を取得"""
 
-    now = datetime.now(JST)
+    now = get_now()
 
     if now.hour < 6:
         current_access_date = now.date() - timedelta(days=1)
