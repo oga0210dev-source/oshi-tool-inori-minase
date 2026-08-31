@@ -52,6 +52,10 @@ async def user_list(
         withdrawal=withdrawal or None
     )
 
+    for user in users:
+        user["created_at"] = to_jst(user.get("created_at"))
+        user["last_access_at"] = to_jst(user.get("last_access_at"))
+
     return render(
         request=request,
         name="templates/admin/master/user/index.html",
