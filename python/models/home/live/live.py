@@ -1,5 +1,5 @@
 from python.core.database import get_connection
-from datetime import date
+from python.utils.date_utils import get_today
 
 
 def get_live_list(user_id):
@@ -68,7 +68,7 @@ def get_live_list(user_id):
 
             for live in lives:
                 live["remaining_days"] = (
-                    live["live_date"] - date.today()
+                    live["live_date"] - get_today()
                 ).days
 
             return lives

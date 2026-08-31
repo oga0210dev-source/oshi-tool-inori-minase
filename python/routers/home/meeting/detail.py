@@ -1,4 +1,3 @@
-from datetime import date
 from dateutil.relativedelta import relativedelta
 
 from fastapi import APIRouter, Request
@@ -7,6 +6,7 @@ from fastapi.responses import RedirectResponse
 from python.core import render, auth
 
 from python.models.home.meeting import detail as detail_model
+from python.utils.date_utils import get_today
 
 
 router = APIRouter(
@@ -37,7 +37,7 @@ async def meeting_detail(
         meeting_id
     )
 
-    today = date.today()
+    today = get_today()
 
     if meeting["meeting_date"] > today:
         days = (

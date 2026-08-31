@@ -3,6 +3,14 @@ from datetime import date, datetime, timezone, timedelta
 JST = timezone(timedelta(hours=9))
 
 
+def get_now():
+    return datetime.now(JST)
+
+
+def get_today():
+    return get_now().date()
+
+
 def to_jst(dt):
     if dt is None:
         return None
@@ -24,7 +32,7 @@ def calculate_member_period(member_since):
             "%Y-%m-%d"
         ).date()
 
-    today = date.today()
+    today = get_today()
 
     # 総日数
     total_days = (

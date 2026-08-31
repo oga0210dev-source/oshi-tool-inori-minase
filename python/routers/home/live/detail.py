@@ -1,4 +1,3 @@
-from datetime import date
 from dateutil.relativedelta import relativedelta
 
 from fastapi import APIRouter, Request
@@ -8,6 +7,7 @@ from python.core import auth
 from python.core import render
 
 from python.models.home.live import detail as detail_model
+from python.utils.date_utils import get_today
 
 
 router = APIRouter(
@@ -34,7 +34,7 @@ async def live_detail(
             status_code=303
         )
 
-    today = date.today()
+    today = get_today()
 
     if live["live_date"] > today:
         days = (

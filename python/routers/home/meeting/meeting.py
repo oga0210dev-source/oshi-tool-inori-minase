@@ -1,11 +1,10 @@
-from datetime import date
-
 from fastapi import APIRouter, Request
 
 from python.core import render, auth
 
 from python.models.home.meeting import meeting as meeting_model
 from python.services import weather_service
+from python.utils.date_utils import get_today
 
 
 router = APIRouter(
@@ -32,6 +31,6 @@ async def meeting_list(
         context={
             "meetings": meetings,
             "is_login": auth.is_login(request),
-            "today": date.today()
+            "today": get_today()
         }
     )

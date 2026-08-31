@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Request, Form
 from fastapi.responses import RedirectResponse
-from datetime import date
 
 from python.core import render, auth
 from python.models.home.meeting.archive import archive as archive_model
+from python.utils.date_utils import get_today
 
 router = APIRouter(
     prefix="/home/meeting/archive",
@@ -24,7 +24,7 @@ async def meeting_list(request: Request):
         name="templates/home/meeting/archive/archive.html",
         context={
             "meetings": meetings,
-            "today": date.today(),
+            "today": get_today(),
             "is_login": auth.is_login(request)
         }
     )

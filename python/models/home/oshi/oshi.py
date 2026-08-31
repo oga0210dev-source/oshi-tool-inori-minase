@@ -1,6 +1,5 @@
-from datetime import date
-
 from python.core.database import get_connection
+from python.utils.date_utils import get_today
 
 
 def calculate_age(
@@ -138,7 +137,7 @@ def get_oshi_basic():
             if oshi["profile_message"]:
                 oshi["profile_message"] = oshi["profile_message"].strip()
 
-            today = date.today()
+            today = get_today()
 
             birthday = oshi["birthday"]
 

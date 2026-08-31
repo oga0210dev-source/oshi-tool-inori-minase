@@ -1,4 +1,4 @@
-from datetime import date
+from python.utils.date_utils import get_today
 
 from python.core.database import get_connection
 
@@ -40,7 +40,7 @@ def get_anniversary_list(
     try:
         with conn.cursor() as cur:
 
-            today = date.today()
+            today = get_today()
             anniversaries = []
 
             # ==========================================

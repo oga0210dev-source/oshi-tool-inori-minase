@@ -1,11 +1,11 @@
 from fastapi import APIRouter, Request, Form
 from fastapi.responses import RedirectResponse
-from datetime import date
 
 from python.core import render
 from python.core import auth
 
 from python.models.home.live.archive import archive as archive_model
+from python.utils.date_utils import get_today
 
 router = APIRouter(
     prefix="/home/live/archive",
@@ -33,7 +33,7 @@ async def live_list(
         name="templates/home/live/archive/archive.html",
         context={
             "lives": lives,
-            "today": date.today(),
+            "today": get_today(),
             "is_login": auth.is_login(request)
         }
     )
