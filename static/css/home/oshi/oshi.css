@@ -38,8 +38,10 @@ body:has(.oshi-home-page) .page-scroll{
     max-width:430px;
     height:100%;
     min-height:0;
+
     margin:0 auto;
     padding:15px 0 0;
+
     box-sizing:border-box;
 
     display:flex;
@@ -49,54 +51,25 @@ body:has(.oshi-home-page) .page-scroll{
 }
 
 
-/*
-   プロフィール
-   ここは固定
-*/
-.oshi-home-page .oshi-profile{
-    flex:0 0 auto;
-    margin:0 15px 20px;
-    text-align:center;
-}
-
-
-/*
-   プロフィールより下
-   ここだけ縦スクロール
-*/
-.oshi-home-page .oshi-home-scroll{
-    flex:1 1 auto;
-    min-height:0;
-    width:100%;
-
-    overflow-y:auto;
-    overflow-x:hidden;
-
-    padding-bottom:30px;
-
-    overscroll-behavior:contain;
-
-    scrollbar-width:none;
-    -ms-overflow-style:none;
-}
-
-.oshi-home-page .oshi-home-scroll::-webkit-scrollbar{
-    display:none;
-}
-
-
 /* ==========================
    推しプロフィール
 ========================== */
 
-.oshi-profile{
+/*
+   プロフィールは固定
+*/
+.oshi-home-page .oshi-profile{
+    flex:0 0 auto;
+
     margin:0 15px 20px;
+
     text-align:center;
 }
 
 .oshi-profile-image{
     width:140px;
     height:140px;
+
     margin:0 auto 15px;
 
     overflow:hidden;
@@ -108,6 +81,7 @@ body:has(.oshi-home-page) .page-scroll{
 
 .oshi-profile-image img{
     display:block;
+
     width:100%;
     height:100%;
 
@@ -124,6 +98,7 @@ body:has(.oshi-home-page) .page-scroll{
 .oshi-profile-message{
     margin:16px 0 0;
     padding:14px 16px;
+
     box-sizing:border-box;
 
     background:#fff;
@@ -133,9 +108,40 @@ body:has(.oshi-home-page) .page-scroll{
 
     font-size:14px;
     line-height:1.8;
+
     text-align:left;
 
     white-space:pre-wrap;
+    word-break:break-word;
+}
+
+
+/* ==========================
+   プロフィールより下
+   縦スクロール領域
+========================== */
+
+.oshi-home-page .oshi-home-scroll{
+    flex:1 1 auto;
+
+    min-height:0;
+    width:100%;
+
+    overflow-y:auto;
+    overflow-x:hidden;
+
+    padding-bottom:30px;
+
+    box-sizing:border-box;
+
+    overscroll-behavior:contain;
+
+    scrollbar-width:none;
+    -ms-overflow-style:none;
+}
+
+.oshi-home-page .oshi-home-scroll::-webkit-scrollbar{
+    display:none;
 }
 
 
@@ -146,6 +152,7 @@ body:has(.oshi-home-page) .page-scroll{
 .oshi-info-card{
     margin:0 15px 16px;
     padding:16px;
+
     box-sizing:border-box;
 
     background:#fff;
@@ -206,20 +213,109 @@ body:has(.oshi-home-page) .page-scroll{
     margin:0;
 
     color:#777;
+
     font-size:13px;
 }
 
 
+/* ==========================================================
+   基本情報スライダー
+========================================================== */
+
+.oshi-basic-slider{
+    display:flex;
+
+    width:100%;
+
+    gap:0;
+
+    padding:0;
+
+    box-sizing:border-box;
+
+    overflow-x:auto;
+    overflow-y:hidden;
+
+    scroll-snap-type:x mandatory;
+    scroll-behavior:smooth;
+
+    scrollbar-width:none;
+    -ms-overflow-style:none;
+
+    overscroll-behavior-x:contain;
+}
+
+.oshi-basic-slider::-webkit-scrollbar{
+    display:none;
+}
+
+
 /* ==========================
-   データ未登録
+   基本情報スライド
 ========================== */
 
-.oshi-empty{
-    margin:30px 15px;
+.oshi-basic-slide{
+    flex:0 0 100%;
 
-    color:#777;
+    width:100%;
+    min-width:100%;
 
-    text-align:center;
+    box-sizing:border-box;
+
+    scroll-snap-align:center;
+    scroll-snap-stop:always;
+}
+
+
+/* ==========================
+   基本情報カード
+========================== */
+
+.oshi-basic-slide .oshi-info-card{
+    width:calc(100% - 30px);
+    max-width:390px;
+
+    min-height:150px;
+
+    margin:0 auto 16px;
+}
+
+
+/* ==========================
+   スライダードット
+========================== */
+
+.oshi-basic-slider-dots{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    gap:8px;
+
+    min-height:12px;
+
+    margin:0 0 16px;
+}
+
+.oshi-basic-slider-dot{
+    display:block;
+
+    width:8px;
+    height:8px;
+
+    border-radius:50%;
+
+    background:#ccc;
+
+    transition:
+        background-color .2s ease,
+        transform .2s ease;
+}
+
+.oshi-basic-slider-dot.active{
+    background:#ff8fb1;
+
+    transform:scale(1.2);
 }
 
 
@@ -236,6 +332,7 @@ body:has(.oshi-home-page) .page-scroll{
 
     margin:0 15px 16px;
     padding:12px 16px;
+
     box-sizing:border-box;
 
     border-radius:15px;
@@ -246,7 +343,24 @@ body:has(.oshi-home-page) .page-scroll{
 
     color:#333;
     text-decoration:none;
+
+    transition:
+        opacity .2s ease,
+        transform .1s ease;
 }
+
+.oshi-menu-btn:hover{
+    opacity:.9;
+}
+
+.oshi-menu-btn:active{
+    transform:scale(.99);
+}
+
+
+/* ==========================
+   メニューアイコン
+========================== */
 
 .oshi-menu-icon{
     display:flex;
@@ -267,6 +381,11 @@ body:has(.oshi-home-page) .page-scroll{
     flex-shrink:0;
 }
 
+
+/* ==========================
+   メニュー文字
+========================== */
+
 .oshi-menu-text{
     display:flex;
     flex-direction:column;
@@ -278,20 +397,31 @@ body:has(.oshi-home-page) .page-scroll{
 .oshi-menu-text strong{
     font-size:15px;
     line-height:1.5;
+
+    word-break:break-word;
 }
 
 .oshi-menu-text small{
     margin-top:2px;
 
     color:#777;
+
     font-size:12px;
     line-height:1.5;
+
+    word-break:break-word;
 }
+
+
+/* ==========================
+   メニュー矢印
+========================== */
 
 .oshi-menu-arrow{
     margin-left:10px;
 
     color:#999;
+
     font-size:26px;
     line-height:1;
 
@@ -300,8 +430,21 @@ body:has(.oshi-home-page) .page-scroll{
 
 
 /* ==========================
-   ページヘッダー
+   データ未登録
 ========================== */
+
+.oshi-empty{
+    margin:30px 15px;
+
+    color:#777;
+
+    text-align:center;
+}
+
+
+/* ==========================================================
+   共通ページヘッダー
+========================================================== */
 
 .oshi-page-header{
     flex-shrink:0;
@@ -315,6 +458,7 @@ body:has(.oshi-home-page) .page-scroll{
     margin-bottom:10px;
 
     color:#666;
+
     font-size:13px;
 
     text-decoration:none;
@@ -328,9 +472,9 @@ body:has(.oshi-home-page) .page-scroll{
 }
 
 
-/* ==========================
+/* ==========================================================
    出演作品・記念日 検索
-========================== */
+========================================================== */
 
 .oshi-work-search{
     flex-shrink:0;
@@ -351,6 +495,7 @@ body:has(.oshi-home-page) .page-scroll{
     min-height:42px;
 
     padding:8px 10px;
+
     box-sizing:border-box;
 
     border:1px solid #ccc;
@@ -364,6 +509,7 @@ body:has(.oshi-home-page) .page-scroll{
 .oshi-work-search-form input:focus,
 .oshi-work-search-form select:focus{
     outline:none;
+
     border-color:#ff8fb1;
 }
 
@@ -388,12 +534,13 @@ body:has(.oshi-home-page) .page-scroll{
 }
 
 
-/* ==========================
+/* ==========================================================
    出演作品・記念日一覧
-========================== */
+========================================================== */
 
 .oshi-work-list{
     flex:1;
+
     min-height:0;
 
     margin:0 15px;
@@ -420,6 +567,7 @@ body:has(.oshi-home-page) .page-scroll{
 .oshi-work-card{
     margin-bottom:16px;
     padding:16px;
+
     box-sizing:border-box;
 
     background:#fff;
@@ -446,6 +594,7 @@ body:has(.oshi-home-page) .page-scroll{
     margin-bottom:8px;
 
     color:#666;
+
     font-size:13px;
     line-height:1.5;
 }
@@ -454,6 +603,7 @@ body:has(.oshi-home-page) .page-scroll{
     margin:0 0 8px;
 
     color:#777;
+
     font-size:13px;
 }
 
@@ -491,19 +641,14 @@ body:has(.oshi-home-page) .page-scroll{
     opacity:.9;
 }
 
-
-/* ==========================
-   出演作品 データなし
-========================== */
-
 .oshi-work-list .oshi-empty{
     margin:30px 0;
 }
 
 
-/* ==========================
+/* ==========================================================
    記念日
-========================== */
+========================================================== */
 
 .oshi-anniversary-years{
     margin:10px 0;
@@ -519,6 +664,7 @@ body:has(.oshi-home-page) .page-scroll{
 .oshi-anniversary-next{
     margin:10px 0;
     padding:10px 12px;
+
     box-sizing:border-box;
 
     border-radius:8px;
@@ -536,12 +682,13 @@ body:has(.oshi-home-page) .page-scroll{
 }
 
 
-/* ==========================
+/* ==========================================================
    公式リンク一覧
-========================== */
+========================================================== */
 
 .oshi-official-link-list{
     flex:1;
+
     min-height:0;
 
     margin:0 15px;
@@ -574,6 +721,7 @@ body:has(.oshi-home-page) .page-scroll{
 
     margin-bottom:16px;
     padding:12px 16px;
+
     box-sizing:border-box;
 
     border-radius:15px;
@@ -637,6 +785,7 @@ body:has(.oshi-home-page) .page-scroll{
     margin:2px 0 0;
 
     color:#777;
+
     font-size:12px;
     line-height:1.5;
 
@@ -652,90 +801,11 @@ body:has(.oshi-home-page) .page-scroll{
     margin-left:10px;
 
     color:#999;
+
     font-size:22px;
     line-height:1;
 
     flex-shrink:0;
-}
-
-
-/* ==========================
-   基本情報スライダー
-========================== */
-
-.oshi-basic-slider{
-    display:flex;
-
-    gap:20px;
-
-    padding:0 20px;
-
-    overflow-x:auto;
-
-    scroll-snap-type:x mandatory;
-
-    scrollbar-width:none;
-    -ms-overflow-style:none;
-}
-
-.oshi-basic-slider::-webkit-scrollbar{
-    display:none;
-}
-
-
-/* ==========================
-   基本情報スライド
-========================== */
-
-.oshi-basic-slide{
-    flex:0 0 100%;
-
-    scroll-snap-align:center;
-}
-
-
-/* ==========================
-   基本情報カード
-========================== */
-
-.oshi-basic-slide .oshi-info-card{
-    width:100%;
-    max-width:390px;
-    min-height:150px;
-
-    margin:0 auto;
-}
-
-
-/* ==========================
-   スライダードット
-========================== */
-
-.oshi-basic-slider-dots{
-    display:flex;
-    justify-content:center;
-    align-items:center;
-
-    gap:8px;
-
-    margin:0 0 16px;
-}
-
-.oshi-basic-slider-dot{
-    display:block;
-
-    width:8px;
-    height:8px;
-
-    border-radius:50%;
-
-    background:#ccc;
-}
-
-.oshi-basic-slider-dot.active{
-    background:#ff8fb1;
-
-    transform:scale(1.2);
 }
 
 
@@ -765,17 +835,13 @@ body:has(.oshi-home-page) .page-scroll{
     gap:8px;
 }
 
-
-/* ==========================
-   楽曲検索入力
-========================== */
-
 .oshi-song-search-form input,
 .oshi-song-search-form select{
     width:100%;
     min-height:42px;
 
     padding:8px 10px;
+
     box-sizing:border-box;
 
     border:1px solid #ccc;
@@ -789,13 +855,9 @@ body:has(.oshi-home-page) .page-scroll{
 .oshi-song-search-form input:focus,
 .oshi-song-search-form select:focus{
     outline:none;
+
     border-color:#ff8fb1;
 }
-
-
-/* ==========================
-   楽曲検索ボタン
-========================== */
 
 .oshi-song-search-btn{
     width:100%;
@@ -824,6 +886,7 @@ body:has(.oshi-home-page) .page-scroll{
 
 .oshi-song-list{
     flex:1;
+
     min-height:0;
 
     margin:0 15px;
@@ -850,6 +913,7 @@ body:has(.oshi-home-page) .page-scroll{
 .oshi-song-album{
     margin-bottom:16px;
     padding:16px;
+
     box-sizing:border-box;
 
     background:#fff;
@@ -895,6 +959,7 @@ body:has(.oshi-home-page) .page-scroll{
 
 .oshi-song-item:last-child{
     padding-bottom:0;
+
     border-bottom:none;
 }
 
@@ -946,6 +1011,7 @@ body:has(.oshi-home-page) .page-scroll{
     margin:3px 0 0;
 
     color:#888;
+
     font-size:11px;
     line-height:1.5;
 }
@@ -954,6 +1020,7 @@ body:has(.oshi-home-page) .page-scroll{
     margin:4px 0 0;
 
     color:#666;
+
     font-size:12px;
     line-height:1.5;
 
@@ -990,6 +1057,7 @@ body:has(.oshi-home-page) .page-scroll{
     min-height:30px;
 
     padding:4px 7px;
+
     box-sizing:border-box;
 
     border-radius:7px;
@@ -999,7 +1067,9 @@ body:has(.oshi-home-page) .page-scroll{
 
     text-decoration:none;
 
-    transition:opacity .2s, transform .1s;
+    transition:
+        opacity .2s,
+        transform .1s;
 }
 
 .oshi-song-link:hover{
@@ -1044,6 +1114,7 @@ body:has(.oshi-home-page) .page-scroll{
     min-height:30px;
 
     padding:4px 7px;
+
     box-sizing:border-box;
 
     border:none;
@@ -1058,7 +1129,9 @@ body:has(.oshi-home-page) .page-scroll{
 
     cursor:pointer;
 
-    transition:opacity .2s, transform .1s;
+    transition:
+        opacity .2s,
+        transform .1s;
 }
 
 .oshi-song-detail-btn:hover{
@@ -1069,19 +1142,14 @@ body:has(.oshi-home-page) .page-scroll{
     transform:scale(.97);
 }
 
-
-/* ==========================
-   楽曲 データなし
-========================== */
-
 .oshi-song-list .oshi-empty{
     margin:30px 0;
 }
 
 
-/* ==========================
+/* ==========================================================
    楽曲詳細モーダル
-========================== */
+========================================================== */
 
 .oshi-song-modal{
     position:fixed;
@@ -1094,6 +1162,7 @@ body:has(.oshi-home-page) .page-scroll{
     justify-content:center;
 
     padding:20px;
+
     box-sizing:border-box;
 }
 
@@ -1101,22 +1170,12 @@ body:has(.oshi-home-page) .page-scroll{
     display:flex;
 }
 
-
-/* ==========================
-   モーダル背景
-========================== */
-
 .oshi-song-modal-overlay{
     position:absolute;
     inset:0;
 
     background:rgba(0,0,0,.45);
 }
-
-
-/* ==========================
-   モーダル本体
-========================== */
 
 .oshi-song-modal-content{
     position:relative;
@@ -1127,6 +1186,7 @@ body:has(.oshi-home-page) .page-scroll{
     max-height:80dvh;
 
     padding:20px;
+
     box-sizing:border-box;
 
     overflow-y:auto;
@@ -1144,13 +1204,9 @@ body:has(.oshi-home-page) .page-scroll{
     display:none;
 }
 
-
-/* ==========================
-   閉じるボタン
-========================== */
-
 .oshi-song-modal-close{
     position:absolute;
+
     top:8px;
     right:10px;
 
@@ -1175,11 +1231,6 @@ body:has(.oshi-home-page) .page-scroll{
     cursor:pointer;
 }
 
-
-/* ==========================
-   モーダルタイトル
-========================== */
-
 .oshi-song-modal-title{
     margin:0 35px 20px 0;
 
@@ -1188,11 +1239,6 @@ body:has(.oshi-home-page) .page-scroll{
 
     word-break:break-word;
 }
-
-
-/* ==========================
-   詳細情報
-========================== */
 
 .oshi-song-modal-info{
     display:flex;
@@ -1214,21 +1260,18 @@ body:has(.oshi-home-page) .page-scroll{
 
 .oshi-song-modal-row span{
     color:#888;
+
     font-size:11px;
 }
 
 .oshi-song-modal-row strong{
     color:#333;
+
     font-size:14px;
     line-height:1.5;
 
     word-break:break-word;
 }
-
-
-/* ==========================
-   モーダル音楽リンク
-========================== */
 
 .oshi-song-modal-links{
     display:flex;
@@ -1281,11 +1324,6 @@ body:has(.oshi-home-page) .page-scroll{
     padding-bottom:0;
 }
 
-
-/* ==========================
-   検索・ソート
-========================== */
-
 .oshi-program-search{
     flex-shrink:0;
 
@@ -1299,17 +1337,13 @@ body:has(.oshi-home-page) .page-scroll{
     gap:8px;
 }
 
-
-/* ==========================
-   検索入力・選択
-========================== */
-
 .oshi-program-search-form input,
 .oshi-program-search-form select{
     width:100%;
     min-height:42px;
 
     padding:8px 10px;
+
     box-sizing:border-box;
 
     border:1px solid #ccc;
@@ -1323,13 +1357,9 @@ body:has(.oshi-home-page) .page-scroll{
 .oshi-program-search-form input:focus,
 .oshi-program-search-form select:focus{
     outline:none;
+
     border-color:#ff8fb1;
 }
-
-
-/* ==========================
-   検索ボタン
-========================== */
 
 .oshi-program-search-btn{
     width:100%;
@@ -1358,6 +1388,7 @@ body:has(.oshi-home-page) .page-scroll{
 
 .oshi-program-list{
     flex:1;
+
     min-height:0;
 
     margin:0 15px;
@@ -1384,6 +1415,7 @@ body:has(.oshi-home-page) .page-scroll{
 .oshi-program-card{
     margin-bottom:16px;
     padding:16px;
+
     box-sizing:border-box;
 
     background:#fff;
@@ -1391,11 +1423,6 @@ body:has(.oshi-home-page) .page-scroll{
 
     box-shadow:0 3px 8px rgba(0,0,0,.12);
 }
-
-
-/* ==========================
-   番組名
-========================== */
 
 .oshi-program-name{
     margin:0 0 8px;
@@ -1407,11 +1434,6 @@ body:has(.oshi-home-page) .page-scroll{
     word-break:break-word;
 }
 
-
-/* ==========================
-   番組種別
-========================== */
-
 .oshi-program-type{
     display:inline-flex;
     align-items:center;
@@ -1421,6 +1443,7 @@ body:has(.oshi-home-page) .page-scroll{
 
     margin-right:6px;
     padding:3px 7px;
+
     box-sizing:border-box;
 
     border-radius:6px;
@@ -1451,39 +1474,26 @@ body:has(.oshi-home-page) .page-scroll{
     color:#666;
 }
 
-
-/* ==========================
-   放送期間
-========================== */
-
 .oshi-program-period{
     margin:0 0 8px;
 
     color:#777;
+
     font-size:13px;
     line-height:1.5;
 }
-
-
-/* ==========================
-   番組説明
-========================== */
 
 .oshi-program-description{
     margin:10px 0 0;
 
     color:#666;
+
     font-size:13px;
     line-height:1.7;
 
     white-space:pre-wrap;
     word-break:break-word;
 }
-
-
-/* ==========================
-   公式サイト
-========================== */
 
 .oshi-program-link{
     display:flex;
@@ -1509,38 +1519,8 @@ body:has(.oshi-home-page) .page-scroll{
     opacity:.9;
 }
 
-
-/* ==========================
-   データなし
-========================== */
-
 .oshi-program-list .oshi-empty{
     margin:30px 0;
-}
-
-
-/* ==========================
-   スマートフォン
-========================== */
-
-@media (max-width:600px){
-
-    .oshi-program-card{
-        padding:15px;
-    }
-
-    .oshi-program-name{
-        font-size:16px;
-    }
-
-    .oshi-program-period{
-        font-size:12px;
-    }
-
-    .oshi-program-description{
-        font-size:12px;
-    }
-
 }
 
 
@@ -1551,11 +1531,6 @@ body:has(.oshi-home-page) .page-scroll{
 .oshi-venue-page{
     padding-bottom:0;
 }
-
-
-/* ==========================
-   会場検索・ソート
-========================== */
 
 .oshi-venue-search{
     flex-shrink:0;
@@ -1576,6 +1551,7 @@ body:has(.oshi-home-page) .page-scroll{
     min-height:42px;
 
     padding:8px 10px;
+
     box-sizing:border-box;
 
     border:1px solid #ccc;
@@ -1589,6 +1565,7 @@ body:has(.oshi-home-page) .page-scroll{
 .oshi-venue-search-form input:focus,
 .oshi-venue-search-form select:focus{
     outline:none;
+
     border-color:#ff8fb1;
 }
 
@@ -1619,6 +1596,7 @@ body:has(.oshi-home-page) .page-scroll{
 
 .oshi-venue-list{
     flex:1;
+
     min-height:0;
 
     margin:0 15px;
@@ -1645,6 +1623,7 @@ body:has(.oshi-home-page) .page-scroll{
 .oshi-venue-card{
     margin-bottom:16px;
     padding:16px;
+
     box-sizing:border-box;
 
     background:#fff;
@@ -1652,11 +1631,6 @@ body:has(.oshi-home-page) .page-scroll{
 
     box-shadow:0 3px 8px rgba(0,0,0,.12);
 }
-
-
-/* ==========================
-   会場名
-========================== */
 
 .oshi-venue-name{
     margin:0 0 8px;
@@ -1667,11 +1641,6 @@ body:has(.oshi-home-page) .page-scroll{
     word-break:break-word;
 }
 
-
-/* ==========================
-   会場情報
-========================== */
-
 .oshi-venue-meta{
     display:flex;
     flex-direction:column;
@@ -1681,6 +1650,7 @@ body:has(.oshi-home-page) .page-scroll{
     margin-bottom:8px;
 
     color:#666;
+
     font-size:13px;
     line-height:1.5;
 }
@@ -1689,6 +1659,7 @@ body:has(.oshi-home-page) .page-scroll{
     margin:0 0 8px;
 
     color:#777;
+
     font-size:13px;
     line-height:1.5;
 
@@ -1699,6 +1670,7 @@ body:has(.oshi-home-page) .page-scroll{
     margin:0;
 
     color:#777;
+
     font-size:13px;
     line-height:1.5;
 }
@@ -1722,11 +1694,6 @@ body:has(.oshi-home-page) .page-scroll{
     margin-top:0;
 }
 
-
-/* ==========================
-   会場ボタン
-========================== */
-
 .oshi-venue-link{
     display:flex;
     align-items:center;
@@ -1735,6 +1702,7 @@ body:has(.oshi-home-page) .page-scroll{
     min-height:38px;
 
     padding:0 8px;
+
     box-sizing:border-box;
 
     border:none;
@@ -1756,11 +1724,6 @@ body:has(.oshi-home-page) .page-scroll{
     opacity:.9;
 }
 
-
-/* ==========================
-   利用イベントボタン
-========================== */
-
 .oshi-venue-events-link{
     background:#f3efff;
     color:#8064c8;
@@ -1768,19 +1731,14 @@ body:has(.oshi-home-page) .page-scroll{
     border:1px solid #d9ceff;
 }
 
-
-/* ==========================
-   会場 データなし
-========================== */
-
 .oshi-venue-list .oshi-empty{
     margin:30px 0;
 }
 
 
-/* ==========================
+/* ==========================================================
    会場詳細ポップアップ
-========================== */
+========================================================== */
 
 .oshi-venue-modal{
     position:fixed;
@@ -1793,6 +1751,7 @@ body:has(.oshi-home-page) .page-scroll{
     justify-content:center;
 
     padding:20px;
+
     box-sizing:border-box;
 }
 
@@ -1800,22 +1759,12 @@ body:has(.oshi-home-page) .page-scroll{
     display:flex;
 }
 
-
-/* ==========================
-   ポップアップ背景
-========================== */
-
 .oshi-venue-modal-overlay{
     position:absolute;
     inset:0;
 
     background:rgba(0,0,0,.45);
 }
-
-
-/* ==========================
-   ポップアップ本体
-========================== */
 
 .oshi-venue-modal-content{
     position:relative;
@@ -1826,6 +1775,7 @@ body:has(.oshi-home-page) .page-scroll{
     max-height:80dvh;
 
     padding:20px;
+
     box-sizing:border-box;
 
     overflow-y:auto;
@@ -1843,13 +1793,9 @@ body:has(.oshi-home-page) .page-scroll{
     display:none;
 }
 
-
-/* ==========================
-   閉じるボタン
-========================== */
-
 .oshi-venue-modal-close{
     position:absolute;
+
     top:8px;
     right:10px;
 
@@ -1878,11 +1824,6 @@ body:has(.oshi-home-page) .page-scroll{
     color:#666;
 }
 
-
-/* ==========================
-   ポップアップタイトル
-========================== */
-
 .oshi-venue-modal-name{
     margin:0 35px 20px 0;
 
@@ -1891,11 +1832,6 @@ body:has(.oshi-home-page) .page-scroll{
 
     word-break:break-word;
 }
-
-
-/* ==========================
-   ポップアップ詳細情報
-========================== */
 
 .oshi-venue-modal-info{
     display:flex;
@@ -1917,21 +1853,18 @@ body:has(.oshi-home-page) .page-scroll{
 
 .oshi-venue-modal-row span{
     color:#888;
+
     font-size:11px;
 }
 
 .oshi-venue-modal-row strong{
     color:#333;
+
     font-size:14px;
     line-height:1.6;
 
     word-break:break-word;
 }
-
-
-/* ==========================
-   ポップアップ住所
-========================== */
 
 .oshi-venue-modal-address{
     display:flex;
@@ -1939,11 +1872,6 @@ body:has(.oshi-home-page) .page-scroll{
 
     gap:8px;
 }
-
-
-/* ==========================
-   Google Mapボタン
-========================== */
 
 .oshi-venue-map-btn{
     display:flex;
@@ -1953,6 +1881,7 @@ body:has(.oshi-home-page) .page-scroll{
     min-height:36px;
 
     padding:5px 9px;
+
     box-sizing:border-box;
 
     border-radius:8px;
@@ -1969,11 +1898,6 @@ body:has(.oshi-home-page) .page-scroll{
 .oshi-venue-map-btn:hover{
     opacity:.9;
 }
-
-
-/* ==========================
-   会場公式サイト
-========================== */
 
 .oshi-venue-detail-link{
     display:flex;
@@ -2008,15 +1932,11 @@ body:has(.oshi-home-page) .page-scroll{
     padding-bottom:0;
 }
 
-
-/* ==========================
-   会場名
-========================== */
-
 .oshi-venue-events-venue-name{
     margin:4px 0 0;
 
     color:#666;
+
     font-size:13px;
     line-height:1.5;
 
@@ -2032,6 +1952,7 @@ body:has(.oshi-home-page) .page-scroll{
 
 .oshi-venue-events-list{
     flex:1;
+
     min-height:0;
 
     margin:0 15px;
@@ -2058,6 +1979,7 @@ body:has(.oshi-home-page) .page-scroll{
 .oshi-venue-event-card{
     margin-bottom:12px;
     padding:15px 16px;
+
     box-sizing:border-box;
 
     background:#fff;
@@ -2065,11 +1987,6 @@ body:has(.oshi-home-page) .page-scroll{
 
     box-shadow:0 3px 8px rgba(0,0,0,.12);
 }
-
-
-/* ==========================
-   イベント種別
-========================== */
 
 .oshi-venue-event-type{
     display:inline-flex;
@@ -2079,6 +1996,7 @@ body:has(.oshi-home-page) .page-scroll{
 
     margin-bottom:8px;
     padding:3px 9px;
+
     box-sizing:border-box;
 
     border-radius:6px;
@@ -2098,11 +2016,6 @@ body:has(.oshi-home-page) .page-scroll{
     color:#5d8b6f;
 }
 
-
-/* ==========================
-   イベント名
-========================== */
-
 .oshi-venue-event-name{
     margin:0 0 8px;
 
@@ -2113,11 +2026,6 @@ body:has(.oshi-home-page) .page-scroll{
 
     word-break:break-word;
 }
-
-
-/* ==========================
-   イベント情報
-========================== */
 
 .oshi-venue-event-date,
 .oshi-venue-event-tour,
@@ -2156,6 +2064,7 @@ body:has(.oshi-home-page) .page-scroll{
     min-height:38px;
 
     padding:6px 8px;
+
     box-sizing:border-box;
 
     border-radius:8px;
@@ -2173,11 +2082,6 @@ body:has(.oshi-home-page) .page-scroll{
     opacity:.9;
 }
 
-
-/* ==========================
-   詳細ボタン
-========================== */
-
 .oshi-venue-event-detail-btn{
     border:1px solid #ff8fb1;
 
@@ -2185,22 +2089,12 @@ body:has(.oshi-home-page) .page-scroll{
     color:#fff;
 }
 
-
-/* ==========================
-   キャパを見るボタン
-========================== */
-
 .oshi-venue-event-capacity-btn{
     border:1px solid #d9ceff;
 
     background:#f3efff;
     color:#8064c8;
 }
-
-
-/* ==========================
-   データなし
-========================== */
 
 .oshi-venue-events-list .oshi-empty{
     margin:30px 0;
@@ -2224,22 +2118,12 @@ body:has(.oshi-home-page) .page-scroll{
     display:block;
 }
 
-
-/* ==========================
-   ポップアップ背景
-========================== */
-
 .oshi-tour-capacity-modal-overlay{
     position:absolute;
     inset:0;
 
     background:rgba(0,0,0,.45);
 }
-
-
-/* ==========================
-   ポップアップ本体
-========================== */
 
 .oshi-tour-capacity-modal-content{
     position:absolute;
@@ -2252,11 +2136,13 @@ body:has(.oshi-home-page) .page-scroll{
     max-height:80vh;
 
     padding:20px 16px;
+
     box-sizing:border-box;
 
     transform:translate(-50%,-50%);
 
     overflow-y:auto;
+
     scrollbar-width:none;
     -ms-overflow-style:none;
 
@@ -2269,11 +2155,6 @@ body:has(.oshi-home-page) .page-scroll{
 .oshi-tour-capacity-modal-content::-webkit-scrollbar{
     display:none;
 }
-
-
-/* ==========================
-   閉じるボタン
-========================== */
 
 .oshi-tour-capacity-modal-close{
     position:absolute;
@@ -2298,11 +2179,6 @@ body:has(.oshi-home-page) .page-scroll{
     cursor:pointer;
 }
 
-
-/* ==========================
-   ツアー名
-========================== */
-
 .oshi-tour-capacity-modal-title{
     margin:0 35px 16px 0;
     padding-bottom:12px;
@@ -2324,6 +2200,7 @@ body:has(.oshi-home-page) .page-scroll{
 
 .oshi-tour-capacity-total{
     padding:14px;
+
     box-sizing:border-box;
 
     border-radius:10px;
@@ -2339,6 +2216,7 @@ body:has(.oshi-home-page) .page-scroll{
     margin-bottom:5px;
 
     color:#888;
+
     font-size:11px;
 }
 
@@ -2375,6 +2253,7 @@ body:has(.oshi-home-page) .page-scroll{
     margin:0 0 10px;
 
     color:#555;
+
     font-size:14px;
 }
 
@@ -2414,6 +2293,7 @@ body:has(.oshi-home-page) .page-scroll{
     margin-bottom:2px;
 
     color:#555;
+
     font-size:12px;
 }
 
@@ -2455,4 +2335,29 @@ body:has(.oshi-home-page) .page-scroll{
     font-weight:bold;
 
     white-space:nowrap;
+}
+
+
+/* ==========================================================
+   スマートフォン
+========================================================== */
+
+@media (max-width:600px){
+
+    .oshi-program-card{
+        padding:15px;
+    }
+
+    .oshi-program-name{
+        font-size:16px;
+    }
+
+    .oshi-program-period{
+        font-size:12px;
+    }
+
+    .oshi-program-description{
+        font-size:12px;
+    }
+
 }

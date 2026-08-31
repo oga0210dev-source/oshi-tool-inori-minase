@@ -49,9 +49,7 @@
 
             <!-- 誕生日 -->
             <div class="oshi-basic-slide">
-
                 <section class="oshi-info-card">
-
                     <h2>🎂 誕生日</h2>
 
                     <p class="oshi-date">
@@ -62,23 +60,34 @@
                         {{ oshi_basic.age }}歳
                     </p>
 
+                    {% if oshi_basic.birthday_remaining_days == 0 %}
+                    <div class="oshi-anniversary-today">
+                        <span class="oshi-anniversary-icon">🎉</span>
+
+                        <strong>
+                            本日がお誕生日です！
+                        </strong>
+                        <br>
+                        <span class="oshi-anniversary-message">
+                            お誕生日おめでとうございます！
+                        </span>
+                    </div>
+
+                    {% else %}
                     <p class="oshi-countdown">
                         次の誕生日まで
                         <strong>
                             あと{{ oshi_basic.birthday_remaining_days }}日
                         </strong>
                     </p>
-
+                    {% endif %}
                 </section>
-
             </div>
 
 
             <!-- 声優デビュー -->
             <div class="oshi-basic-slide">
-
                 <section class="oshi-info-card">
-
                     <h2>🎤 声優デビュー</h2>
 
                     <p class="oshi-date">
@@ -87,6 +96,20 @@
                         ) }}
                     </p>
 
+                    {% if oshi_basic.voice_actor_debut_elapsed_months == 0 and oshi_basic.voice_actor_debut_elapsed_days == 0 %}
+                    <div class="oshi-anniversary-today">
+                        <span class="oshi-anniversary-icon">🎉</span>
+
+                        <strong>
+                            本日は声優デビュー記念日！
+                        </strong>
+                        <br>
+                        <span class="oshi-anniversary-message">
+                            デビュー{{ oshi_basic.voice_actor_debut_elapsed_years }}周年です！
+                        </span>
+                    </div>
+
+                    {% else %}
                     <p class="oshi-elapsed">
                         デビューから
                         <strong>
@@ -100,19 +123,15 @@
                         {{ oshi_basic.voice_actor_debut_elapsed_total_days }}日
                         経過
                     </p>
-
+                    {% endif %}
                 </section>
-
             </div>
 
 
             <!-- 歌手デビュー -->
             {% if oshi_basic.singer_debut_date %}
-
             <div class="oshi-basic-slide">
-
                 <section class="oshi-info-card">
-
                     <h2>🎵 歌手デビュー</h2>
 
                     <p class="oshi-date">
@@ -121,6 +140,20 @@
                         ) }}
                     </p>
 
+                    {% if oshi_basic.singer_debut_elapsed_months == 0 and oshi_basic.singer_debut_elapsed_days == 0 %}
+                    <div class="oshi-anniversary-today">
+                        <span class="oshi-anniversary-icon">🎉</span>
+
+                        <strong>
+                            本日は歌手デビュー記念日！
+                        </strong>
+                        <br>
+                        <span class="oshi-anniversary-message">
+                            デビュー{{ oshi_basic.singer_debut_elapsed_years }}周年です！
+                        </span>
+                    </div>
+
+                    {% else %}
                     <p class="oshi-elapsed">
                         デビューから
                         <strong>
@@ -134,13 +167,10 @@
                         {{ oshi_basic.singer_debut_elapsed_total_days }}日
                         経過
                     </p>
-
+                    {% endif %}
                 </section>
-
             </div>
-
             {% endif %}
-
         </section>
 
 

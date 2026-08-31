@@ -7,227 +7,89 @@
 {% endblock %}
 
 {% block content %}
-
 <main class="oshi-page">
-    <!-- ページヘッダー -->
     <section class="oshi-page-header">
-        <a href="/home/oshi"
-           class="oshi-back-btn">
-            ← 推し情報
-        </a>
-
-        <h1>
-            記念日
-        </h1>
+        <a href="/home/oshi" class="oshi-back-btn">← 推し情報</a>
+        <h1>記念日</h1>
     </section>
 
-    <!-- 検索・ソート -->
     <section class="oshi-work-search">
-        <form method="get"
-              class="oshi-work-search-form">
-
-            <input
-                type="text"
-                name="keyword"
-                value="{{ keyword }}"
-                placeholder="記念日名・説明で検索">
-
+        <form method="get" class="oshi-work-search-form">
+            <input type="text" name="keyword" value="{{ keyword }}" placeholder="記念日名・説明で検索">
             <select name="sort">
-                <option
-                    value="next"
-                    {% if sort == "next" %}
-                    selected
-                    {% endif %} >
-                    次の記念日順
-                </option>
-
-                <option
-                    value="date_asc"
-                    {% if sort == "date_asc" %}
-                    selected
-                    {% endif %} >
-                    日付順（早い順）
-                </option>
-
-                <option
-                    value="date_desc"
-                    {% if sort == "date_desc" %}
-                    selected
-                    {% endif %} >
-                    日付順（遅い順）
-                </option>
-
-                <option
-                    value="name"
-                    {% if sort == "name" %}
-                    selected
-                    {% endif %} >
-                    記念日名順
-                </option>
+                <option value="next" {% if sort == "next" %}selected{% endif %}>次の記念日順</option>
+                <option value="date_asc" {% if sort == "date_asc" %}selected{% endif %}>日付順（早い順）</option>
+                <option value="date_desc" {% if sort == "date_desc" %}selected{% endif %}>日付順（遅い順）</option>
+                <option value="name" {% if sort == "name" %}selected{% endif %}>記念日名順</option>
             </select>
-
-            <button
-                type="submit"
-                class="oshi-work-search-btn">
-                検索
-            </button>
+            <button type="submit" class="oshi-work-search-btn">検索</button>
         </form>
     </section>
 
-    <!-- 記念日一覧 -->
     <section class="oshi-work-list">
-
         {% for anniversary in anniversaries %}
-
         <article class="oshi-work-card">
-
-            <!-- 記念日名 -->
-
             <h2 class="oshi-work-name">
-
                 {% if anniversary.display_type == "birthday" %}
-
                 🎂 {{ anniversary.anniversary_name }}
-
                 {% elif anniversary.display_type == "debut" %}
-
                 {% if anniversary.anniversary_type == "VOICE_ACTOR" %}
                 🎤 {{ anniversary.anniversary_name }}
                 {% else %}
                 🎵 {{ anniversary.anniversary_name }}
                 {% endif %}
-
                 {% else %}
-
                 🎉 {{ anniversary.anniversary_name }}
-
                 {% endif %}
-
             </h2>
 
-
-            <!-- 元の日付 -->
-
             <div class="oshi-work-date">
-
                 {% if anniversary.display_type == "birthday" %}
-
-                誕生日：
-                {{ anniversary.anniversary_date.strftime(
-                    "%Y年%m月%d日"
-                ) }}
-
+                誕生日：{{ anniversary.anniversary_date.strftime("%Y年%m月%d日") }}
                 {% elif anniversary.anniversary_type == "VOICE_ACTOR" %}
-
-                デビュー日：
-                {{ anniversary.anniversary_date.strftime(
-                    "%Y年%m月%d日"
-                ) }}
-
+                デビュー日：{{ anniversary.anniversary_date.strftime("%Y年%m月%d日") }}
                 {% elif anniversary.anniversary_type == "SINGER" %}
-
-                デビュー日：
-                {{ anniversary.anniversary_date.strftime(
-                    "%Y年%m月%d日"
-                ) }}
-
+                デビュー日：{{ anniversary.anniversary_date.strftime("%Y年%m月%d日") }}
                 {% else %}
-
-                記念日：
-                {{ anniversary.anniversary_date.strftime(
-                    "%Y年%m月%d日"
-                ) }}
-
+                記念日：{{ anniversary.anniversary_date.strftime("%Y年%m月%d日") }}
                 {% endif %}
-
             </div>
-
-
-            <!-- 年齢・周年 -->
 
             <div class="oshi-anniversary-years">
-
                 {% if anniversary.display_type == "birthday" %}
-
-                今年で
-                <strong>
-                    {{ anniversary.anniversary_years }}歳
-                </strong>
-
+                今年で <strong>{{ anniversary.anniversary_years }}歳</strong>
                 {% else %}
-
-                今年で
-                <strong>
-                    {{ anniversary.anniversary_years }}周年
-                </strong>
-
+                今年で <strong>{{ anniversary.anniversary_years }}周年</strong>
                 {% endif %}
-
             </div>
-
-
-            <!-- 次回の記念日 -->
 
             <div class="oshi-anniversary-next">
-
-                {% if anniversary.display_type == "birthday" %}
-
-                次の誕生日まで
-
+                {% if anniversary.remaining_days == 0 %}
+                🎉 <strong>本日です！</strong>
+                {% elif anniversary.display_type == "birthday" %}
+                次の誕生日まで <strong>あと{{ anniversary.remaining_days }}日</strong>
                 {% else %}
-
-                次の記念日まで
-
+                次の記念日まで <strong>あと{{ anniversary.remaining_days }}日</strong>
                 {% endif %}
-
-                <strong>
-                    あと{{ anniversary.remaining_days }}日
-                </strong>
-
             </div>
-
-
-            <!-- 次回日付 -->
 
             <div class="oshi-work-date">
-
-                次回：
-                {{ anniversary.next_anniversary_date.strftime(
-                    "%Y年%m月%d日"
-                ) }}
-
+                次回：{{ anniversary.next_anniversary_date.strftime("%Y年%m月%d日") }}
             </div>
 
-
-            <!-- 説明 -->
-
             {% if anniversary.description %}
-
             <div class="oshi-work-description">{{ anniversary.description }}</div>
-
             {% endif %}
-
         </article>
-
         {% else %}
-
         <p class="oshi-empty">
-
             {% if keyword %}
-
             「{{ keyword }}」に一致する記念日はありません。
-
             {% else %}
-
             登録されている記念日はありません。
-
             {% endif %}
-
         </p>
-
         {% endfor %}
-
     </section>
 </main>
-
 {% endblock %}
