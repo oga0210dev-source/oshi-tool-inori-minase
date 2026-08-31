@@ -1,5 +1,5 @@
 from python.core.database import get_connection
-from datetime import date
+from python.utils.date_utils import get_today
 
 
 def get_meeting_list(user_id):
@@ -70,7 +70,7 @@ def get_meeting_list(user_id):
 
             for meeting in meetings:
                 meeting["remaining_days"] = (
-                    meeting["meeting_date"] - date.today()
+                        meeting["meeting_date"] - get_today()
                 ).days
 
             return meetings

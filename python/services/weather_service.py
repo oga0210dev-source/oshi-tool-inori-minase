@@ -4,7 +4,7 @@ from datetime import date, timedelta
 import requests
 
 from python.core import database
-from python.utils.date_utils import to_jst
+from python.utils.date_utils import to_jst, get_today
 
 OPEN_METEO_URL = "https://api.open-meteo.com/v1/forecast"
 
@@ -54,7 +54,7 @@ WEATHER_MAP = {
 def get_forecast_limit():
     """Open-Meteoから取得可能な最終日を返す。"""
 
-    today = date.today()
+    today = get_today()
 
     return today + timedelta(
         days=FORECAST_DAYS - 1
@@ -292,7 +292,7 @@ def get_weather(
             target_date
         )
 
-    today = date.today()
+    today = get_today()
     max_forecast_date = get_forecast_limit()
 
     if (
@@ -470,7 +470,7 @@ def update_weather_forecast():
 
         cursor = conn.cursor()
 
-        today = date.today()
+        today = get_today()
 
         max_forecast_date = (
             get_forecast_limit()
@@ -962,7 +962,7 @@ def add_weather_from_work_table(
                 # 当日の時間別天気
                 if (
                     offset == 0
-                    and target_date == date.today()
+                    and target_date == get_today()
                 ):
                     hourly_weather = (
                         weather_json.get(

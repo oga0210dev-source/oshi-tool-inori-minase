@@ -7,6 +7,7 @@ from python.core import auth
 
 from python.models.home.live import live as live_model
 from python.services import weather_service
+from python.utils.date_utils import get_today
 
 
 router = APIRouter(
@@ -33,6 +34,6 @@ async def live_list(
         context={
             "lives": lives,
             "is_login": auth.is_login(request),
-            "today": date.today()
+            "today": get_today()
         }
     )
