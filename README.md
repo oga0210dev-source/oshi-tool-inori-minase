@@ -826,16 +826,16 @@ Open-Meteo Weather APIから天気予報を取得する。
 個別のページ遷移や操作内容を記録するアクセスログではなく、
 サイト利用状況の集計に必要な最小限のデータのみを保存する。
 
-### `T_DAILY_ACCESS_USER`
+### `t_daily_access_user`
 
 日単位のアクセスユーザーを管理する。
 
 主な項目：
 
-* `ACCESS_DATE`
-* `USER_ID`
+* `access_date`
+* `user_id`
 
-`ACCESS_DATE` と `USER_ID` の組み合わせは一意。
+`access_date` と `user_id` の組み合わせは一意。
 
 同一ユーザーが同じアクセス日に複数回アクセスしても、
 1ユーザーとしてのみカウントする。
@@ -853,34 +853,34 @@ Open-Meteo Weather APIから天気予報を取得する。
 
 ---
 
-### `T_DAILY_ACCESS`
+### `t_daily_access`
 
 日単位のユニークアクセスユーザー数を管理する。
 
 主な項目：
 
-* `ACCESS_DATE`
-* `UNIQUE_USER_COUNT`
-* `CREATED_AT`
-* `UPDATED_AT`
+* `access_date`
+* `unique_user_count`
+* `created_at`
+* `updated_at`
 
-`ACCESS_DATE` ごとに1レコードを保持する。
+`access_date` ごとに1レコードを保持する。
 
-`T_DAILY_ACCESS_USER` を基準として、
+`t_daily_access_user` を基準として、
 1日あたりのユニークユーザー数を集計する。
 
 ---
 
-### `T_DAILY_ACCESS_NOTIFICATION`
+### `t_daily_access_notification`
 
 日単位のアクセス数が一定の閾値に到達したことを管理する。
 
 主な項目：
 
-* `ACCESS_DATE`
-* `THRESHOLD`
+* `access_date`
+* `threshold`
 
-`ACCESS_DATE` と `THRESHOLD` の組み合わせは一意。
+`access_date` と `threshold` の組み合わせは一意。
 
 現在の通知対象閾値：
 
@@ -1233,7 +1233,7 @@ Template
 
 ## 9.1 管理者ページ アクセス数表示
 
-`T_DAILY_ACCESS` および `T_DAILY_ACCESS_USER` を使用して、
+`t_daily_access` および `t_daily_access_user` を使用して、
 管理者がサイトの利用状況を確認できるようにする。
 
 表示候補：
