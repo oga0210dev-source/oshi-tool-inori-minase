@@ -1,22 +1,21 @@
 import os
 import requests
 
-
 WEBHOOK_ENV_MAP = {
     "INQUIRY": "DISCORD_INQUIRY_WEBHOOK_URL",
     "REQUEST": "DISCORD_REQUEST_WEBHOOK_URL",
     "BUG": "DISCORD_BUG_WEBHOOK_URL",
-    "TODO": "DISCORD_TODO_WEBHOOK_URL",
+    "TODO": "DISCORD_TODO_WEBHOOK_URL"
 }
 
 
 def send_inquiry_notification(
-    inquiry_id,
-    inquiry_type,
-    subject,
-    message,
-    user_id,
-    email=None
+        inquiry_id,
+        inquiry_type,
+        subject,
+        message,
+        user_id,
+        email=None
 ):
     env_name = WEBHOOK_ENV_MAP.get(inquiry_type)
 
@@ -124,5 +123,78 @@ def send_todo_reminder(todos):
     if response.status_code < 200 or response.status_code >= 300:
         raise RuntimeError(
             f"Discord ToDoリマインドに失敗しました: "
+            f"HTTP {response.status_code} / {response.text}"
+        )
+
+
+def send_daily_access_notification(
+        access_date,
+        unique_user_count
+):
+    """前日のユニークアクセス数をDiscordへ通知"""
+
+    webhook_url = os.getenv("DISCORD_ACCESS_USER_URL")
+
+    if not webhook_url:
+        raise ValueError(
+            "Discord Webhook URLが設定されていません: "
+            "DISCORD_ACCESS_USER_URL"
+        )
+
+    content = f"""**📊 日別アクセス集計**
+
+**集計日：** {access_date}
+**アクセスユーザー数：** {unique_user_count}人
+"""
+
+    response = requests.post(
+        webhook_url,
+        json={
+            "content": content
+        },
+        timeout=10
+    )
+
+    if response.status_code < 200 or response.status_code >= 300:
+        raise RuntimeError(
+            f"Discordアクセス数通知に失敗しました: "
+            f"HTTP {response.status_code} / {response.text}"
+        )
+
+
+def send_daily_access_threshold_notification(
+        access_date,
+        unique_user_count,
+        threshold
+):
+    """アクセス数の閾値到達をDiscordへ通知"""
+
+    webhook_url = os.getenv("DISCORD_ACCESS_USER_URL")
+
+    if not webhook_url:
+        raise ValueError(
+            "Discord Webhook URLが設定されていません: "
+            "DISCORD_ACCESS_USER_URL"
+        )
+
+    content = f"""**📈 アクセス数到達通知**
+
+**集計日：** {access_date}
+**アクセスユーザー数：** {unique_user_count}人
+
+🎉 **{threshold}人を突破しました！**
+"""
+
+    response = requests.post(
+        webhook_url,
+        json={
+            "content": content
+        },
+        timeout=10
+    )
+
+    if response.status_code < 200 or response.status_code >= 300:
+        raise RuntimeError(
+            f"Discordアクセス数到達通知に失敗しました: "
             f"HTTP {response.status_code} / {response.text}"
         )

@@ -454,6 +454,32 @@ execute FUNCTION update_updated_at_column ();
 トランザクション
 //////////////
 
+create table public.t_daily_access (
+  created_at timestamp with time zone not null default CURRENT_TIMESTAMP,
+  updated_at timestamp with time zone not null default CURRENT_TIMESTAMP,
+  access_date date not null,
+  unique_user_count integer not null default 0,
+  constraint t_daily_access_pkey primary key (access_date)
+) TABLESPACE pg_default;
+
+create table public.t_daily_access_user (
+  created_at timestamp with time zone not null default CURRENT_TIMESTAMP,
+  updated_at timestamp with time zone not null default CURRENT_TIMESTAMP,
+  access_date date not null,
+  user_id text not null,
+  constraint t_daily_access_user_pkey primary key (access_date, user_id),
+  constraint fk_t_daily_access_user_user foreign KEY (user_id) references m_user (user_id) on delete CASCADE
+) TABLESPACE pg_default;
+
+create table public.t_daily_access_notification (
+  created_at timestamp with time zone not null default CURRENT_TIMESTAMP,
+  updated_at timestamp with time zone not null default CURRENT_TIMESTAMP,
+  access_date date not null,
+  threshold integer not null,
+  notified_at timestamp with time zone not null default CURRENT_TIMESTAMP,
+  constraint t_daily_access_notification_pkey primary key (access_date, threshold)
+) TABLESPACE pg_default;
+
 create table public.t_live_record (
   record_id bigserial not null,
   user_id text not null,

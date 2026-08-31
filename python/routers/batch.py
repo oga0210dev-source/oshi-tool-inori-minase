@@ -1,10 +1,16 @@
 import os
+from datetime import datetime, timedelta
+from zoneinfo import ZoneInfo
 
 from fastapi import APIRouter, Request
 from fastapi.responses import JSONResponse
 
 from python.core import database
-from python.services.discord_service import send_todo_reminder
+from python.models.daily_access import DailyAccessModel
+from python.services.discord_service import (
+    send_todo_reminder,
+    send_daily_access_notification
+)
 from python.services.inquiry_service import get_active_todos
 from python.services.user_cleanup_service import delete_expired_users
 from python.services.weather_service import update_weather_forecast
@@ -13,6 +19,8 @@ router = APIRouter(
     prefix="/batch",
     tags=["batch"]
 )
+
+JST = ZoneInfo("Asia/Tokyo")
 
 
 def check_cron_secret(request: Request):
@@ -32,7 +40,6 @@ def check_cron_secret(request: Request):
 
 @router.get("/todo-reminder")
 async def todo_reminder(request: Request):
-
     unauthorized = check_cron_secret(request)
 
     if unauthorized:
@@ -64,7 +71,6 @@ async def todo_reminder(request: Request):
 
 @router.get("/weather-forecast")
 async def weather_forecast(request: Request):
-
     unauthorized = check_cron_secret(request)
 
     if unauthorized:
@@ -90,7 +96,6 @@ async def weather_forecast(request: Request):
 
 @router.get("/delete-expired-users")
 async def delete_expired_users_batch(request: Request):
-
     unauthorized = check_cron_secret(request)
 
     if unauthorized:
@@ -117,6 +122,58 @@ async def delete_expired_users_batch(request: Request):
                 "success": False,
                 "message": (
                     "期限切れユーザーの削除に失敗しました: "
+                    f"{str(e)}"
+                )
+            }
+        )
+
+
+@router.get("/daily-access")
+async def daily_access(request: Request):
+    unauthorized = check_cron_secret(request)
+
+    if unauthorized:
+        return unauthorized
+
+    try:
+        now = datetime.now(JST)
+
+        # 6:00区切りで現在のアクセス日を取得
+        if now.hour < 6:
+            current_access_date = now.date() - timedelta(days=1)
+        else:
+            current_access_date = now.date()
+
+        # 現在のアクセス日の前日を集計
+        previous_access_date = current_access_date - timedelta(days=1)
+
+        DailyAccessModel.save_daily_access_count(
+            previous_access_date.strftime("%Y-%m-%d")
+        )
+
+        count = DailyAccessModel.get_daily_access_count(
+            previous_access_date.strftime("%Y-%m-%d")
+        )
+
+        send_daily_access_notification(
+            access_date=previous_access_date.strftime("%Y-%m-%d"),
+            unique_user_count=count
+        )
+
+        return {
+            "success": True,
+            "message": "前日のアクセス数を集計しました。",
+            "access_date": str(previous_access_date),
+            "unique_user_count": count
+        }
+
+    except Exception as e:
+        return JSONResponse(
+            status_code=500,
+            content={
+                "success": False,
+                "message": (
+                    "前日のアクセス数の集計に失敗しました: "
                     f"{str(e)}"
                 )
             }

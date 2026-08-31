@@ -11,6 +11,10 @@
         {
             "path": "/batch/delete-expired-users",
             "schedule": "0 22 * * *"
+        },
+        {
+            "path": "/batch/daily-access",
+            "schedule": "0 21 * * *"
         }
     ]
 }
