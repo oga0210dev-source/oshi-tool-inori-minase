@@ -238,7 +238,7 @@
     box-sizing:border-box;
     border:1px solid #ddd;
     border-radius:12px;
-    font-size:15px;
+    font-size:16px;
     background:#fff;
 }
 
@@ -332,7 +332,7 @@
 
     .live-form input,
     .live-form select{
-        font-size:14px;
+        font-size:16px;
     }
 
 }
@@ -349,7 +349,7 @@
 
     .live-form input,
     .live-form select{
-        font-size:14px;
+        font-size:16px;
     }
 
     .tour-block{
@@ -361,15 +361,15 @@
     }
 
     .live-name{
-        font-size:15px;
+        font-size:16px;
     }
 
     .live-place{
-        font-size:13px;
+        font-size:16px;
     }
 
     .live-date{
-        font-size:12px;
+        font-size:16px;
     }
 
     .edit-btn,
