@@ -9,109 +9,58 @@
 {% block content %}
 <div class="background">
 
-    <a href="/home/live" class="back-link">
-        ← ライブ
+    <a href="#" class="back-link" onclick="history.back(); return false;">
+        ← 戻る
     </a>
 
-    <h1>
-        回収済み楽曲
-    </h1>
+    <h1>回収済み楽曲</h1>
+    <h2>不具合確認中：対応中です。<br>集計結果が正しくないです。<br>ご注意ください。</h2>
 
+    <!-- 回収状況スライダー -->
     <div class="collection-slider">
 
-        <!-- ライブのみ -->
         <div class="collection-card">
-
-            <div class="collection-type">
-                ライブのみ
-            </div>
-
-            <div>
-                🎵 回収済み：{{ summary.collected_count }}曲
-            </div>
-
-            <div>
-                ❌ 未回収：{{ summary.uncollected_count }}曲
-            </div>
-
-            <div>
-                📈 回収率：{{ summary.collection_rate }}%
-            </div>
-
+            <div class="collection-type">ライブのみ</div>
+            <div>🎵 回収済み：{{ summary.collected_count }}曲</div>
+            <div>❌ 未回収：{{ summary.uncollected_count }}曲</div>
+            <div>📈 回収率：{{ summary.collection_rate }}%</div>
         </div>
 
-
-        <!-- 町民集会を含む -->
         <div class="collection-card">
-
-            <div class="collection-type">
-                町民集会を含む
-            </div>
-
-            <div>
-                🎵 回収済み：{{ summary_with_chomin.collected_count }}曲
-            </div>
-
-            <div>
-                ❌ 未回収：{{ summary_with_chomin.uncollected_count }}曲
-            </div>
-
-            <div>
-                📈 回収率：{{ summary_with_chomin.collection_rate }}%
-            </div>
-
+            <div class="collection-type">町民集会を含む</div>
+            <div>🎵 回収済み：{{ summary_with_chomin.collected_count }}曲</div>
+            <div>❌ 未回収：{{ summary_with_chomin.uncollected_count }}曲</div>
+            <div>📈 回収率：{{ summary_with_chomin.collection_rate }}%</div>
         </div>
 
-
-        <!-- 町民集会歌唱曲も含む -->
         <div class="collection-card">
-
-            <div class="collection-type">
-                町民集会歌唱曲も含む
-            </div>
-
-            <div>
-                🎵 回収済み：{{ summary_all_meeting_songs.collected_count }}曲
-            </div>
-
-            <div>
-                ❌ 未回収：{{ summary_all_meeting_songs.uncollected_count }}曲
-            </div>
-
-            <div>
-                📈 回収率：{{ summary_all_meeting_songs.collection_rate }}%
-            </div>
-
+            <div class="collection-type">町民集会歌唱曲も含む</div>
+            <div>🎵 回収済み：{{ summary_all_meeting_songs.collected_count }}曲</div>
+            <div>❌ 未回収：{{ summary_all_meeting_songs.uncollected_count }}曲</div>
+            <div>📈 回収率：{{ summary_all_meeting_songs.collection_rate }}%</div>
         </div>
 
     </div>
-
 
     <!-- スライダードット -->
     <div class="collection-slider-dots">
-
         <span class="collection-slider-dot active"></span>
         <span class="collection-slider-dot"></span>
         <span class="collection-slider-dot"></span>
-
     </div>
-
 
     <!-- メニュー -->
     <div class="collection-menu">
 
-        <a href="/home/live/collected_song/collected?mode=live"
-           class="menu-btn">
+        <a href="/home/live/collected_song/collected?mode=live" class="menu-btn">
             回収済み
         </a>
 
-        <a href="/home/live/collected_song/uncollected?mode=live"
-           class="menu-btn">
+        <a href="/home/live/collected_song/uncollected?mode=live" class="menu-btn">
             未回収
         </a>
 
-        <a href="/home/live/collected_song/appearance?mode=live"
-           class="menu-btn">
+        <a href="/home/live/collected_song/appearance?mode=live" class="menu-btn">
             ライブ登場曲
         </a>
 
@@ -122,72 +71,40 @@
 
 {% block script %}
 <script>
-document.addEventListener("DOMContentLoaded", function(){
+document.addEventListener("DOMContentLoaded", function() {
+    const slider = document.querySelector(".collection-slider");
+    const slides = document.querySelectorAll(".collection-card");
+    const dots = document.querySelectorAll(".collection-slider-dot");
 
-    const slider =
-        document.querySelector(".collection-slider");
-
-    const slides =
-        document.querySelectorAll(".collection-card");
-
-    const dots =
-        document.querySelectorAll(".collection-slider-dot");
-
-    if(!slider || !slides.length || !dots.length){
+    if (!slider || !slides.length || !dots.length) {
         return;
     }
 
-    function updateDots(){
-
-        const sliderRect =
-            slider.getBoundingClientRect();
-
-        const sliderCenter =
-            sliderRect.left +
-            sliderRect.width / 2;
+    function updateDots() {
+        const sliderRect = slider.getBoundingClientRect();
+        const sliderCenter = sliderRect.left + sliderRect.width / 2;
 
         let activeIndex = 0;
         let minDistance = Infinity;
 
-        slides.forEach(function(slide, index){
+        slides.forEach(function(slide, index) {
+            const slideRect = slide.getBoundingClientRect();
+            const slideCenter = slideRect.left + slideRect.width / 2;
+            const distance = Math.abs(sliderCenter - slideCenter);
 
-            const slideRect =
-                slide.getBoundingClientRect();
-
-            const slideCenter =
-                slideRect.left +
-                slideRect.width / 2;
-
-            const distance =
-                Math.abs(
-                    sliderCenter -
-                    slideCenter
-                );
-
-            if(distance < minDistance){
+            if (distance < minDistance) {
                 minDistance = distance;
                 activeIndex = index;
             }
-
         });
 
-        dots.forEach(function(dot, index){
-
-            dot.classList.toggle(
-                "active",
-                index === activeIndex
-            );
-
+        dots.forEach(function(dot, index) {
+            dot.classList.toggle("active", index === activeIndex);
         });
     }
 
-    slider.addEventListener(
-        "scroll",
-        updateDots
-    );
-
+    slider.addEventListener("scroll", updateDots);
     updateDots();
-
 });
 </script>
 {% endblock %}

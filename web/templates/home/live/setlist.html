@@ -8,27 +8,27 @@
 
 {% block content %}
 <div class="background">
-    {% if from_page == "history" %}
 
-    <a href="/home/live/detail/{{ live.live_id }}?from=history"
-       class="back-link">
-        ← 参加履歴詳細
+    <!-- ==========================
+         戻るリンク
+    ========================== -->
+
+    <a href="#"
+       class="back-link"
+       onclick="history.back(); return false;">
+        ← 戻る
     </a>
 
-    {% else %}
-
-    <a href="/home/live/detail/{{ live.live_id }}?from=archive"
-       class="back-link">
-        ← ライブ詳細
-    </a>
-
-    {% endif %}
 
     <div class="page-scroll">
         <div class="container">
 
-            <!-- ライブ情報 -->
-            <div class="detail-card">
+            <!-- ==========================
+                 ライブ情報
+            ========================== -->
+
+            <section class="detail-card">
+
                 <div class="group-title">
                     ライブ情報
                 </div>
@@ -37,92 +37,149 @@
                     {{ live.live_name }}
                 </div>
 
+                {% if live.tour_name %}
+
                 <div class="tour-name">
                     {{ live.tour_name }}
                 </div>
 
+                {% endif %}
+
                 <div class="live-date">
                     📅 {{ live.live_date }}
                 </div>
-            </div>
 
-            <!-- セットリスト -->
-            <div class="detail-card">
+            </section>
+
+
+            <!-- ==========================
+                 セットリスト
+            ========================== -->
+
+            <section class="detail-card">
+
                 <div class="group-title">
                     セットリスト
                 </div>
 
+
                 {% if songs %}
-                    <div class="song-list">
-                        {% for song in songs %}
-                        <div class="song-item">
-                            <div class="song-number">
-                                {{ loop.index }}
-                            </div>
 
-                            <div class="song-info">
-                                <div class="song-name">
-                                    {{ song.song_name }}
+                <div class="song-list">
 
-                                    {% if song.is_medley %}
-                                        <span class="medley-badge">
-                                            メドレー{{ song.medley_order }}
-                                        </span>
-                                    {% endif %}
-                                </div>
+                    {% for song in songs %}
 
-                                {% if song.album_name %}
-                                    <div class="album-name">
-                                        {{ song.album_name }}
-                                    </div>
-                                {% endif %}
-                            </div>
+                    <div class="song-item">
 
-                            <div class="music-links">
-                                {% if song.youtube_url %}
-                                <a
-                                    href="{{ song.youtube_url }}"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    class="music-btn youtube"
-                                >
-                                    YouTube
-                                </a>
-                                {% endif %}
+                        <!-- ==========================
+                             曲順
+                        ========================== -->
 
-                                {% if song.apple_music_url %}
-                                <a
-                                    href="{{ song.apple_music_url }}"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    class="music-btn apple"
-                                >
-                                    AppleMusic
-                                </a>
-                                {% endif %}
-
-                                {% if song.spotify_url %}
-                                <a
-                                    href="{{ song.spotify_url }}"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    class="music-btn spotify"
-                                >
-                                    Spotify
-                                </a>
-                                {% endif %}
-                            </div>
+                        <div class="song-number">
+                            {{ loop.index }}
                         </div>
-                        {% endfor %}
+
+
+                        <!-- ==========================
+                             曲情報
+                        ========================== -->
+
+                        <div class="song-info">
+
+                            <div class="song-name">
+
+                                {{ song.song_name }}
+
+                                {% if song.is_medley %}
+
+                                <span class="medley-badge">
+                                    メドレー{{ song.medley_order }}
+                                </span>
+
+                                {% endif %}
+
+                            </div>
+
+
+                            {% if song.album_name %}
+
+                            <div class="album-name">
+                                {{ song.album_name }}
+                            </div>
+
+                            {% endif %}
+
+                        </div>
+
+
+                        <!-- ==========================
+                             配信リンク
+                        ========================== -->
+
+                        {% if song.youtube_url
+                           or song.apple_music_url
+                           or song.spotify_url %}
+
+                        <div class="music-links">
+
+                            {% if song.youtube_url %}
+
+                            <a href="{{ song.youtube_url }}"
+                               target="_blank"
+                               rel="noopener noreferrer"
+                               class="music-btn youtube">
+                                YouTube
+                            </a>
+
+                            {% endif %}
+
+
+                            {% if song.apple_music_url %}
+
+                            <a href="{{ song.apple_music_url }}"
+                               target="_blank"
+                               rel="noopener noreferrer"
+                               class="music-btn apple">
+                                AppleMusic
+                            </a>
+
+                            {% endif %}
+
+
+                            {% if song.spotify_url %}
+
+                            <a href="{{ song.spotify_url }}"
+                               target="_blank"
+                               rel="noopener noreferrer"
+                               class="music-btn spotify">
+                                Spotify
+                            </a>
+
+                            {% endif %}
+
+                        </div>
+
+                        {% endif %}
+
                     </div>
+
+                    {% endfor %}
+
+                </div>
+
+
                 {% else %}
-                    <div class="no-song">
-                        セットリストが登録されていません。
-                    </div>
+
+                <div class="no-song">
+                    セットリストが登録されていません。
+                </div>
+
                 {% endif %}
-            </div>
+
+            </section>
 
         </div>
     </div>
+
 </div>
 {% endblock %}

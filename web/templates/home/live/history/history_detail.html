@@ -9,26 +9,16 @@
 {% block content %}
 <div class="background">
 
-    {% if request.query_params.get('from') == 'live' %}
-    <a href="/home/live"
-       class="back-link">
-        ← ライブ
+    <a href="javascript:history.back()" class="back-link">
+        ← 戻る
     </a>
-
-    {% else %}
-    <a href="/home/live/history" class="back-link">
-        ← 参加履歴
-    </a>
-    {% endif %}
 
     <div class="page-scroll">
         <div class="container">
 
             <!-- 基本情報 -->
             <div class="detail-card">
-                <div class="group-title">
-                    基本情報
-                </div>
+                <div class="group-title">基本情報</div>
 
                 <div class="live-name">
                     {{ live.live_name }}
@@ -39,31 +29,21 @@
                 </div>
 
                 <div class="info-list">
-                    <div>
-                        📅 {{ live.live_date }}
-                    </div>
-
-                    <div>
-                        📍 {{ live.prefecture_name }}
-                        {{ live.venue_name }}
-                    </div>
+                    <div>📅 {{ live.live_date }}</div>
+                    <div>📍 {{ live.prefecture_name }} {{ live.venue_name }}</div>
                 </div>
             </div>
 
             <!-- 参加記録 -->
             <div class="detail-card">
-                <div class="group-title">
-                    参加記録
-                </div>
+                <div class="group-title">参加記録</div>
 
                 {% if live.seat_info %}
                 <div class="record-item">
                     💺 {{ live.seat_info }}
                 </div>
                 {% else %}
-                <div class="empty-text">
-                    座席情報なし
-                </div>
+                <div class="empty-text">座席情報なし</div>
                 {% endif %}
 
                 {% if live.memo %}
@@ -72,22 +52,21 @@
                     <span class="memo-text">{{ live.memo }}</span>
                 </div>
                 {% else %}
-                <div class="empty-text">
-                    感想メモなし
-                </div>
+                <div class="empty-text">感想メモなし</div>
                 {% endif %}
             </div>
 
             <!-- 費用 -->
             <div class="detail-card">
-                <div class="group-title">
-                    費用
-                </div>
+                <div class="group-title">費用</div>
 
                 {% if expenses %}
                 <div class="expense-list">
+
                     {% for expense in expenses %}
+
                     <div class="expense-item">
+
                         <div class="expense-name">
                             {{ expense.expense_type_name }}
                         </div>
@@ -97,6 +76,7 @@
                         </div>
 
                         <div class="expense-actions">
+
                             <div class="memo-area">
                                 {% if expense.memo %}
                                 <button class="icon-btn memo-btn"
@@ -116,19 +96,20 @@
                             <form method="post"
                                   action="/home/live/history/expense/delete/{{ expense.expense_id }}"
                                   onsubmit="return confirm('削除しますか？')">
-
                                 <button class="icon-btn">
                                     🗑️
                                 </button>
                             </form>
+
                         </div>
+
                     </div>
+
                     {% endfor %}
+
                 </div>
                 {% else %}
-                <div class="empty-text">
-                    費用登録なし
-                </div>
+                <div class="empty-text">費用登録なし</div>
                 {% endif %}
 
                 <div class="total-expense">
@@ -138,18 +119,18 @@
 
             <div id="expenseMemoModal" class="memo-modal">
                 <div class="memo-modal-content">
+
                     <div class="memo-title">
                         費用メモ
                     </div>
 
-                    <div id="expenseMemoText"
-                         class="memo-content">
-                    </div>
+                    <div id="expenseMemoText" class="memo-content"></div>
 
                     <button class="close-btn"
                             onclick="closeExpenseMemo()">
                         閉じる
                     </button>
+
                 </div>
             </div>
 
@@ -170,60 +151,20 @@
 
 {% block script %}
 <script>
-function openExpenseMemo(memo){
-    const modal = document.getElementById(
-        "expenseMemoModal"
-    );
-
-    document.getElementById(
-        "expenseMemoText"
-    ).innerText = memo;
-
+function openExpenseMemo(memo) {
+    const modal = document.getElementById("expenseMemoModal");
+    document.getElementById("expenseMemoText").innerText = memo;
     modal.style.display = "flex";
 }
 
-
-function closeExpenseMemo(){
-    document.getElementById(
-        "expenseMemoModal"
-    ).style.display = "none";
+function closeExpenseMemo() {
+    document.getElementById("expenseMemoModal").style.display = "none";
 }
 
-
-document.getElementById(
-    "expenseMemoModal"
-).addEventListener(
-    "click",
-    function(e){
-
-        if(e.target === this){
-            closeExpenseMemo();
-        }
-
+document.getElementById("expenseMemoModal").addEventListener("click", function(e) {
+    if (e.target === this) {
+        closeExpenseMemo();
     }
-);
-
-
-function backToLiveList(){
-    const from =
-        new URLSearchParams(
-            window.location.search
-        ).get("from");
-
-    const link =
-        document.getElementById(
-            "back-link"
-        );
-
-    if(from == "live"){
-        link.href = "/home/live";
-        link.textContent = "← ライブ";
-    }else{
-        link.href = "/home/live/history";
-        link.textContent = "← 参加履歴";
-    }
-
-    return true;
-}
+});
 </script>
 {% endblock %}

@@ -3,248 +3,218 @@
 {% block title %}町民集会 - 推し活オールインワン{% endblock %}
 
 {% block css %}
-    <link rel="stylesheet" href="/static/css/home/meeting/meeting.css">
+<link rel="stylesheet" href="/static/css/home/meeting/meeting.css">
 {% endblock %}
 
 {% block content %}
-    <div class="background">
-        <div class="page-scroll">
-            <div class="container">
-                {% if meetings %}
-                    <div class="meeting-slider">
-                        {% for meeting in meetings %}
-                        <div class="meeting-card">
-                            <div class="meeting-name">{{ meeting.meeting_name }}</div>
-
-                            <div class="meeting-info">
-                                <div>
-                                    📅 {{ meeting.meeting_date }}
-                                    {% if meeting.remaining_days is not none %}
-                                        (あと{{ meeting.remaining_days }}日！)
-                                    {% endif %}
-                                </div>
-                                <div>📍 {{ meeting.prefecture_name }} {{ meeting.venue_name }}</div>
-                            </div>
-
-                            {% if meeting.weather and meeting.weather.weather %}
-                                <div class="weather-button-row">
-                                    <button type="button" class="weather-btn" data-weather-id="meeting-{{ meeting.meeting_id }}">
-                                        {% for weather in meeting.weather.weather %}
-                                            {% if weather.label == "開催日" %}{{ weather.icon }}{% endif %}
-                                        {% endfor %}
-                                        <span>天気予報</span>
-                                    </button>
-
-                                    {% if meeting.meeting_date == today and meeting.weather.hourly_weather %}
-                                        <button type="button" class="weather-hourly-btn" data-weather-id="meeting-hourly-{{ meeting.meeting_id }}">
-                                            🌤️ <span>当日の天気</span>
-                                        </button>
-                                    {% endif %}
-                                </div>
+<div class="background">
+    <div class="page-scroll">
+        <div class="container">
+            {% if meetings %}
+            <div class="meeting-slider">
+                {% for meeting in meetings %}
+                <div class="meeting-card">
+                    <div class="meeting-name">{{ meeting.meeting_name }}</div>
+                    <div class="meeting-info">
+                        <div>
+                            📅 {{ meeting.meeting_date }}
+                            {% if meeting.remaining_days is not none %}
+                                (あと{{ meeting.remaining_days }}日！)
                             {% endif %}
-
-                            {% if meeting.meeting_date == today %}
-                                <a href="https://www.google.com/maps/search/?api=1&query={{ meeting.venue_name | urlencode }}"
-                                   target="_blank"
-                                   rel="noopener noreferrer"
-                                   class="departure-btn">
-                                    🚗 出発する
-                                </a>
-                            {% endif %}
-
-                            {% if is_login and meeting.is_join %}
-                                <div class="join-status">参加予定</div>
-                                <a href="/home/meeting/history/detail/{{ meeting.meeting_id }}?from=meeting" class="add-history">記録</a>
-                            {% endif %}
-
-                            <a href="/home/meeting/detail/{{ meeting.meeting_id }}?from=meeting" class="detail-btn">詳細</a>
                         </div>
-                        {% endfor %}
+                        <div>📍 {{ meeting.prefecture_name }} {{ meeting.venue_name }}</div>
                     </div>
 
-                    <div class="meeting-slider-dots">
-                        {% for meeting in meetings %}
-                            <span class="meeting-slider-dot{% if loop.first %} active{% endif %}"></span>
-                        {% endfor %}
+                    {% if meeting.weather and meeting.weather.weather %}
+                    <div class="weather-button-row">
+                        <button type="button" class="weather-btn" data-weather-id="meeting-{{ meeting.meeting_id }}">
+                            {% for weather in meeting.weather.weather %}
+                                {% if weather.label == "開催日" %}{{ weather.icon }}{% endif %}
+                            {% endfor %}
+                            <span>天気予報</span>
+                        </button>
+
+                        {% if meeting.meeting_date == today and meeting.weather.hourly_weather %}
+                        <button type="button" class="weather-hourly-btn" data-weather-id="meeting-hourly-{{ meeting.meeting_id }}">
+                            🌤️ <span>当日の天気</span>
+                        </button>
+                        {% endif %}
                     </div>
-                {% else %}
-                    <div class="no-meeting">現在、開催予定の町民集会はありません</div>
-                {% endif %}
-
-                <div class="menu-grid">
-                    <a href="/home/meeting/archive?first" class="menu-btn">
-                        <span>アーカイブ</span>
-                    </a>
-
-                    {% if is_login %}
-                        <a href="/home/meeting/history?first" class="menu-btn">
-                            <span>参加履歴</span>
-                        </a>
                     {% endif %}
 
-                    <a href="/home/meeting/guest?first" class="menu-btn">
-                        <span>ゲスト一覧</span>
-                    </a>
+                    {% if meeting.meeting_date == today %}
+                    <a href="https://www.google.com/maps/search/?api=1&query={{ meeting.venue_name | urlencode }}" target="_blank" rel="noopener noreferrer" class="departure-btn">🚗 出発する</a>
+                    {% endif %}
+
+                    {% if is_login and meeting.is_join %}
+                    <div class="join-status">参加予定</div>
+                    <a href="/home/meeting/history/detail/{{ meeting.meeting_id }}" class="add-history">記録</a>
+                    {% endif %}
+
+                    <a href="/home/meeting/detail/{{ meeting.meeting_id }}" class="detail-btn">詳細</a>
                 </div>
+                {% endfor %}
+            </div>
+
+            <div class="meeting-slider-dots">
+                {% for meeting in meetings %}
+                <span class="meeting-slider-dot{% if loop.first %} active{% endif %}"></span>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="no-meeting">現在、開催予定の町民集会はありません</div>
+            {% endif %}
+
+            <div class="menu-grid">
+                <a href="/home/meeting/archive?first" class="menu-btn"><span>アーカイブ</span></a>
+                {% if is_login %}
+                <a href="/home/meeting/history?first" class="menu-btn"><span>参加履歴</span></a>
+                {% endif %}
+                <a href="/home/meeting/guest?first" class="menu-btn"><span>ゲスト一覧</span></a>
             </div>
         </div>
     </div>
+</div>
 
-    {% if meetings %}
-        {% for meeting in meetings %}
-            {% if meeting.weather and meeting.weather.weather %}
-                <div id="weather-modal-meeting-{{ meeting.meeting_id }}" class="weather-modal">
-                    <div class="weather-modal-overlay"></div>
-                    <div class="weather-modal-content">
-                        <div class="weather-modal-title">開催日の天気予報</div>
+{% if meetings %}
+{% for meeting in meetings %}
+{% if meeting.weather and meeting.weather.weather %}
+<div id="weather-modal-meeting-{{ meeting.meeting_id }}" class="weather-modal">
+    <div class="weather-modal-overlay"></div>
+    <div class="weather-modal-content">
+        <div class="weather-modal-title">開催日の天気予報</div>
 
-                        {% if meeting.weather.updated_at %}
-                            <div class="weather-updated-at">
-                                最終更新：{{ meeting.weather.updated_at.strftime('%Y/%m/%d %H:%M') }}
-                            </div>
-                        {% endif %}
+        {% if meeting.weather.updated_at %}
+        <div class="weather-updated-at">最終更新：{{ meeting.weather.updated_at.strftime('%Y/%m/%d %H:%M') }}</div>
+        {% endif %}
 
-                        {% for weather in meeting.weather.weather %}
-                            <div class="weather-day">
-                                <div class="weather-day-title">
-                                    <span class="weather-icon">{{ weather.icon }}</span>
-                                    {{ weather.date[:4] }}/{{ weather.date[5:7] }}/{{ weather.date[8:10] }}（{{ weather.weekday }}）{{ weather.label }}
-                                </div>
-                                <div class="weather-name">{{ weather.weather_name }}</div>
-                                <div class="weather-temperature">{{ weather.temperature_min }}℃ ～ {{ weather.temperature_max }}℃</div>
-                                <div class="weather-rain">
-                                    ☔ 降水確率
-                                    {% if weather.precipitation_probability is not none %}
-                                        {{ weather.precipitation_probability }}%
-                                    {% else %}
-                                        --%
-                                    {% endif %}
-                                </div>
-                            </div>
-                        {% endfor %}
-
-                        <button type="button" class="weather-close">閉じる</button>
-                    </div>
-                </div>
-
-                {% if meeting.meeting_date == today and meeting.weather.hourly_weather %}
-                    <div id="weather-modal-meeting-hourly-{{ meeting.meeting_id }}" class="weather-modal">
-                        <div class="weather-modal-overlay"></div>
-                        <div class="weather-modal-content">
-                            <div class="weather-modal-title">当日の天気予報</div>
-
-                            {% if meeting.weather.updated_at %}
-                                <div class="weather-updated-at">
-                                    最終更新：{{ meeting.weather.updated_at.strftime('%Y/%m/%d %H:%M') }}
-                                </div>
-                            {% endif %}
-
-                            <div class="weather-hourly-list">
-                                {% for hourly in meeting.weather.hourly_weather %}
-                                    <div class="weather-hourly-row">
-                                        <div class="weather-hourly-time">{{ hourly.time }}</div>
-                                        <div class="weather-hourly-icon">{{ hourly.icon }}</div>
-                                        <div class="weather-hourly-name">{{ hourly.weather_name }}</div>
-                                        <div class="weather-hourly-temperature">{{ hourly.temperature }}℃</div>
-                                        <div class="weather-hourly-rain">
-                                            ☔
-                                            {% if hourly.precipitation_probability is not none %}
-                                                {{ hourly.precipitation_probability }}%
-                                            {% else %}
-                                                --%
-                                            {% endif %}
-                                        </div>
-                                    </div>
-                                {% endfor %}
-                            </div>
-
-                            <button type="button" class="weather-close">閉じる</button>
-                        </div>
-                    </div>
-                {% endif %}
-            {% endif %}
+        {% for weather in meeting.weather.weather %}
+        <div class="weather-day">
+            <div class="weather-day-title">
+                <span class="weather-icon">{{ weather.icon }}</span>
+                {{ weather.date[:4] }}/{{ weather.date[5:7] }}/{{ weather.date[8:10] }}（{{ weather.weekday }}）{{ weather.label }}
+            </div>
+            <div class="weather-name">{{ weather.weather_name }}</div>
+            <div class="weather-temperature">{{ weather.temperature_min }}℃ ～ {{ weather.temperature_max }}℃</div>
+            <div class="weather-rain">
+                ☔ 降水確率
+                {% if weather.precipitation_probability is not none %}{{ weather.precipitation_probability }}%{% else %}--%{% endif %}
+            </div>
+        </div>
         {% endfor %}
-    {% endif %}
+
+        <button type="button" class="weather-close">閉じる</button>
+    </div>
+</div>
+
+{% if meeting.meeting_date == today and meeting.weather.hourly_weather %}
+<div id="weather-modal-meeting-hourly-{{ meeting.meeting_id }}" class="weather-modal">
+    <div class="weather-modal-overlay"></div>
+    <div class="weather-modal-content">
+        <div class="weather-modal-title">当日の天気予報</div>
+
+        {% if meeting.weather.updated_at %}
+        <div class="weather-updated-at">最終更新：{{ meeting.weather.updated_at.strftime('%Y/%m/%d %H:%M') }}</div>
+        {% endif %}
+
+        <div class="weather-hourly-list">
+            {% for hourly in meeting.weather.hourly_weather %}
+            <div class="weather-hourly-row">
+                <div class="weather-hourly-time">{{ hourly.time }}</div>
+                <div class="weather-hourly-icon">{{ hourly.icon }}</div>
+                <div class="weather-hourly-name">{{ hourly.weather_name }}</div>
+                <div class="weather-hourly-temperature">{{ hourly.temperature }}℃</div>
+                <div class="weather-hourly-rain">
+                    ☔
+                    {% if hourly.precipitation_probability is not none %}{{ hourly.precipitation_probability }}%{% else %}--%{% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <button type="button" class="weather-close">閉じる</button>
+    </div>
+</div>
+{% endif %}
+{% endif %}
+{% endfor %}
+{% endif %}
 {% endblock %}
 
 {% block script %}
-    <script src="/static/js/common.js"></script>
+<script src="/static/js/common.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+    const slider = document.querySelector(".meeting-slider");
+    const slides = document.querySelectorAll(".meeting-card");
+    const dots = document.querySelectorAll(".meeting-slider-dot");
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function(){
-            const slider = document.querySelector(".meeting-slider");
-            const slides = document.querySelectorAll(".meeting-card");
-            const dots = document.querySelectorAll(".meeting-slider-dot");
+    if(slider && slides.length && dots.length){
+        function updateDots(){
+            const rect = slider.getBoundingClientRect();
+            const center = rect.left + rect.width / 2;
+            let activeIndex = 0;
+            let minDistance = Infinity;
 
-            if(slider && slides.length && dots.length){
-                function updateDots(){
-                    const rect = slider.getBoundingClientRect();
-                    const center = rect.left + rect.width / 2;
-                    let activeIndex = 0;
-                    let minDistance = Infinity;
+            slides.forEach(function(slide,index){
+                const slideRect = slide.getBoundingClientRect();
+                const distance = Math.abs(center - (slideRect.left + slideRect.width / 2));
 
-                    slides.forEach(function(slide,index){
-                        const slideRect = slide.getBoundingClientRect();
-                        const distance = Math.abs(center - (slideRect.left + slideRect.width / 2));
-
-                        if(distance < minDistance){
-                            minDistance = distance;
-                            activeIndex = index;
-                        }
-                    });
-
-                    dots.forEach(function(dot,index){
-                        dot.classList.toggle("active",index === activeIndex);
-                    });
+                if(distance < minDistance){
+                    minDistance = distance;
+                    activeIndex = index;
                 }
-
-                slider.addEventListener("scroll",updateDots,{passive:true});
-                window.addEventListener("resize",updateDots);
-                updateDots();
-            }
-
-            const weatherButtons = document.querySelectorAll(".weather-btn,.weather-hourly-btn");
-            const weatherModals = document.querySelectorAll(".weather-modal");
-
-            function closeWeatherModal(modal){
-                if(!modal)return;
-                modal.classList.remove("active");
-                document.body.classList.remove("weather-modal-open");
-            }
-
-            weatherButtons.forEach(function(button){
-                button.addEventListener("click",function(){
-                    const weatherId = button.dataset.weatherId;
-                    const modal = document.getElementById("weather-modal-" + weatherId);
-
-                    if(!modal)return;
-
-                    modal.classList.add("active");
-                    document.body.classList.add("weather-modal-open");
-                });
             });
 
-            weatherModals.forEach(function(modal){
-                const overlay = modal.querySelector(".weather-modal-overlay");
-                const closeButton = modal.querySelector(".weather-close");
-
-                if(overlay)overlay.addEventListener("click",function(){closeWeatherModal(modal);});
-                if(closeButton)closeButton.addEventListener("click",function(){closeWeatherModal(modal);});
+            dots.forEach(function(dot,index){
+                dot.classList.toggle("active",index === activeIndex);
             });
+        }
 
-            document.addEventListener("keydown",function(event){
-                if(event.key !== "Escape")return;
+        slider.addEventListener("scroll",updateDots,{passive:true});
+        window.addEventListener("resize",updateDots);
+        updateDots();
+    }
 
-                weatherModals.forEach(function(modal){
-                    if(modal.classList.contains("active"))closeWeatherModal(modal);
-                });
-            });
+    const weatherButtons = document.querySelectorAll(".weather-btn,.weather-hourly-btn");
+    const weatherModals = document.querySelectorAll(".weather-modal");
+
+    function closeWeatherModal(modal){
+        if(!modal)return;
+        modal.classList.remove("active");
+        document.body.classList.remove("weather-modal-open");
+    }
+
+    weatherButtons.forEach(function(button){
+        button.addEventListener("click",function(){
+            const modal = document.getElementById("weather-modal-" + button.dataset.weatherId);
+            if(!modal)return;
+            modal.classList.add("active");
+            document.body.classList.add("weather-modal-open");
         });
-    </script>
+    });
 
-    {% if message %}
-        <script>
-            showToast("{{ message }}");
-        </script>
-    {% endif %}
+    weatherModals.forEach(function(modal){
+        const overlay = modal.querySelector(".weather-modal-overlay");
+        const closeButton = modal.querySelector(".weather-close");
+
+        if(overlay)overlay.addEventListener("click",function(){closeWeatherModal(modal);});
+        if(closeButton)closeButton.addEventListener("click",function(){closeWeatherModal(modal);});
+    });
+
+    document.addEventListener("keydown",function(event){
+        if(event.key !== "Escape")return;
+
+        weatherModals.forEach(function(modal){
+            if(modal.classList.contains("active"))closeWeatherModal(modal);
+        });
+    });
+});
+</script>
+
+{% if message %}
+<script>
+showToast("{{ message }}");
+</script>
+{% endif %}
 {% endblock %}

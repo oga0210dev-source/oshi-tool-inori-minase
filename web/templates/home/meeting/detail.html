@@ -9,225 +9,76 @@
 {% block content %}
 <div class="background">
 
-    {% if request.query_params.get('from') == 'guest' %}
-
-    <a href="/home/meeting/guest/detail/{{ request.query_params.get('guest_id') }}"
-       class="back-link">
-        ← ゲスト詳細
+    <a href="#" class="back-link" onclick="history.back(); return false;">
+        ← 戻る
     </a>
-
-    {% elif request.query_params.get('from') == 'history' %}
-    <a href="/home/meeting/history"
-       class="back-link">
-        ← 参加履歴
-    </a>
-
-    {% elif request.query_params.get('from') == 'venue_events' %}
-    <a href="/home/oshi/venue/{{ request.query_params.get('venue_id') }}/events"
-       class="back-link">
-        ← 利用イベント
-    </a>
-
-    {% elif request.query_params.get('from') == 'meeting' %}
-    <a href="/home/meeting"
-       class="back-link">
-        ← 町民集会
-    </a>
-
-    {% else %}
-
-    <a href="/home/meeting/archive"
-       class="back-link">
-        ← 町民集会一覧
-    </a>
-
-    {% endif %}
-
     <div class="page-scroll">
         <div class="container">
 
-            <!-- 基本情報 -->
-            <div class="detail-card">
-
-                <div class="group-title">
-                    基本情報
-                </div>
-
-                <div class="meeting-name">
-                    {{ meeting.meeting_name }}
-                </div>
-
+            <section class="detail-card">
+                <div class="group-title">基本情報</div>
+                <div class="meeting-name">{{ meeting.meeting_name }}</div>
                 <div class="meeting-info">
+                    <div class="meeting-date">📅 {{ meeting.meeting_date }}</div>
+                    <div class="performance-type">🎤 {{ performance_type }}</div>
+                    <div class="day-status">{{ day_status }}</div>
 
-                    <div>
-                        📅 {{ meeting.meeting_date }}
-                    </div>
-
-                    <div class="performance-type">
-                        🎤 {{ performance_type }}
-                    </div>
-
-                    <div class="day-status">
-                        {{ day_status }}
-                    </div>
-
+                    {% if meeting.venue_name %}
                     <div class="venue-link">
                         📍 {{ meeting.prefecture_name }}
-
-                        {% if meeting.venue_name %}
-                        <a href="/home/oshi/venue/{{ meeting.venue_id }}/events?from=meeting_detail&event_id={{ meeting.meeting_id }}"
-                           class="venue-link">
-                            {{ meeting.venue_name }}
-                        </a>
+                        {% if meeting.venue_id %}
+                        <a href="/home/oshi/venue/{{ meeting.venue_id }}/events" class="venue-link">{{ meeting.venue_name }}</a>
+                        {% else %}
+                        {{ meeting.venue_name }}
                         {% endif %}
                     </div>
-
-                    {% if is_login %}
-
-                        {% if meeting.meeting_date >= today %}
-
-                            {% if meeting.is_join %}
-                            <div class="join-status future">
-                                参加予定
-                            </div>
-                            {% else %}
-                            <div class="join-status none">
-                                未参加
-                            </div>
-                            {% endif %}
-
-                        {% else %}
-
-                            {% if meeting.is_join %}
-                            <div class="join-status past">
-                                参加済み
-                            </div>
-                            {% else %}
-                            <div class="join-status none">
-                                未参加
-                            </div>
-                            {% endif %}
-
-                        {% endif %}
-
                     {% endif %}
 
+                    {% if is_login %}
+                        {% if meeting.meeting_date >= today %}
+                            {% if meeting.is_join %}
+                            <div class="join-status future">参加予定</div>
+                            {% else %}
+                            <div class="join-status none">未参加</div>
+                            {% endif %}
+                        {% else %}
+                            {% if meeting.is_join %}
+                            <div class="join-status past">参加済み</div>
+                            {% else %}
+                            <div class="join-status none">未参加</div>
+                            {% endif %}
+                        {% endif %}
+                    {% endif %}
                 </div>
+            </section>
 
-            </div>
-
-
-            <!-- ゲスト -->
             {% if guests %}
-
-            <div class="detail-card">
-
-                <div class="group-title">
-                    ゲスト
-                </div>
-
+            <section class="detail-card">
+                <div class="group-title">ゲスト</div>
                 <div class="guest-list">
-
                     {% for guest in guests %}
-
-                    <a
-                        href="/home/meeting/guest/detail/{{ guest.guest_id }}"
-                        class="guest-item">
-
-                        <span class="guest-name">
-                            🎤 {{ guest.guest_name }}
-                        </span>
-
+                    <a href="/home/meeting/guest/detail/{{ guest.guest_id }}" class="guest-item">
+                        <span class="guest-name">🎤 {{ guest.guest_name }}</span>
                     </a>
-
                     {% endfor %}
-
                 </div>
-
-            </div>
-
+            </section>
             {% endif %}
 
-
-            <!-- 関連リンク -->
             {% if meeting.official_url %}
-
-            <div class="detail-card">
-
-                <div class="group-title">
-                    関連リンク
-                </div>
-
-                <a
-                    href="{{ meeting.official_url }}"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="link-btn">
-                    🌐 公式サイト
-                </a>
-
-            </div>
-
+            <section class="detail-card">
+                <div class="group-title">関連リンク</div>
+                <a href="{{ meeting.official_url }}" target="_blank" rel="noopener noreferrer" class="link-btn">🌐 公式サイト</a>
+            </section>
             {% endif %}
 
-
-            <!-- セットリスト -->
-            <div class="detail-card">
-
-                <div class="group-title">
-                    セットリスト
-                </div>
-
-                {% if request.query_params.get('from') == 'guest' %}
-
-                <a
-                    href="/home/meeting/setlist/{{ meeting.meeting_id }}?from=guest&guest_id={{ request.query_params.get('guest_id') }}"
-                    class="link-btn">
-                    🎵 セットリストを見る
-                </a>
-
-                {% elif request.query_params.get('from') == 'history' %}
-
-                <a
-                    href="/home/meeting/setlist/{{ meeting.meeting_id }}?from=history"
-                    class="link-btn">
-                    🎵 セットリストを見る
-                </a>
-
-                {% else %}
-
-                <a
-                    href="/home/meeting/setlist/{{ meeting.meeting_id }}?from=archive"
-                    class="link-btn">
-                    🎵 セットリストを見る
-                </a>
-
-                {% endif %}
-
-            </div>
+            <section class="detail-card">
+                <div class="group-title">セットリスト</div>
+                <a href="/home/meeting/setlist/{{ meeting.meeting_id }}" class="link-btn">🎵 セットリストを見る</a>
+            </section>
 
         </div>
     </div>
 
 </div>
-{% endblock %}
-
-{% block script %}
-<script>
-function backToMeetingArchive(){
-
-    const url =
-        sessionStorage.getItem(
-            "meetingArchiveUrl"
-        );
-
-    if(url){
-        location.href = url;
-    }else{
-        location.href = "/home/meeting/archive";
-    }
-
-    return false;
-}
-</script>
 {% endblock %}

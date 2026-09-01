@@ -10,24 +10,9 @@
 
 <main class="oshi-page oshi-venue-events-page">
     <section class="oshi-page-header">
-        {% if request.query_params.get('from') == 'live_detail' %}
-        <a href="/home/live/detail/{{ request.query_params.get('event_id') }}"
-           class="oshi-back-btn">
-            ← ライブ詳細
+        <a href="#" class="back-link" onclick="history.back(); return false;">
+            ← 戻る
         </a>
-
-        {% elif request.query_params.get('from') == 'meeting_detail' %}
-        <a href="/home/meeting/detail/{{ request.query_params.get('event_id') }}"
-           class="oshi-back-btn">
-            ← 町民集会詳細
-        </a>
-
-        {% else %}
-        <a href="/home/oshi/venue?keyword={{ return_keyword | urlencode }}&sort={{ return_sort | urlencode }}"
-           class="oshi-back-btn">
-            ← イベント会場
-        </a>
-        {% endif %}
 
         <h1>利用イベント</h1>
         <p class="oshi-venue-events-venue-name">{{ venue.venue_name }}</p>

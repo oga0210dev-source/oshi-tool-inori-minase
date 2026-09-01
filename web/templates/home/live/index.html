@@ -3,221 +3,697 @@
 {% block title %}ライブ一覧 - 推し活オールインワン{% endblock %}
 
 {% block css %}
-    <link rel="stylesheet" href="/static/css/home/live/live.css">
+<link rel="stylesheet" href="/static/css/home/live/live.css">
 {% endblock %}
 
 {% block content %}
-    <div class="background">
-        <div class="page-scroll">
-            <div class="container">
-                {% if lives %}
-                    <div class="live-slider">
-                        {% for live in lives %}
-                            <div class="live-card">
-                                <div class="live-name">{{ live.live_name }}</div>
-                                <div class="tour-name">{{ live.tour_name }}</div>
-                                <div class="live-info">
-                                    <div>📅 {{ live.live_date }} (あと{{ live.remaining_days }}日！)</div>
-                                    <div>📍 {{ live.prefecture_name }} {{ live.venue_name }}</div>
-                                </div>
+<div class="background">
 
-                                {% if live.weather and live.weather.weather %}
-                                    <div class="weather-button-row">
-                                        <button type="button" class="weather-btn" data-weather-id="live-{{ live.live_id }}">
-                                            {% for weather in live.weather.weather %}
-                                                {% if weather.label == "開催日" %}{{ weather.icon }}{% endif %}
-                                            {% endfor %}
-                                            <span>天気予報</span>
-                                        </button>
+    <div class="page-scroll">
+        <div class="container">
 
-                                        {% if live.live_date == today and live.weather.hourly_weather %}
-                                            <button type="button" class="weather-hourly-btn" data-weather-id="live-hourly-{{ live.live_id }}">
-                                                🌤️ <span>当日の天気</span>
-                                            </button>
-                                        {% endif %}
-                                    </div>
-                                {% endif %}
+            {% if lives %}
 
-                                {% if live.live_date == today %}
-                                    <a href="https://www.google.com/maps/search/?api=1&query={{ live.venue_name | urlencode }}"
-                                       target="_blank"
-                                       rel="noopener noreferrer"
-                                       class="departure-btn">
-                                        🚗 出発する
-                                    </a>
-                                {% endif %}
+            <!-- ==========================
+                 ライブスライダー
+            ========================== -->
 
-                                {% if is_login and live.is_join %}
-                                    <div class="join-status">参加予定</div>
-                                    <a href="/home/live/history/detail/{{ live.live_id }}?from=live" class="add-history">記録</a>
-                                {% endif %}
+            <div class="live-slider">
 
-                                <a href="/home/live/detail/{{ live.live_id }}?from=live" class="detail-btn">詳細</a>
-                            </div>
-                        {% endfor %}
+                {% for live in lives %}
+
+                <div class="live-card">
+
+                    <div class="live-name">
+                        {{ live.live_name }}
                     </div>
 
-                    <div class="live-slider-dots">
-                        {% for live in lives %}
-                            <span class="live-slider-dot{% if loop.first %} active{% endif %}"></span>
-                        {% endfor %}
+                    <div class="tour-name">
+                        {{ live.tour_name }}
                     </div>
-                {% else %}
-                    <div class="no-live">現在、開催予定のライブはありません</div>
-                {% endif %}
 
-                <div class="menu-grid">
-                    <a href="/home/live/archive?first" class="menu-btn"><span>アーカイブ</span></a>
-                    {% if is_login %}
-                        <a href="/home/live/history?first" class="menu-btn"><span>参加履歴</span></a>
-                        <a href="/home/live/collected_song" class="menu-btn"><span>回収済み</span></a>
-                        <a href="/home/live/prediction?first" class="menu-btn"><span>セトリ予測</span></a>
+                    <div class="live-info">
+
+                        <div>
+                            📅 {{ live.live_date }}
+                            (あと{{ live.remaining_days }}日！)
+                        </div>
+
+                        <div>
+                            📍 {{ live.prefecture_name }}
+                            {{ live.venue_name }}
+                        </div>
+
+                    </div>
+
+
+                    <!-- ==========================
+                         天気予報
+                    ========================== -->
+
+                    {% if live.weather and live.weather.weather %}
+
+                    <div class="weather-button-row">
+
+                        <button
+                            type="button"
+                            class="weather-btn"
+                            data-weather-id="live-{{ live.live_id }}">
+
+                            {% for weather in live.weather.weather %}
+                                {% if weather.label == "開催日" %}
+                                    {{ weather.icon }}
+                                {% endif %}
+                            {% endfor %}
+
+                            <span>
+                                天気予報
+                            </span>
+
+                        </button>
+
+
+                        {% if live.live_date == today
+                           and live.weather.hourly_weather %}
+
+                        <button
+                            type="button"
+                            class="weather-hourly-btn"
+                            data-weather-id="live-hourly-{{ live.live_id }}">
+
+                            🌤️
+                            <span>
+                                当日の天気
+                            </span>
+
+                        </button>
+
+                        {% endif %}
+
+                    </div>
+
                     {% endif %}
+
+
+                    <!-- ==========================
+                         出発する
+                    ========================== -->
+
+                    {% if live.live_date == today %}
+
+                    <a
+                        href="https://www.google.com/maps/search/?api=1&query={{ live.venue_name | urlencode }}"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="departure-btn">
+
+                        🚗 出発する
+
+                    </a>
+
+                    {% endif %}
+
+
+                    <!-- ==========================
+                         参加状況
+                    ========================== -->
+
+                    {% if is_login and live.is_join %}
+
+                    <div class="join-status">
+                        参加予定
+                    </div>
+
+                    <a
+                        href="/home/live/history/detail/{{ live.live_id }}?from=live"
+                        class="add-history">
+
+                        記録
+
+                    </a>
+
+                    {% endif %}
+
+
+                    <!-- ==========================
+                         詳細
+                    ========================== -->
+
+                    <a
+                        href="/home/live/detail/{{ live.live_id }}?from=live"
+                        class="detail-btn">
+
+                        詳細
+
+                    </a>
+
                 </div>
 
-                {% if is_login %}
-                    <a href="/home/live/lost-item" class="menu-btn wide-btn"><span>忘れ物チェック</span></a>
-                {% endif %}
+                {% endfor %}
+
             </div>
+
+
+            <!-- ==========================
+                 スライダードット
+            ========================== -->
+
+            <div class="live-slider-dots">
+
+                {% for live in lives %}
+
+                <span
+                    class="live-slider-dot{% if loop.first %} active{% endif %}">
+                </span>
+
+                {% endfor %}
+
+            </div>
+
+            {% else %}
+
+            <div class="no-live">
+                現在、開催予定のライブはありません
+            </div>
+
+            {% endif %}
+
+
+            <!-- ==========================
+                 メニュー
+            ========================== -->
+
+            <div class="menu-grid">
+
+                <a
+                    href="/home/live/archive?first"
+                    class="menu-btn">
+
+                    <span>
+                        アーカイブ
+                    </span>
+
+                </a>
+
+
+                {% if is_login %}
+
+                <a
+                    href="/home/live/history?first"
+                    class="menu-btn">
+
+                    <span>
+                        参加履歴
+                    </span>
+
+                </a>
+
+
+                <a
+                    href="/home/live/collected_song"
+                    class="menu-btn">
+
+                    <span>
+                        回収済み
+                    </span>
+
+                </a>
+
+
+                <a
+                    href="/home/live/prediction?first"
+                    class="menu-btn">
+
+                    <span>
+                        セトリ予測
+                    </span>
+
+                </a>
+
+                {% endif %}
+
+            </div>
+
+
+            {% if is_login %}
+
+            <a
+                href="/home/live/lost-item"
+                class="menu-btn wide-btn">
+
+                <span>
+                    忘れ物チェック
+                </span>
+
+            </a>
+
+            {% endif %}
+
         </div>
     </div>
 
-    {% if lives %}
-        {% for live in lives %}
-            {% if live.weather and live.weather.weather %}
-                <div id="weather-modal-live-{{ live.live_id }}" class="weather-modal">
-                    <div class="weather-modal-overlay"></div>
-                    <div class="weather-modal-content">
-                        <div class="weather-modal-title">開催日の天気予報</div>
+</div>
 
-                        {% if live.weather.updated_at %}
-                            <div class="weather-updated-at">最終更新：{{ live.weather.updated_at.strftime('%Y/%m/%d %H:%M') }}</div>
-                        {% endif %}
 
-                        {% for weather in live.weather.weather %}
-                            <div class="weather-day">
-                                <div class="weather-day-title">
-                                    <span class="weather-icon">{{ weather.icon }}</span>
-                                    {{ weather.date[:4] }}/{{ weather.date[5:7] }}/{{ weather.date[8:10] }}（{{ weather.weekday }}）{{ weather.label }}
-                                </div>
-                                <div class="weather-name">{{ weather.weather_name }}</div>
-                                <div class="weather-temperature">{{ weather.temperature_min }}℃ ～ {{ weather.temperature_max }}℃</div>
-                                <div class="weather-rain">☔ 降水確率 {% if weather.precipitation_probability is not none %}{{ weather.precipitation_probability }}%{% else %}--{% endif %}</div>
-                            </div>
-                        {% endfor %}
+<!-- ==========================
+     天気予報モーダル
+========================== -->
 
-                        <button type="button" class="weather-close">閉じる</button>
-                    </div>
+{% if lives %}
+
+{% for live in lives %}
+
+{% if live.weather and live.weather.weather %}
+
+<div
+    id="weather-modal-live-{{ live.live_id }}"
+    class="weather-modal">
+
+    <div class="weather-modal-overlay"></div>
+
+    <div class="weather-modal-content">
+
+        <div class="weather-modal-title">
+            開催日の天気予報
+        </div>
+
+
+        {% if live.weather.updated_at %}
+
+        <div class="weather-updated-at">
+            最終更新：
+            {{ live.weather.updated_at.strftime('%Y/%m/%d %H:%M') }}
+        </div>
+
+        {% endif %}
+
+
+        {% for weather in live.weather.weather %}
+
+        <div class="weather-day">
+
+            <div class="weather-day-title">
+
+                <span class="weather-icon">
+                    {{ weather.icon }}
+                </span>
+
+                {{ weather.date[:4] }}/{{ weather.date[5:7] }}/{{ weather.date[8:10] }}
+                （{{ weather.weekday }}）
+                {{ weather.label }}
+
+            </div>
+
+
+            <div class="weather-name">
+                {{ weather.weather_name }}
+            </div>
+
+
+            <div class="weather-temperature">
+                {{ weather.temperature_min }}℃
+                ～
+                {{ weather.temperature_max }}℃
+            </div>
+
+
+            <div class="weather-rain">
+                ☔ 降水確率
+
+                {% if weather.precipitation_probability is not none %}
+                    {{ weather.precipitation_probability }}%
+                {% else %}
+                    --
+                {% endif %}
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+
+        <button
+            type="button"
+            class="weather-close">
+
+            閉じる
+
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- ==========================
+     当日の時間別天気
+========================== -->
+
+{% if live.live_date == today
+   and live.weather.hourly_weather %}
+
+<div
+    id="weather-modal-live-hourly-{{ live.live_id }}"
+    class="weather-modal">
+
+    <div class="weather-modal-overlay"></div>
+
+    <div class="weather-modal-content">
+
+        <div class="weather-modal-title">
+            当日の天気予報
+        </div>
+
+
+        {% if live.weather.updated_at %}
+
+        <div class="weather-updated-at">
+            最終更新：
+            {{ live.weather.updated_at.strftime('%Y/%m/%d %H:%M') }}
+        </div>
+
+        {% endif %}
+
+
+        <div class="weather-hourly-list">
+
+            {% for hourly in live.weather.hourly_weather %}
+
+            <div class="weather-hourly-row">
+
+                <div class="weather-hourly-time">
+                    {{ hourly.time }}
                 </div>
 
-                {% if live.live_date == today and live.weather.hourly_weather %}
-                    <div id="weather-modal-live-hourly-{{ live.live_id }}" class="weather-modal">
-                        <div class="weather-modal-overlay"></div>
-                        <div class="weather-modal-content">
-                            <div class="weather-modal-title">当日の天気予報</div>
+                <div class="weather-hourly-icon">
+                    {{ hourly.icon }}
+                </div>
 
-                            {% if live.weather.updated_at %}
-                                <div class="weather-updated-at">最終更新：{{ live.weather.updated_at.strftime('%Y/%m/%d %H:%M') }}</div>
-                            {% endif %}
+                <div class="weather-hourly-name">
+                    {{ hourly.weather_name }}
+                </div>
 
-                            <div class="weather-hourly-list">
-                                {% for hourly in live.weather.hourly_weather %}
-                                    <div class="weather-hourly-row">
-                                        <div class="weather-hourly-time">{{ hourly.time }}</div>
-                                        <div class="weather-hourly-icon">{{ hourly.icon }}</div>
-                                        <div class="weather-hourly-name">{{ hourly.weather_name }}</div>
-                                        <div class="weather-hourly-temperature">{{ hourly.temperature }}℃</div>
-                                        <div class="weather-hourly-rain">☔ {% if hourly.precipitation_probability is not none %}{{ hourly.precipitation_probability }}%{% else %}--{% endif %}</div>
-                                    </div>
-                                {% endfor %}
-                            </div>
+                <div class="weather-hourly-temperature">
+                    {{ hourly.temperature }}℃
+                </div>
 
-                            <button type="button" class="weather-close">閉じる</button>
-                        </div>
-                    </div>
-                {% endif %}
-            {% endif %}
-        {% endfor %}
-    {% endif %}
+                <div class="weather-hourly-rain">
+
+                    ☔
+
+                    {% if hourly.precipitation_probability is not none %}
+                        {{ hourly.precipitation_probability }}%
+                    {% else %}
+                        --
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+
+        <button
+            type="button"
+            class="weather-close">
+
+            閉じる
+
+        </button>
+
+    </div>
+
+</div>
+
+{% endif %}
+
+{% endif %}
+
+{% endfor %}
+
+{% endif %}
+
 {% endblock %}
 
+
 {% block script %}
-    <script src="/static/js/common.js"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function(){
-            const slider = document.querySelector(".live-slider");
-            const slides = document.querySelectorAll(".live-card");
-            const dots = document.querySelectorAll(".live-slider-dot");
 
-            if(slider && slides.length && dots.length){
-                function updateDots(){
-                    const rect = slider.getBoundingClientRect();
-                    const center = rect.left + rect.width / 2;
-                    let activeIndex = 0;
-                    let minDistance = Infinity;
+<script src="/static/js/common.js"></script>
 
-                    slides.forEach(function(slide,index){
-                        const slideRect = slide.getBoundingClientRect();
-                        const distance = Math.abs(center - (slideRect.left + slideRect.width / 2));
+<script>
+document.addEventListener("DOMContentLoaded", function(){
 
-                        if(distance < minDistance){
-                            minDistance = distance;
-                            activeIndex = index;
-                        }
-                    });
+    /*
+     * ========================================
+     * ライブスライダー
+     * ========================================
+     */
 
-                    dots.forEach(function(dot,index){
-                        dot.classList.toggle("active",index === activeIndex);
-                    });
+    const slider =
+        document.querySelector(".live-slider");
+
+    const slides =
+        document.querySelectorAll(".live-card");
+
+    const dots =
+        document.querySelectorAll(".live-slider-dot");
+
+
+    if(slider && slides.length && dots.length){
+
+        function updateDots(){
+
+            const rect =
+                slider.getBoundingClientRect();
+
+            const center =
+                rect.left +
+                rect.width / 2;
+
+            let activeIndex = 0;
+            let minDistance = Infinity;
+
+
+            slides.forEach(function(slide, index){
+
+                const slideRect =
+                    slide.getBoundingClientRect();
+
+                const slideCenter =
+                    slideRect.left +
+                    slideRect.width / 2;
+
+                const distance =
+                    Math.abs(
+                        center -
+                        slideCenter
+                    );
+
+
+                if(distance < minDistance){
+
+                    minDistance = distance;
+                    activeIndex = index;
+
                 }
 
-                slider.addEventListener("scroll",updateDots,{passive:true});
-                window.addEventListener("resize",updateDots);
-                updateDots();
+            });
+
+
+            dots.forEach(function(dot, index){
+
+                dot.classList.toggle(
+                    "active",
+                    index === activeIndex
+                );
+
+            });
+
+        }
+
+
+        slider.addEventListener(
+            "scroll",
+            updateDots,
+            {
+                passive: true
+            }
+        );
+
+
+        window.addEventListener(
+            "resize",
+            updateDots
+        );
+
+
+        updateDots();
+
+    }
+
+
+    /*
+     * ========================================
+     * 天気予報モーダル
+     * ========================================
+     */
+
+    const weatherButtons =
+        document.querySelectorAll(
+            ".weather-btn, .weather-hourly-btn"
+        );
+
+    const weatherModals =
+        document.querySelectorAll(
+            ".weather-modal"
+        );
+
+
+    function closeWeatherModal(modal){
+
+        if(!modal){
+            return;
+        }
+
+        modal.classList.remove("active");
+
+        document.body.classList.remove(
+            "weather-modal-open"
+        );
+
+    }
+
+
+    weatherButtons.forEach(function(button){
+
+        button.addEventListener(
+            "click",
+            function(){
+
+                const weatherId =
+                    button.dataset.weatherId;
+
+                const modal =
+                    document.getElementById(
+                        "weather-modal-" +
+                        weatherId
+                    );
+
+
+                if(!modal){
+                    return;
+                }
+
+
+                modal.classList.add("active");
+
+                document.body.classList.add(
+                    "weather-modal-open"
+                );
+
+            }
+        );
+
+    });
+
+
+    /*
+     * ========================================
+     * モーダル閉じる
+     * ========================================
+     */
+
+    weatherModals.forEach(function(modal){
+
+        const overlay =
+            modal.querySelector(
+                ".weather-modal-overlay"
+            );
+
+        const closeButton =
+            modal.querySelector(
+                ".weather-close"
+            );
+
+
+        if(overlay){
+
+            overlay.addEventListener(
+                "click",
+                function(){
+
+                    closeWeatherModal(modal);
+
+                }
+            );
+
+        }
+
+
+        if(closeButton){
+
+            closeButton.addEventListener(
+                "click",
+                function(){
+
+                    closeWeatherModal(modal);
+
+                }
+            );
+
+        }
+
+    });
+
+
+    /*
+     * ========================================
+     * ESCキーで閉じる
+     * ========================================
+     */
+
+    document.addEventListener(
+        "keydown",
+        function(event){
+
+            if(event.key !== "Escape"){
+                return;
             }
 
-            const weatherButtons = document.querySelectorAll(".weather-btn,.weather-hourly-btn");
-            const weatherModals = document.querySelectorAll(".weather-modal");
 
-            function closeWeatherModal(modal){
-                if(!modal)return;
-                modal.classList.remove("active");
-                document.body.classList.remove("weather-modal-open");
-            }
+            weatherModals.forEach(
+                function(modal){
 
-            weatherButtons.forEach(function(button){
-                button.addEventListener("click",function(){
-                    const weatherId = button.dataset.weatherId;
-                    const modal = document.getElementById("weather-modal-" + weatherId);
+                    if(
+                        modal.classList.contains(
+                            "active"
+                        )
+                    ){
 
-                    if(!modal)return;
+                        closeWeatherModal(modal);
 
-                    modal.classList.add("active");
-                    document.body.classList.add("weather-modal-open");
-                });
-            });
+                    }
 
-            weatherModals.forEach(function(modal){
-                const overlay = modal.querySelector(".weather-modal-overlay");
-                const closeButton = modal.querySelector(".weather-close");
+                }
+            );
 
-                if(overlay)overlay.addEventListener("click",function(){closeWeatherModal(modal);});
-                if(closeButton)closeButton.addEventListener("click",function(){closeWeatherModal(modal);});
-            });
+        }
+    );
 
-            document.addEventListener("keydown",function(event){
-                if(event.key !== "Escape")return;
+});
+</script>
 
-                weatherModals.forEach(function(modal){
-                    if(modal.classList.contains("active"))closeWeatherModal(modal);
-                });
-            });
-        });
-    </script>
 
-    {% if message %}
-        <script>
-            showToast("{{ message }}");
-        </script>
-    {% endif %}
+{% if message %}
+
+<script>
+showToast("{{ message }}");
+</script>
+
+{% endif %}
+
 {% endblock %}

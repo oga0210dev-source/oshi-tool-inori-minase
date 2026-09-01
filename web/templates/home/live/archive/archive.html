@@ -8,68 +8,36 @@
 
 {% block content %}
 <div class="background">
-    <a href="/home/live" class="back-link">
-        ← ライブ
-    </a>
 
+    <a href="#" class="back-link" onclick="history.back(); return false;">
+        ← 戻る
+    </a>
     <div class="search-area">
-        <form method="get"
-              class="search-form"
-              onsubmit="clearArchiveState()">
-            <input
-                type="text"
-                name="keyword"
-                placeholder="ライブ名・ツアー名・会場で検索"
-                value="{{ request.query_params.get('keyword', '') }}"
-            >
+        <form method="get" class="search-form" onsubmit="clearArchiveState()">
+            <input type="text" name="keyword" placeholder="ライブ名・ツアー名・会場で検索" value="{{ request.query_params.get('keyword', '') }}">
 
             <div class="search-bottom">
                 <select name="sort">
-                    <option value="new"
-                        {% if request.query_params.get('sort') == 'new' %}
-                            selected
-                        {% endif %}
-                    >
-                        開催日が新しい順
-                    </option>
-
-                    <option value="old"
-                        {% if request.query_params.get('sort') == 'old' %}
-                            selected
-                        {% endif %}
-                    >
-                        開催日が古い順
-                    </option>
-
-                    <option value="tour"
-                        {% if request.query_params.get('sort') == 'tour' %}
-                            selected
-                        {% endif %}
-                    >
-                        ツアー名順
-                    </option>
-
-                    <option value="name"
-                        {% if request.query_params.get('sort') == 'name' %}
-                            selected
-                        {% endif %}
-                    >
-                        ライブ名順
-                    </option>
+                    <option value="new" {% if request.query_params.get('sort') == 'new' %}selected{% endif %}>開催日が新しい順</option>
+                    <option value="old" {% if request.query_params.get('sort') == 'old' %}selected{% endif %}>開催日が古い順</option>
+                    <option value="tour" {% if request.query_params.get('sort') == 'tour' %}selected{% endif %}>ツアー名順</option>
+                    <option value="name" {% if request.query_params.get('sort') == 'name' %}selected{% endif %}>ライブ名順</option>
                 </select>
 
-                <button type="submit">
-                    検索
-                </button>
+                <button type="submit">検索</button>
             </div>
         </form>
     </div>
 
     <div class="page-scroll">
         <div class="container">
+
             {% if lives %}
+
             <div class="live-list">
+
                 {% for live in lives %}
+
                 <div class="live-card">
 
                     <div class="live-name">
@@ -81,106 +49,81 @@
                     </div>
 
                     <div class="live-info">
-                        <div>
-                            📅 {{ live.live_date }}
-                        </div>
-
-                        <div>
-                            📍 {{ live.prefecture_name }}
-                            {{ live.venue_name }}
-                        </div>
+                        <div>📅 {{ live.live_date }}</div>
+                        <div>📍 {{ live.prefecture_name }} {{ live.venue_name }}</div>
                     </div>
 
                     <div class="live-actions">
-                        {% if is_login %}
-                            {% if live.live_date >= today %}
-                                {% if live.is_join %}
-                                <form method="post"
-                                      action="/home/live/archive/cancel"
-                                      onsubmit="return confirm('参加予定を取り消しますか？')">
-                                    <input
-                                        type="hidden"
-                                        name="live_id"
-                                        value="{{ live.live_id }}"
-                                    >
 
-                                    <button class="cancel-btn">
-                                        参加キャンセル
-                                    </button>
+                        {% if is_login %}
+
+                            {% if live.live_date >= today %}
+
+                                {% if live.is_join %}
+
+                                <form method="post" action="/home/live/archive/cancel" onsubmit="return confirm('参加予定を取り消しますか？')">
+                                    <input type="hidden" name="live_id" value="{{ live.live_id }}">
+                                    <button class="cancel-btn">参加キャンセル</button>
                                 </form>
 
                                 {% else %}
-                                <form method="post"
-                                      action="/home/live/archive/join"
-                                      onsubmit="return confirm('このライブを参加予定に登録しますか？')">
-                                    <input
-                                        type="hidden"
-                                        name="live_id"
-                                        value="{{ live.live_id }}"
-                                    >
 
-                                    <button class="join-btn">
-                                        参加予定
-                                    </button>
+                                <form method="post" action="/home/live/archive/join" onsubmit="return confirm('このライブを参加予定に登録しますか？')">
+                                    <input type="hidden" name="live_id" value="{{ live.live_id }}">
+                                    <button class="join-btn">参加予定</button>
                                 </form>
+
                                 {% endif %}
 
                             {% else %}
+
                                 {% if "公演中止" in live.live_name %}
-                                <button class="disabled-btn" disabled>
-                                    公演中止
-                                </button>
+
+                                <button class="disabled-btn" disabled>公演中止</button>
 
                                 {% elif live.is_join %}
-                                <form method="post"
-                                      action="/home/live/archive/cancel"
-                                      onsubmit="return confirm('参加済みを取り消しますか？')">
-                                    <input
-                                        type="hidden"
-                                        name="live_id"
-                                        value="{{ live.live_id }}"
-                                    >
 
-                                    <button class="attend-cancel-btn">
-                                        参加取消
-                                    </button>
+                                <form method="post" action="/home/live/archive/cancel" onsubmit="return confirm('参加済みを取り消しますか？')">
+                                    <input type="hidden" name="live_id" value="{{ live.live_id }}">
+                                    <button class="attend-cancel-btn">参加取消</button>
                                 </form>
 
                                 {% else %}
-                                <form method="post"
-                                      action="/home/live/archive/attend"
-                                      onsubmit="return confirm('このライブを参加済みにしますか？')">
-                                    <input
-                                        type="hidden"
-                                        name="live_id"
-                                        value="{{ live.live_id }}"
-                                    >
 
-                                    <button class="attend-btn">
-                                        参加済み
-                                    </button>
+                                <form method="post" action="/home/live/archive/attend" onsubmit="return confirm('このライブを参加済みにしますか？')">
+                                    <input type="hidden" name="live_id" value="{{ live.live_id }}">
+                                    <button class="attend-btn">参加済み</button>
                                 </form>
+
                                 {% endif %}
+
                             {% endif %}
+
                         {% endif %}
 
-                        <a href="/home/live/detail/{{ live.live_id }}"
-                           class="detail-btn"
-                           onclick="saveArchiveState()">
+                        <a href="/home/live/detail/{{ live.live_id }}" class="detail-btn" onclick="saveArchiveState()">
                             詳細
                         </a>
+
                     </div>
+
                 </div>
+
                 {% endfor %}
+
             </div>
 
             {% else %}
+
             <div class="no-live">
                 登録されているライブデータがありません。
             </div>
+
             {% endif %}
+
         </div>
     </div>
+
 </div>
 {% endblock %}
 
@@ -189,206 +132,104 @@
 
 {% if message %}
 <script>
-    showToast("{{ message }}");
+showToast("{{ message }}");
 </script>
 {% endif %}
 
 <script>
-function saveArchiveState(){
+function saveArchiveState() {
+    const pageScroll = document.querySelector(".page-scroll");
+    const keywordInput = document.querySelector('input[name="keyword"]');
+    const sortSelect = document.querySelector('select[name="sort"]');
 
-    const pageScroll =
-        document.querySelector(".page-scroll");
-
-    const keywordInput =
-        document.querySelector('input[name="keyword"]');
-
-    const sortSelect =
-        document.querySelector('select[name="sort"]');
-
-
-    if(pageScroll){
-        sessionStorage.setItem(
-            "archiveScrollY",
-            pageScroll.scrollTop
-        );
+    if (pageScroll) {
+        sessionStorage.setItem("archiveScrollY", pageScroll.scrollTop);
     }
 
-    if(keywordInput){
-        sessionStorage.setItem(
-            "archiveKeyword",
-            keywordInput.value
-        );
+    if (keywordInput) {
+        sessionStorage.setItem("archiveKeyword", keywordInput.value);
     }
 
-    if(sortSelect){
-        sessionStorage.setItem(
-            "archiveSort",
-            sortSelect.value
-        );
+    if (sortSelect) {
+        sessionStorage.setItem("archiveSort", sortSelect.value);
     }
 }
 
-
-function clearArchiveState(){
-
+function clearArchiveState() {
     sessionStorage.removeItem("archiveScrollY");
     sessionStorage.removeItem("archiveKeyword");
     sessionStorage.removeItem("archiveSort");
 }
 
+function restoreArchiveState() {
+    const params = new URLSearchParams(window.location.search);
+    const pageScroll = document.querySelector(".page-scroll");
+    const keywordInput = document.querySelector('input[name="keyword"]');
+    const sortSelect = document.querySelector('select[name="sort"]');
 
-function restoreArchiveState(){
-
-    const params =
-        new URLSearchParams(window.location.search);
-
-    const pageScroll =
-        document.querySelector(".page-scroll");
-
-    const keywordInput =
-        document.querySelector('input[name="keyword"]');
-
-    const sortSelect =
-        document.querySelector('select[name="sort"]');
-
-
-    /* =========================================================
-       first の場合
-       ========================================================= */
-
-    if(params.has("first")){
-
+    if (params.has("first")) {
         clearArchiveState();
 
-        if(keywordInput){
+        if (keywordInput) {
             keywordInput.value = "";
         }
 
-        if(sortSelect){
+        if (sortSelect) {
             sortSelect.value = "new";
         }
 
-        if(pageScroll){
+        if (pageScroll) {
             pageScroll.scrollTop = 0;
         }
 
         params.delete("first");
 
-        const newUrl =
-            window.location.pathname +
-            (params.toString()
-                ? "?" + params.toString()
-                : "");
+        const newUrl = window.location.pathname + (params.toString() ? "?" + params.toString() : "");
 
-        window.history.replaceState(
-            {},
-            "",
-            newUrl
-        );
-
+        window.history.replaceState({}, "", newUrl);
         return;
     }
 
+    const savedKeyword = sessionStorage.getItem("archiveKeyword");
+    const savedSort = sessionStorage.getItem("archiveSort");
+    const savedScrollY = sessionStorage.getItem("archiveScrollY");
 
-    /* =========================================================
-       保存されている検索条件
-       ========================================================= */
-
-    const savedKeyword =
-        sessionStorage.getItem("archiveKeyword");
-
-    const savedSort =
-        sessionStorage.getItem("archiveSort");
-
-    const savedScrollY =
-        sessionStorage.getItem("archiveScrollY");
-
-
-    /*
-     * URLに検索条件がない場合だけ
-     * 保存していた検索条件をURLへ反映
-     */
-    if(
-        !params.has("keyword") &&
-        !params.has("sort") &&
-        (
-            savedKeyword !== null ||
-            savedSort !== null
-        )
-    ){
-
-        if(savedKeyword !== null){
+    if (!params.has("keyword") && !params.has("sort") && (savedKeyword !== null || savedSort !== null)) {
+        if (savedKeyword !== null) {
             params.set("keyword", savedKeyword);
         }
 
-        if(savedSort !== null){
+        if (savedSort !== null) {
             params.set("sort", savedSort);
         }
 
-        /*
-         * first を付けずに一覧を再読み込み
-         *
-         * これによってサーバー側でも
-         * 保存していた検索条件で lives を取得する
-         */
-        const newUrl =
-            window.location.pathname +
-            "?" + params.toString();
+        const newUrl = window.location.pathname + "?" + params.toString();
 
         window.location.replace(newUrl);
-
         return;
     }
 
-
-    /* =========================================================
-       検索条件を画面に反映
-       ========================================================= */
-
-    if(keywordInput && savedKeyword !== null){
+    if (keywordInput && savedKeyword !== null) {
         keywordInput.value = savedKeyword;
     }
 
-    if(sortSelect && savedSort !== null){
+    if (sortSelect && savedSort !== null) {
         sortSelect.value = savedSort;
     }
 
-
-    /* =========================================================
-       スクロール位置を復元
-       ========================================================= */
-
-    if(pageScroll && savedScrollY !== null){
-
-        requestAnimationFrame(function(){
-
-            pageScroll.scrollTop =
-                Number(savedScrollY);
-
+    if (pageScroll && savedScrollY !== null) {
+        requestAnimationFrame(function() {
+            pageScroll.scrollTop = Number(savedScrollY);
         });
     }
 }
 
+document.addEventListener("DOMContentLoaded", restoreArchiveState);
 
-/* 初回表示 */
-
-document.addEventListener(
-    "DOMContentLoaded",
-    restoreArchiveState
-);
-
-
-/* ブラウザの戻る操作 */
-
-window.addEventListener(
-    "pageshow",
-    function(event){
-
-        if(event.persisted){
-            restoreArchiveState();
-        }
-
+window.addEventListener("pageshow", function(event) {
+    if (event.persisted) {
+        restoreArchiveState();
     }
-);
+});
 </script>
 {% endblock %}
