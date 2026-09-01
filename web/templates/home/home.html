@@ -75,40 +75,40 @@
                         <span class="home-menu-icon setting">⚙</span>
                         <span class="home-menu-text">設定</span>
                     </a>
-
-                    <div id="setting-modal" class="setting-modal">
-                        <div class="setting-box">
-                            <h2>設定</h2>
-
-                            <h3>アカウント</h3>
-                            <a href="/mypage">マイページ</a>
-                            <a href="/mypage/public-setting" class="not-implemented">公開設定</a>
-                            <a href="/email/change">メール変更</a>
-                            <a href="/password/change">パスワード変更</a>
-
-                            <h3>表示設定</h3>
-                            <a href="#" id="font-setting-button">フォント設定</a>
-
-                            <h3>サポート</h3>
-                            <a href="/home/inquiry">お問い合わせ</a>
-                            <a href="#" onclick="openLegalModal('terms'); return false;">利用規約</a>
-                            <a href="#" onclick="openLegalModal('privacy'); return false;">プライバシー</a>
-
-                            {% if not is_guest and user.role == "admin" %}
-                            <h3>管理</h3>
-                            <a href="/admin/master">マスタ管理</a>
-                            <a href="/admin/inquiry">お問い合わせ管理</a>
-                            {% endif %}
-
-                            {% if not is_guest %}
-                            <h3>その他</h3>
-                            <a href="/logout">ログアウト</a>
-                            {% endif %}
-                        </div>
-                    </div>
-
                 </div>
             </div>
+        </div>
+    </div>
+
+    <div id="setting-modal" class="setting-modal">
+        <div class="setting-box">
+            <h2>設定</h2>
+
+            <h3>アカウント</h3>
+            <a href="/mypage">マイページ</a>
+            <a href="/mypage/public-setting" class="not-implemented">公開設定</a>
+            <a href="/email/change">メール変更</a>
+            <a href="/password/change">パスワード変更</a>
+
+            <h3>表示設定</h3>
+            <a href="#" id="font-setting-button">
+                フォント設定
+            </a>
+            <h3>サポート</h3>
+            <a href="/home/inquiry">お問い合わせ</a>
+            <a href="#" onclick="openLegalModal('terms'); return false;">利用規約</a>
+            <a href="#" onclick="openLegalModal('privacy'); return false;">プライバシー</a>
+
+            {% if not is_guest and user.role == "admin" %}
+            <h3>管理</h3>
+            <a href="/admin/master">マスタ管理</a>
+            <a href="/admin/inquiry">お問い合わせ管理</a>
+            {% endif %}
+
+            {% if not is_guest %}
+            <h3>その他</h3>
+            <a href="/logout">ログアウト</a>
+            {% endif %}
         </div>
     </div>
 

@@ -293,29 +293,48 @@
 ========================== */
 
 .setting-modal{
-    display:none;
     position:fixed;
-    inset:0;
-    z-index:1000;
+    top:0;
+    right:0;
+    bottom:0;
+    left:0;
+
+    z-index:2147483647;
+
+    display:none;
+    align-items:center;
+    justify-content:center;
+
+    padding:25px;
+
+    box-sizing:border-box;
+
     background:rgba(0,0,0,.45);
+
+    overflow:hidden;
 }
 
+
 .setting-box{
-    position:absolute;
-    top:50%;
-    left:50%;
-    width:80%;
+    width:100%;
     max-width:350px;
-    max-height:80dvh;
+    max-height:calc(100dvh - 40px);
+
     padding:20px;
+
     box-sizing:border-box;
-    transform:translate(-50%,-50%);
+
     overflow-y:auto;
+    overflow-x:hidden;
+
     border-radius:20px;
+
     background:#fff;
+
     scrollbar-width:none;
     -ms-overflow-style:none;
 }
+
 
 .setting-box::-webkit-scrollbar{
     display:none;
