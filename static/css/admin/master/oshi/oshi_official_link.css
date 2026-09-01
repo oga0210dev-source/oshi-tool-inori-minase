@@ -222,7 +222,7 @@
     border:1px solid #ddd;
     border-radius:12px;
     background:#fff;
-    font-size:15px;
+    font-size:16px;
     min-width:0;
 }
 
@@ -248,7 +248,7 @@
     border:1px solid #ddd;
     border-radius:12px;
     background:#fff;
-    font-size:15px;
+    font-size:16px;
     line-height:1.6;
     resize:vertical;
 }
@@ -361,7 +361,7 @@
 
     .master-form input,
     .master-form textarea{
-        font-size:14px;
+        font-size:16px;
     }
 
     .official-link-row{

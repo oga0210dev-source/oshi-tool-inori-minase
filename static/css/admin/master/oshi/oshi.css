@@ -152,7 +152,7 @@
     border:1px solid #ccc;
     border-radius:8px;
     background:#fff;
-    font-size:15px;
+    font-size:16px;
 }
 
 
@@ -303,7 +303,7 @@
 
     .master-form input,
     .master-form textarea{
-        font-size:14px;
+        font-size:16px;
     }
 
 }

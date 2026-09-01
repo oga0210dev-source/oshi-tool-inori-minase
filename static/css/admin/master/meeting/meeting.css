@@ -264,7 +264,7 @@
     box-sizing:border-box;
     border:1px solid #ddd;
     border-radius:12px;
-    font-size:15px;
+    font-size:16px;
     background:#fff;
 }
 
@@ -422,7 +422,7 @@
     border:1px solid #ccc;
     border-radius:6px;
     background:#fff;
-    font-size:14px;
+    font-size:16px;
 }
 
 
@@ -478,7 +478,7 @@
 
     .meeting-form input,
     .meeting-form select{
-        font-size:14px;
+        font-size:16px;
     }
 
     .meeting-block{
