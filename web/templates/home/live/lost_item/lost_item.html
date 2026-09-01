@@ -1,19 +1,16 @@
 {% extends "templates/commons/base.html" %}
 
-{% block title %}
-忘れ物チェック
-{% endblock %}
+{% block title %}忘れ物チェック{% endblock %}
 
 {% block css %}
 <link rel="stylesheet" href="/static/css/home/live/lost_item.css">
 {% endblock %}
 
 {% block content %}
-
 <div class="background">
 
-    <a href="/home/live" class="back-link">
-        ← ライブ
+    <a href="javascript:history.back()" class="back-link">
+        ← 戻る
     </a>
 
     <div class="page-scroll">
@@ -26,7 +23,6 @@
             <div class="lost-item-card">
 
                 <div class="card-header">
-
                     <div class="card-title">
                         持ち物チェック
                     </div>
@@ -36,7 +32,6 @@
                             onclick="resetLostItems()">
                         リセット
                     </button>
-
                 </div>
 
                 <div class="lost-item-list">
@@ -96,8 +91,6 @@
 
             </div>
 
-            <!-- 個人項目追加 -->
-
             <div class="lost-item-card">
 
                 <div class="card-title">
@@ -129,24 +122,16 @@
 </div>
 
 <script>
-async function updateLostItem(
-    userLostItemId,
-    isChecked
-){
+async function updateLostItem(userLostItemId, isChecked){
     try{
-        const response = await fetch(
-            "/home/live/lost-item/check",
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    user_lost_item_id: userLostItemId,
-                    is_checked: isChecked
-                })
-            }
-        );
+        const response = await fetch("/home/live/lost-item/check", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({
+                user_lost_item_id: userLostItemId,
+                is_checked: isChecked
+            })
+        });
 
         const result = await response.json();
 
@@ -154,7 +139,6 @@ async function updateLostItem(
             showToast(result.message);
             location.reload();
         }
-
     }catch(error){
         console.error(error);
         showToast("チェック状態の保存に失敗しました。");
@@ -162,31 +146,20 @@ async function updateLostItem(
     }
 }
 
-
 async function addLostItem(){
-    const input =
-        document.getElementById("item-name");
-
-    const itemName =
-        input.value.trim();
+    const input = document.getElementById("item-name");
+    const itemName = input.value.trim();
 
     if(!itemName){
         showToast("項目名を入力してください。");
         return;
     }
 
-    const response = await fetch(
-        "/home/live/lost-item/add",
-        {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                item_name: itemName
-            })
-        }
-    );
+    const response = await fetch("/home/live/lost-item/add", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({item_name: itemName})
+    });
 
     const result = await response.json();
 
@@ -197,23 +170,14 @@ async function addLostItem(){
     }
 }
 
-
-async function editLostItem(
-    userLostItemId,
-    currentName
-){
-    const itemName =
-        prompt(
-            "項目名を入力してください。",
-            currentName
-        );
+async function editLostItem(userLostItemId, currentName){
+    const itemName = prompt("項目名を入力してください。", currentName);
 
     if(itemName === null){
         return;
     }
 
-    const trimmedName =
-        itemName.trim();
+    const trimmedName = itemName.trim();
 
     if(!trimmedName){
         showToast("項目名を入力してください。");
@@ -225,19 +189,14 @@ async function editLostItem(
         return;
     }
 
-    const response = await fetch(
-        "/home/live/lost-item/update",
-        {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                user_lost_item_id: userLostItemId,
-                item_name: trimmedName
-            })
-        }
-    );
+    const response = await fetch("/home/live/lost-item/update", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+            user_lost_item_id: userLostItemId,
+            item_name: trimmedName
+        })
+    });
 
     const result = await response.json();
 
@@ -248,26 +207,16 @@ async function editLostItem(
     }
 }
 
-
-async function deleteLostItem(
-    userLostItemId
-){
+async function deleteLostItem(userLostItemId){
     if(!confirm("この項目を削除しますか？")){
         return;
     }
 
-    const response = await fetch(
-        "/home/live/lost-item/delete",
-        {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                user_lost_item_id: userLostItemId
-            })
-        }
-    );
+    const response = await fetch("/home/live/lost-item/delete", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({user_lost_item_id: userLostItemId})
+    });
 
     const result = await response.json();
 
@@ -278,20 +227,14 @@ async function deleteLostItem(
     }
 }
 
-
 async function resetLostItems(){
-    if(!confirm(
-        "チェック状態をすべて未チェックに戻しますか？"
-    )){
+    if(!confirm("チェック状態をすべて未チェックに戻しますか？")){
         return;
     }
 
-    const response = await fetch(
-        "/home/live/lost-item/reset",
-        {
-            method: "POST"
-        }
-    );
+    const response = await fetch("/home/live/lost-item/reset", {
+        method: "POST"
+    });
 
     const result = await response.json();
 

@@ -9,36 +9,20 @@
 {% block content %}
 <div class="background">
 
-    {% if request.query_params.get('from') == 'history' %}
-    <a href="/home/live/history"
-       class="back-link">
-        ← 参加履歴
+    <!-- 戻るリンク -->
+    <a href="#"
+       class="back-link"
+       onclick="history.back(); return false;">
+        ← 戻る
     </a>
-
-    {% elif request.query_params.get('from') == 'venue_events' %}
-    <a href="/home/oshi/venue/{{ request.query_params.get('venue_id') }}/events"
-       class="back-link">
-        ← 利用イベント
-    </a>
-
-    {% elif request.query_params.get('from') == 'live' %}
-    <a href="/home/live"
-       class="back-link">
-        ← ライブ
-    </a>
-
-    {% else %}
-    <a href="/home/live/archive"
-       class="back-link">
-        ← ライブ一覧
-    </a>
-
-    {% endif %}
 
     <div class="page-scroll">
         <div class="container">
 
-            <!-- 基本情報 -->
+            <!-- ==========================
+                 基本情報
+            ========================== -->
+
             <div class="detail-card">
 
                 <div class="group-title">
@@ -49,9 +33,11 @@
                     {{ live.live_name }}
                 </div>
 
+                {% if live.tour_name %}
                 <div class="tour-name">
                     {{ live.tour_name }}
                 </div>
+                {% endif %}
 
                 <div class="live-info">
 
@@ -67,22 +53,28 @@
                         📍 {{ live.prefecture_name }}
 
                         {% if live.venue_id and live.venue_name %}
+
                         <a href="/home/oshi/venue/{{ live.venue_id }}/events?from=live_detail&event_id={{ live.live_id }}"
                            class="venue-link">
                             {{ live.venue_name }}
                         </a>
+
                         {% else %}
-                            {{ live.venue_name }}
+
+                        {{ live.venue_name }}
+
                         {% endif %}
                     </div>
 
                     {% if live.venue_name %}
+
                     <a href="https://www.google.com/maps/dir/?api=1&destination={{ (live.venue_name ~ ' ' ~ live.address) | urlencode }}"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class="departure-btn">
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       class="departure-btn">
                         🚗 出発する
                     </a>
+
                     {% endif %}
 
                     {% if is_login %}
@@ -90,25 +82,33 @@
                         {% if live.live_date >= today %}
 
                             {% if live.is_join %}
+
                             <div class="join-status future">
                                 参加予定
                             </div>
+
                             {% else %}
+
                             <div class="join-status none">
                                 未参加
                             </div>
+
                             {% endif %}
 
                         {% else %}
 
                             {% if live.is_join %}
+
                             <div class="join-status past">
                                 参加済み
                             </div>
+
                             {% else %}
+
                             <div class="join-status none">
                                 未参加
                             </div>
+
                             {% endif %}
 
                         {% endif %}
@@ -116,10 +116,14 @@
                     {% endif %}
 
                 </div>
+
             </div>
 
 
-            <!-- 関連リンク -->
+            <!-- ==========================
+                 関連リンク
+            ========================== -->
+
             <div class="detail-card">
 
                 <div class="group-title">
@@ -127,40 +131,42 @@
                 </div>
 
                 {% if live.official_url %}
-                <a
-                    href="{{ live.official_url }}"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="link-btn"
-                >
+
+                <a href="{{ live.official_url }}"
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   class="link-btn">
                     🌐 公式サイト
                 </a>
+
                 {% endif %}
 
                 {% if live.blu_ray_url %}
-                <a
-                    href="{{ live.blu_ray_url }}"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="link-btn"
-                >
+
+                <a href="{{ live.blu_ray_url }}"
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   class="link-btn">
                     💿 Blu-ray
                 </a>
+
                 {% endif %}
 
             </div>
 
 
-            <!-- セットリスト -->
+            <!-- ==========================
+                 セットリスト
+            ========================== -->
+
             <div class="detail-card">
 
                 <div class="group-title">
                     セットリスト
                 </div>
 
-                <a href="/home/live/setlist/{{ live.live_id }}?from={{ request.query_params.get('from', 'archive') }}"
-                    class="link-btn"
-                >
+                <a href="/home/live/setlist/{{ live.live_id }}?from={{ request.query_params.get('from', 'archive') }}{% if request.query_params.get('song_group_id') %}&song_group_id={{ request.query_params.get('song_group_id') }}{% endif %}{% if request.query_params.get('mode') %}&mode={{ request.query_params.get('mode') }}{% endif %}"
+                   class="link-btn">
                     🎵 セットリストを見る
                 </a>
 
@@ -168,46 +174,6 @@
 
         </div>
     </div>
+
 </div>
-{% endblock %}
-
-{% block script %}
-<script>
-function backToArchive(){
-    const url =
-        sessionStorage.getItem(
-            "live_archive_url"
-        );
-
-    if(url){
-        location.href = url;
-    }else{
-        location.href = "/home/live/archive";
-    }
-
-    return false;
-}
-
-function backToLiveList(){
-    const from =
-        new URLSearchParams(
-            window.location.search
-        ).get("from");
-
-    const link =
-        document.getElementById(
-            "back-link"
-        );
-
-    if(from === "history"){
-        link.href = "/home/live/history";
-        link.textContent = "← 参加履歴";
-    }else{
-        link.href = "/home/live/archive";
-        link.textContent = "← ライブ一覧";
-    }
-
-    return true;
-}
-</script>
 {% endblock %}

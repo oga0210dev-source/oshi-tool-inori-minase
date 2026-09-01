@@ -1,7 +1,17 @@
+/* ==========================
+   戻るリンク
+========================== */
+
 .background .back-link{
-    align-self:flex-start;
-    margin-left:15px;
-    margin-top:10px;
+    display:block;
+
+    width:90%;
+    max-width:400px;
+
+    margin:10px auto 0;
+
+    color:#666;
+    font-size:13px;
 }
 
 
@@ -12,8 +22,10 @@
 .container{
     width:100%;
     max-width:430px;
+
     margin:0 auto;
-    padding:15px 0 30px;
+
+    padding:10px 0 35px;
 }
 
 
@@ -22,73 +34,225 @@
 ========================== */
 
 .page-title{
-    width:80%;
+    width:90%;
     max-width:400px;
-    margin:20px auto;
-    font-size:20px;
-    text-align:center;
+
+    margin:18px auto 20px;
+
     color:#333;
+
+    font-size:20px;
+    font-weight:bold;
+
+    line-height:1.5;
+
+    text-align:center;
 }
 
 
 /* ==========================
-   曲一覧
+   集計対象切り替え
+========================== */
+
+.collection-mode{
+    display:flex;
+
+    width:90%;
+    max-width:400px;
+
+    margin:0 auto 20px;
+
+    gap:6px;
+}
+
+.collection-mode .mode-btn{
+    flex:1;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    min-height:48px;
+
+    padding:5px 4px;
+
+    box-sizing:border-box;
+
+    background:#fff;
+
+    border:2px solid #eee;
+    border-radius:11px;
+
+    color:#555;
+
+    font-size:11px;
+    font-weight:bold;
+
+    line-height:1.35;
+    text-align:center;
+
+    text-decoration:none;
+
+    transition:
+        background .2s,
+        border-color .2s,
+        color .2s,
+        transform .1s;
+}
+
+.collection-mode .mode-btn.active{
+    background:#ff8fb1;
+    border-color:#ff8fb1;
+
+    color:#fff;
+}
+
+.collection-mode .mode-btn:hover{
+    transform:translateY(-1px);
+}
+
+
+/* ==========================
+   楽曲一覧
 ========================== */
 
 .song-list{
-    width:80%;
-    max-width:400px;
-    margin:0 auto;
     display:flex;
     flex-direction:column;
+
+    width:90%;
+    max-width:400px;
+
+    margin:0 auto;
+
     gap:10px;
 }
 
 
 /* ==========================
-   曲カード
+   楽曲カード
 ========================== */
 
 .song-card{
     width:100%;
+
+    padding:12px;
+
     box-sizing:border-box;
-    padding:12px 15px;
 
-    background:rgba(255,255,255,.88);
-    border-radius:15px;
-    box-shadow:0 2px 6px rgba(0,0,0,.12);
+    background:rgba(255,255,255,.92);
 
-    display:flex;
-    align-items:center;
+    border-radius:14px;
+
+    box-shadow:0 2px 6px rgba(0,0,0,.10);
 }
 
 
 /* ==========================
-   曲情報
+   曲名・回数・詳細
 ========================== */
 
-.song-info{
-    flex:1;
+.song-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    width:100%;
+
     min-width:0;
+
+    gap:10px;
 }
 
+
+/* ==========================
+   曲名
+========================== */
+
 .song-name{
+    flex:1;
+
+    min-width:0;
+
+    color:#333;
+
     font-size:14px;
     font-weight:bold;
-    color:#333;
+
     line-height:1.5;
+
     word-break:break-word;
 }
 
-.listen-count,
-.appearance-count{
-    margin-top:3px;
+
+/* ==========================
+   登場回数・回収回数
+========================== */
+
+.song-appearance{
+    display:flex;
+    align-items:center;
+
+    flex-shrink:0;
+
+    gap:5px;
+}
+
+
+/* ==========================
+   回数
+========================== */
+
+.appearance-count,
+.listen-count{
+    color:#888;
 
     font-size:12px;
     font-weight:bold;
-    color:#888;
 
     white-space:nowrap;
+}
+
+
+/* ==========================
+   詳細アイコン
+========================== */
+
+.detail-icon{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    width:30px;
+    height:30px;
+
+    box-sizing:border-box;
+
+    background:#fff0f5;
+
+    border:1px solid #ffd3e1;
+    border-radius:50%;
+
+    color:#e66b91;
+
+    font-size:14px;
+
+    text-decoration:none;
+
+    transition:
+        background .2s,
+        transform .1s,
+        opacity .2s;
+}
+
+.detail-icon:hover{
+    background:#ffe3ed;
+
+    transform:scale(1.05);
+}
+
+.detail-icon:active{
+    transform:scale(.92);
 }
 
 
@@ -98,41 +262,58 @@
 
 .song-links{
     display:flex;
-    flex-direction:column;
-    gap:5px;
 
-    margin-left:10px;
+    width:100%;
 
-    flex-shrink:0;
+    margin-top:10px;
+
+    gap:6px;
 }
 
+
+/* ==========================
+   配信リンクボタン
+========================== */
+
 .song-link{
+    flex:1;
+
     display:flex;
     align-items:center;
     justify-content:center;
 
-    min-width:76px;
-    min-height:30px;
+    min-width:0;
+    min-height:34px;
 
-    padding:4px 7px;
+    padding:5px 4px;
+
     box-sizing:border-box;
 
-    border-radius:7px;
+    border-radius:8px;
 
     font-size:10px;
     font-weight:bold;
 
+    line-height:1.2;
+
+    text-align:center;
     text-decoration:none;
 
-    transition:opacity .2s, transform .1s;
+    white-space:nowrap;
+
+    transition:
+        opacity .2s,
+        transform .1s;
 }
 
 .song-link:hover{
-    opacity:.8;
+    opacity:.82;
+
+    transform:translateY(-1px);
 }
 
 .song-link:active{
-    transform:scale(.97);
+    transform:scale(.96);
 }
 
 
@@ -142,16 +323,19 @@
 
 .song-link.youtube{
     background:#fff0f0;
+
     color:#e60000;
 }
 
 .song-link.apple-music{
     background:#fff0f5;
+
     color:#e83e8c;
 }
 
 .song-link.spotify{
     background:#eefaf1;
+
     color:#16833b;
 }
 
@@ -161,63 +345,16 @@
 ========================== */
 
 .no-song{
-    width:80%;
+    width:90%;
     max-width:400px;
-    margin:30px auto;
 
-    text-align:center;
+    margin:35px auto;
 
     color:#777;
+
     font-size:14px;
-}
 
-
-/* ==========================
-   集計対象切り替え
-========================== */
-
-.collection-mode{
-    width:80%;
-    max-width:400px;
-
-    margin:0 auto 20px;
-
-    display:flex;
-    gap:10px;
-}
-
-.collection-mode .mode-btn{
-    flex:1;
-
-    height:45px;
-
-    display:flex;
-    justify-content:center;
-    align-items:center;
-
-    box-sizing:border-box;
-
-    background:#fff;
-    border:2px solid #eee;
-    border-radius:12px;
-
-    color:#555;
-    font-size:14px;
-    font-weight:bold;
-
-    text-decoration:none;
-
-    transition:.2s;
-}
-
-.collection-mode .mode-btn.active{
-    background:#ff8fb1;
-    border-color:#ff8fb1;
-    color:#fff;
-}
-
-.collection-mode .mode-btn:hover{
-    transform:scale(1.03);
+    text-align:center;
 }
 
 
@@ -231,4 +368,104 @@ html{
 
 html::-webkit-scrollbar{
     display:none;
+}
+
+
+/* ==========================
+   スマートフォン
+========================== */
+
+@media(max-width:600px){
+
+    .container{
+        padding-top:8px;
+    }
+
+
+    /* --------------------------
+       タイトル
+    -------------------------- */
+
+    .page-title{
+        margin-top:15px;
+
+        font-size:19px;
+    }
+
+
+    /* --------------------------
+       集計対象
+    -------------------------- */
+
+    .collection-mode{
+        gap:5px;
+    }
+
+    .collection-mode .mode-btn{
+        min-height:50px;
+
+        padding:5px 3px;
+
+        font-size:10px;
+    }
+
+
+    /* --------------------------
+       楽曲カード
+    -------------------------- */
+
+    .song-card{
+        padding:11px;
+    }
+
+
+    /* --------------------------
+       曲名
+    -------------------------- */
+
+    .song-name{
+        font-size:13px;
+    }
+
+
+    /* --------------------------
+       回数
+    -------------------------- */
+
+    .appearance-count,
+    .listen-count{
+        font-size:11px;
+    }
+
+
+    /* --------------------------
+       詳細アイコン
+    -------------------------- */
+
+    .detail-icon{
+        width:29px;
+        height:29px;
+
+        font-size:13px;
+    }
+
+
+    /* --------------------------
+       配信リンク
+    -------------------------- */
+
+    .song-links{
+        margin-top:9px;
+
+        gap:5px;
+    }
+
+    .song-link{
+        min-height:33px;
+
+        padding:5px 3px;
+
+        font-size:9px;
+    }
+
 }

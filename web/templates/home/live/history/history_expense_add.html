@@ -1,19 +1,16 @@
 {% extends "templates/commons/base.html" %}
 
-{% block title %}
-費用追加
-{% endblock %}
+{% block title %}費用追加{% endblock %}
 
 {% block css %}
 <link rel="stylesheet" href="/static/css/home/live/history_expense_add.css">
 {% endblock %}
 
 {% block content %}
-
 <div class="background">
 
-    <a href="/home/live/history/detail/{{ live_id }}" class="back-link">
-        ← 参加履歴詳細
+    <a href="javascript:history.back()" class="back-link">
+        ← 戻る
     </a>
 
     <div class="page-scroll">
@@ -28,14 +25,10 @@
                 <form method="post" data-unsaved-check="true">
 
                     <div class="form-group">
-                        <label>
-                            費用種類
-                        </label>
+                        <label>費用種類</label>
 
                         <select name="expense_type_id" required>
-                            <option value="">
-                                選択してください
-                            </option>
+                            <option value="">選択してください</option>
 
                             {% for expense_type in expense_types %}
                             <option value="{{ expense_type.expense_type_id }}">
@@ -46,9 +39,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label>
-                            金額
-                        </label>
+                        <label>金額</label>
 
                         <input
                             type="number"
@@ -60,9 +51,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label>
-                            メモ
-                        </label>
+                        <label>メモ</label>
 
                         <textarea
                             name="memo"
@@ -83,5 +72,4 @@
     </div>
 
 </div>
-
 {% endblock %}

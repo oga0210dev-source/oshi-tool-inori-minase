@@ -1,0 +1,210 @@
+{% extends "templates/commons/base.html" %}
+
+{% block title %}{{ song.song_name }} - ライブ登場曲{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="/static/css/home/live/appearance_detail.css">
+{% endblock %}
+
+{% block content %}
+<div class="background">
+
+    <a href="javascript:history.back()" class="back-link">
+        ← 戻る
+    </a>
+
+    <div class="page-scroll">
+        <div class="container">
+
+            <section class="song-detail-card">
+
+                <h1 class="page-title">
+                    {{ song.song_name }}
+                </h1>
+
+                <div class="song-detail-count">
+                    <span>登場回数</span>
+                    <strong>{{ song.events|length }}回</strong>
+                </div>
+
+                {% if song.youtube_url or song.apple_music_url or song.spotify_url %}
+
+                <div class="song-links-title">
+                    配信先
+                </div>
+
+                <div class="song-links">
+
+                    {% if song.youtube_url %}
+                    <a href="{{ song.youtube_url }}"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       class="song-link youtube">
+                        <span class="song-link-name">YouTube</span>
+                        <span class="song-link-arrow">↗</span>
+                    </a>
+                    {% endif %}
+
+                    {% if song.apple_music_url %}
+                    <a href="{{ song.apple_music_url }}"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       class="song-link apple-music">
+                        <span class="song-link-name">Apple Music</span>
+                        <span class="song-link-arrow">↗</span>
+                    </a>
+                    {% endif %}
+
+                    {% if song.spotify_url %}
+                    <a href="{{ song.spotify_url }}"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       class="song-link spotify">
+                        <span class="song-link-name">Spotify</span>
+                        <span class="song-link-arrow">↗</span>
+                    </a>
+                    {% endif %}
+
+                </div>
+
+                {% endif %}
+
+            </section>
+
+            <section class="collection-mode-section">
+
+                <div class="mode-label">
+                    集計対象
+                </div>
+
+                <div class="collection-mode">
+
+                    <a href="/home/live/collected_song/appearance/{{ song.song_group_id }}?mode=live{% if request.query_params.get('from') %}&from={{ request.query_params.get('from') }}{% endif %}"
+                       class="mode-btn{% if mode == 'live' %} active{% endif %}">
+                        ライブのみ
+                    </a>
+
+                    <a href="/home/live/collected_song/appearance/{{ song.song_group_id }}?mode=chomin{% if request.query_params.get('from') %}&from={{ request.query_params.get('from') }}{% endif %}"
+                       class="mode-btn{% if mode == 'chomin' %} active{% endif %}">
+                        町民集会を含む
+                    </a>
+
+                    <a href="/home/live/collected_song/appearance/{{ song.song_group_id }}?mode=all{% if request.query_params.get('from') %}&from={{ request.query_params.get('from') }}{% endif %}"
+                       class="mode-btn{% if mode == 'all' %} active{% endif %}">
+                        町民集会<br>歌唱曲も含む
+                    </a>
+
+                </div>
+
+            </section>
+
+            <section class="appearance-section">
+
+                <div class="section-header">
+                    <h2 class="section-title">
+                        登場イベント
+                    </h2>
+                    <span class="event-count">
+                        {{ song.events|length }}件
+                    </span>
+                </div>
+
+                {% if song.events %}
+
+                <div class="appearance-list">
+
+                    {% for event in song.events %}
+
+                    {% if event.event_type == "LIVE" %}
+
+                    <div class="appearance-card">
+
+                        <div class="appearance-type live">
+                            ライブ
+                        </div>
+
+                        <div class="appearance-info">
+
+                            <div class="appearance-name">
+                                {{ event.event_name }}
+                            </div>
+
+                            {% if event.event_date %}
+                            <div class="appearance-date">
+                                📅 {{ event.event_date }}
+                            </div>
+                            {% endif %}
+
+                            {% if event.venue_name %}
+                            <div class="appearance-venue">
+                                📍 {{ event.venue_name }}
+                            </div>
+                            {% endif %}
+
+                            <a href="/home/live/detail/{{ event.event_id }}?from=appearance&song_group_id={{ song.song_group_id }}&mode={{ mode }}"
+                               class="detail-btn live-detail">
+                                詳細を見る
+                                <span>→</span>
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                    {% elif event.event_type == "CHOMIN" %}
+
+                    <div class="appearance-card">
+
+                        <div class="appearance-type chomin">
+                            町民集会
+                        </div>
+
+                        <div class="appearance-info">
+
+                            <div class="appearance-name">
+                                {{ event.event_name }}
+                            </div>
+
+                            {% if event.event_date %}
+                            <div class="appearance-date">
+                                📅 {{ event.event_date }}
+                            </div>
+                            {% endif %}
+
+                            {% if event.venue_name %}
+                            <div class="appearance-venue">
+                                📍 {{ event.venue_name }}
+                            </div>
+                            {% endif %}
+
+                            <a href="/home/meeting/detail/{{ event.event_id }}?from=collected_song&song_group_id={{ song.song_group_id }}&mode={{ mode }}"
+                               class="detail-btn chomin-detail">
+                                詳細を見る
+                                <span>→</span>
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                    {% endif %}
+
+                    {% endfor %}
+
+                </div>
+
+                {% else %}
+
+                <div class="no-appearance">
+                    登場したイベントがありません。
+                </div>
+
+                {% endif %}
+
+            </section>
+
+        </div>
+    </div>
+
+</div>
+{% endblock %}

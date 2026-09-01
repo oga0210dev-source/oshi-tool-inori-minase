@@ -9,9 +9,8 @@
 {% block content %}
 <div class="background">
 
-    <a href="/home/live/collected_song"
-       class="back-link">
-        ← 回収済み楽曲
+    <a href="javascript:history.back()" class="back-link">
+        ← 戻る
     </a>
 
     <div class="page-scroll">
@@ -21,7 +20,6 @@
                 未回収楽曲
             </h1>
 
-            <!-- 集計対象切り替え -->
             <div class="collection-mode">
 
                 <a href="/home/live/collected_song/uncollected?mode=live"
@@ -36,7 +34,7 @@
 
                 <a href="/home/live/collected_song/uncollected?mode=all"
                    class="mode-btn{% if mode == 'all' %} active{% endif %}">
-                    町民集会歌唱曲も含む
+                    町民集会<br>歌唱曲も含む
                 </a>
 
             </div>
@@ -50,11 +48,9 @@
                 <div class="song-card">
 
                     <div class="song-info">
-
                         <div class="song-name">
                             {{ song.song_name }}
                         </div>
-
                     </div>
 
                     <div class="song-links">
@@ -104,5 +100,6 @@
 
         </div>
     </div>
+
 </div>
 {% endblock %}

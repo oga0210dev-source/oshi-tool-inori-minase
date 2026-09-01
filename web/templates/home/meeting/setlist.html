@@ -8,32 +8,17 @@
 
 {% block content %}
 <div class="background">
-    {% if from_page == "history" %}
 
-    <a href="/home/meeting/detail/{{ meeting.meeting_id }}?from=history"
-       class="back-link">
-        ← 参加履歴詳細
+    <a href="#" class="back-link" onclick="history.back(); return false;">
+        ← 戻る
     </a>
-
-    {% else %}
-
-    <a href="/home/meeting/detail/{{ meeting.meeting_id }}{% if from_page == 'guest' %}?from=guest&guest_id={{ guest_id }}{% endif %}"
-       class="back-link">
-        ← 町民集会詳細
-    </a>
-
-    {% endif %}
 
     <div class="page-scroll">
         <div class="container">
 
-            <div class="detail-card">
+            <section class="detail-card">
                 <div class="group-title">町民集会情報</div>
-
-                <div class="meeting-name">
-                    {{ meeting.meeting_name }}
-                </div>
-
+                <div class="meeting-name">{{ meeting.meeting_name }}</div>
                 <div class="performance-type">
                     {% if meeting.performance_type == "DAY" %}
                         昼公演
@@ -47,79 +32,54 @@
                         第3部
                     {% endif %}
                 </div>
+                <div class="meeting-date">📅 {{ meeting.meeting_date }}</div>
+            </section>
 
-                <div class="meeting-date">
-                    📅 {{ meeting.meeting_date }}
-                </div>
-            </div>
-
-            <div class="detail-card">
+            <section class="detail-card">
                 <div class="group-title">セットリスト</div>
 
                 {% if songs %}
                 <div class="song-list">
                     {% for song in songs %}
                     <div class="song-item">
-                        <div class="song-number">
-                            {{ loop.index }}
-                        </div>
+                        <div class="song-number">{{ loop.index }}</div>
 
                         <div class="song-info">
                             <div class="song-name">
                                 {{ song.song_name }}
                                 {% if song.is_medley %}
-                                <span class="medley-badge">
-                                    メドレー{{ song.medley_order }}
-                                </span>
+                                <span class="medley-badge">メドレー{{ song.medley_order }}</span>
                                 {% endif %}
                             </div>
 
                             {% if song.album_name %}
-                            <div class="album-name">
-                                {{ song.album_name }}
-                            </div>
+                            <div class="album-name">{{ song.album_name }}</div>
                             {% endif %}
                         </div>
 
+                        {% if song.youtube_url or song.apple_music_url or song.spotify_url %}
                         <div class="music-links">
                             {% if song.youtube_url %}
-                            <a href="{{ song.youtube_url }}"
-                               target="_blank"
-                               rel="noopener noreferrer"
-                               class="music-btn youtube">
-                                YouTube
-                            </a>
+                            <a href="{{ song.youtube_url }}" target="_blank" rel="noopener noreferrer" class="music-btn youtube">YouTube</a>
                             {% endif %}
-
                             {% if song.apple_music_url %}
-                            <a href="{{ song.apple_music_url }}"
-                               target="_blank"
-                               rel="noopener noreferrer"
-                               class="music-btn apple">
-                                AppleMusic
-                            </a>
+                            <a href="{{ song.apple_music_url }}" target="_blank" rel="noopener noreferrer" class="music-btn apple">AppleMusic</a>
                             {% endif %}
-
                             {% if song.spotify_url %}
-                            <a href="{{ song.spotify_url }}"
-                               target="_blank"
-                               rel="noopener noreferrer"
-                               class="music-btn spotify">
-                                Spotify
-                            </a>
+                            <a href="{{ song.spotify_url }}" target="_blank" rel="noopener noreferrer" class="music-btn spotify">Spotify</a>
                             {% endif %}
                         </div>
+                        {% endif %}
                     </div>
                     {% endfor %}
                 </div>
                 {% else %}
-                <div class="no-song">
-                    セットリストが登録されていません。
-                </div>
+                <div class="no-song">セットリストが登録されていません。</div>
                 {% endif %}
-            </div>
+            </section>
 
         </div>
     </div>
+
 </div>
 {% endblock %}

@@ -1,19 +1,16 @@
 {% extends "templates/commons/base.html" %}
 
-{% block title %}
-セトリ予測 新規追加
-{% endblock %}
+{% block title %}セトリ予測 新規追加{% endblock %}
 
 {% block css %}
 <link rel="stylesheet" href="/static/css/home/live/setlist_prediction_new.css">
 {% endblock %}
 
 {% block content %}
-
 <div class="background">
 
-    <a href="/home/live/prediction" class="back-link">
-        ← セトリ予測一覧
+    <a href="javascript:history.back()" class="back-link">
+        ← 戻る
     </a>
 
     <div class="page-scroll">
@@ -44,14 +41,8 @@
                     </div>
 
                     <div class="live-info">
-                        <div>
-                            📅 {{ live.live_date }}
-                        </div>
-
-                        <div>
-                            📍 {{ live.prefecture_name }}
-                            {{ live.venue_name }}
-                        </div>
+                        <div>📅 {{ live.live_date }}</div>
+                        <div>📍 {{ live.prefecture_name }} {{ live.venue_name }}</div>
                     </div>
 
                     <div class="live-actions">
@@ -77,6 +68,7 @@
 
         </div>
     </div>
+
 </div>
 
 <div id="toast" class="toast"></div>

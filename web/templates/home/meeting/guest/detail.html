@@ -9,87 +9,42 @@
 {% block content %}
 <div class="background">
 
-    <a href="/home/meeting/guest"
-       class="back-link">
-        ← ゲスト一覧
+    <a href="#" class="back-link" onclick="history.back(); return false;">
+        ← 戻る
     </a>
-
     <div class="page-scroll">
         <div class="container">
 
             <!-- 基本情報 -->
             <div class="detail-card">
-
-                <div class="group-title">
-                    ゲスト
-                </div>
-
-                <div class="guest-name">
-                    🎤 {{ guest.guest_name }}
-                </div>
-
+                <div class="group-title">ゲスト</div>
+                <div class="guest-name">🎤 {{ guest.guest_name }}</div>
                 <div class="guest-info">
-
-                    <div>
-                        出演回数：{{ guest.appearance_count }}回
-                    </div>
-
+                    <div>出演回数：{{ guest.appearance_count }}回</div>
                     {% if guest.latest_meeting_date %}
-                    <div>
-                        最終出演：{{ guest.latest_meeting_date }}
-                    </div>
+                    <div>最終出演：{{ guest.latest_meeting_date }}</div>
                     {% endif %}
-
                 </div>
-
             </div>
-
 
             <!-- 出演した町民集会 -->
             <div class="detail-card">
-
-                <div class="group-title">
-                    出演した町民集会
-                </div>
+                <div class="group-title">出演した町民集会</div>
 
                 {% if meetings %}
-
                 <div class="meeting-list">
-
                     {% for meeting in meetings %}
-
-                    <a href="/home/meeting/detail/{{ meeting.meeting_id }}?from=guest&guest_id={{ guest.guest_id }}"
-                        class="meeting-card">
-
-                        <div class="meeting-name">
-                            {{ meeting.meeting_name }}
-                        </div>
-
+                    <a href="/home/meeting/detail/{{ meeting.meeting_id }}?from=guest&guest_id={{ guest.guest_id }}" class="meeting-card">
+                        <div class="meeting-name">{{ meeting.meeting_name }}</div>
                         <div class="meeting-info">
-
-                            <div>
-                                📅 {{ meeting.meeting_date }}
-                            </div>
-
-                            <div>
-                                📍 {{ meeting.prefecture_name }}
-                                {{ meeting.venue_name }}
-                            </div>
-
+                            <div>📅 {{ meeting.meeting_date }}</div>
+                            <div>📍 {{ meeting.prefecture_name }} {{ meeting.venue_name }}</div>
                         </div>
-
                     </a>
-
                     {% endfor %}
-
                 </div>
-
                 {% else %}
-
-                <div class="no-meeting">
-                    出演した町民集会はありません。
-                </div>
-
+                <div class="no-meeting">出演した町民集会はありません。</div>
                 {% endif %}
 
             </div>

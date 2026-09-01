@@ -8,108 +8,50 @@
 
 {% block content %}
 <div class="background">
-
-    <a href="/home/live/collected_song"
-       class="back-link">
-        ← 回収済み楽曲
+    <a href="#" class="back-link" onclick="history.back(); return false;">
+        ← 戻る
     </a>
 
     <div class="page-scroll">
         <div class="container">
+            <h1 class="page-title">回収済み楽曲</h1>
 
-            <h1 class="page-title">
-                回収済み楽曲
-            </h1>
-
-            <!-- 集計対象切り替え -->
             <div class="collection-mode">
-
-                <a href="/home/live/collected_song/collected?mode=live"
-                   class="mode-btn {% if mode == 'live' %}active{% endif %}">
-                    ライブのみ
-                </a>
-
-                <a href="/home/live/collected_song/collected?mode=chomin"
-                   class="mode-btn {% if mode == 'chomin' %}active{% endif %}">
-                    町民集会を含む
-                </a>
-
-                <a href="/home/live/collected_song/collected?mode=all"
-                   class="mode-btn {% if mode == 'all' %}active{% endif %}">
-                    町民集会歌唱曲も含む
-                </a>
-
+                <a href="/home/live/collected_song/collected?mode=live" class="mode-btn{% if mode == 'live' %} active{% endif %}">ライブのみ</a>
+                <a href="/home/live/collected_song/collected?mode=chomin" class="mode-btn{% if mode == 'chomin' %} active{% endif %}">町民集会を含む</a>
+                <a href="/home/live/collected_song/collected?mode=all" class="mode-btn{% if mode == 'all' %} active{% endif %}">町民集会<br>歌唱曲も含む</a>
             </div>
-
 
             {% if songs %}
-
             <div class="song-list">
-
                 {% for song in songs %}
-
                 <div class="song-card">
-
-                    <div class="song-info">
-
-                        <div class="song-name">
-                            {{ song.song_name }}
-                        </div>
-
-                        <div class="listen-count">
-                            {{ song.listen_count }}回
-                        </div>
-
+                    <div class="song-header">
+                        <div class="song-name">{{ song.song_name }}</div>
+                        <div class="listen-count">{{ song.listen_count }}回</div>
+                        <a href="/home/live/collected_song/appearance/{{ song.song_group_id }}?mode={{ mode }}&from=collected" class="detail-icon" aria-label="{{ song.song_name }}の詳細">🔍</a>
                     </div>
 
-
+                    {% if song.youtube_url or song.apple_music_url or song.spotify_url %}
                     <div class="song-links">
-
                         {% if song.youtube_url %}
-                        <a href="{{ song.youtube_url }}"
-                           target="_blank"
-                           rel="noopener noreferrer"
-                           class="song-link youtube">
-                            YouTube
-                        </a>
+                        <a href="{{ song.youtube_url }}" target="_blank" rel="noopener noreferrer" class="song-link youtube">YouTube ↗</a>
                         {% endif %}
-
                         {% if song.apple_music_url %}
-                        <a href="{{ song.apple_music_url }}"
-                           target="_blank"
-                           rel="noopener noreferrer"
-                           class="song-link apple-music">
-                            Apple Music
-                        </a>
+                        <a href="{{ song.apple_music_url }}" target="_blank" rel="noopener noreferrer" class="song-link apple-music">Apple Music ↗</a>
                         {% endif %}
-
                         {% if song.spotify_url %}
-                        <a href="{{ song.spotify_url }}"
-                           target="_blank"
-                           rel="noopener noreferrer"
-                           class="song-link spotify">
-                            Spotify
-                        </a>
+                        <a href="{{ song.spotify_url }}" target="_blank" rel="noopener noreferrer" class="song-link spotify">Spotify ↗</a>
                         {% endif %}
-
                     </div>
-
+                    {% endif %}
                 </div>
-
                 {% endfor %}
-
             </div>
-
             {% else %}
-
-            <div class="no-song">
-                まだ回収した楽曲はありません
-            </div>
-
+            <div class="no-song">まだ回収した楽曲はありません</div>
             {% endif %}
-
         </div>
     </div>
-
 </div>
 {% endblock %}

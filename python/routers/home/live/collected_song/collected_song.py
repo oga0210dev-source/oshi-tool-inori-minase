@@ -6,8 +6,10 @@ from python.services.collected_song_service import (
     get_song_collection_summary,
     get_collected_song_list,
     get_uncollected_song_list,
-    get_live_appearance_song_list
+    get_live_appearance_song_list,
+    get_live_appearance_song_detail
 )
+
 
 router = APIRouter(
     prefix="/home/live/collected_song",
@@ -20,19 +22,16 @@ def collected_song(request: Request):
 
     user_id = request.session["user_id"]
 
-    # ライブのみ
     summary = get_song_collection_summary(
         user_id,
         mode="live"
     )
 
-    # ライブ＋町民集会
     summary_with_chomin = get_song_collection_summary(
         user_id,
         mode="chomin"
     )
 
-    # ライブ＋町民集会＋カバー曲等
     summary_all_meeting_songs = get_song_collection_summary(
         user_id,
         mode="all"
@@ -124,5 +123,48 @@ def appearance_song(
             "request": request,
             "songs": songs,
             "mode": mode
+        }
+    )
+
+
+@router.get("/appearance/{song_group_id}")
+def appearance_song_detail(
+        request: Request,
+        song_group_id: int,
+        mode: str = "live",
+        from_: str = "appearance"
+):
+
+    if mode not in ("live", "chomin", "all"):
+        mode = "live"
+
+    if from_ not in ("collected", "appearance"):
+        from_ = "appearance"
+
+    song = get_live_appearance_song_detail(
+        song_group_id=song_group_id,
+        mode=mode
+    )
+
+    if not song:
+        return render(
+            request=request,
+            name="templates/home/live/collected_song/appearance_detail.html",
+            context={
+                "request": request,
+                "song": None,
+                "mode": mode,
+                "from_": from_
+            }
+        )
+
+    return render(
+        request=request,
+        name="templates/home/live/collected_song/appearance_detail.html",
+        context={
+            "request": request,
+            "song": song,
+            "mode": mode,
+            "from_": from_
         }
     )

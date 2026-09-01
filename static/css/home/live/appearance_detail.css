@@ -1,0 +1,559 @@
+/* ==========================
+   戻るリンク
+========================== */
+
+.background .back-link{
+    display:block;
+
+    width:90%;
+    max-width:400px;
+
+    margin:10px auto 0;
+}
+
+
+/* ==========================
+   コンテナ
+========================== */
+
+.container{
+    width:100%;
+    max-width:430px;
+
+    margin:0 auto;
+
+    padding:10px 0 35px;
+}
+
+
+/* ==========================
+   曲情報カード
+========================== */
+
+.song-detail-card{
+    width:90%;
+    max-width:400px;
+
+    margin:0 auto 18px;
+    padding:20px;
+
+    box-sizing:border-box;
+
+    background:rgba(255,255,255,.92);
+
+    border-radius:16px;
+
+    box-shadow:0 2px 7px rgba(0,0,0,.12);
+
+    text-align:center;
+}
+
+
+/* ==========================
+   曲名
+========================== */
+
+.page-title{
+    margin:0 0 8px;
+
+    color:#333;
+
+    font-size:20px;
+    font-weight:bold;
+    line-height:1.5;
+
+    word-break:break-word;
+}
+
+
+/* ==========================
+   登場回数
+========================== */
+
+.song-detail-count{
+    display:flex;
+    justify-content:center;
+    align-items:baseline;
+    gap:6px;
+
+    margin-bottom:18px;
+
+    color:#777;
+
+    font-size:12px;
+}
+
+.song-detail-count strong{
+    color:#555;
+
+    font-size:18px;
+}
+
+
+/* ==========================
+   配信先タイトル
+========================== */
+
+.song-links-title{
+    margin-bottom:7px;
+
+    color:#777;
+
+    font-size:11px;
+    font-weight:bold;
+}
+
+
+/* ==========================
+   配信先
+========================== */
+
+.song-links{
+    display:flex;
+
+    width:100%;
+
+    gap:6px;
+}
+
+
+/* ==========================
+   配信リンク
+========================== */
+
+.song-link{
+    flex:1;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    min-width:0;
+    min-height:38px;
+
+    padding:6px 5px;
+
+    box-sizing:border-box;
+
+    border-radius:9px;
+
+    text-decoration:none;
+
+    font-size:10px;
+    font-weight:bold;
+
+    transition:.2s;
+}
+
+.song-link:hover{
+    opacity:.82;
+    transform:translateY(-1px);
+}
+
+.song-link:active{
+    transform:scale(.96);
+}
+
+.song-link-name{
+    overflow:hidden;
+
+    white-space:nowrap;
+    text-overflow:ellipsis;
+}
+
+.song-link-arrow{
+    margin-left:3px;
+
+    font-size:10px;
+}
+
+
+/* ==========================
+   配信サービス別
+========================== */
+
+.song-link.youtube{
+    background:#fff0f0;
+    color:#e60000;
+}
+
+.song-link.apple-music{
+    background:#fff0f5;
+    color:#e83e8c;
+}
+
+.song-link.spotify{
+    background:#eefaf1;
+    color:#16833b;
+}
+
+
+/* ==========================
+   集計対象
+========================== */
+
+.collection-mode-section{
+    width:90%;
+    max-width:400px;
+
+    margin:0 auto 22px;
+}
+
+.mode-label{
+    margin-bottom:8px;
+
+    color:#666;
+
+    font-size:12px;
+    font-weight:bold;
+}
+
+.collection-mode{
+    display:flex;
+
+    width:100%;
+
+    gap:5px;
+}
+
+.mode-btn{
+    flex:1;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    min-height:48px;
+
+    padding:5px 3px;
+
+    box-sizing:border-box;
+
+    background:#fff;
+
+    border:2px solid #eee;
+    border-radius:11px;
+
+    color:#555;
+
+    font-size:10px;
+    font-weight:bold;
+
+    line-height:1.35;
+    text-align:center;
+
+    text-decoration:none;
+
+    transition:.2s;
+}
+
+.mode-btn.active{
+    background:#ff8fb1;
+    border-color:#ff8fb1;
+
+    color:#fff;
+}
+
+.mode-btn:hover{
+    transform:translateY(-1px);
+}
+
+
+/* ==========================
+   登場イベント
+========================== */
+
+.appearance-section{
+    width:90%;
+    max-width:400px;
+
+    margin:0 auto;
+}
+
+
+/* ==========================
+   セクションヘッダー
+========================== */
+
+.section-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    margin-bottom:10px;
+}
+
+.section-title{
+    margin:0;
+
+    color:#555;
+
+    font-size:16px;
+    font-weight:bold;
+}
+
+.event-count{
+    color:#999;
+
+    font-size:11px;
+}
+
+
+/* ==========================
+   イベント一覧
+========================== */
+
+.appearance-list{
+    display:flex;
+    flex-direction:column;
+
+    gap:10px;
+}
+
+
+/* ==========================
+   イベントカード
+========================== */
+
+.appearance-card{
+    display:flex;
+    align-items:stretch;
+
+    width:100%;
+    min-width:0;
+
+    box-sizing:border-box;
+
+    background:rgba(255,255,255,.92);
+
+    border-radius:14px;
+
+    box-shadow:0 2px 6px rgba(0,0,0,.1);
+
+    overflow:hidden;
+}
+
+
+/* ==========================
+   イベント種別
+========================== */
+
+.appearance-type{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    flex:0 0 62px;
+
+    width:62px;
+
+    padding:10px 4px;
+
+    box-sizing:border-box;
+
+    color:#fff;
+
+    font-size:10px;
+    font-weight:bold;
+
+    line-height:1.4;
+
+    text-align:center;
+}
+
+.appearance-type.live{
+    background:#e85b5b;
+}
+
+.appearance-type.chomin{
+    background:#5b8fd9;
+}
+
+
+/* ==========================
+   イベント情報
+========================== */
+
+.appearance-info{
+    flex:1;
+    min-width:0;
+
+    padding:12px 12px 11px;
+}
+
+
+/* ==========================
+   イベント名
+========================== */
+
+.appearance-name{
+    margin-bottom:6px;
+
+    color:#333;
+
+    font-size:13px;
+    font-weight:bold;
+
+    line-height:1.5;
+
+    word-break:break-word;
+}
+
+
+/* ==========================
+   開催日
+========================== */
+
+.appearance-date{
+    color:#777;
+
+    font-size:11px;
+    line-height:1.5;
+}
+
+
+/* ==========================
+   会場
+========================== */
+
+.appearance-venue{
+    margin-top:2px;
+
+    color:#777;
+
+    font-size:11px;
+    line-height:1.5;
+
+    word-break:break-word;
+}
+
+
+/* ==========================
+   詳細ボタン
+========================== */
+
+.detail-btn{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    width:100%;
+
+    min-height:34px;
+
+    margin-top:10px;
+
+    padding:6px 10px;
+
+    box-sizing:border-box;
+
+    border-radius:8px;
+
+    color:#fff;
+
+    font-size:11px;
+    font-weight:bold;
+
+    text-decoration:none;
+
+    transition:.2s;
+}
+
+.detail-btn span{
+    margin-left:6px;
+
+    font-size:14px;
+}
+
+.detail-btn:hover{
+    opacity:.85;
+}
+
+.detail-btn:active{
+    transform:scale(.97);
+}
+
+.detail-btn.live-detail{
+    background:#e85b5b;
+}
+
+.detail-btn.chomin-detail{
+    background:#5b8fd9;
+}
+
+
+/* ==========================
+   登場イベントなし
+========================== */
+
+.no-appearance{
+    width:100%;
+
+    margin:30px 0;
+
+    color:#777;
+
+    font-size:14px;
+
+    text-align:center;
+}
+
+
+/* ==========================
+   スクロールバー
+========================== */
+
+html{
+    scrollbar-width:none;
+}
+
+html::-webkit-scrollbar{
+    display:none;
+}
+
+
+/* ==========================
+   スマートフォン
+========================== */
+
+@media(max-width:600px){
+
+    .song-detail-card{
+        padding:18px;
+    }
+
+    .song-links{
+        gap:5px;
+    }
+
+    .song-link{
+        min-height:36px;
+
+        font-size:9px;
+    }
+
+    .mode-btn{
+        min-height:50px;
+
+        font-size:10px;
+    }
+
+    .appearance-type{
+        flex-basis:60px;
+        width:60px;
+    }
+
+    .appearance-info{
+        padding:11px 10px;
+    }
+
+    .appearance-name{
+        font-size:12px;
+    }
+
+    .appearance-date,
+    .appearance-venue{
+        font-size:10px;
+    }
+
+}

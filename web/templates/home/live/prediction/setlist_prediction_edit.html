@@ -1,19 +1,16 @@
 {% extends "templates/commons/base.html" %}
 
-{% block title %}
-セトリ予測
-{% endblock %}
+{% block title %}セトリ予測{% endblock %}
 
 {% block css %}
 <link rel="stylesheet" href="/static/css/home/live/setlist_prediction_edit.css">
 {% endblock %}
 
 {% block content %}
-
 <div class="background">
 
-    <a href="/home/live/prediction" class="back-link">
-        ← ライブ一覧
+    <a href="javascript:history.back()" class="back-link">
+        ← 戻る
     </a>
 
     <div class="page-scroll">
@@ -34,14 +31,8 @@
                 </div>
 
                 <div class="live-info">
-                    <div>
-                        📅 {{ live.live_date }}
-                    </div>
-
-                    <div>
-                        📍 {{ live.prefecture_name }}
-                        {{ live.venue_name }}
-                    </div>
+                    <div>📅 {{ live.live_date }}</div>
+                    <div>📍 {{ live.prefecture_name }} {{ live.venue_name }}</div>
                 </div>
 
             </div>
@@ -53,19 +44,17 @@
             <div class="button-area">
 
                 <div class="add-area">
-                    <button
-                        type="button"
-                        class="add-btn"
-                        onclick="openSongModal()">
+                    <button type="button"
+                            class="add-btn"
+                            onclick="openSongModal()">
                         +追加
                     </button>
                 </div>
 
                 <div class="save-area">
-                    <button
-                        type="button"
-                        class="save-btn"
-                        onclick="savePrediction()">
+                    <button type="button"
+                            class="save-btn"
+                            onclick="savePrediction()">
                         保存
                     </button>
                 </div>
@@ -73,47 +62,56 @@
             </div>
 
             <div class="setlist-area" id="setlist-area">
+
                 {% if songs %}
-                    {% for song in songs %}
-                    <div class="setlist-item"
-                         data-song-id="{{ song.song_id }}"
-                         data-is-medley="{{ 'true' if song.is_medley else 'false' }}"
-                         data-medley-order="{{ song.medley_order or '' }}">
 
-                        <div class="song-order">
-                            {{ loop.index }}
-                        </div>
+                {% for song in songs %}
 
-                        <div class="song-name">
-                            {{ song.song_name }}
+                <div class="setlist-item"
+                     data-song-id="{{ song.song_id }}"
+                     data-is-medley="{{ 'true' if song.is_medley else 'false' }}"
+                     data-medley-order="{{ song.medley_order or '' }}">
 
-                            {% if song.is_medley %}
-                            <span class="medley-badge">
-                                メドレー{{ song.medley_order }}
-                            </span>
-                            {% endif %}
-                        </div>
-
-                        <button
-                            class="delete-btn"
-                            onclick="deleteSong(this)">
-                            ×
-                        </button>
-
-                        <div class="drag-handle">
-                            ☰
-                        </div>
+                    <div class="song-order">
+                        {{ loop.index }}
                     </div>
-                    {% endfor %}
+
+                    <div class="song-name">
+                        {{ song.song_name }}
+
+                        {% if song.is_medley %}
+                        <span class="medley-badge">
+                            メドレー{{ song.medley_order }}
+                        </span>
+                        {% endif %}
+                    </div>
+
+                    <button class="delete-btn"
+                            onclick="deleteSong(this)">
+                        ×
+                    </button>
+
+                    <div class="drag-handle">
+                        ☰
+                    </div>
+
+                </div>
+
+                {% endfor %}
 
                 {% else %}
-                    <div class="no-setlist">
-                        セットリストが登録されていません
-                    </div>
+
+                <div class="no-setlist">
+                    セットリストが登録されていません
+                </div>
+
                 {% endif %}
+
             </div>
+
         </div>
     </div>
+
 </div>
 
 <!-- 曲追加モーダル -->
@@ -130,48 +128,56 @@
         </div>
 
         <div class="search-area">
-            <input
-                type="text"
-                id="song-search"
-                placeholder="曲名">
 
-            <button
-                type="button"
-                class="search-btn"
-                onclick="searchSong()">
+            <input type="text"
+                   id="song-search"
+                   placeholder="曲名">
+
+            <button type="button"
+                    class="search-btn"
+                    onclick="searchSong()">
                 検索
             </button>
+
         </div>
 
         <div class="song-list">
+
             {% for group in song_groups %}
+
             <label class="song-select"
                    data-song-name="{{ group.song_name }}">
-                <input
-                    type="checkbox"
-                    name="song"
-                    value="{{ group.song_group_id }}">
+
+                <input type="checkbox"
+                       name="song"
+                       value="{{ group.song_group_id }}">
+
                 {{ group.song_name }}
+
             </label>
+
             {% endfor %}
+
         </div>
 
         <div class="modal-footer">
+
             <label class="medley-check">
-                <input
-                    type="checkbox"
-                    id="is-medley">
+                <input type="checkbox"
+                       id="is-medley">
                 メドレー
             </label>
 
-            <button
-                type="button"
-                class="modal-add-btn"
-                onclick="addSong()">
+            <button type="button"
+                    class="modal-add-btn"
+                    onclick="addSong()">
                 選択
             </button>
+
         </div>
+
     </div>
+
 </div>
 
 <div id="toast" class="toast"></div>
