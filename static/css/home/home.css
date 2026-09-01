@@ -10,15 +10,13 @@
     margin:0 auto;
     padding:15px 0 30px;
     box-sizing:border-box;
-    overflow-y:auto;
     overflow-x:hidden;
+    overflow-y:auto;
     scrollbar-width:none;
     -ms-overflow-style:none;
 }
 
-.home-scroll::-webkit-scrollbar{
-    display:none;
-}
+.home-scroll::-webkit-scrollbar{display:none}
 
 
 /* ==========================
@@ -39,10 +37,10 @@
 }
 
 .profile-image{
-    position:relative;
     display:flex;
     align-items:center;
     justify-content:center;
+    position:relative;
     flex-shrink:0;
     width:55px;
     height:55px;
@@ -50,13 +48,7 @@
     box-sizing:border-box;
     overflow:hidden;
     border-radius:50%;
-    background:linear-gradient(
-        135deg,
-        #ff8fb1,
-        #ffc86b,
-        #8fd8ff,
-        #b99cff
-    );
+    background:linear-gradient(135deg,#ff8fb1,#ffc86b,#8fd8ff,#b99cff);
 }
 
 .profile-image img{
@@ -68,35 +60,19 @@
     background:#fff;
 }
 
-/* ==========================
-   未設定プロフィールアイコン
-========================== */
-
-/*
-   絵文字などを表示する場合。
-   例：
-   <div class="profile-image profile-default">👤</div>
-*/
 .profile-default{
     display:flex;
     align-items:center;
     justify-content:center;
-
+    flex:0 0 80px;
     width:80px;
     height:80px;
-
-    flex:0 0 80px;
-
     box-sizing:border-box;
-
     border:3px solid #ffb5ca;
     border-radius:50%;
-
     background:#fff7fa;
-
     font-size:42px;
     line-height:1;
-
     text-align:center;
 }
 
@@ -131,13 +107,8 @@
     transition:opacity .2s,transform .1s;
 }
 
-.home-menu-btn:hover{
-    opacity:.9;
-}
-
-.home-menu-btn:active{
-    transform:scale(.98);
-}
+.home-menu-btn:hover{opacity:.9}
+.home-menu-btn:active{transform:scale(.98)}
 
 
 /* ==========================
@@ -218,11 +189,6 @@
     box-shadow:0 3px 8px rgba(0,0,0,.12);
 }
 
-
-/* ==========================
-   2列メニューアイコン
-========================== */
-
 .home-menu-grid .home-menu-icon{
     width:40px;
     height:40px;
@@ -283,9 +249,7 @@
    未実装メニュー
 ========================== */
 
-.not-implemented{
-    cursor:default;
-}
+.not-implemented{cursor:default}
 
 
 /* ==========================
@@ -294,47 +258,34 @@
 
 .setting-modal{
     position:fixed;
-    top:0;
-    right:0;
-    bottom:0;
-    left:0;
-
-    z-index:2147483647;
-
+    inset:0;
+    z-index:1000;
     display:none;
     align-items:center;
     justify-content:center;
-
     padding:25px;
-
     box-sizing:border-box;
-
     background:rgba(0,0,0,.45);
-
     overflow:hidden;
 }
 
+.setting-modal.active{
+    display:flex;
+}
 
 .setting-box{
     width:100%;
     max-width:350px;
     max-height:calc(100dvh - 40px);
-
     padding:20px;
-
     box-sizing:border-box;
-
-    overflow-y:auto;
     overflow-x:hidden;
-
+    overflow-y:auto;
     border-radius:20px;
-
     background:#fff;
-
     scrollbar-width:none;
     -ms-overflow-style:none;
 }
-
 
 .setting-box::-webkit-scrollbar{
     display:none;
@@ -361,18 +312,14 @@
     font-size:14px;
 }
 
-.setting-box a:hover{
-    background:#fafafa;
-}
+.setting-box a:hover{background:#fafafa}
 
 
 /* ==========================
    フォント設定
 ========================== */
 
-#font-setting-modal{
-    display:none;
-}
+#font-setting-modal{display:none}
 
 #font-test{
     width:100%;
@@ -386,9 +333,7 @@
     text-align:center;
 }
 
-.font-preview{
-    transition:font-family .15s ease;
-}
+.font-preview{transition:font-family .15s ease}
 
 .font-preview.font-hachi-maru-pop{
     font-family:"HachiMaruPop-Regular",sans-serif;
@@ -441,7 +386,7 @@
     margin-top:15px;
     padding:12px;
     box-sizing:border-box;
-    border:none;
+    border:0;
     border-radius:8px;
     background:#333;
     color:#fff;
@@ -450,9 +395,7 @@
     cursor:pointer;
 }
 
-#font-save-button:hover{
-    opacity:.9;
-}
+#font-save-button:hover{opacity:.9}
 
 
 /* ==========================
@@ -460,16 +403,21 @@
 ========================== */
 
 .home-modal{
-    display:none;
     position:fixed;
     inset:0;
     z-index:1000;
+    display:none;
     align-items:center;
     justify-content:center;
+    width:100%;
+    height:100%;
     padding:20px;
     box-sizing:border-box;
+    overflow:hidden;
     background:rgba(0,0,0,.5);
 }
+
+.home-modal.active{display:flex}
 
 .home-modal-content{
     display:flex;
@@ -486,8 +434,8 @@
     display:flex;
     align-items:center;
     justify-content:space-between;
-    height:50px;
     flex-shrink:0;
+    height:50px;
     padding:0 15px;
     box-sizing:border-box;
     border-bottom:1px solid #ddd;
@@ -500,7 +448,7 @@
 
 .home-modal-close{
     padding:0 5px;
-    border:none;
+    border:0;
     background:none;
     font-family:inherit;
     font-size:28px;
@@ -512,8 +460,8 @@
     min-height:0;
     padding:15px;
     box-sizing:border-box;
-    overflow-y:auto;
     overflow-x:hidden;
+    overflow-y:auto;
     font-size:13px;
     line-height:1.8;
     text-align:left;
@@ -521,9 +469,7 @@
     -ms-overflow-style:none;
 }
 
-.home-modal-body::-webkit-scrollbar{
-    display:none;
-}
+.home-modal-body::-webkit-scrollbar{display:none}
 
 
 /* ==========================
@@ -535,9 +481,7 @@
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP","Yu Gothic","Hiragino Kaku Gothic ProN",sans-serif!important;
 }
 
-.legal-modal-page{
-    width:100%;
-}
+.legal-modal-page{width:100%}
 
 .legal-modal-page .update-date{
     margin:0 0 20px;
@@ -545,31 +489,22 @@
     font-size:12px;
 }
 
-.legal-modal-page .legal-section{
-    margin-bottom:20px;
-}
-
-.legal-modal-page .legal-section:last-child{
-    margin-bottom:0;
-}
+.legal-modal-page .legal-section{margin-bottom:20px}
+.legal-modal-page .legal-section:last-child{margin-bottom:0}
 
 .legal-modal-page h2{
     margin:0 0 8px;
     font-size:15px;
 }
 
-.legal-modal-page p{
-    margin:0 0 12px;
-}
+.legal-modal-page p{margin:0 0 12px}
 
 .legal-modal-page ul{
     margin:0 0 12px;
     padding-left:22px;
 }
 
-.legal-modal-page li{
-    margin-bottom:6px;
-}
+.legal-modal-page li{margin-bottom:6px}
 
 
 /* ==========================
@@ -579,8 +514,8 @@
 .home-inquiry-body{
     flex:1;
     min-height:0;
-    overflow:hidden;
     padding:0;
+    overflow:hidden;
 }
 
 .home-inquiry-body iframe{
@@ -588,7 +523,7 @@
     width:100%;
     height:100%;
     min-height:0;
-    border:none;
+    border:0;
 }
 
 
@@ -598,17 +533,11 @@
 
 @media(max-width:600px){
 
-    .home-scroll{
-        padding-top:10px;
-    }
+    .home-scroll{padding-top:10px}
 
-    .profile-card{
-        margin-bottom:16px;
-    }
+    .profile-card{margin-bottom:16px}
 
-    .home-menu-grid{
-        gap:10px;
-    }
+    .home-menu-grid{gap:10px}
 
     .home-menu-grid .home-menu-btn{
         min-height:68px;
@@ -622,7 +551,14 @@
         font-size:20px;
     }
 
-    .home-menu-text{
-        font-size:12px;
+    .home-menu-text{font-size:12px}
+
+    .setting-modal,
+    .home-modal{
+        padding:16px;
+    }
+
+    .setting-box{
+        max-height:calc(100dvh - 32px);
     }
 }
