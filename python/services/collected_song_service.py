@@ -336,6 +336,10 @@ def get_live_appearance_song_list(mode="live"):
                 INNER JOIN m_song s
                     ON s.song_id = st.song_id
 
+                LEFT JOIN m_live l
+                    ON st.event_type = 'LIVE'
+                    AND l.live_id = st.event_id
+
                 WHERE
                     {event_type_condition}
 
@@ -343,6 +347,15 @@ def get_live_appearance_song_list(mode="live"):
                     AND s.is_deleted = FALSE
 
                     {song_type_condition}
+
+                    -- 公演中止のLIVEは除外
+                    AND (
+                        st.event_type = 'CHOMIN'
+                        OR (
+                            l.tour_name IS NULL
+                            OR l.tour_name NOT LIKE '%%公演中止%%'
+                        )
+                    )
 
                 GROUP BY
                     s.song_group_id
