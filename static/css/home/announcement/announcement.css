@@ -1,0 +1,452 @@
+/* =========================
+   お知らせ
+========================= */
+
+
+/* =========================
+   フォント固定
+========================= */
+
+.announcement-page,
+.announcement-page *,
+.announcement-page *::before,
+.announcement-page *::after{
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        "Noto Sans JP",
+        "Yu Gothic",
+        "Hiragino Kaku Gothic ProN",
+        sans-serif !important;
+}
+
+
+/* =========================
+   ページ全体
+========================= */
+
+.announcement-page{
+    width:100%;
+    min-width:0;
+    height:100%;
+    min-height:0;
+    overflow:hidden;
+}
+
+.announcement-page .container{
+    display:flex;
+    flex-direction:column;
+    width:100%;
+    min-width:0;
+    height:100%;
+    min-height:0;
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+
+/* =========================
+   ヘッダー
+========================= */
+
+.announcement-page .page-header{
+    flex:0 0 auto;
+}
+
+
+/* =========================
+   ページ・スクロール領域
+========================= */
+
+.announcement-page .page-scroll{
+    flex:1 1 auto;
+    width:100%;
+    min-width:0;
+    min-height:0;
+    height:auto;
+    margin:0;
+    padding:0 0 10px;
+    box-sizing:border-box;
+    overflow-x:hidden;
+    overflow-y:auto;
+    scrollbar-width:none;
+    -ms-overflow-style:none;
+}
+
+.announcement-page .page-scroll::-webkit-scrollbar{
+    display:none;
+}
+
+
+/* =========================
+   一覧
+========================= */
+
+.announcement-list{
+    width:100%;
+    min-width:0;
+    box-sizing:border-box;
+}
+
+
+/* =========================
+   ジャンル
+========================= */
+
+.genre-block{
+    width:100%;
+    margin-bottom:15px;
+    box-sizing:border-box;
+    overflow:hidden;
+    border-radius:20px;
+    background:#fff;
+    box-shadow:0 3px 8px rgba(0,0,0,.12);
+}
+
+.genre-menu{
+    display:flex;
+    align-items:center;
+    width:100%;
+    min-height:55px;
+    padding:10px 15px;
+    box-sizing:border-box;
+    border:none;
+    background:#fff;
+    text-align:left;
+    cursor:pointer;
+}
+
+.genre-menu-icon{
+    flex-shrink:0;
+    margin-right:10px;
+    font-size:20px;
+}
+
+.genre-menu-title{
+    flex:1;
+    min-width:0;
+    color:#333;
+    font-size:17px;
+    font-weight:bold;
+    line-height:1.4;
+}
+
+.genre-menu-count{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-shrink:0;
+    min-width:24px;
+    height:24px;
+    padding:0 7px;
+    box-sizing:border-box;
+    border-radius:12px;
+    background:#ff8fb1;
+    color:#fff;
+    font-size:12px;
+    font-weight:bold;
+}
+
+.genre-menu-arrow{
+    flex-shrink:0;
+    margin-left:10px;
+    color:#999;
+    font-size:28px;
+    line-height:1;
+    transform:rotate(0deg);
+    transition:transform .2s ease;
+}
+
+.genre-menu-arrow.open{
+    transform:rotate(90deg);
+}
+
+
+/* =========================
+   お知らせ一覧
+========================= */
+
+.genre-content{
+    display:none;
+    border-top:1px solid #eee;
+}
+
+.genre-content.open{
+    display:block;
+}
+
+
+/* =========================
+   お知らせ項目
+========================= */
+
+.announcement-item{
+    width:100%;
+    min-width:0;
+    box-sizing:border-box;
+    border-bottom:1px solid #eee;
+}
+
+.announcement-item:last-child{
+    border-bottom:none;
+}
+
+
+/* =========================
+   お知らせ行
+========================= */
+
+.announcement-row{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    width:100%;
+    min-width:0;
+    margin:0;
+    padding:13px 15px;
+    box-sizing:border-box;
+    border:none;
+    border-bottom:1px solid #eee;
+    background:#fff;
+    text-align:left;
+    text-decoration:none;
+    cursor:pointer;
+    appearance:none;
+    -webkit-appearance:none;
+}
+
+.announcement-item:last-child .announcement-row{
+    border-bottom:none;
+}
+
+.announcement-info{
+    flex:1;
+    min-width:0;
+}
+
+.announcement-title{
+    min-width:0;
+    color:#333;
+    font-size:15px;
+    font-weight:bold;
+    line-height:1.5;
+    overflow-wrap:anywhere;
+    word-break:break-word;
+}
+
+.announcement-date{
+    margin-top:3px;
+    color:#999;
+    font-size:12px;
+    line-height:1.5;
+}
+
+.announcement-arrow{
+    flex-shrink:0;
+    color:#aaa;
+    font-size:26px;
+    line-height:1;
+    transform:rotate(0deg);
+    transition:transform .2s ease;
+}
+
+.announcement-arrow.open{
+    transform:rotate(90deg);
+}
+
+
+/* =========================
+   お知らせ詳細
+========================= */
+
+.announcement-detail-inline{
+    display:none;
+    width:100%;
+    min-width:0;
+    margin:0;
+    padding:18px 15px 22px;
+    box-sizing:border-box;
+    border-top:1px solid #eee;
+    background:#fff;
+}
+
+.announcement-detail-inline.open{
+    display:block;
+}
+
+
+/* =========================
+   詳細ヘッダー
+========================= */
+
+.announcement-detail-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    width:100%;
+    margin:0 0 12px;
+}
+
+.announcement-detail-genre{
+    min-width:0;
+    color:#ff6f9f;
+    font-size:13px;
+    font-weight:bold;
+    line-height:1.5;
+}
+
+.announcement-detail-date{
+    flex-shrink:0;
+    color:#999;
+    font-size:12px;
+    line-height:1.5;
+}
+
+
+/* =========================
+   詳細タイトル
+========================= */
+
+.announcement-detail-title{
+    width:100%;
+    min-width:0;
+    margin:0 0 18px;
+    color:#333;
+    font-size:19px;
+    font-weight:bold;
+    line-height:1.5;
+    overflow-wrap:anywhere;
+    word-break:break-word;
+}
+
+
+/* =========================
+   詳細本文
+========================= */
+
+.announcement-detail-body{
+    width:100%;
+    min-width:0;
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    color:#333;
+    font-size:14px;
+    line-height:1.9;
+    text-align:left;
+    white-space:pre-wrap;
+    overflow-wrap:anywhere;
+    word-break:break-word;
+}
+
+
+/* =========================
+   データなし
+========================= */
+
+.empty-message{
+    margin:30px 0;
+    color:#777;
+    font-size:14px;
+    line-height:1.6;
+    text-align:center;
+}
+
+
+/* =========================
+   スマートフォン
+========================= */
+
+@media (max-width:430px){
+
+    .genre-menu{
+        min-height:58px;
+    }
+
+    .genre-menu-icon{
+        font-size:21px;
+    }
+
+    .genre-menu-title{
+        font-size:17px;
+    }
+
+    .announcement-row{
+        padding:14px 15px;
+    }
+
+    .announcement-title{
+        font-size:16px;
+    }
+
+    .announcement-date{
+        font-size:13px;
+    }
+
+    .announcement-detail-inline{
+        padding:18px 15px 22px;
+    }
+
+    .announcement-detail-title{
+        font-size:19px;
+    }
+
+    .announcement-detail-body{
+        font-size:14px;
+        line-height:1.9;
+    }
+
+}
+
+
+/* =========================
+   小さい画面
+========================= */
+
+@media (max-width:360px){
+
+    .genre-menu{
+        padding:10px 12px;
+    }
+
+    .genre-menu-icon{
+        margin-right:8px;
+        font-size:19px;
+    }
+
+    .genre-menu-title{
+        font-size:16px;
+    }
+
+    .genre-menu-count{
+        min-width:22px;
+        height:22px;
+        padding:0 6px;
+    }
+
+    .genre-menu-arrow{
+        margin-left:7px;
+        font-size:25px;
+    }
+
+    .announcement-row{
+        gap:6px;
+        padding:12px;
+    }
+
+    .announcement-title{
+        font-size:15px;
+    }
+
+    .announcement-detail-inline{
+        padding:16px 12px 20px;
+    }
+
+    .announcement-detail-title{
+        font-size:18px;
+    }
+
+}

@@ -1,0 +1,405 @@
+/* =========================
+   お知らせ一覧
+========================= */
+
+/* =========================
+   一覧スクロール領域
+========================= */
+
+.page-scroll{
+    flex:1;
+    min-height:0;
+    min-width:0;
+    overflow-y:auto;
+    overflow-x:hidden;
+    padding-bottom:20px;
+    scrollbar-width:none;
+    -ms-overflow-style:none;
+}
+
+.page-scroll::-webkit-scrollbar{
+    display:none;
+}
+
+
+/* =========================
+   お知らせ一覧
+========================= */
+
+.announcement-list{
+    width:100%;
+    min-width:0;
+}
+
+
+/* =========================
+   ジャンル
+========================= */
+
+.genre-block{
+    width:100%;
+    box-sizing:border-box;
+    margin-bottom:10px;
+    padding:15px;
+    background:#fff;
+    border-radius:20px 20px 0 0;
+    box-shadow:0 3px 8px rgba(0,0,0,.12);
+}
+
+.genre-title{
+    margin:0;
+    padding-bottom:8px;
+    border-bottom:2px solid #ff8fb1;
+    font-size:18px;
+    font-weight:bold;
+    line-height:1.4;
+}
+
+
+/* =========================
+   お知らせ行
+========================= */
+
+.announcement-row{
+    display:flex;
+    align-items:flex-start;
+    gap:10px;
+    width:100%;
+    min-width:0;
+    box-sizing:border-box;
+    margin-bottom:10px;
+    padding:15px;
+    background:#fff;
+    border-radius:20px;
+    box-shadow:0 3px 8px rgba(0,0,0,.12);
+}
+
+
+/* =========================
+   お知らせ情報
+========================= */
+
+.announcement-info{
+    flex:1;
+    min-width:0;
+}
+
+
+.announcement-title{
+    min-width:0;
+    font-size:16px;
+    font-weight:bold;
+    line-height:1.5;
+    color:#333;
+    word-break:break-word;
+}
+
+
+.announcement-meta{
+    display:flex;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:6px;
+    margin-top:6px;
+    font-size:13px;
+    line-height:1.5;
+    color:#777;
+}
+
+
+.announcement-period{
+    margin-top:4px;
+    font-size:13px;
+    line-height:1.5;
+    color:#999;
+    word-break:break-word;
+}
+
+
+/* =========================
+   公開状態
+========================= */
+
+.status-active,
+.status-inactive{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    min-width:42px;
+    height:24px;
+    padding:0 8px;
+    box-sizing:border-box;
+    border-radius:12px;
+    font-size:11px;
+    font-weight:bold;
+}
+
+
+.status-active{
+    background:#ff8fb1;
+    color:#fff;
+}
+
+
+.status-inactive{
+    background:#eee;
+    color:#666;
+}
+
+
+/* =========================
+   操作エリア
+========================= */
+
+.announcement-action{
+    display:flex;
+    flex-direction:column;
+    align-items:stretch;
+    gap:8px;
+    flex-shrink:0;
+}
+
+
+.announcement-action-top{
+    display:flex;
+    gap:8px;
+}
+
+
+/* =========================
+   編集・削除・状態変更
+========================= */
+
+.edit-btn,
+.delete-btn,
+.status-btn{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:60px;
+    height:32px;
+    box-sizing:border-box;
+    border-radius:16px;
+    text-decoration:none;
+    font-size:12px;
+    font-weight:bold;
+}
+
+
+.edit-btn{
+    background:#ff8fb1;
+    color:#fff;
+}
+
+
+.status-btn{
+    background:#c8a2ff;
+    color:#fff;
+}
+
+
+.delete-btn{
+    background:#eee;
+    color:#666;
+}
+
+
+/* =========================
+   データなし
+========================= */
+
+.empty-message{
+    margin:30px 0;
+    text-align:center;
+    color:#777;
+}
+
+
+/* =========================
+   お知らせ登録・編集フォーム
+========================= */
+
+.announcement-form{
+    width:100%;
+    max-width:400px;
+    margin:0 auto;
+    box-sizing:border-box;
+    flex:1;
+    min-height:0;
+    overflow-y:auto;
+    overflow-x:hidden;
+    padding-bottom:20px;
+    scrollbar-width:none;
+    -ms-overflow-style:none;
+}
+
+.announcement-form::-webkit-scrollbar{
+    display:none;
+}
+
+
+/* =========================
+   フォーム項目
+========================= */
+
+.announcement-form label{
+    display:block;
+    margin:12px 0 6px;
+    font-size:15px;
+    font-weight:bold;
+}
+
+
+.announcement-form input,
+.announcement-form select,
+.announcement-form textarea{
+    width:100%;
+    max-width:100%;
+    box-sizing:border-box;
+    border:1px solid #ddd;
+    border-radius:12px;
+    font-size:16px;
+    background:#fff;
+}
+
+
+.announcement-form input,
+.announcement-form select{
+    height:45px;
+    padding:0 12px;
+}
+
+
+.announcement-form textarea{
+    min-height:180px;
+    padding:12px;
+    resize:vertical;
+    line-height:1.6;
+}
+
+
+/* =========================
+   日時入力
+========================= */
+
+.announcement-form input[type="datetime-local"]{
+    width:100%;
+    max-width:100%;
+    min-width:0;
+    box-sizing:border-box;
+    appearance:none;
+    -webkit-appearance:none;
+}
+
+
+/* =========================
+   数値入力
+========================= */
+
+.announcement-form input[type="number"]{
+    width:100%;
+    max-width:100%;
+    min-width:0;
+    box-sizing:border-box;
+}
+
+
+/* =========================
+   フォーム項目グループ
+========================= */
+
+.form-group{
+    width:100%;
+    box-sizing:border-box;
+    margin-bottom:20px;
+}
+
+
+.form-title{
+    margin:0 0 10px;
+    padding-bottom:8px;
+    border-bottom:2px solid #ff8fb1;
+    font-size:18px;
+    font-weight:bold;
+}
+
+
+/* =========================
+   公開設定
+========================= */
+
+.announcement-form .checkbox{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin-top:10px;
+    cursor:pointer;
+}
+
+
+.announcement-form .checkbox input{
+    width:18px;
+    height:18px;
+    margin:0;
+}
+
+
+/* =========================
+   スマートフォン
+========================= */
+
+@media (max-width:430px){
+
+    .announcement-form{
+        max-width:100%;
+    }
+
+    .announcement-form input,
+    .announcement-form select,
+    .announcement-form textarea{
+        font-size:16px;
+    }
+
+    .announcement-row{
+        gap:8px;
+    }
+
+    .announcement-title{
+        font-size:16px;
+    }
+
+    .announcement-period{
+        font-size:16px;
+    }
+
+    .edit-btn,
+    .delete-btn,
+    .status-btn{
+        width:56px;
+    }
+
+}
+
+
+/* =========================
+   小さい画面
+========================= */
+
+@media (max-width:360px){
+
+    .announcement-row{
+        gap:6px;
+    }
+
+    .announcement-action-top{
+        gap:5px;
+    }
+
+    .edit-btn,
+    .delete-btn,
+    .status-btn{
+        width:52px;
+        font-size:11px;
+    }
+
+}

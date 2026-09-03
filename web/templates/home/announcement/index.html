@@ -1,0 +1,227 @@
+{% extends "templates/commons/base.html" %}
+
+{% block title %}お知らせ - 推し活オールインワン{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="/static/css/home/announcement/announcement.css">
+{% endblock %}
+
+{% block content %}
+
+<div class="announcement-page">
+    <div class="container">
+
+        <div class="page-header">
+            <h1 class="page-title">お知らせ</h1>
+        </div>
+
+        <div class="page-scroll">
+            <div class="announcement-list">
+
+                {% if announcements %}
+
+                    {% set genre_map = {
+                        "NOTICE": {"icon": "📢", "label": "お知らせ"},
+                        "UPDATE": {"icon": "✨", "label": "アップデート"},
+                        "BUG": {"icon": "🐛", "label": "不具合"}
+                    } %}
+
+                    {% for genre_code, genre_info in genre_map.items() %}
+
+                        {% set genre_announcements = [] %}
+
+                        {% for announcement in announcements %}
+                            {% if announcement.genre == genre_code %}
+                                {% set _ = genre_announcements.append(announcement) %}
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if genre_announcements %}
+
+                            <div class="genre-block">
+
+                                <button type="button"
+                                        class="genre-menu"
+                                        onclick="toggleGenre('{{ genre_code }}')">
+                                    <span class="genre-menu-icon">{{ genre_info.icon }}</span>
+                                    <span class="genre-menu-title">{{ genre_info.label }}</span>
+                                    <span class="genre-menu-count">{{ genre_announcements|length }}</span>
+                                    <span id="arrow-{{ genre_code }}" class="genre-menu-arrow">›</span>
+                                </button>
+
+                                <div id="genre-{{ genre_code }}" class="genre-content">
+
+                                    {% for announcement in genre_announcements %}
+
+                                        <div class="announcement-item">
+
+                                            <button type="button"
+                                                    class="announcement-row"
+                                                    onclick="toggleAnnouncement('{{ announcement.announcement_id }}')">
+
+                                                <div class="announcement-info">
+                                                    <div class="announcement-title">
+                                                        {{ announcement.title }}
+                                                    </div>
+
+                                                    <div class="announcement-date">
+                                                        {{ announcement.start_at.strftime('%Y/%m/%d') }}
+                                                    </div>
+                                                </div>
+
+                                                <div id="announcement-arrow-{{ announcement.announcement_id }}"
+                                                     class="announcement-arrow">
+                                                    ›
+                                                </div>
+
+                                            </button>
+
+
+                                            <div id="announcement-detail-{{ announcement.announcement_id }}"
+                                                 class="announcement-detail-inline">
+
+                                                <div class="announcement-detail-header">
+
+                                                    <div class="announcement-detail-genre">
+                                                        {% if announcement.genre == "NOTICE" %}
+                                                        📢 お知らせ
+                                                        {% elif announcement.genre == "UPDATE" %}
+                                                        ✨ アップデート
+                                                        {% elif announcement.genre == "BUG" %}
+                                                        🐛 不具合
+                                                        {% else %}
+                                                        お知らせ
+                                                        {% endif %}
+                                                    </div>
+
+                                                    <div class="announcement-detail-date">
+                                                        {{ announcement.start_at.strftime('%Y/%m/%d') }}
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="announcement-detail-title">
+                                                    {{ announcement.title }}
+                                                </div>
+
+                                                <div class="announcement-detail-body">{{ announcement.body.strip() }}</div>
+
+                                            </div>
+
+                                        </div>
+
+                                    {% endfor %}
+
+                                </div>
+
+                            </div>
+
+                        {% endif %}
+
+                    {% endfor %}
+
+                {% else %}
+
+                    <p class="empty-message">
+                        現在公開されているお知らせはありません。
+                    </p>
+
+                {% endif %}
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}
+
+
+{% block script %}
+
+<script src="/static/js/common.js"></script>
+
+<script>
+    /* =========================================================
+       ジャンル開閉
+       ========================================================= */
+
+    function toggleGenre(genre){
+
+        const content = document.getElementById("genre-" + genre);
+        const arrow = document.getElementById("arrow-" + genre);
+
+        if(!content || !arrow){
+            return;
+        }
+
+        const isOpen = content.classList.contains("open");
+
+        if(isOpen){
+            content.classList.remove("open");
+            arrow.classList.remove("open");
+        }else{
+            content.classList.add("open");
+            arrow.classList.add("open");
+        }
+    }
+
+
+    /* =========================================================
+       お知らせ詳細開閉
+       ========================================================= */
+
+    function toggleAnnouncement(announcementId){
+
+        const detail = document.getElementById(
+            "announcement-detail-" + announcementId
+        );
+
+        const arrow = document.getElementById(
+            "announcement-arrow-" + announcementId
+        );
+
+        if(!detail || !arrow){
+            return;
+        }
+
+        const isOpen = detail.classList.contains("open");
+
+
+        /* -----------------------------------------------------
+           現在開いている詳細をすべて閉じる
+           ----------------------------------------------------- */
+
+        document
+            .querySelectorAll(".announcement-detail-inline.open")
+            .forEach(function(element){
+
+                element.classList.remove("open");
+
+            });
+
+
+        document
+            .querySelectorAll(".announcement-arrow.open")
+            .forEach(function(element){
+
+                element.classList.remove("open");
+
+            });
+
+
+        /* -----------------------------------------------------
+           閉じていた場合だけ開く
+           ----------------------------------------------------- */
+
+        if(!isOpen){
+
+            detail.classList.add("open");
+            arrow.classList.add("open");
+
+        }
+
+    }
+</script>
+
+{% endblock %}

@@ -241,6 +241,108 @@ DB接続は `python.core.database.get_connection()` を使用する。
 
 ---
 
+## お知らせ機能
+
+### 管理者機能
+
+管理者はお知らせを管理できる。
+
+主な機能：
+
+* お知らせ一覧
+* キーワード検索
+* ジャンル検索
+* 公開・非公開状態による検索
+* 新規登録
+* 編集
+* 公開・非公開切り替え
+* 論理削除
+
+ジャンル：
+
+* `NOTICE`：お知らせ
+* `UPDATE`：アップデート
+* `BUG`：不具合
+
+優先度を設定でき、数値が小さいほど優先して表示する。
+
+### ユーザー機能
+
+ユーザー向けのお知らせは `/home/announcement` で表示する。
+
+お知らせはジャンルごとにまとめて表示する。
+
+* 📢 お知らせ
+* ✨ アップデート
+* 🐛 不具合
+
+ジャンルをタップすると、そのジャンルのお知らせ一覧を開閉する。
+
+お知らせをタップすると、一覧画面内で本文をインライン展開する。
+
+別のお知らせを開いた場合は、以前開いていた本文を閉じる。
+
+個別のお知らせ詳細ページには遷移しない。
+
+### TOP画面
+
+TOP画面に「お知らせ」メニューを追加。
+
+タップするとモーダルを表示し、
+`/home/announcement` をiframeで読み込む。
+
+構成：
+
+```text
+TOP
+ ↓
+お知らせ
+ ↓
+モーダル
+ ↓
+iframe
+ ↓
+/home/announcement
+```
+
+
+### `m_announcement`
+
+ユーザー向けのお知らせを管理する。
+
+主な項目：
+
+* `announcement_id`
+* `genre`
+* `priority`
+* `title`
+* `body`
+* `start_at`
+* `end_at`
+* `is_active`
+* `is_deleted`
+* `created_at`
+* `updated_at`
+
+公開条件：
+
+* `is_active = TRUE`
+* `is_deleted = FALSE`
+* `start_at <= CURRENT_TIMESTAMP`
+* `end_at IS NULL` または `end_at >= CURRENT_TIMESTAMP`
+
+ジャンル：
+
+* `NOTICE`
+* `UPDATE`
+* `BUG`
+
+優先度は数値が小さいほど優先。
+
+公開開始日時、優先度、お知らせID等を使用して表示順を決定する。
+
+---
+
 ### `m_user_setting`
 
 ユーザーごとの表示・利用設定を管理する。

@@ -1,5 +1,16 @@
 <header class="common-header">
-    <a href="/home">
+    <a href="/home" onclick="return handleHeaderHomeClick(event);">
         <img src="/static/img/title_logo.png" class="title-logo">
     </a>
 </header>
+
+<script>
+    function handleHeaderHomeClick(event){
+        if(window.self !== window.top){
+            event.preventDefault();
+            return false;
+        }
+
+        return true;
+    }
+</script>
