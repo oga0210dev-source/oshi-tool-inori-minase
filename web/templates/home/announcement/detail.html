@@ -40,9 +40,7 @@
                     {{ announcement.title }}
                 </h2>
 
-                <div class="announcement-detail-body">
-                    {{ announcement.body }}
-                </div>
+                <div class="announcement-detail-body">{{ announcement.body.strip() }}</div>
 
                 <button
                     type="button"

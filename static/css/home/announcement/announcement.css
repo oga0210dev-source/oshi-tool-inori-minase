@@ -237,7 +237,7 @@
     font-size:14px;
     line-height:1.9;
     text-align:left;
-    white-space:normal;
+    white-space:pre-wrap;
     overflow-wrap:anywhere;
     word-break:break-word;
 }
