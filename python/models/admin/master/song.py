@@ -32,10 +32,16 @@ def get_song_list(keyword=None, sort="album"):
 
     else:
         order_by = """
-            release_date DESC NULLS FIRST,
-            album_name ASC,
-            display_order ASC,
-            song_name ASC
+            CASE
+                WHEN song_type = 'INORI' THEN 0
+                WHEN song_type = 'OTHER' THEN 1
+                ELSE 2
+            END ASC,
+            CASE
+                WHEN song_type = 'INORI' THEN release_date
+                ELSE NULL
+            END DESC NULLS LAST,
+            display_order
         """
 
     sql = """
