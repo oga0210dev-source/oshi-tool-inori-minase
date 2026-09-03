@@ -228,7 +228,10 @@ body,
     z-index:1000;
     inset:0;
 
-    background:rgba(0,0,0,0.5);
+    width:100%;
+    height:100%;
+
+    background:rgba(0,0,0,.5);
 
     align-items:center;
     justify-content:center;
@@ -244,7 +247,10 @@ body,
 .top-modal-content{
     width:100%;
     max-width:430px;
+
+    height:85vh;
     height:85dvh;
+
     min-height:0;
 
     background:#fff;
@@ -254,6 +260,7 @@ body,
     flex-direction:column;
 
     overflow:hidden;
+    box-sizing:border-box;
 }
 
 
@@ -262,6 +269,7 @@ body,
 ==========================*/
 .top-modal-header{
     height:50px;
+    min-height:50px;
     flex-shrink:0;
 
     display:flex;
@@ -272,33 +280,54 @@ body,
     box-sizing:border-box;
 
     border-bottom:1px solid #ddd;
+    background:#fff;
 }
 
 .top-modal-title{
+    min-width:0;
+
     font-size:18px;
     font-weight:bold;
+    line-height:1.4;
 }
 
 .top-modal-close{
+    flex-shrink:0;
+
+    width:36px;
+    height:36px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    margin:0;
+    padding:0;
+
     border:none;
     background:none;
 
+    color:#555;
     font-size:28px;
     line-height:1;
 
     cursor:pointer;
-    padding:0 5px;
 }
 
 
 /*==========================
-    iframe
+    iframe領域
 ==========================*/
 .top-modal-body{
-    flex:1;
+    flex:1 1 auto;
+
+    width:100%;
+    min-width:0;
     min-height:0;
 
+    margin:0;
     padding:0;
+
     overflow:hidden;
 }
 
@@ -308,5 +337,60 @@ body,
     width:100%;
     height:100%;
 
+    margin:0;
+    padding:0;
+
     border:none;
+}
+
+
+/*==========================
+    スマートフォン
+==========================*/
+@media (max-width:430px){
+
+    .top-modal{
+        padding:10px;
+    }
+
+    .top-modal-content{
+        width:100%;
+        height:85vh;
+        height:85dvh;
+        border-radius:12px;
+    }
+
+    .top-modal-header{
+        padding:0 12px;
+    }
+
+    .top-modal-title{
+        font-size:17px;
+    }
+
+}
+
+
+/*==========================
+    小さい画面
+==========================*/
+@media (max-width:360px){
+
+    .top-modal{
+        padding:8px;
+    }
+
+    .top-modal-content{
+        height:88vh;
+        height:88dvh;
+    }
+
+    .top-modal-header{
+        padding:0 10px;
+    }
+
+    .top-modal-title{
+        font-size:16px;
+    }
+
 }

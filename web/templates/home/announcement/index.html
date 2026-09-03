@@ -53,19 +53,62 @@
 
                                     {% for announcement in genre_announcements %}
 
-                                        <a href="/home/announcement/{{ announcement.announcement_id }}"
-                                           class="announcement-row">
+                                        <div class="announcement-item">
 
-                                            <div class="announcement-info">
-                                                <div class="announcement-title">{{ announcement.title }}</div>
-                                                <div class="announcement-date">
-                                                    {{ announcement.start_at.strftime('%Y/%m/%d') }}
+                                            <button type="button"
+                                                    class="announcement-row"
+                                                    onclick="toggleAnnouncement('{{ announcement.announcement_id }}')">
+
+                                                <div class="announcement-info">
+                                                    <div class="announcement-title">
+                                                        {{ announcement.title }}
+                                                    </div>
+
+                                                    <div class="announcement-date">
+                                                        {{ announcement.start_at.strftime('%Y/%m/%d') }}
+                                                    </div>
                                                 </div>
+
+                                                <div id="announcement-arrow-{{ announcement.announcement_id }}"
+                                                     class="announcement-arrow">
+                                                    ›
+                                                </div>
+
+                                            </button>
+
+
+                                            <div id="announcement-detail-{{ announcement.announcement_id }}"
+                                                 class="announcement-detail-inline">
+
+                                                <div class="announcement-detail-header">
+
+                                                    <div class="announcement-detail-genre">
+                                                        {% if announcement.genre == "NOTICE" %}
+                                                        📢 お知らせ
+                                                        {% elif announcement.genre == "UPDATE" %}
+                                                        ✨ アップデート
+                                                        {% elif announcement.genre == "BUG" %}
+                                                        🐛 不具合
+                                                        {% else %}
+                                                        お知らせ
+                                                        {% endif %}
+                                                    </div>
+
+                                                    <div class="announcement-detail-date">
+                                                        {{ announcement.start_at.strftime('%Y/%m/%d') }}
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="announcement-detail-title">
+                                                    {{ announcement.title }}
+                                                </div>
+
+                                                <div class="announcement-detail-body">{{ announcement.body.strip() }}</div>
+
                                             </div>
 
-                                            <div class="announcement-arrow">›</div>
-
-                                        </a>
+                                        </div>
 
                                     {% endfor %}
 
@@ -79,7 +122,9 @@
 
                 {% else %}
 
-                    <p class="empty-message">現在公開されているお知らせはありません。</p>
+                    <p class="empty-message">
+                        現在公開されているお知らせはありません。
+                    </p>
 
                 {% endif %}
 
@@ -91,6 +136,7 @@
 
 {% endblock %}
 
+
 {% block script %}
 
 <script src="/static/js/common.js"></script>
@@ -101,6 +147,7 @@
        ========================================================= */
 
     function toggleGenre(genre){
+
         const content = document.getElementById("genre-" + genre);
         const arrow = document.getElementById("arrow-" + genre);
 
@@ -117,6 +164,63 @@
             content.classList.add("open");
             arrow.classList.add("open");
         }
+    }
+
+
+    /* =========================================================
+       お知らせ詳細開閉
+       ========================================================= */
+
+    function toggleAnnouncement(announcementId){
+
+        const detail = document.getElementById(
+            "announcement-detail-" + announcementId
+        );
+
+        const arrow = document.getElementById(
+            "announcement-arrow-" + announcementId
+        );
+
+        if(!detail || !arrow){
+            return;
+        }
+
+        const isOpen = detail.classList.contains("open");
+
+
+        /* -----------------------------------------------------
+           現在開いている詳細をすべて閉じる
+           ----------------------------------------------------- */
+
+        document
+            .querySelectorAll(".announcement-detail-inline.open")
+            .forEach(function(element){
+
+                element.classList.remove("open");
+
+            });
+
+
+        document
+            .querySelectorAll(".announcement-arrow.open")
+            .forEach(function(element){
+
+                element.classList.remove("open");
+
+            });
+
+
+        /* -----------------------------------------------------
+           閉じていた場合だけ開く
+           ----------------------------------------------------- */
+
+        if(!isOpen){
+
+            detail.classList.add("open");
+            arrow.classList.add("open");
+
+        }
+
     }
 </script>
 

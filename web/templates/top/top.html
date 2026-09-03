@@ -16,106 +16,203 @@
        モーダル共通
        ========================================================= */
 
-    .top-modal {
-        display: none;
-        position: fixed;
-        z-index: 1000;
-        inset: 0;
-        background: rgba(0, 0, 0, 0.5);
+    .top-modal{
+        display:none;
+        position:fixed;
+        z-index:1000;
+        inset:0;
+        width:100%;
+        height:100%;
+        background:rgba(0,0,0,.5);
 
-        align-items: center;
-        justify-content: center;
+        align-items:center;
+        justify-content:center;
     }
 
-    .top-modal-content {
-        width: calc(100% - 30px);
-        max-width: 430px;
-        height: 80vh;
+    .top-modal-content{
+        width:calc(100% - 30px);
+        max-width:430px;
+        height:80vh;
+        height:80dvh;
 
-        background: #fff;
-        border-radius: 12px;
+        background:#fff;
+        border-radius:12px;
 
-        display: flex;
-        flex-direction: column;
+        display:flex;
+        flex-direction:column;
 
-        overflow: hidden;
+        overflow:hidden;
+        box-sizing:border-box;
     }
 
-    .top-modal-header {
-        height: 50px;
-        flex-shrink: 0;
+    .top-modal-header{
+        height:50px;
+        min-height:50px;
+        flex-shrink:0;
 
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
 
-        padding: 0 15px;
-        box-sizing: border-box;
+        padding:0 15px;
+        box-sizing:border-box;
 
-        border-bottom: 1px solid #ddd;
+        border-bottom:1px solid #ddd;
+        background:#fff;
     }
 
-    .top-modal-title {
-        font-size: 18px;
-        font-weight: bold;
+    .top-modal-title{
+        min-width:0;
+        color:#333;
+        font-size:18px;
+        font-weight:bold;
+        line-height:1.4;
     }
 
-    .top-modal-close {
-        border: none;
-        background: none;
-        font-size: 28px;
-        line-height: 1;
-        cursor: pointer;
-        padding: 0 5px;
+    .top-modal-close{
+        flex-shrink:0;
+        width:36px;
+        height:36px;
+
+        display:flex;
+        align-items:center;
+        justify-content:center;
+
+        margin:0;
+        padding:0;
+
+        border:none;
+        background:none;
+
+        color:#555;
+        font-size:28px;
+        line-height:1;
+
+        cursor:pointer;
     }
+
 
     /* =========================================================
-       iframe
+       iframe領域
        ========================================================= */
 
-    .top-modal-body {
-        flex: 1;
-        min-height: 0;
-        padding: 0;
+    .top-modal-body{
+        flex:1 1 auto;
+        width:100%;
+        min-width:0;
+        min-height:0;
+
+        margin:0;
+        padding:0;
+
+        box-sizing:border-box;
+
+        overflow:hidden;
     }
 
-    .top-modal-body iframe {
-        width: 100%;
-        height: 100%;
-        border: none;
+    .top-modal-body iframe{
+        display:block;
+
+        width:100%;
+        height:100%;
+
+        margin:0;
+        padding:0;
+
+        border:none;
     }
+
 
     /* =========================================================
        法的情報・問い合わせリンク
        ========================================================= */
 
-    .legal-links {
-        margin-top: 15px;
-        text-align: center;
-        font-size: 13px;
+    .legal-links{
+        margin-top:15px;
+        text-align:center;
+        font-size:13px;
     }
 
-    .legal-links a {
-        text-decoration: none;
-        cursor: pointer;
+    .legal-links a{
+        text-decoration:none;
+        cursor:pointer;
     }
 
-    .legal-links span {
-        margin: 0 5px;
+    .legal-links span{
+        margin:0 5px;
+    }
+
+
+    /* =========================================================
+       スマートフォン
+       ========================================================= */
+
+    @media (max-width:430px){
+
+        .top-modal-content{
+            width:calc(100% - 20px);
+            height:82vh;
+            height:82dvh;
+            border-radius:12px;
+        }
+
+        .top-modal-header{
+            height:50px;
+            min-height:50px;
+            padding:0 12px;
+        }
+
+        .top-modal-title{
+            font-size:17px;
+        }
+
+    }
+
+
+    /* =========================================================
+       小さい画面
+       ========================================================= */
+
+    @media (max-width:360px){
+
+        .top-modal-content{
+            width:calc(100% - 16px);
+            height:84vh;
+            height:84dvh;
+        }
+
+        .top-modal-header{
+            padding:0 10px;
+        }
+
+        .top-modal-title{
+            font-size:16px;
+        }
+
     }
 </style>
 {% endblock %}
 
+
 {% block content %}
+
 <div class="container">
+
     <div class="content">
 
-        <!-- タイトル -->
+        <!-- =====================================================
+             タイトル
+             ===================================================== -->
+
         <div class="logo-area">
             <h1>推し活オールインワン</h1>
         </div>
 
-        <!-- 説明 -->
+
+        <!-- =====================================================
+             説明
+             ===================================================== -->
+
         <div class="attention-area">
             <p class="attention">
                 スマートフォンでの利用を想定したシステムです。<br>
@@ -123,8 +220,14 @@
             </p>
         </div>
 
-        <!-- ボタン -->
+
+        <!-- =====================================================
+             ボタン
+             ===================================================== -->
+
         <div class="button-area">
+
+            <!-- お知らせ -->
 
             <a href="#"
                onclick="openAnnouncementModal(); return false;"
@@ -142,7 +245,10 @@
             </a>
 
 
-            <a href="/login" class="top-menu-btn">
+            <!-- ログイン -->
+
+            <a href="/login"
+               class="top-menu-btn">
 
                 <span class="top-menu-icon">🔑</span>
 
@@ -156,7 +262,10 @@
             </a>
 
 
-            <a href="/register" class="top-menu-btn">
+            <!-- 新規登録 -->
+
+            <a href="/register"
+               class="top-menu-btn">
 
                 <span class="top-menu-icon">📝</span>
 
@@ -166,8 +275,11 @@
                 </span>
 
                 <span class="top-menu-arrow">›</span>
+
             </a>
 
+
+            <!-- ゲスト -->
 
             <a href="/home"
                onclick="return enterGuestHome();"
@@ -186,7 +298,11 @@
 
         </div>
 
-        <!-- 利用規約等 -->
+
+        <!-- =====================================================
+             利用規約等
+             ===================================================== -->
+
         <div class="legal-links">
 
             <a href="#"
@@ -210,16 +326,23 @@
 
         </div>
 
-        <!-- 注釈 -->
+
+        <!-- =====================================================
+             注釈
+             ===================================================== -->
+
         <div class="description-area">
+
             <p class="description">
                 本サービスはファンが制作した非公式ツールです<br>
                 所属事務所・レコード会社・公式運営とは一切関係ありません<br>
                 掲載される名称・商標等の権利は各権利者に帰属します
             </p>
+
         </div>
 
     </div>
+
 </div>
 
 
@@ -249,13 +372,16 @@
         </div>
 
         <div class="top-modal-body">
+
             <iframe
                 id="legalFrame"
                 src="">
             </iframe>
+
         </div>
 
     </div>
+
 </div>
 
 
@@ -285,13 +411,16 @@
         </div>
 
         <div class="top-modal-body">
+
             <iframe
                 id="inquiryFrame"
                 src="">
-        </iframe>
+            </iframe>
+
         </div>
 
     </div>
+
 </div>
 
 
@@ -330,13 +459,18 @@
         </div>
 
     </div>
+
 </div>
 
 {% endblock %}
 
+
 {% block ads %}
+
     {% include "templates/commons/adsense.html" %}
+
 {% endblock %}
+
 
 {% block script %}
 
@@ -377,6 +511,7 @@
             return;
         }
 
+
         if(type === "terms"){
 
             title.textContent = "利用規約";
@@ -392,7 +527,9 @@
             return;
         }
 
+
         modal.style.display = "flex";
+
         document.body.classList.add("modal-open");
     }
 
@@ -406,6 +543,7 @@
             return;
         }
 
+
         const modal =
             document.getElementById("legalModal");
 
@@ -416,7 +554,9 @@
             return;
         }
 
+
         modal.style.display = "none";
+
         frame.src = "";
 
         document.body.classList.remove("modal-open");
@@ -439,7 +579,9 @@
             return;
         }
 
+
         frame.src = "/home/inquiry";
+
         modal.style.display = "flex";
 
         document.body.classList.add("modal-open");
@@ -455,6 +597,7 @@
             return;
         }
 
+
         const modal =
             document.getElementById("inquiryModal");
 
@@ -465,7 +608,9 @@
             return;
         }
 
+
         modal.style.display = "none";
+
         frame.src = "";
 
         document.body.classList.remove("modal-open");
@@ -488,7 +633,9 @@
             return;
         }
 
+
         frame.src = "/home/announcement";
+
         modal.style.display = "flex";
 
         document.body.classList.add("modal-open");
@@ -504,6 +651,7 @@
             return;
         }
 
+
         const modal =
             document.getElementById("announcementModal");
 
@@ -514,7 +662,9 @@
             return;
         }
 
+
         modal.style.display = "none";
+
         frame.src = "";
 
         document.body.classList.remove("modal-open");
@@ -536,6 +686,7 @@
             closeLegalModal();
             closeInquiryModal();
             closeAnnouncementModal();
+
         }
     );
 
@@ -552,6 +703,7 @@
             if(event.origin !== window.location.origin){
                 return;
             }
+
 
             if(
                 event.data &&

@@ -23,16 +23,54 @@
 
 
 /* =========================
-   スクロール領域
+   ページ全体
+========================= */
+
+.announcement-page{
+    width:100%;
+    min-width:0;
+    height:100%;
+    min-height:0;
+    overflow:hidden;
+}
+
+.announcement-page .container{
+    display:flex;
+    flex-direction:column;
+    width:100%;
+    min-width:0;
+    height:100%;
+    min-height:0;
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+
+/* =========================
+   ヘッダー
+========================= */
+
+.announcement-page .page-header{
+    flex:0 0 auto;
+}
+
+
+/* =========================
+   ページ・スクロール領域
 ========================= */
 
 .announcement-page .page-scroll{
-    flex:1;
+    flex:1 1 auto;
+    width:100%;
     min-width:0;
     min-height:0;
+    height:auto;
+    margin:0;
+    padding:0 0 10px;
+    box-sizing:border-box;
     overflow-x:hidden;
     overflow-y:auto;
-    padding-bottom:20px;
     scrollbar-width:none;
     -ms-overflow-style:none;
 }
@@ -49,6 +87,7 @@
 .announcement-list{
     width:100%;
     min-width:0;
+    box-sizing:border-box;
 }
 
 
@@ -126,7 +165,7 @@
 
 
 /* =========================
-   ジャンル内のお知らせ
+   お知らせ一覧
 ========================= */
 
 .genre-content{
@@ -138,19 +177,47 @@
     display:block;
 }
 
+
+/* =========================
+   お知らせ項目
+========================= */
+
+.announcement-item{
+    width:100%;
+    min-width:0;
+    box-sizing:border-box;
+    border-bottom:1px solid #eee;
+}
+
+.announcement-item:last-child{
+    border-bottom:none;
+}
+
+
+/* =========================
+   お知らせ行
+========================= */
+
 .announcement-row{
     display:flex;
     align-items:center;
     gap:10px;
     width:100%;
     min-width:0;
+    margin:0;
     padding:13px 15px;
     box-sizing:border-box;
+    border:none;
     border-bottom:1px solid #eee;
+    background:#fff;
+    text-align:left;
     text-decoration:none;
+    cursor:pointer;
+    appearance:none;
+    -webkit-appearance:none;
 }
 
-.announcement-row:last-child{
+.announcement-item:last-child .announcement-row{
     border-bottom:none;
 }
 
@@ -165,6 +232,7 @@
     font-size:15px;
     font-weight:bold;
     line-height:1.5;
+    overflow-wrap:anywhere;
     word-break:break-word;
 }
 
@@ -180,29 +248,46 @@
     color:#aaa;
     font-size:26px;
     line-height:1;
+    transform:rotate(0deg);
+    transition:transform .2s ease;
+}
+
+.announcement-arrow.open{
+    transform:rotate(90deg);
 }
 
 
 /* =========================
-   詳細
+   お知らせ詳細
 ========================= */
 
-.announcement-detail{
+.announcement-detail-inline{
+    display:none;
     width:100%;
     min-width:0;
-    padding:20px 15px 30px;
+    margin:0;
+    padding:18px 15px 22px;
     box-sizing:border-box;
-    border-radius:20px;
+    border-top:1px solid #eee;
     background:#fff;
-    box-shadow:0 3px 8px rgba(0,0,0,.12);
 }
+
+.announcement-detail-inline.open{
+    display:block;
+}
+
+
+/* =========================
+   詳細ヘッダー
+========================= */
 
 .announcement-detail-header{
     display:flex;
     align-items:center;
     justify-content:space-between;
     gap:10px;
-    margin-bottom:12px;
+    width:100%;
+    margin:0 0 12px;
 }
 
 .announcement-detail-genre{
@@ -210,22 +295,37 @@
     color:#ff6f9f;
     font-size:13px;
     font-weight:bold;
+    line-height:1.5;
 }
 
 .announcement-detail-date{
     flex-shrink:0;
     color:#999;
     font-size:12px;
+    line-height:1.5;
 }
 
+
+/* =========================
+   詳細タイトル
+========================= */
+
 .announcement-detail-title{
-    margin:0 0 20px;
+    width:100%;
+    min-width:0;
+    margin:0 0 18px;
     color:#333;
-    font-size:20px;
+    font-size:19px;
     font-weight:bold;
     line-height:1.5;
+    overflow-wrap:anywhere;
     word-break:break-word;
 }
+
+
+/* =========================
+   詳細本文
+========================= */
 
 .announcement-detail-body{
     width:100%;
@@ -242,25 +342,6 @@
     word-break:break-word;
 }
 
-.announcement-back-button{
-    display:block;
-    width:100%;
-    margin-top:25px;
-    padding:12px 15px;
-    box-sizing:border-box;
-    border:1px solid #ddd;
-    border-radius:10px;
-    background:#fff;
-    color:#555;
-    font-family:inherit;
-    font-size:14px;
-    cursor:pointer;
-}
-
-.announcement-back-button:hover{
-    background:#fafafa;
-}
-
 
 /* =========================
    データなし
@@ -274,17 +355,6 @@
     text-align:center;
 }
 
-.announcement-detail-empty{
-    padding:40px 15px;
-    text-align:center;
-}
-
-.announcement-detail-empty p{
-    margin:0 0 20px;
-    color:#777;
-    font-size:14px;
-}
-
 
 /* =========================
    スマートフォン
@@ -294,7 +364,6 @@
 
     .genre-menu{
         min-height:58px;
-        padding:10px 15px;
     }
 
     .genre-menu-icon{
@@ -315,6 +384,19 @@
 
     .announcement-date{
         font-size:13px;
+    }
+
+    .announcement-detail-inline{
+        padding:18px 15px 22px;
+    }
+
+    .announcement-detail-title{
+        font-size:19px;
+    }
+
+    .announcement-detail-body{
+        font-size:14px;
+        line-height:1.9;
     }
 
 }
@@ -357,6 +439,14 @@
 
     .announcement-title{
         font-size:15px;
+    }
+
+    .announcement-detail-inline{
+        padding:16px 12px 20px;
+    }
+
+    .announcement-detail-title{
+        font-size:18px;
     }
 
 }

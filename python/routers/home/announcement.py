@@ -19,30 +19,3 @@ async def announcement_list(request: Request):
             "announcements": announcements
         }
     )
-
-
-@router.get("/{announcement_id}")
-async def announcement_detail(
-    request: Request,
-    announcement_id: int
-):
-    announcement = announcement_model.get_public_announcement(
-        announcement_id
-    )
-
-    if not announcement:
-        return render(
-            request=request,
-            name="templates/home/announcement/detail.html",
-            context={
-                "announcement": None
-            }
-        )
-
-    return render(
-        request=request,
-        name="templates/home/announcement/detail.html",
-        context={
-            "announcement": announcement
-        }
-    )
