@@ -269,9 +269,7 @@
     overflow:hidden;
 }
 
-.setting-modal.active{
-    display:flex;
-}
+.setting-modal.active{display:flex}
 
 .setting-box{
     width:100%;
@@ -287,9 +285,7 @@
     -ms-overflow-style:none;
 }
 
-.setting-box::-webkit-scrollbar{
-    display:none;
-}
+.setting-box::-webkit-scrollbar{display:none}
 
 .setting-box h2{
     margin:0 0 20px;
@@ -424,6 +420,7 @@
     flex-direction:column;
     width:100%;
     max-width:430px;
+    height:auto;
     max-height:85dvh;
     overflow:hidden;
     border-radius:12px;
@@ -434,7 +431,8 @@
     display:flex;
     align-items:center;
     justify-content:space-between;
-    flex-shrink:0;
+    flex:0 0 50px;
+    width:100%;
     height:50px;
     padding:0 15px;
     box-sizing:border-box;
@@ -442,11 +440,13 @@
 }
 
 .home-modal-title{
+    min-width:0;
     font-size:18px;
     font-weight:bold;
 }
 
 .home-modal-close{
+    flex-shrink:0;
     padding:0 5px;
     border:0;
     background:none;
@@ -512,14 +512,62 @@
 ========================== */
 
 .home-inquiry-body{
-    flex:1;
+    display:flex;
+    flex:1 1 auto;
     min-height:0;
+    width:100%;
     padding:0;
     overflow:hidden;
 }
 
 .home-inquiry-body iframe{
     display:block;
+    flex:1 1 auto;
+    width:100%;
+    height:100%;
+    min-height:0;
+    border:0;
+}
+
+
+/* ==========================
+   お知らせ
+========================== */
+
+#announcementModal{
+    align-items:center;
+    justify-content:center;
+    padding:12px;
+}
+
+#announcementModal .home-modal-content{
+    display:flex;
+    flex-direction:column;
+    width:100%;
+    max-width:430px;
+    height:92dvh;
+    max-height:92dvh;
+    min-height:0;
+    overflow:hidden;
+    border-radius:16px;
+}
+
+#announcementModal .home-modal-header{
+    flex:0 0 50px;
+    height:50px;
+}
+
+#announcementModal .home-inquiry-body{
+    display:flex;
+    flex:1 1 auto;
+    min-height:0;
+    width:100%;
+    overflow:hidden;
+}
+
+#announcementModal .home-inquiry-body iframe{
+    display:block;
+    flex:1 1 auto;
     width:100%;
     height:100%;
     min-height:0;
@@ -560,5 +608,17 @@
 
     .setting-box{
         max-height:calc(100dvh - 32px);
+    }
+
+    #announcementModal{
+        padding:8px;
+    }
+
+    #announcementModal .home-modal-content{
+        width:100%;
+        max-width:430px;
+        height:calc(100dvh - 16px);
+        max-height:calc(100dvh - 16px);
+        border-radius:14px;
     }
 }

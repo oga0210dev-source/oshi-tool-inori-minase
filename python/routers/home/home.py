@@ -17,14 +17,20 @@ router = APIRouter()
 
 @router.get("/")
 def index(request: Request):
+    # =========================================================
     # ログイン済みの場合
+    # =========================================================
+
     if request.session.get("user_id"):
         return RedirectResponse(
             url="/home",
             status_code=303
         )
 
+    # =========================================================
     # 未ログインの場合
+    # =========================================================
+
     return render(
         request=request,
         name="templates/top/top.html"
@@ -36,7 +42,7 @@ def home(request: Request):
     user_id = request.session.get("user_id")
 
     # =========================================================
-    # Sessionがない場合はゲストユーザーを復元・作成
+    # Sessionがない場合
     # =========================================================
 
     if not user_id:
@@ -44,62 +50,57 @@ def home(request: Request):
         guest_uuid = request.cookies.get("guest_uuid")
 
         # -----------------------------------------------------
+        # CookieにゲストUUIDがない場合
+        # -----------------------------------------------------
+
+        if not guest_uuid:
+            return RedirectResponse(
+                url="/",
+                status_code=303
+            )
+
+        # -----------------------------------------------------
         # CookieにゲストUUIDがある場合
         # -----------------------------------------------------
 
-        if guest_uuid:
-
-            user = UserModel.get_user_by_guest_uuid(
-                guest_uuid
-            )
-
-            # Cookieに対応するゲストが存在する場合
-            if user:
-
-                user_id = user["user_id"]
-
-            # Cookieが不正・削除済みの場合
-            else:
-
-                guest_uuid = str(uuid.uuid4())
-                user_id = guest_uuid
-
-                UserModel.create_guest_user(
-                    user_id=user_id,
-                    guest_uuid=guest_uuid
-                )
-
-                user = UserModel.get_user(user_id)
+        user = UserModel.get_user_by_guest_uuid(
+            guest_uuid
+        )
 
         # -----------------------------------------------------
-        # Cookieがない場合
+        # Cookieが不正・削除済みの場合
         # -----------------------------------------------------
 
-        else:
-
-            guest_uuid = str(uuid.uuid4())
-            user_id = guest_uuid
-
-            UserModel.create_guest_user(
-                user_id=user_id,
-                guest_uuid=guest_uuid
+        if not user:
+            return RedirectResponse(
+                url="/",
+                status_code=303
             )
 
-            user = UserModel.get_user(user_id)
+        # -----------------------------------------------------
+        # 既存ゲストを復元
+        # -----------------------------------------------------
 
-        # =====================================================
-        # Session設定
-        # =====================================================
+        user_id = user["user_id"]
 
         request.session["user_id"] = user["user_id"]
         request.session["user_name"] = user["user_name"]
         request.session["role"] = user["role"]
 
-        # =====================================================
-        # Cookie保存
-        # =====================================================
+        # -----------------------------------------------------
+        # フォント
+        # -----------------------------------------------------
 
-        response = render(
+        font_id = UserSettingModel.get_font_id(user_id)
+
+        if not font_id:
+            font_id = DEFAULT_FONT_ID
+
+        # -----------------------------------------------------
+        # ホーム表示
+        # -----------------------------------------------------
+
+        return render(
             request=request,
             name="templates/home/home.html",
             context={
@@ -108,22 +109,12 @@ def home(request: Request):
                 "is_guest": True,
 
                 "font_list": FONT_LIST,
-                "current_font_id": DEFAULT_FONT_ID
+                "current_font_id": font_id
             }
         )
 
-        response.set_cookie(
-            key="guest_uuid",
-            value=guest_uuid,
-            max_age=60 * 60 * 24 * 3650,
-            httponly=True,
-            samesite="lax"
-        )
-
-        return response
-
     # =========================================================
-    # ログイン済みユーザー
+    # Sessionがある場合
     # =========================================================
 
     font_id = UserSettingModel.get_font_id(user_id)
@@ -139,6 +130,10 @@ def home(request: Request):
 
     user = UserModel.get_user(user_id)
 
+    # =========================================================
+    # Sessionのユーザーが存在しない場合
+    # =========================================================
+
     if not user:
         request.session.clear()
 
@@ -146,6 +141,10 @@ def home(request: Request):
             url="/",
             status_code=303
         )
+
+    # =========================================================
+    # ログイン済みユーザーのホーム表示
+    # =========================================================
 
     member_period = calculate_member_period(
         user["member_since"]

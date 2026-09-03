@@ -1,0 +1,362 @@
+/* =========================
+   お知らせ
+========================= */
+
+
+/* =========================
+   フォント固定
+========================= */
+
+.announcement-page,
+.announcement-page *,
+.announcement-page *::before,
+.announcement-page *::after{
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        "Noto Sans JP",
+        "Yu Gothic",
+        "Hiragino Kaku Gothic ProN",
+        sans-serif !important;
+}
+
+
+/* =========================
+   スクロール領域
+========================= */
+
+.announcement-page .page-scroll{
+    flex:1;
+    min-width:0;
+    min-height:0;
+    overflow-x:hidden;
+    overflow-y:auto;
+    padding-bottom:20px;
+    scrollbar-width:none;
+    -ms-overflow-style:none;
+}
+
+.announcement-page .page-scroll::-webkit-scrollbar{
+    display:none;
+}
+
+
+/* =========================
+   一覧
+========================= */
+
+.announcement-list{
+    width:100%;
+    min-width:0;
+}
+
+
+/* =========================
+   ジャンル
+========================= */
+
+.genre-block{
+    width:100%;
+    margin-bottom:15px;
+    box-sizing:border-box;
+    overflow:hidden;
+    border-radius:20px;
+    background:#fff;
+    box-shadow:0 3px 8px rgba(0,0,0,.12);
+}
+
+.genre-menu{
+    display:flex;
+    align-items:center;
+    width:100%;
+    min-height:55px;
+    padding:10px 15px;
+    box-sizing:border-box;
+    border:none;
+    background:#fff;
+    text-align:left;
+    cursor:pointer;
+}
+
+.genre-menu-icon{
+    flex-shrink:0;
+    margin-right:10px;
+    font-size:20px;
+}
+
+.genre-menu-title{
+    flex:1;
+    min-width:0;
+    color:#333;
+    font-size:17px;
+    font-weight:bold;
+    line-height:1.4;
+}
+
+.genre-menu-count{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-shrink:0;
+    min-width:24px;
+    height:24px;
+    padding:0 7px;
+    box-sizing:border-box;
+    border-radius:12px;
+    background:#ff8fb1;
+    color:#fff;
+    font-size:12px;
+    font-weight:bold;
+}
+
+.genre-menu-arrow{
+    flex-shrink:0;
+    margin-left:10px;
+    color:#999;
+    font-size:28px;
+    line-height:1;
+    transform:rotate(0deg);
+    transition:transform .2s ease;
+}
+
+.genre-menu-arrow.open{
+    transform:rotate(90deg);
+}
+
+
+/* =========================
+   ジャンル内のお知らせ
+========================= */
+
+.genre-content{
+    display:none;
+    border-top:1px solid #eee;
+}
+
+.genre-content.open{
+    display:block;
+}
+
+.announcement-row{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    width:100%;
+    min-width:0;
+    padding:13px 15px;
+    box-sizing:border-box;
+    border-bottom:1px solid #eee;
+    text-decoration:none;
+}
+
+.announcement-row:last-child{
+    border-bottom:none;
+}
+
+.announcement-info{
+    flex:1;
+    min-width:0;
+}
+
+.announcement-title{
+    min-width:0;
+    color:#333;
+    font-size:15px;
+    font-weight:bold;
+    line-height:1.5;
+    word-break:break-word;
+}
+
+.announcement-date{
+    margin-top:3px;
+    color:#999;
+    font-size:12px;
+    line-height:1.5;
+}
+
+.announcement-arrow{
+    flex-shrink:0;
+    color:#aaa;
+    font-size:26px;
+    line-height:1;
+}
+
+
+/* =========================
+   詳細
+========================= */
+
+.announcement-detail{
+    width:100%;
+    min-width:0;
+    padding:20px 15px 30px;
+    box-sizing:border-box;
+    border-radius:20px;
+    background:#fff;
+    box-shadow:0 3px 8px rgba(0,0,0,.12);
+}
+
+.announcement-detail-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    margin-bottom:12px;
+}
+
+.announcement-detail-genre{
+    min-width:0;
+    color:#ff6f9f;
+    font-size:13px;
+    font-weight:bold;
+}
+
+.announcement-detail-date{
+    flex-shrink:0;
+    color:#999;
+    font-size:12px;
+}
+
+.announcement-detail-title{
+    margin:0 0 20px;
+    color:#333;
+    font-size:20px;
+    font-weight:bold;
+    line-height:1.5;
+    word-break:break-word;
+}
+
+.announcement-detail-body{
+    width:100%;
+    min-width:0;
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    color:#333;
+    font-size:14px;
+    line-height:1.9;
+    text-align:left;
+    white-space:normal;
+    overflow-wrap:anywhere;
+    word-break:break-word;
+}
+
+.announcement-back-button{
+    display:block;
+    width:100%;
+    margin-top:25px;
+    padding:12px 15px;
+    box-sizing:border-box;
+    border:1px solid #ddd;
+    border-radius:10px;
+    background:#fff;
+    color:#555;
+    font-family:inherit;
+    font-size:14px;
+    cursor:pointer;
+}
+
+.announcement-back-button:hover{
+    background:#fafafa;
+}
+
+
+/* =========================
+   データなし
+========================= */
+
+.empty-message{
+    margin:30px 0;
+    color:#777;
+    font-size:14px;
+    line-height:1.6;
+    text-align:center;
+}
+
+.announcement-detail-empty{
+    padding:40px 15px;
+    text-align:center;
+}
+
+.announcement-detail-empty p{
+    margin:0 0 20px;
+    color:#777;
+    font-size:14px;
+}
+
+
+/* =========================
+   スマートフォン
+========================= */
+
+@media (max-width:430px){
+
+    .genre-menu{
+        min-height:58px;
+        padding:10px 15px;
+    }
+
+    .genre-menu-icon{
+        font-size:21px;
+    }
+
+    .genre-menu-title{
+        font-size:17px;
+    }
+
+    .announcement-row{
+        padding:14px 15px;
+    }
+
+    .announcement-title{
+        font-size:16px;
+    }
+
+    .announcement-date{
+        font-size:13px;
+    }
+
+}
+
+
+/* =========================
+   小さい画面
+========================= */
+
+@media (max-width:360px){
+
+    .genre-menu{
+        padding:10px 12px;
+    }
+
+    .genre-menu-icon{
+        margin-right:8px;
+        font-size:19px;
+    }
+
+    .genre-menu-title{
+        font-size:16px;
+    }
+
+    .genre-menu-count{
+        min-width:22px;
+        height:22px;
+        padding:0 6px;
+    }
+
+    .genre-menu-arrow{
+        margin-left:7px;
+        font-size:25px;
+    }
+
+    .announcement-row{
+        gap:6px;
+        padding:12px;
+    }
+
+    .announcement-title{
+        font-size:15px;
+    }
+
+}

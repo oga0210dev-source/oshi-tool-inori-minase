@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/static/img/logo.png" type="image/png">
+
+    <title>推し活オールインワン</title>
+
+    <link rel="stylesheet" href="/static/css/common.css">
+    <link rel="stylesheet" href="/static/css/admin/master/admin-common.css">
+    <link rel="stylesheet" href="/static/css/admin/master/announcement/announcement.css">
+</head>
+
+<body class="{{ font_class }}">
+
+<div class="container">
+
+    <div class="page-header">
+
+        <a href="/admin/master" class="master-link">
+            ← 管理マスタ
+        </a>
+
+        <h1 class="page-title">
+            お知らせ管理
+        </h1>
+
+    </div>
+
+    <a href="/admin/master/announcement/create" class="action-btn">
+        新規登録
+    </a>
+
+
+    <!-- 検索・絞り込み -->
+    <div class="search-area">
+
+        <form method="get"
+              class="search-form">
+
+            <input type="text"
+                   name="keyword"
+                   placeholder="件名・本文で検索"
+                   value="{{ request.query_params.get('keyword', '') }}">
+
+            <select name="genre">
+
+                <option value="">
+                    すべてのジャンル
+                </option>
+
+                {% for item in genre_list %}
+
+                <option value="{{ item.value }}"
+                    {% if request.query_params.get('genre') == item.value %}
+                        selected
+                    {% endif %}
+                >
+                    {{ item.label }}
+                </option>
+
+                {% endfor %}
+
+            </select>
+
+
+            <select name="status">
+
+                <option value=""
+                    {% if not request.query_params.get('status') %}
+                        selected
+                    {% endif %}
+                >
+                    すべての状態
+                </option>
+
+                <option value="active"
+                    {% if request.query_params.get('status') == "active" %}
+                        selected
+                    {% endif %}
+                >
+                    有効
+                </option>
+
+                <option value="inactive"
+                    {% if request.query_params.get('status') == "inactive" %}
+                        selected
+                    {% endif %}
+                >
+                    無効
+                </option>
+
+            </select>
+
+
+            <button type="submit"
+                    class="search-btn">
+                検索
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <!-- お知らせ一覧 -->
+    <div class="page-scroll">
+
+        <div class="announcement-list">
+
+            {% if announcements %}
+
+                {% set current_genre = namespace(value=None) %}
+
+                {% for announcement in announcements %}
+
+                    {% if current_genre.value != announcement.genre %}
+
+                        {% set current_genre.value = announcement.genre %}
+
+                        <div class="genre-block">
+
+                            <h2 class="genre-title">
+
+                                {% for item in genre_list %}
+
+                                    {% if item.value == announcement.genre %}
+                                        {{ item.label }}
+                                    {% endif %}
+
+                                {% endfor %}
+
+                            </h2>
+
+                        </div>
+
+                    {% endif %}
+
+
+                    <div class="announcement-row">
+
+                        <div class="announcement-info">
+
+                            <div class="announcement-title">
+
+                                {{ announcement.title }}
+
+                            </div>
+
+
+                            <div class="announcement-meta">
+
+                                優先度：
+                                {{ announcement.priority }}
+
+                                {% if announcement.is_active %}
+
+                                    <span class="status-active">
+                                        有効
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="status-inactive">
+                                        無効
+                                    </span>
+
+                                {% endif %}
+
+                            </div>
+
+
+                            <div class="announcement-period">
+
+                                {{ announcement.start_at }}
+
+                                ～
+
+                                {% if announcement.end_at %}
+
+                                    {{ announcement.end_at }}
+
+                                {% else %}
+
+                                    無期限
+
+                                {% endif %}
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="announcement-action">
+
+                            <div class="announcement-action-top">
+
+                                <a href="/admin/master/announcement/edit/{{ announcement.announcement_id }}"
+                                   class="edit-btn">
+                                    編集
+                                </a>
+
+                                <a href="/admin/master/announcement/status/{{ announcement.announcement_id }}"
+                                   class="status-btn"
+                                   onclick="return confirm('公開状態を変更しますか？');">
+
+                                    {% if announcement.is_active %}
+                                        無効
+                                    {% else %}
+                                        有効
+                                    {% endif %}
+
+                                </a>
+
+                            </div>
+
+
+                            <a href="/admin/master/announcement/delete/{{ announcement.announcement_id }}"
+                               class="delete-btn"
+                               onclick="return confirm('このお知らせを削除しますか？');">
+                                削除
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                {% endfor %}
+
+            {% else %}
+
+                <p class="empty-message">
+                    登録されているお知らせはありません。
+                </p>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

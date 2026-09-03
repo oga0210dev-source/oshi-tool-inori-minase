@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/static/img/logo.png" type="image/png">
+
+    <title>推し活オールインワン</title>
+
+    <link rel="stylesheet" href="/static/css/common.css">
+    <link rel="stylesheet" href="/static/css/admin/master/admin-common.css">
+    <link rel="stylesheet" href="/static/css/admin/master/announcement/announcement.css">
+</head>
+
+<body class="{{ font_class }}">
+
+<div class="container">
+
+    <div class="page-header">
+
+        <a href="/admin/master/announcement" class="master-link">
+            ← お知らせ管理
+        </a>
+
+        <h1 class="page-title">
+            {% if announcement %}
+                お知らせ編集
+            {% else %}
+                お知らせ登録
+            {% endif %}
+        </h1>
+
+    </div>
+
+
+    {% if error %}
+    <div class="error-message">
+        {{ error }}
+    </div>
+    {% endif %}
+
+
+    <form method="post"
+          action="{% if announcement %}/admin/master/announcement/update/{{ announcement.announcement_id }}{% else %}/admin/master/announcement/create{% endif %}"
+          class="announcement-form">
+
+
+        <!-- 基本情報 -->
+        <div class="form-group">
+
+            <h2 class="form-title">
+                基本情報
+            </h2>
+
+
+            <label for="genre">
+                ジャンル
+            </label>
+
+            <select id="genre"
+                    name="genre"
+                    required>
+
+                <option value="">
+                    選択してください
+                </option>
+
+                {% for item in genre_list %}
+
+                <option value="{{ item.value }}"
+                    {% if announcement and announcement.genre == item.value %}
+                        selected
+                    {% elif not announcement and announcement and announcement.genre == item.value %}
+                        selected
+                    {% endif %}
+                >
+                    {{ item.label }}
+                </option>
+
+                {% endfor %}
+
+            </select>
+
+
+            <label for="priority">
+                優先度
+            </label>
+
+            <input type="number"
+                   id="priority"
+                   name="priority"
+                   min="1"
+                   value="{% if announcement %}{{ announcement.priority }}{% else %}3{% endif %}"
+                   required>
+
+
+            <label for="title">
+                件名
+            </label>
+
+            <input type="text"
+                   id="title"
+                   name="title"
+                   maxlength="200"
+                   value="{% if announcement %}{{ announcement.title }}{% endif %}"
+                   required>
+
+
+            <label for="body">
+                本文
+            </label>
+
+            <textarea id="body"
+                      name="body"
+                      required>{% if announcement %}{{ announcement.body }}{% endif %}</textarea>
+
+        </div>
+
+
+        <!-- 公開期間 -->
+        <div class="form-group">
+
+            <h2 class="form-title">
+                公開期間
+            </h2>
+
+
+            <label for="start_at">
+                公開開始
+            </label>
+
+            <input type="datetime-local"
+                   id="start_at"
+                   name="start_at"
+                   value="{% if announcement %}{{ announcement.start_at.strftime('%Y-%m-%dT%H:%M') }}{% endif %}"
+                   required>
+
+
+            <label for="end_at">
+                公開終了
+            </label>
+
+            <input type="datetime-local"
+                   id="end_at"
+                   name="end_at"
+                   value="{% if announcement and announcement.end_at %}{{ announcement.end_at.strftime('%Y-%m-%dT%H:%M') }}{% endif %}">
+
+        </div>
+
+
+        <!-- 公開設定 -->
+        <div class="form-group">
+
+            <h2 class="form-title">
+                公開設定
+            </h2>
+
+
+            <label class="checkbox">
+
+                <input type="checkbox"
+                       name="is_active"
+                       value="true"
+                       {% if announcement %}
+                           {% if announcement.is_active %}checked{% endif %}
+                       {% else %}
+                           checked
+                       {% endif %}>
+
+                有効にする
+
+            </label>
+
+        </div>
+
+
+        <button type="submit"
+                class="action-btn">
+
+            {% if announcement %}
+                更新する
+            {% else %}
+                登録する
+            {% endif %}
+
+        </button>
+
+    </form>
+
+</div>
+
+</body>
+</html>

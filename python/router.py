@@ -11,7 +11,8 @@ from python.routers import (
 from python.routers.home import (
     home,
     legal,
-    inquiry as home_inquiry
+    inquiry as home_inquiry,
+    announcement
 )
 from python.routers.home.live import (
     live,
@@ -60,6 +61,7 @@ from python.routers.home.oshi import (
 from python.routers.mypage import mypage, password, public_setting
 from python.routers.admin.master import (
     master,
+    announcement as master_announcement,
     song as song_master,
     venue as venue_master,
     live as live_master,
@@ -86,6 +88,7 @@ def register_router(app: FastAPI):
     app.include_router(font.router)
     app.include_router(user_setting.router)
     app.include_router(email.router)
+    app.include_router(announcement.router)
 
     app.include_router(batch.router)
 
@@ -93,8 +96,10 @@ def register_router(app: FastAPI):
     app.include_router(password.router)
     app.include_router(public_setting.router)
 
-    app.include_router(master.router)
     app.include_router(admin_inquiry.router)
+
+    app.include_router(master.router)
+    app.include_router(master_announcement.router)
     app.include_router(song_master.router)
     app.include_router(venue_master.router)
     app.include_router(live_master.router)

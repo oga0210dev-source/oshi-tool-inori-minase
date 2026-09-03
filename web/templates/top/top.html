@@ -126,6 +126,22 @@
         <!-- ボタン -->
         <div class="button-area">
 
+            <a href="#"
+               onclick="openAnnouncementModal(); return false;"
+               class="top-menu-btn">
+
+                <span class="top-menu-icon">📢</span>
+
+                <span class="top-menu-text">
+                    <strong>お知らせ</strong>
+                    <small>最新のお知らせを確認する</small>
+                </span>
+
+                <span class="top-menu-arrow">›</span>
+
+            </a>
+
+
             <a href="/login" class="top-menu-btn">
 
                 <span class="top-menu-icon">🔑</span>
@@ -148,6 +164,7 @@
                     <strong>新規登録</strong>
                     <small>アカウントを新しく作成する</small>
                 </span>
+
                 <span class="top-menu-arrow">›</span>
             </a>
 
@@ -164,7 +181,9 @@
                 </span>
 
                 <span class="top-menu-arrow">›</span>
+
             </a>
+
         </div>
 
         <!-- 利用規約等 -->
@@ -269,7 +288,45 @@
             <iframe
                 id="inquiryFrame"
                 src="">
+        </iframe>
+        </div>
+
+    </div>
+</div>
+
+
+<!-- =========================================================
+     お知らせモーダル
+     ========================================================= -->
+
+<div id="announcementModal"
+     class="top-modal"
+     onclick="closeAnnouncementModal(event)">
+
+    <div class="top-modal-content"
+         onclick="event.stopPropagation()">
+
+        <div class="top-modal-header">
+
+            <div class="top-modal-title">
+                お知らせ
+            </div>
+
+            <button type="button"
+                    class="top-modal-close"
+                    onclick="closeAnnouncementModal()">
+                ×
+            </button>
+
+        </div>
+
+        <div class="top-modal-body">
+
+            <iframe
+                id="announcementFrame"
+                src="">
             </iframe>
+
         </div>
 
     </div>
@@ -306,6 +363,7 @@
        ========================================================= */
 
     function openLegalModal(type){
+
         const modal =
             document.getElementById("legalModal");
 
@@ -335,6 +393,7 @@
         }
 
         modal.style.display = "flex";
+        document.body.classList.add("modal-open");
     }
 
 
@@ -358,8 +417,9 @@
         }
 
         modal.style.display = "none";
-
         frame.src = "";
+
+        document.body.classList.remove("modal-open");
     }
 
 
@@ -381,6 +441,8 @@
 
         frame.src = "/home/inquiry";
         modal.style.display = "flex";
+
+        document.body.classList.add("modal-open");
     }
 
 
@@ -404,8 +466,58 @@
         }
 
         modal.style.display = "none";
-
         frame.src = "";
+
+        document.body.classList.remove("modal-open");
+    }
+
+
+    /* =========================================================
+       お知らせ
+       ========================================================= */
+
+    function openAnnouncementModal(){
+
+        const modal =
+            document.getElementById("announcementModal");
+
+        const frame =
+            document.getElementById("announcementFrame");
+
+        if(!modal || !frame){
+            return;
+        }
+
+        frame.src = "/home/announcement";
+        modal.style.display = "flex";
+
+        document.body.classList.add("modal-open");
+    }
+
+
+    function closeAnnouncementModal(event){
+
+        if(
+            event &&
+            event.target !== event.currentTarget
+        ){
+            return;
+        }
+
+        const modal =
+            document.getElementById("announcementModal");
+
+        const frame =
+            document.getElementById("announcementFrame");
+
+        if(!modal || !frame){
+            return;
+        }
+
+        modal.style.display = "none";
+        frame.src = "";
+
+        document.body.classList.remove("modal-open");
     }
 
 
@@ -423,6 +535,7 @@
 
             closeLegalModal();
             closeInquiryModal();
+            closeAnnouncementModal();
         }
     );
 

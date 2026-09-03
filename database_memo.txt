@@ -2,6 +2,21 @@
 マスターテーブル
 /////////////////////////////////
 
+create table public.m_announcement (
+  created_at timestamp without time zone not null default CURRENT_TIMESTAMP,
+  updated_at timestamp without time zone not null default CURRENT_TIMESTAMP,
+  announcement_id bigserial not null,
+  genre character varying(20) not null,
+  priority integer not null default 3,
+  title character varying(200) not null,
+  body text not null,
+  start_at timestamp without time zone not null default CURRENT_TIMESTAMP,
+  end_at timestamp without time zone null,
+  is_active boolean not null default true,
+  is_deleted boolean not null default false,
+  constraint m_announcement_pkey primary key (announcement_id)
+) TABLESPACE pg_default;
+
 create table public.m_user (
   user_id text not null,
   user_name text not null,
