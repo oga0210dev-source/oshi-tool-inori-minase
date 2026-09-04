@@ -104,3 +104,76 @@ def save_setlist(event_type, event_id, setlist):
 
     finally:
         conn.close()
+
+
+def get_setlist_ai_history():
+    """
+    AIセトリ予測用の過去LIVEセトリを取得
+
+    対象:
+        - LIVEのみ
+        - 削除されていないLIVE
+        - 公開されているLIVE
+        - INORI楽曲のみ
+        - セトリ登録済みの楽曲
+
+    町民集会は対象外。
+    """
+
+    conn = get_connection()
+
+    try:
+        with conn.cursor() as cursor:
+            cursor.execute(
+                """
+                SELECT
+                    l.live_id,
+                    l.live_date,
+                    l.live_name,
+                    l.tour_name,
+                    l.tour_order,
+                    s.song_group_id,
+                    s.song_name,
+                    s.album_name,
+                    ms.song_order,
+                    ms.is_medley,
+                    ms.medley_order
+                FROM m_setlist ms
+                INNER JOIN m_live l
+                    ON ms.event_id = l.live_id
+                INNER JOIN m_song s
+                    ON ms.song_id = s.song_group_id
+                WHERE
+                    ms.event_type = 'LIVE'
+                    AND l.is_deleted = FALSE
+                    AND l.public_flag = TRUE
+                    AND s.song_type = 'INORI'
+                ORDER BY
+                    l.live_date ASC,
+                    l.live_id ASC,
+                    ms.song_order ASC,
+                    ms.medley_order ASC NULLS LAST
+                """
+            )
+
+            rows = cursor.fetchall()
+
+            return [
+                {
+                    "live_id": row["live_id"],
+                    "live_date": row["live_date"],
+                    "live_name": row["live_name"],
+                    "tour_name": row["tour_name"],
+                    "tour_order": row["tour_order"],
+                    "song_id": row["song_group_id"],
+                    "song_name": row["song_name"],
+                    "album_name": row["album_name"],
+                    "song_order": row["song_order"],
+                    "is_medley": row["is_medley"],
+                    "medley_order": row["medley_order"]
+                }
+                for row in rows
+            ]
+
+    finally:
+        conn.close()

@@ -1,0 +1,303 @@
+/* =========================================================
+   AIセトリ予測
+   ========================================================= */
+
+.page-scroll {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    box-sizing: border-box;
+}
+
+.live-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* =========================================================
+   LIVE項目
+   ========================================================= */
+
+.live-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px;
+    background: #ffffff;
+    border: 1px solid #eeeeee;
+    border-radius: 12px;
+    box-sizing: border-box;
+}
+
+.live-info {
+    min-width: 0;
+}
+
+.live-name {
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 1.5;
+    word-break: break-word;
+}
+
+.tour-name {
+    margin-top: 4px;
+    font-size: 13px;
+    color: #777777;
+    line-height: 1.4;
+    word-break: break-word;
+}
+
+.live-date {
+    margin-top: 4px;
+    font-size: 13px;
+    color: #777777;
+    line-height: 1.4;
+}
+
+/* =========================================================
+   ボタン
+   ========================================================= */
+
+.live-action {
+    flex-shrink: 0;
+    margin-left: 12px;
+}
+
+.prediction-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 80px;
+    min-height: 40px;
+    padding: 8px 14px;
+    box-sizing: border-box;
+    border-radius: 8px;
+    background: #ffffff;
+    border: 1px solid #cccccc;
+    color: #333333;
+    font-size: 13px;
+    font-weight: bold;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.prediction-btn:hover {
+    background: #f5f5f5;
+}
+
+/* =========================================================
+   LIVEなし
+   ========================================================= */
+
+.no-live {
+    padding: 40px 20px;
+    text-align: center;
+    color: #777777;
+    font-size: 14px;
+}
+
+/* =========================================================
+   予測作成
+   ========================================================= */
+
+.prediction-section {
+    margin-top: 20px;
+    padding: 16px;
+    background: #ffffff;
+    border: 1px solid #eeeeee;
+    border-radius: 12px;
+    box-sizing: border-box;
+}
+
+.section-title {
+    margin-bottom: 12px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.prediction-textarea {
+    width: 100%;
+    min-height: 110px;
+    padding: 12px;
+    box-sizing: border-box;
+    border: 1px solid #dddddd;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 16px;
+    line-height: 1.6;
+    resize: vertical;
+}
+
+.prediction-textarea:focus {
+    outline: none;
+    border-color: #999999;
+}
+
+.input-note {
+    margin-top: 8px;
+    font-size: 16px;
+    color: #777777;
+    line-height: 1.5;
+}
+
+/* =========================================================
+   必須曲
+   ========================================================= */
+
+.required-song-list {
+    display: flex;
+    flex-direction: column;
+    margin-top: 12px;
+}
+
+.required-song-item {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 8px 4px;
+    border-bottom: 1px solid #eeeeee;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.required-song-item:last-child {
+    border-bottom: none;
+}
+
+.required-song-item input {
+    margin-right: 10px;
+}
+
+/* =========================================================
+   生成ボタン
+   ========================================================= */
+
+.generate-btn {
+    width: 100%;
+    min-height: 48px;
+    border: none;
+    border-radius: 10px;
+    background: #333333;
+    color: #ffffff;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.generate-btn:disabled {
+    opacity: 0.5;
+    cursor: default;
+}
+
+/* =========================================================
+   予測結果
+   ========================================================= */
+
+.predicted-setlist {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.predicted-song-item {
+    display: flex;
+    align-items: center;
+    min-height: 48px;
+    padding: 10px 12px;
+    box-sizing: border-box;
+    background: #fafafa;
+    border: 1px solid #eeeeee;
+    border-radius: 8px;
+}
+
+.predicted-song-order {
+    width: 32px;
+    flex-shrink: 0;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.predicted-song-name {
+    flex: 1;
+    min-width: 0;
+    font-size: 14px;
+    word-break: break-word;
+}
+
+.predicted-song-score {
+    margin-left: 8px;
+    flex-shrink: 0;
+    font-size: 11px;
+    color: #888888;
+}
+
+.required-badge {
+    display: inline-block;
+    margin-left: 8px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: #eeeeee;
+    font-size: 10px;
+    font-weight: bold;
+    vertical-align: middle;
+}
+
+.predicted-medley {
+    margin-bottom: 12px;
+}
+
+.predicted-medley-title {
+    font-weight: bold;
+    margin-bottom: 6px;
+}
+
+.predicted-medley-songs {
+    padding-left: 16px;
+}
+
+.predicted-medley-song {
+    display: flex;
+    gap: 10px;
+    padding: 8px 0;
+}
+
+.predicted-song-reason {
+    margin-top: 4px;
+    font-size: 12px;
+    opacity: 0.7;
+}
+
+/* =========================================================
+   スマートフォン
+   ========================================================= */
+
+@media (max-width: 480px) {
+    .live-item {
+        padding: 14px;
+    }
+
+    .live-name {
+        font-size: 15px;
+    }
+
+    .tour-name,
+    .live-date {
+        font-size: 12px;
+    }
+
+    .prediction-btn {
+        min-width: 72px;
+        min-height: 38px;
+        padding: 7px 10px;
+        font-size: 12px;
+    }
+
+    .live-action {
+        margin-left: 8px;
+    }
+}

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/static/img/logo.png" type="image/png">
+
+    <title>推し活オールインワン</title>
+
+    <link rel="stylesheet" href="/static/css/common.css">
+    <link rel="stylesheet" href="/static/css/admin/master/admin-common.css">
+    <link rel="stylesheet" href="/static/css/admin/master/setlist_prediction_ai.css">
+</head>
+
+<body class="{{ font_class }}">
+
+<div class="container">
+
+    <div class="page-header">
+
+        <a
+            href="/admin/master/live"
+            class="master-link"
+        >
+            ← ライブ管理
+        </a>
+
+        <h1 class="page-title">
+            AIセトリ予測
+        </h1>
+
+    </div>
+
+
+    <!-- LIVE一覧 -->
+
+    <div
+        class="live-list"
+        id="live-list"
+    >
+
+        {% if lives %}
+
+            {% for live in lives %}
+
+            <div class="live-item">
+
+                <div class="live-info">
+
+                    <div class="live-name">
+                        {{ live.live_name }}
+                    </div>
+
+                    {% if live.tour_name %}
+
+                    <div class="tour-name">
+                        {{ live.tour_name }}
+                    </div>
+
+                    {% endif %}
+
+                    <div class="live-date">
+                        {{ live.live_date }}
+                    </div>
+
+                </div>
+
+
+                <div class="live-action">
+
+                    <a
+                        href="/admin/master/setlist-prediction-ai/{{ live.live_id }}"
+                        class="prediction-btn"
+                    >
+                        予測作成
+                    </a>
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <div class="no-live">
+                LIVEが登録されていません
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+</body>
+</html>

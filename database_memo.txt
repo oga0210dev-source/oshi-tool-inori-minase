@@ -624,6 +624,45 @@ create trigger trigger_update_t_setlist_prediction_song_updated_at BEFORE
 update on t_setlist_prediction_song for EACH row
 execute FUNCTION update_updated_at_column ();
 
+create table public.t_setlist_prediction_ai (
+  created_at timestamp without time zone not null default CURRENT_TIMESTAMP,
+  updated_at timestamp without time zone not null default CURRENT_TIMESTAMP,
+  prediction_id bigserial not null,
+  live_id bigint not null,
+  prediction_context text null,
+  admin_memo text null,
+  public_flag boolean not null default false,
+  is_deleted boolean not null default false,
+  constraint t_setlist_prediction_ai_pkey primary key (prediction_id),
+  constraint fk_t_setlist_prediction_ai_live foreign KEY (live_id) references m_live (live_id)
+) TABLESPACE pg_default;
+
+create index IF not exists idx_t_setlist_prediction_ai_live_id on public.t_setlist_prediction_ai using btree (live_id) TABLESPACE pg_default;
+
+create unique INDEX IF not exists uq_t_setlist_prediction_ai_live_id on public.t_setlist_prediction_ai using btree (live_id) TABLESPACE pg_default
+where
+  (is_deleted = false);
+
+create table public.t_setlist_prediction_ai_detail (
+  created_at timestamp without time zone not null default CURRENT_TIMESTAMP,
+  updated_at timestamp without time zone not null default CURRENT_TIMESTAMP,
+  prediction_detail_id bigserial not null,
+  prediction_id bigint not null,
+  song_id bigint not null,
+  predicted_order integer not null,
+  prediction_score numeric(6, 2) null,
+  prediction_reason text null,
+  is_required boolean not null default false,
+  is_medley boolean not null default false,
+  medley_order integer null,
+  constraint t_setlist_prediction_ai_detail_pkey primary key (prediction_detail_id),
+  constraint fk_t_setlist_prediction_ai_detail_prediction foreign KEY (prediction_id) references t_setlist_prediction_ai (prediction_id) on delete CASCADE
+) TABLESPACE pg_default;
+
+create index IF not exists idx_t_setlist_prediction_ai_detail_prediction_id on public.t_setlist_prediction_ai_detail using btree (prediction_id) TABLESPACE pg_default;
+
+create index IF not exists idx_t_setlist_prediction_ai_detail_song_id on public.t_setlist_prediction_ai_detail using btree (song_id) TABLESPACE pg_default;
+
 create table public.t_live_user (
   user_id text not null,
   live_id bigint not null,
