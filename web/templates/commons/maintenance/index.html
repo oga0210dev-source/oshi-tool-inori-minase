@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/static/img/logo.png" type="image/png">
+    <title>推し活オールインワン</title>
+    <link rel="stylesheet" href="/static/css/common.css">
+    <link rel="stylesheet" href="/static/css/maintenance/maintenance.css">
+</head>
+<body>
+
+<div class="container">
+    <div class="maintenance-page">
+        <h1>メンテナンス中</h1>
+
+        <p>現在、サービスのメンテナンスを実施しています。</p>
+
+        {% if maintenance %}
+            <h2>{{ maintenance.title }}</h2>
+
+            {% if maintenance.message %}
+                <div class="maintenance-message">
+                    {{ maintenance.message }}
+                </div>
+            {% endif %}
+
+            {% if maintenance.end_at %}
+                <p class="maintenance-end">
+                    終了予定：{{ maintenance.end_at }}
+                </p>
+            {% endif %}
+        {% endif %}
+
+        <p>メンテナンス終了まで、しばらくお待ちください。</p>
+
+        <a href="/maintenance/return" class="maintenance-return-button">
+            {% if request.session.get("user_id") %}
+                ホームへ戻る
+            {% else %}
+                TOPへ戻る
+            {% endif %}
+        </a>
+    </div>
+</div>
+
+</body>
+</html>

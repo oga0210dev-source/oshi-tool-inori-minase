@@ -6,7 +6,8 @@ from python.routers import (
     batch,
     font,
     user_setting,
-    email
+    email,
+    maintenance
 )
 from python.routers.home import (
     home,
@@ -73,7 +74,8 @@ from python.routers.admin.master import (
     oshi_official_link as oshi_official_link_master,
     oshi_program as oshi_program_master,
     user as user_master,
-    access as access_master
+    access as access_master,
+    maintenance as maintenance_master
 )
 from python.routers.admin import inquiry as admin_inquiry
 
@@ -89,6 +91,7 @@ def register_router(app: FastAPI):
     app.include_router(user_setting.router)
     app.include_router(email.router)
     app.include_router(announcement.router)
+    app.include_router(maintenance.router)
 
     app.include_router(batch.router)
 
@@ -112,6 +115,7 @@ def register_router(app: FastAPI):
     app.include_router(oshi_program_master.router)
     app.include_router(user_master.router)
     app.include_router(access_master.router)
+    app.include_router(maintenance_master.router)
 
     app.include_router(live.router)
     app.include_router(live_archive.router)

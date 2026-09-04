@@ -13,18 +13,10 @@ router = APIRouter(
 
 
 GENRE_LIST = [
-    {
-        "value": "NOTICE",
-        "label": "お知らせ"
-    },
-    {
-        "value": "UPDATE",
-        "label": "アップデート"
-    },
-    {
-        "value": "BUG",
-        "label": "不具合"
-    }
+    {"value": "NOTICE", "label": "お知らせ"},
+    {"value": "UPDATE", "label": "アップデート"},
+    {"value": "BUG", "label": "不具合"},
+    {"value": "MAINTENANCE", "label": "メンテナンス"}
 ]
 
 

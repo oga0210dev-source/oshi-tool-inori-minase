@@ -336,3 +336,41 @@ def delete_announcement(announcement_id):
 
     finally:
         conn.close()
+
+
+def get_maintenance_announcement_list():
+    """
+    メンテナンス告知一覧取得
+    """
+
+    conn = get_connection()
+
+    try:
+        with conn.cursor() as cur:
+            cur.execute(
+                """
+                SELECT
+                    announcement_id,
+                    title,
+                    body,
+                    start_at,
+                    end_at,
+                    is_active,
+                    is_deleted
+
+                FROM m_announcement
+
+                WHERE
+                    genre = 'MAINTENANCE'
+                    AND is_deleted = FALSE
+
+                ORDER BY
+                    start_at DESC,
+                    announcement_id DESC
+                """
+            )
+
+            return cur.fetchall()
+
+    finally:
+        conn.close()

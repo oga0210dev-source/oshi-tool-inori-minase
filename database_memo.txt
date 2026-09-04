@@ -2,6 +2,47 @@
 マスターテーブル
 /////////////////////////////////
 
+create table public.m_maintenance (
+  created_at timestamp without time zone not null default CURRENT_TIMESTAMP,
+  updated_at timestamp without time zone not null default CURRENT_TIMESTAMP,
+  maintenance_id bigserial not null,
+  announcement_id bigint null,
+  maintenance_type character varying(20) not null,
+  target_key character varying(100) null,
+  title character varying(200) not null,
+  message text null,
+  start_at timestamp without time zone null,
+  end_at timestamp without time zone null,
+  is_emergency boolean not null default false,
+  is_active boolean not null default false,
+  constraint m_maintenance_pkey primary key (maintenance_id),
+  constraint fk_m_maintenance_announcement foreign KEY (announcement_id) references m_announcement (announcement_id),
+  constraint chk_maintenance_partial_target check (
+    (
+      (
+        ((maintenance_type)::text = 'ALL'::text)
+        and (target_key is null)
+      )
+      or (
+        ((maintenance_type)::text = 'PARTIAL'::text)
+        and (target_key is not null)
+      )
+    )
+  ),
+  constraint chk_maintenance_type check (
+    (
+      (maintenance_type)::text = any (
+        (
+          array[
+            'ALL'::character varying,
+            'PARTIAL'::character varying
+          ]
+        )::text[]
+      )
+    )
+  )
+) TABLESPACE pg_default;
+
 create table public.m_announcement (
   created_at timestamp without time zone not null default CURRENT_TIMESTAMP,
   updated_at timestamp without time zone not null default CURRENT_TIMESTAMP,

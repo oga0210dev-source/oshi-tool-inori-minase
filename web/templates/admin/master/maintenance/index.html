@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/static/img/logo.png" type="image/png">
+
+    <title>推し活オールインワン</title>
+
+    <link rel="stylesheet" href="/static/css/common.css">
+    <link rel="stylesheet" href="/static/css/admin/master/admin-common.css">
+    <link rel="stylesheet" href="/static/css/admin/master/maintenance/maintenance.css">
+</head>
+
+<body class="{{ font_class }}">
+
+<div class="container">
+
+    <div class="page-header">
+        <a href="/admin/master" class="master-link">← 管理マスタ</a>
+        <h1 class="page-title">メンテナンス管理</h1>
+    </div>
+
+    <a href="/admin/master/maintenance/create" class="action-btn">
+        新規登録
+    </a>
+
+    <div class="page-scroll">
+        <div class="maintenance-list">
+
+            {% if maintenances %}
+
+                {% for maintenance in maintenances %}
+
+                    <div class="maintenance-row">
+
+                        <div class="maintenance-info">
+                            <div class="maintenance-title">
+                                {{ maintenance.title }}
+                            </div>
+
+                            <div class="maintenance-meta">
+                                {% if maintenance.maintenance_type == "ALL" %}
+                                    全体
+                                {% else %}
+                                    一部機能：{{ maintenance.target_key }}
+                                {% endif %}
+
+                                {% if maintenance.is_emergency %}
+                                    <span class="status-emergency">緊急</span>
+                                {% else %}
+                                    <span class="status-normal">通常</span>
+                                {% endif %}
+
+                                {% if maintenance.is_active %}
+                                    <span class="status-active">稼働中</span>
+                                {% else %}
+                                    <span class="status-inactive">停止中</span>
+                                {% endif %}
+                            </div>
+
+                            <div class="maintenance-period">
+                                開始：{{ maintenance.start_at or "未設定" }}<br>
+                                終了：{{ maintenance.end_at or "無期限" }}
+                            </div>
+
+                            {% if maintenance.message %}
+                                <div class="maintenance-message">{{ maintenance.message|string|trim }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="maintenance-action">
+                            <div class="maintenance-action-top">
+                                <a href="/admin/master/maintenance/edit/{{ maintenance.maintenance_id }}" class="edit-btn">
+                                    編集
+                                </a>
+
+                                <form action="/admin/master/maintenance/status/{{ maintenance.maintenance_id }}" method="post">
+                                    {% if maintenance.is_active %}
+                                        <input type="hidden" name="is_active" value="false">
+                                        <button type="submit" class="status-btn" onclick="return confirm('メンテナンスを停止しますか？');">
+                                            停止
+                                        </button>
+                                    {% else %}
+                                        <input type="hidden" name="is_active" value="true">
+                                        <button type="submit" class="status-btn" onclick="return confirm('メンテナンスを開始しますか？');">
+                                            開始
+                                        </button>
+                                    {% endif %}
+                                </form>
+                            </div>
+                        </div>
+
+                    </div>
+
+                {% endfor %}
+
+            {% else %}
+
+                <p class="empty-message">
+                    登録されているメンテナンスはありません。
+                </p>
+
+            {% endif %}
+
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
