@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/static/img/logo.png" type="image/png">
+
+    <title>推し活オールインワン</title>
+
+    <link rel="stylesheet" href="/static/css/common.css">
+    <link rel="stylesheet" href="/static/css/admin/master/admin-common.css">
+    <link rel="stylesheet" href="/static/css/admin/master/maintenance/maintenance.css">
+</head>
+
+<body class="{{ font_class }}">
+
+<div class="container">
+
+    <div class="page-header">
+        <a href="/admin/master/maintenance" class="master-link">← メンテナンス管理</a>
+        <h1 class="page-title">
+            {% if maintenance %}メンテナンス編集{% else %}メンテナンス登録{% endif %}
+        </h1>
+    </div>
+
+    {% if error %}
+        <div class="error-message">{{ error }}</div>
+    {% endif %}
+
+    <div class="page-scroll">
+
+        <form method="post"
+              action="{% if maintenance %}/admin/master/maintenance/update/{{ maintenance.maintenance_id }}{% else %}/admin/master/maintenance/create{% endif %}"
+              class="maintenance-form">
+
+            <input type="hidden"
+                   name="maintenance_type"
+                   value="ALL">
+
+            <input type="hidden"
+                   name="target_key"
+                   value="">
+
+            <div class="form-group">
+                <label for="title">メンテナンス名</label>
+
+                <input type="text"
+                       id="title"
+                       name="title"
+                       value="{{ maintenance.title if maintenance else '' }}"
+                       maxlength="200"
+                       required>
+            </div>
+
+            <div class="form-group">
+                <label for="message">メッセージ</label>
+
+                <textarea id="message"
+                          name="message"
+                          rows="5">{{ maintenance.message if maintenance else '' }}</textarea>
+            </div>
+
+            <div class="form-group">
+                <label>メンテナンス告知</label>
+
+                <input type="hidden"
+                       id="announcement_id"
+                       name="announcement_id"
+                       value="{{ maintenance.announcement_id if maintenance and maintenance.announcement_id else '' }}">
+
+                <button type="button"
+                        class="announcement-select-btn"
+                        onclick="openAnnouncementModal()">
+                    告知を選択
+                </button>
+
+                <div id="selected-announcement" class="selected-announcement">
+                    {% if maintenance and maintenance.announcement_id %}
+                        {% for announcement in maintenance_announcements %}
+                            {% if announcement.announcement_id == maintenance.announcement_id %}
+                                <div class="selected-announcement-title">
+                                    {{ announcement.title }}
+                                </div>
+                                <div class="selected-announcement-date">
+                                    {{ announcement.start_at }}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        <span>告知が選択されていません</span>
+                    {% endif %}
+                </div>
+
+                <p class="form-help">
+                    通常メンテナンスの場合は指定してください。
+                </p>
+            </div>
+
+            <div id="announcement-modal" class="modal">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h2>メンテナンス告知を選択</h2>
+
+                        <button type="button"
+                                class="modal-close"
+                                onclick="closeAnnouncementModal()">
+                            ×
+                        </button>
+                    </div>
+
+                    <div class="announcement-list">
+
+                        {% if maintenance_announcements %}
+
+                            {% for announcement in maintenance_announcements %}
+
+                                <button type="button"
+                                        class="announcement-item"
+                                        onclick="selectAnnouncement(
+                                            '{{ announcement.announcement_id }}',
+                                            '{{ announcement.title | e }}',
+                                            '{{ announcement.start_at }}'
+                                        )">
+
+                                    <div class="announcement-item-title">
+                                        {{ announcement.title }}
+                                    </div>
+
+                                    <div class="announcement-item-date">
+                                        {{ announcement.start_at }}
+                                    </div>
+
+                                </button>
+
+                            {% endfor %}
+
+                        {% else %}
+
+                            <p class="empty-message">
+                                メンテナンス告知がありません。
+                            </p>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="form-group checkbox-group">
+                <label>
+                    <input type="checkbox"
+                           id="is_emergency"
+                           name="is_emergency"
+                           value="true"
+                           {% if maintenance and maintenance.is_emergency %}checked{% endif %}>
+                    緊急メンテナンス
+                </label>
+
+                <p class="form-help">
+                    緊急メンテナンスは24時間ルールの対象外です。
+                </p>
+            </div>
+
+            <div class="form-group">
+                <label for="start_at">開始日時</label>
+
+                <input type="datetime-local"
+                       id="start_at"
+                       name="start_at"
+                       value="{% if maintenance and maintenance.start_at %}{{ maintenance.start_at.strftime('%Y-%m-%dT%H:%M') if maintenance.start_at.strftime is defined else maintenance.start_at }}{% endif %}">
+            </div>
+
+            <div class="form-group">
+                <label for="end_at">終了日時</label>
+
+                <input type="datetime-local"
+                       id="end_at"
+                       name="end_at"
+                       value="{% if maintenance and maintenance.end_at %}{{ maintenance.end_at.strftime('%Y-%m-%dT%H:%M') if maintenance.start_at.strftime is defined else maintenance.end_at }}{% endif %}">
+            </div>
+
+            <div class="form-actions">
+                <a href="/admin/master/maintenance" class="cancel-btn">
+                    キャンセル
+                </a>
+
+                <button type="submit" class="submit-btn">
+                    {% if maintenance %}更新{% else %}登録{% endif %}
+                </button>
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+<script>
+function openAnnouncementModal() {
+    document.getElementById("announcement-modal").classList.add("active");
+}
+
+function closeAnnouncementModal() {
+    document.getElementById("announcement-modal").classList.remove("active");
+}
+
+function selectAnnouncement(id, title, startAt) {
+    document.getElementById("announcement_id").value = id;
+
+    document.getElementById("selected-announcement").innerHTML =
+        '<div class="selected-announcement-title">' +
+        title +
+        '</div>' +
+        '<div class="selected-announcement-date">' +
+        startAt +
+        '</div>';
+
+    closeAnnouncementModal();
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    document.getElementById("announcement-modal").addEventListener(
+        "click",
+        function(event) {
+            if (event.target === this) {
+                closeAnnouncementModal();
+            }
+        }
+    );
+});
+</script>
+
+</body>
+</html>
