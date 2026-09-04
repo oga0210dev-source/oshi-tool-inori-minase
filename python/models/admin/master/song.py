@@ -165,6 +165,28 @@ def get_song_groups():
         conn.close()
 
 
+def get_ai_prediction_song_groups():
+    sql = """
+        SELECT
+            song_group_id,
+            song_name,
+            album_name,
+            song_type
+        FROM m_song
+        WHERE song_type = 'INORI'
+        ORDER BY
+            release_date ASC NULLS LAST,
+            album_name ASC NULLS LAST,
+            display_order ASC NULLS LAST,
+            song_name ASC
+    """
+
+    with get_connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute(sql)
+            return cur.fetchall()
+
+
 def get_song_by_group(song_group_id):
     conn = get_connection()
 

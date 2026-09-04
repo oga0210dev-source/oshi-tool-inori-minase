@@ -68,6 +68,7 @@ from python.routers.admin.master import (
     live as live_master,
     meeting as meeting_master,
     setlist as setlist_master,
+    setlist_prediction_ai as setlist_ai_master,
     oshi as oshi_master,
     oshi_work as oshi_work_master,
     oshi_anniversary as oshi_anniversary_master,
@@ -108,6 +109,7 @@ def register_router(app: FastAPI):
     app.include_router(live_master.router)
     app.include_router(meeting_master.router)
     app.include_router(setlist_master.router)
+    app.include_router(setlist_ai_master.router)
     app.include_router(oshi_master.router)
     app.include_router(oshi_work_master.router)
     app.include_router(oshi_anniversary_master.router)

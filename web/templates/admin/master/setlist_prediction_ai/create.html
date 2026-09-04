@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/static/img/logo.png" type="image/png">
+
+    <title>推し活オールインワン</title>
+
+    <link rel="stylesheet" href="/static/css/common.css">
+    <link rel="stylesheet" href="/static/css/admin/master/admin-common.css">
+    <link rel="stylesheet" href="/static/css/admin/master/setlist_prediction_ai.css">
+</head>
+
+<body class="{{ font_class }}">
+
+<div class="container">
+
+    <div class="page-scroll">
+
+        <div class="page-header">
+
+            <a
+                href="/admin/master/setlist-prediction-ai"
+                class="master-link"
+            >
+                ← AIセトリ予測
+            </a>
+
+            <h1 class="page-title">
+                AIセトリ予測
+            </h1>
+
+        </div>
+
+
+        <!-- LIVE情報 -->
+
+        <div class="prediction-section">
+
+            <div class="section-title">
+                LIVE情報
+            </div>
+
+            <div class="live-info">
+
+                <div class="live-info-item">
+                    <span>ライブ名</span>
+                    {{ live.live_name }}
+                </div>
+
+                {% if live.tour_name %}
+
+                <div class="live-info-item">
+                    <span>ツアー</span>
+                    {{ live.tour_name }}
+                </div>
+
+                {% endif %}
+
+                <div class="live-info-item">
+                    <span>開催日</span>
+                    {{ live.live_date }}
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- 予測条件 -->
+
+        <div class="prediction-section">
+
+            <div class="section-title">
+                予測条件
+            </div>
+
+            <textarea
+                id="prediction-context"
+                class="prediction-textarea"
+                placeholder="例：初の野外ライブ。夏の野外公演のため、爽やかで盛り上がりやすい楽曲をやや重視する。過去の単独ライブのセトリ傾向を基本とする。"
+            ></textarea>
+
+            <div class="input-note">
+                AIセトリ予測に使用する条件を入力してください。
+            </div>
+
+        </div>
+
+
+        <!-- 必須曲 -->
+
+        <div class="prediction-section">
+
+            <div class="section-title">
+                必須曲
+            </div>
+
+            <div class="input-note">
+                必ずセットリストに入れる曲を選択してください。
+            </div>
+
+            <div class="required-song-list">
+
+                {% for song in songs %}
+
+                <label class="required-song-item">
+
+                    <input
+                        type="checkbox"
+                        name="required-song"
+                        value="{{ song.song_group_id }}"
+                    >
+
+                    <span>
+                        {{ song.song_name }}
+                    </span>
+
+                </label>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+
+        <!-- 管理者メモ -->
+
+        <div class="prediction-section">
+
+            <div class="section-title">
+                管理者メモ
+            </div>
+
+            <textarea
+                id="admin-memo"
+                class="prediction-textarea"
+                placeholder="管理者用メモ"
+            ></textarea>
+
+            <div class="input-note">
+                AIには送信されず、管理者のみが確認できます。
+            </div>
+
+        </div>
+
+
+        <!-- 生成 -->
+
+        <div class="button-area">
+
+            <button
+                type="button"
+                id="generate-btn"
+                class="generate-btn"
+                onclick="generatePrediction()"
+            >
+                AI予測生成
+            </button>
+
+        </div>
+
+
+        <!-- 保存済み予測 -->
+
+        <div
+            id="prediction-result"
+            class="prediction-section"
+            style="display:none;"
+        >
+
+            <div class="section-title">
+                AI予測結果
+            </div>
+
+            <div
+                id="prediction-status"
+                class="input-note"
+            ></div>
+
+            <div
+                id="predicted-setlist"
+                class="predicted-setlist"
+            >
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+const liveId = {{ live.live_id }};
+
+const existingPrediction = {{ prediction | tojson }};
+
+
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
+
+        if (!existingPrediction) {
+            return;
+        }
+
+        loadExistingPrediction(
+            existingPrediction
+        );
+
+    }
+);
+
+
+async function generatePrediction() {
+
+    const button = document.getElementById(
+        "generate-btn"
+    );
+
+    const context = document.getElementById(
+        "prediction-context"
+    ).value.trim();
+
+    const adminMemo = document.getElementById(
+        "admin-memo"
+    ).value.trim();
+
+    const requiredSongIds = [];
+
+    document
+        .querySelectorAll(
+            'input[name="required-song"]:checked'
+        )
+        .forEach(
+            checkbox => {
+                requiredSongIds.push(
+                    Number(checkbox.value)
+                );
+            }
+        );
+
+
+    button.disabled = true;
+    button.textContent = "生成・保存中...";
+
+
+    try {
+
+        const response = await fetch(
+            `/admin/master/setlist-prediction-ai/${liveId}/generate`,
+            {
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+                    prediction_context: context,
+                    admin_memo: adminMemo,
+                    required_song_ids: requiredSongIds
+                })
+            }
+        );
+
+
+        const result = await response.json();
+
+
+        if (!response.ok || !result.success) {
+
+            alert(
+                result.message
+                || "予測生成に失敗しました。"
+            );
+
+            return;
+        }
+
+
+        displayPrediction(
+            result.predicted_setlist
+        );
+
+
+        document.getElementById(
+            "prediction-status"
+        ).textContent =
+            "AI予測を生成して保存しました。";
+
+
+        alert(
+            "AI予測を生成して保存しました。"
+        );
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert(
+            "予測生成に失敗しました。"
+        );
+
+    } finally {
+
+        button.disabled = false;
+        button.textContent = "AI予測生成";
+
+    }
+}
+
+
+function loadExistingPrediction(
+    prediction
+) {
+
+    if (
+        prediction.prediction_context
+        !== null
+        &&
+        prediction.prediction_context
+        !== undefined
+    ) {
+
+        document.getElementById(
+            "prediction-context"
+        ).value =
+            prediction.prediction_context;
+
+    }
+
+
+    if (
+        prediction.admin_memo
+        !== null
+        &&
+        prediction.admin_memo
+        !== undefined
+    ) {
+
+        document.getElementById(
+            "admin-memo"
+        ).value =
+            prediction.admin_memo;
+
+    }
+
+
+    const requiredSongIds = new Set(
+        (prediction.details || [])
+            .filter(
+                detail => detail.is_required
+            )
+            .map(
+                detail => Number(
+                    detail.song_id
+                )
+            )
+    );
+
+
+    document
+        .querySelectorAll(
+            'input[name="required-song"]'
+        )
+        .forEach(
+            checkbox => {
+
+                checkbox.checked =
+                    requiredSongIds.has(
+                        Number(checkbox.value)
+                    );
+
+            }
+        );
+
+
+    displayPrediction(
+        prediction.details || []
+    );
+
+
+    const status =
+        document.getElementById(
+            "prediction-status"
+        );
+
+    status.textContent =
+        "保存済みのAI予測を表示しています。";
+
+}
+
+
+function displayPrediction(
+    setlist
+) {
+
+    const resultArea =
+        document.getElementById(
+            "prediction-result"
+        );
+
+    const setlistArea =
+        document.getElementById(
+            "predicted-setlist"
+        );
+
+
+    setlistArea.innerHTML = "";
+
+
+    if (!setlist || !setlist.length) {
+
+        resultArea.style.display =
+            "none";
+
+        return;
+
+    }
+
+
+    let currentOrder = null;
+    let currentMedley = null;
+
+
+    setlist.forEach(
+        (song, index) => {
+
+            const predictedOrder =
+                Number(
+                    song.predicted_order
+                    || index + 1
+                );
+
+            if (
+                song.is_medley
+                &&
+                (
+                    currentOrder
+                    !== predictedOrder
+                    ||
+                    currentMedley
+                    === null
+                )
+            ) {
+
+                const medley =
+                    document.createElement(
+                        "div"
+                    );
+
+                medley.className =
+                    "predicted-medley";
+
+
+                const medleyTitle =
+                    document.createElement(
+                        "div"
+                    );
+
+                medleyTitle.className =
+                    "predicted-medley-title";
+
+                medleyTitle.textContent =
+                    `${predictedOrder}. メドレー`;
+
+
+                medley.appendChild(
+                    medleyTitle
+                );
+
+
+                const medleySongs =
+                    document.createElement(
+                        "div"
+                    );
+
+                medleySongs.className =
+                    "predicted-medley-songs";
+
+
+                medley.appendChild(
+                    medleySongs
+                );
+
+                setlistArea.appendChild(
+                    medley
+                );
+
+                currentOrder =
+                    predictedOrder;
+
+                currentMedley =
+                    medleySongs;
+
+            }
+
+
+            if (song.is_medley) {
+
+                const medleySong =
+                    document.createElement(
+                        "div"
+                    );
+
+                medleySong.className =
+                    "predicted-medley-song";
+
+
+                const medleyOrder =
+                    document.createElement(
+                        "div"
+                    );
+
+                medleyOrder.className =
+                    "predicted-song-order";
+
+                medleyOrder.textContent =
+                    song.medley_order
+                    || "";
+
+
+                const name =
+                    document.createElement(
+                        "div"
+                    );
+
+                name.className =
+                    "predicted-song-name";
+
+                name.textContent =
+                    song.song_name
+                    || "";
+
+
+                appendRequiredBadge(
+                    name,
+                    song
+                );
+
+
+                appendPredictionReason(
+                    name,
+                    song
+                );
+
+
+                medleySong.appendChild(
+                    medleyOrder
+                );
+
+                medleySong.appendChild(
+                    name
+                );
+
+
+                currentMedley.appendChild(
+                    medleySong
+                );
+
+                return;
+
+            }
+
+
+            const item =
+                document.createElement(
+                    "div"
+                );
+
+            item.className =
+                "predicted-song-item";
+
+
+            const order =
+                document.createElement(
+                    "div"
+                );
+
+            order.className =
+                "predicted-song-order";
+
+            order.textContent =
+                predictedOrder;
+
+
+            const name =
+                document.createElement(
+                    "div"
+                );
+
+            name.className =
+                "predicted-song-name";
+
+            name.textContent =
+                song.song_name
+                || "";
+
+
+            appendRequiredBadge(
+                name,
+                song
+            );
+
+
+            appendPredictionReason(
+                name,
+                song
+            );
+
+
+            item.appendChild(
+                order
+            );
+
+            item.appendChild(
+                name
+            );
+
+
+            setlistArea.appendChild(
+                item
+            );
+
+        }
+    );
+
+
+    resultArea.style.display =
+        "block";
+
+}
+
+
+function appendRequiredBadge(
+    nameElement,
+    song
+) {
+
+    if (!song.is_required) {
+        return;
+    }
+
+
+    const badge =
+        document.createElement(
+            "span"
+        );
+
+    badge.className =
+        "required-badge";
+
+    badge.textContent =
+        "必須";
+
+
+    nameElement.appendChild(
+        badge
+    );
+
+}
+
+
+function appendPredictionReason(
+    nameElement,
+    song
+) {
+
+    if (
+        !song.prediction_reason
+    ) {
+        return;
+    }
+
+
+    const reason =
+        document.createElement(
+            "div"
+        );
+
+    reason.className =
+        "predicted-song-reason";
+
+    reason.textContent =
+        song.prediction_reason;
+
+
+    nameElement.appendChild(
+        reason
+    );
+
+}
+
+</script>
+
+</body>
+</html>
