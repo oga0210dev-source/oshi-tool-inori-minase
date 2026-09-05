@@ -1,0 +1,259 @@
+{% extends "templates/commons/base.html" %}
+
+{% block title %}AIセトリ予測{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="/static/css/home/live/setlist_prediction.css">
+{% endblock %}
+
+{% block content %}
+<div class="background">
+
+    <a href="javascript:history.back()" class="back-link">
+        ← 戻る
+    </a>
+
+    <div class="search-area">
+        <form method="get" class="search-form" onsubmit="clearAiPredictionState()">
+
+            <input
+                type="text"
+                name="keyword"
+                placeholder="ライブ名で検索"
+                value="{{ request.query_params.get('keyword', '') }}"
+            >
+
+            <div class="search-bottom">
+                <button type="submit">検索</button>
+            </div>
+
+        </form>
+    </div>
+
+    <div class="page-scroll">
+
+        <div class="container">
+
+            <div class="section-title">
+                <h2>AIセトリ予測</h2>
+            </div>
+
+            {% if predictions %}
+
+            <div class="prediction-list">
+
+                {% for prediction in predictions %}
+
+                <div class="prediction-card">
+
+                    <div class="live-name">
+                        {{ prediction.live_name }}
+                    </div>
+
+                    <div class="tour-name">
+                        {{ prediction.tour_name }}
+                    </div>
+
+                    <div class="live-info">
+
+                        <div>
+                            📅 {{ prediction.live_date }}
+                        </div>
+
+                        <div>
+                            {% if prediction.prefecture_name %}
+                                📍 {{ prediction.prefecture_name }}
+                            {% endif %}
+
+                            {% if prediction.venue_name %}
+                                {{ prediction.venue_name }}
+                            {% endif %}
+                        </div>
+
+                    </div>
+
+                    <div class="prediction-actions">
+
+                        <div class="match-rate">
+                        </div>
+
+                        <a
+                            href="/home/live/prediction/ai/detail/{{ prediction.prediction_id }}"
+                            class="detail-btn"
+                            onclick="saveAiPredictionState()"
+                        >
+                            詳細
+                        </a>
+
+                    </div>
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+            {% else %}
+
+            <div class="no-prediction">
+                公開されているAIセトリ予測がありません。
+            </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+function saveAiPredictionState(){
+
+    const pageScroll =
+        document.querySelector(".page-scroll");
+
+    const keywordInput =
+        document.querySelector('input[name="keyword"]');
+
+    if(pageScroll){
+        sessionStorage.setItem(
+            "aiPredictionScrollY",
+            pageScroll.scrollTop
+        );
+    }
+
+    if(keywordInput){
+        sessionStorage.setItem(
+            "aiPredictionKeyword",
+            keywordInput.value
+        );
+    }
+}
+
+
+function clearAiPredictionState(){
+
+    sessionStorage.removeItem(
+        "aiPredictionScrollY"
+    );
+
+    sessionStorage.removeItem(
+        "aiPredictionKeyword"
+    );
+}
+
+
+function restoreAiPredictionState(){
+
+    const params =
+        new URLSearchParams(window.location.search);
+
+    const pageScroll =
+        document.querySelector(".page-scroll");
+
+    const keywordInput =
+        document.querySelector('input[name="keyword"]');
+
+
+    if(params.has("first")){
+
+        clearAiPredictionState();
+
+        if(keywordInput){
+            keywordInput.value = "";
+        }
+
+        if(pageScroll){
+            pageScroll.scrollTop = 0;
+        }
+
+        params.delete("first");
+
+        const newUrl =
+            window.location.pathname +
+            (
+                params.toString()
+                    ? "?" + params.toString()
+                    : ""
+            );
+
+        window.history.replaceState(
+            {},
+            "",
+            newUrl
+        );
+
+        return;
+    }
+
+
+    const savedKeyword =
+        sessionStorage.getItem(
+            "aiPredictionKeyword"
+        );
+
+
+    if(!params.has("keyword") &&
+       savedKeyword !== null){
+
+        params.set(
+            "keyword",
+            savedKeyword
+        );
+
+        const newUrl =
+            window.location.pathname +
+            "?" +
+            params.toString();
+
+        window.location.replace(newUrl);
+
+        return;
+    }
+
+
+    if(keywordInput &&
+       savedKeyword !== null){
+
+        keywordInput.value =
+            savedKeyword;
+    }
+
+
+    const savedScrollY =
+        sessionStorage.getItem(
+            "aiPredictionScrollY"
+        );
+
+
+    if(pageScroll &&
+       savedScrollY !== null){
+
+        requestAnimationFrame(function(){
+
+            pageScroll.scrollTop =
+                Number(savedScrollY);
+
+        });
+    }
+}
+
+
+document.addEventListener(
+    "DOMContentLoaded",
+    restoreAiPredictionState
+);
+
+
+window.addEventListener(
+    "pageshow",
+    function(){
+
+        restoreAiPredictionState();
+
+    }
+);
+</script>
+
+{% endblock %}

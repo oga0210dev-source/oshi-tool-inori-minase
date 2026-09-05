@@ -1,0 +1,74 @@
+{% extends "templates/commons/base.html" %}
+
+{% block title %}セトリ予測{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="/static/css/home/live/setlist_prediction.css">
+{% endblock %}
+
+{% block content %}
+
+<div class="background">
+
+    <a href="javascript:history.back()" class="back-link">
+        ← 戻る
+    </a>
+
+    <div class="page-scroll">
+
+        <div class="container">
+
+            <div class="section-title">
+                <h2>セトリ予測</h2>
+            </div>
+
+            <div class="prediction-menu">
+
+                <a
+                    href="/home/live/prediction/user"
+                    class="prediction-menu-btn">
+
+                    <span class="prediction-menu-icon">
+                        👤
+                    </span>
+
+                    <span>
+                        自分で予測する
+                    </span>
+
+                </a>
+
+                <a
+                    href="/home/live/prediction/ai"
+                    class="prediction-menu-btn"
+                    onclick="return showAiPredictionNotice();">
+
+                    <span class="prediction-menu-icon">
+                        🤖
+                    </span>
+
+                    <span>
+                        AI予測を見る
+                    </span>
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+function showAiPredictionNotice() {
+    return confirm(
+        '【AIセトリ予測について】\n\n' +
+        '過去のセトリデータを集計し、その結果をもとにAIが予測したセトリです。\n\n' +
+        '実際のセトリを保証するものではありません。'
+    );
+}
+</script>
+
+{% endblock %}

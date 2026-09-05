@@ -30,7 +30,7 @@ from python.routers.home.live.history import (
     history_expense_delete as live_history_expense_delete
 )
 from python.routers.home.live.lost_item import lost_item
-from python.routers.home.live.prediction import setlist_prediction
+from python.routers.home.live.prediction import setlist_prediction, setlist_prediction_ai
 from python.routers.home.live.collected_song import collected_song
 from python.routers.home.meeting import (
     meeting,
@@ -131,6 +131,7 @@ def register_router(app: FastAPI):
     app.include_router(live_history_expense_edit.router)
     app.include_router(collected_song.router)
     app.include_router(setlist_prediction.router)
+    app.include_router(setlist_prediction_ai.router)
     app.include_router(lost_item.router)
 
     app.include_router(meeting.router)

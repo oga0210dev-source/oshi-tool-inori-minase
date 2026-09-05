@@ -34,11 +34,31 @@ def login_redirect(request: Request):
 
 
 # =========================================================
-# セトリ予測一覧
+# セトリ予測入口
 # =========================================================
 
 @router.get("")
 async def setlist_prediction(
+    request: Request
+):
+    redirect = login_redirect(request)
+
+    if redirect:
+        return redirect
+
+    return render(
+        request=request,
+        name="templates/home/live/prediction/index.html",
+        context={}
+    )
+
+
+# =========================================================
+# ユーザーセトリ予測一覧
+# =========================================================
+
+@router.get("/user")
+async def user_setlist_prediction(
     request: Request,
     keyword: str = ""
 ):

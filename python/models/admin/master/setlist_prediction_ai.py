@@ -544,15 +544,10 @@ def update_prediction_details(
 
 
 def get_live_list():
-    """
-    AIセトリ予測対象LIVE一覧を取得
-    """
-
     conn = get_connection()
-
     try:
-        with conn.cursor() as cursor:
-            cursor.execute(
+        with conn.cursor() as cur:
+            cur.execute(
                 """
                 SELECT
                     l.live_id,
@@ -575,14 +570,25 @@ def get_live_list():
                     AND p.is_deleted=FALSE
                 WHERE
                     l.is_deleted=FALSE
+                    AND (
+                        (
+                            l.live_date > CURRENT_DATE
+                            AND p.prediction_id IS NULL
+                        )
+                        OR
+                        p.prediction_id IS NOT NULL
+                    )
                 ORDER BY
-                    l.live_date DESC,
+                    CASE
+                        WHEN p.prediction_id IS NULL THEN 0
+                        ELSE 1
+                    END ASC,
+                    l.live_date ASC,
                     l.tour_order ASC,
-                    l.live_id DESC
+                    l.live_id ASC
                 """
             )
-
-            rows = cursor.fetchall()
+            rows = cur.fetchall()
 
             return [
                 {
@@ -599,6 +605,5 @@ def get_live_list():
                 }
                 for row in rows
             ]
-
     finally:
         conn.close()

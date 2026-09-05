@@ -1,10 +1,12 @@
 from collections import defaultdict
+from datetime import date
 import json
 
 from python.services.gemini_service import gemini_service
-from python.models.admin.master import setlist as setlist_model
-from python.models.admin.master import song as song_model
 from python.models.admin.master import (
+    setlist as setlist_model,
+    song as song_model,
+    live as live_model,
     setlist_prediction_ai as prediction_ai_model
 )
 
@@ -1065,6 +1067,24 @@ def apply_ai_prediction(
     return statistical_setlist
 
 
+def validate_prediction_editable(live):
+    """
+    AIセトリ予測が変更可能か確認
+
+    開催日当日以降は変更不可。
+    """
+
+    if not live:
+        raise ValueError(
+            "対象LIVEが存在しません。"
+        )
+
+    if live["live_date"] <= date.today():
+        raise ValueError(
+            "開催日当日以降のAIセトリ予測は変更できません。"
+        )
+
+
 def generate_ai_prediction(
     live_id,
     required_song_ids=None,
@@ -1081,10 +1101,9 @@ def generate_ai_prediction(
         live_id
     )
 
-    if not target_live:
-        raise ValueError(
-            "対象LIVEが存在しません。"
-        )
+    validate_prediction_editable(
+        target_live
+    )
 
     prediction_data = get_ai_prediction_data(
         target_live
@@ -1116,7 +1135,6 @@ def generate_ai_prediction(
     )
 
     if existing_prediction:
-
         prediction_ai_model.update_prediction(
             prediction_id=existing_prediction[
                 "prediction_id"
@@ -1205,6 +1223,77 @@ def get_ai_prediction_by_live_id(live_id):
     )
 
 
+def get_ai_prediction_tour_base(target_live):
+    """
+    同一ツアー直前公演をAIセトリ予測の基準として取得する。
+
+    優先順位:
+        1. 直前公演の実際のセトリ
+        2. 実際のセトリがない場合、直前公演のAI予測
+        3. どちらもない場合はNone
+
+    ツアー公演でないLIVEは対象外。
+    """
+
+    if not target_live:
+        return None
+
+    tour_name = target_live.get("tour_name")
+
+    if not tour_name:
+        return None
+
+    previous_live = live_model.get_previous_tour_live(
+        target_live["live_id"]
+    )
+
+    if not previous_live:
+        return None
+
+    previous_live_id = previous_live["live_id"]
+
+    # --------------------------------------------------
+    # 1. 直前公演の実際のセトリを確認
+    # --------------------------------------------------
+
+    actual_setlist = setlist_model.get_setlist_list(
+        event_type="LIVE",
+        event_id=previous_live_id
+    )
+
+    if actual_setlist:
+        return {
+            "base_type": "actual",
+            "base_live_id": previous_live_id,
+            "base_live_name": previous_live["live_name"],
+            "base_live_date": previous_live["live_date"],
+            "songs": actual_setlist
+        }
+
+    # --------------------------------------------------
+    # 2. 実際のセトリがなければAI予測を確認
+    # --------------------------------------------------
+
+    ai_prediction = get_ai_prediction_by_live_id(
+        previous_live_id
+    )
+
+    if ai_prediction:
+        return {
+            "base_type": "ai_prediction",
+            "base_live_id": previous_live_id,
+            "base_live_name": previous_live["live_name"],
+            "base_live_date": previous_live["live_date"],
+            "songs": ai_prediction["details"]
+        }
+
+    # --------------------------------------------------
+    # 3. 基準セトリなし
+    # --------------------------------------------------
+
+    return None
+
+
 def update_ai_prediction(
     prediction_id,
     live_id,
@@ -1215,6 +1304,8 @@ def update_ai_prediction(
 ):
     """
     保存済みAIセトリ予測を更新
+
+    開催日当日以降は変更不可。
     """
 
     if not prediction_id:
@@ -1225,6 +1316,14 @@ def update_ai_prediction(
 
     if not predicted_setlist:
         return None
+
+    live = prediction_ai_model.get_live(
+        live_id
+    )
+
+    validate_prediction_editable(
+        live
+    )
 
     updated = (
         prediction_ai_model.update_prediction(
