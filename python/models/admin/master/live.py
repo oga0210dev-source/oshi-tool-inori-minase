@@ -264,3 +264,66 @@ def get_tour_list():
             return cur.fetchall()
     finally:
         conn.close()
+
+
+def get_previous_tour_live(live_id):
+    """
+    同一ツアーの直前LIVEを取得
+
+    条件:
+        - 対象LIVEと同じツアー
+        - 対象LIVEより前の公演
+        - 削除されていないLIVE
+
+    判定順:
+        live_date
+        tour_order
+        live_id
+    """
+
+    conn = get_connection()
+
+    try:
+        with conn.cursor() as cur:
+            cur.execute(
+                """
+                SELECT
+                    m_live.*
+                FROM m_live
+
+                INNER JOIN m_live target
+                    ON target.live_id = %s
+
+                WHERE
+                    m_live.is_deleted = FALSE
+                    AND target.is_deleted = FALSE
+                    AND target.tour_name IS NOT NULL
+                    AND target.tour_name <> ''
+                    AND m_live.tour_name = target.tour_name
+                    AND (
+                        m_live.live_date < target.live_date
+                        OR (
+                            m_live.live_date = target.live_date
+                            AND m_live.tour_order < target.tour_order
+                        )
+                        OR (
+                            m_live.live_date = target.live_date
+                            AND m_live.tour_order = target.tour_order
+                            AND m_live.live_id < target.live_id
+                        )
+                    )
+
+                ORDER BY
+                    m_live.live_date DESC,
+                    m_live.tour_order DESC,
+                    m_live.live_id DESC
+
+                LIMIT 1
+                """,
+                (live_id,)
+            )
+
+            return cur.fetchone()
+
+    finally:
+        conn.close()

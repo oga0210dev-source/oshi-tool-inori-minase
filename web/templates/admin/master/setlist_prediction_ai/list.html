@@ -19,11 +19,8 @@
 
     <div class="page-header">
 
-        <a
-            href="/admin/master/live"
-            class="master-link"
-        >
-            ← ライブ管理
+        <a href="/admin/master" class="master-link">
+            ← マスタ管理
         </a>
 
         <h1 class="page-title">
@@ -33,16 +30,22 @@
     </div>
 
 
-    <!-- LIVE一覧 -->
+    <!-- 未予測LIVE -->
+
+    <div class="section-title">
+        未予測LIVE
+    </div>
 
     <div
         class="live-list"
-        id="live-list"
+        id="unpredicted-live-list"
     >
 
-        {% if lives %}
+        {% set unpredicted_lives = lives | selectattr("has_prediction", "equalto", false) | list %}
 
-            {% for live in lives %}
+        {% if unpredicted_lives %}
+
+            {% for live in unpredicted_lives %}
 
             <div class="live-item">
 
@@ -85,7 +88,73 @@
         {% else %}
 
             <div class="no-live">
-                LIVEが登録されていません
+                未予測のLIVEはありません
+            </div>
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- 予測済みLIVE -->
+
+    <div class="section-title">
+        予測済みLIVE
+    </div>
+
+    <div
+        class="live-list"
+        id="predicted-live-list"
+    >
+
+        {% set predicted_lives = lives | selectattr("has_prediction", "equalto", true) | list %}
+
+        {% if predicted_lives %}
+
+            {% for live in predicted_lives %}
+
+            <div class="live-item">
+
+                <div class="live-info">
+
+                    <div class="live-name">
+                        {{ live.live_name }}
+                    </div>
+
+                    {% if live.tour_name %}
+
+                    <div class="tour-name">
+                        {{ live.tour_name }}
+                    </div>
+
+                    {% endif %}
+
+                    <div class="live-date">
+                        {{ live.live_date }}
+                    </div>
+
+                </div>
+
+
+                <div class="live-action">
+
+                    <a
+                        href="/admin/master/setlist-prediction-ai/{{ live.live_id }}"
+                        class="prediction-btn"
+                    >
+                        予測確認
+                    </a>
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <div class="no-live">
+                予測済みのLIVEはありません
             </div>
 
         {% endif %}

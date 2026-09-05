@@ -1,0 +1,149 @@
+{% extends "templates/commons/base.html" %}
+
+{% block title %}AIセトリ予測{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="/static/css/home/live/setlist_prediction.css">
+{% endblock %}
+
+{% block content %}
+
+<div class="background">
+
+    <a href="javascript:history.back()" class="back-link">
+        ← 戻る
+    </a>
+
+    <div class="page-scroll">
+
+        <div class="container">
+
+            <div class="section-title">
+                <h2>AIセトリ予測</h2>
+            </div>
+
+
+            <!-- LIVE情報 -->
+
+            <div class="prediction-card">
+
+                <div class="live-name">
+                    {{ prediction.live_name }}
+                </div>
+
+                <div class="tour-name">
+                    {{ prediction.tour_name }}
+                </div>
+
+                <div class="live-info">
+
+                    <div>
+                        📅 {{ prediction.live_date }}
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- 予測セトリ -->
+
+            <div class="prediction-card">
+
+                <div class="detail-section-title">
+                    AI予測セトリ
+                </div>
+
+
+                {% if prediction.details %}
+
+                <div class="ai-setlist">
+
+                    {% for song in prediction.details %}
+
+                    <div class="ai-song">
+
+                        <div class="ai-song-order">
+                            {{ song.predicted_order }}
+                        </div>
+
+
+                        <div class="ai-song-info">
+
+                            <div class="ai-song-name">
+                                {{ song.song_name }}
+                            </div>
+
+                            {% if song.album_name %}
+
+                            <div class="ai-song-album">
+                                {{ song.album_name }}
+                            </div>
+
+                            {% endif %}
+
+
+                            {% if song.is_medley %}
+
+                            <div class="ai-song-medley">
+                                メドレー
+                                {% if song.medley_order %}
+                                    {{ song.medley_order }}
+                                {% endif %}
+                            </div>
+
+                            {% endif %}
+
+
+                            {% if song.is_required %}
+
+                            <div class="ai-song-required">
+                                必須曲
+                            </div>
+
+                            {% endif %}
+
+
+                            {% if song.prediction_score is not none %}
+
+                            <div class="ai-song-score">
+                                予測スコア：
+                                {{ song.prediction_score }}
+                            </div>
+
+                            {% endif %}
+
+
+                            {% if song.prediction_reason %}
+
+                            <div class="ai-song-reason">
+                                {{ song.prediction_reason }}
+                            </div>
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+                    {% endfor %}
+
+                </div>
+
+                {% else %}
+
+                <div class="no-prediction">
+                    AI予測セトリがありません。
+                </div>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
